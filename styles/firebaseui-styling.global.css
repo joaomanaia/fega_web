@@ -1,0 +1,28 @@
+.firebaseui-container {
+    border-radius: 1.5rem !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)  !important;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)  !important;
+}
+
+.firebaseui-container.firebaseui-page-provider-sign-in {
+    background: transparent !important;
+    box-shadow: none !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.mdl-button--primary {
+    color: red !important;
+    border-radius: 10px !important;
+}
+
+.mdl-button.mdl-button--colored {
+    background-color: red !important;
+    border-radius: 10px !important;
+}
+
+.mdl-textfield__label:after {
+    background-color: red !important;
+}
