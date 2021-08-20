@@ -1,6 +1,9 @@
 import firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/analytics'
+import 'firebase/performance'
+import 'firebase/app-check'
 
 const firebaseConfig = {
     apiKey: "AIzaSyCbQNn_YTWEIL5WJFQWUbyhlG5MrGKu7J0",
@@ -13,7 +16,7 @@ const firebaseConfig = {
     measurementId: "G-0WZ017FHHK"
 }
 
-let app
+let app: firebase.app.App
 
 if (firebase.apps.length === 0) {
     app = firebase.initializeApp(firebaseConfig)
@@ -21,10 +24,16 @@ if (firebase.apps.length === 0) {
     app = firebase.app()
 }
 
-const auth = firebase.auth()
+const auth = app.auth()
 const firestore = app.firestore()
+const analytics = app.analytics
+const performance = app.performance
+const appCheck = app.appCheck
 
-export { auth, firestore }
+//auth.useEmulator("http://localhost:9099")
+//firestore.useEmulator("localhost", 8080);
+
+export { app, auth, firestore, analytics, performance, appCheck }
 
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -35,8 +44,7 @@ const uiConfig = {
     signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
     ],
 }
 

@@ -5,7 +5,7 @@ import Posts from '../components/post/Posts'
 
 const Home: NextPage = () => {
   return (
-    <div className="w-screen h-screen bg-gray-200 overflow-hidden">
+    <div className="w-screen h-screen bg-gray-200 dark:bg-gray-900 overflow-hidden">
       <Head>
         <title>Fega</title>
         <meta name="description" content="Fega web" />
