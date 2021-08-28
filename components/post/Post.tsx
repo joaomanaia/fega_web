@@ -5,7 +5,7 @@ type PostParams = {
     id: string,
     uid: string,
     description: string,
-    images: Array<string> | undefined,
+    images: string[] | undefined,
     timestamp: Date
 }
 

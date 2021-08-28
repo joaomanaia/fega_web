@@ -3,10 +3,12 @@ import '../styles/globals.css'
 import '../styles/firebaseui-styling.global.css'
 import Auth from './auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { analytics, app, auth, firestore } from '../firebase'
+import { app, auth, firestore } from '../firebase'
 import Loading from './loading'
 import { useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
+import { Provider } from 'react-redux'
+import { store } from '../app/store'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Destructure user, loading, and error out of the hook.
@@ -33,21 +35,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [])
 
-  if(loadingAuth) return <Loading/>
-  if(!authUser) return <Auth/>
+  if(loadingAuth) return <Provider store={store}><Loading/></Provider> 
+  if(!authUser) return <Provider store={store}><Auth/></Provider>
   if(errorAuth) return <p>{errorAuth.message}</p>
 
   if(authUser) {
     firestore.collection("users").doc(authUser.uid).get().then(doc => {
-      if(doc?.data()?.banned === true) return <p>Você está banido!</p>
-
       if(!doc?.exists) {
         firestore.collection("users").doc(authUser?.uid).set({
           admin: false,
           banned: false,
-          name: authUser?.displayName,
-          photoUrl: authUser?.photoURL,
-          uid: authUser?.uid,
+          name: authUser?.displayName || "Fega User",
+          photoUrl: authUser?.photoURL || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb",
+          uid: authUser?.uid
         })
       }
     }).catch(err => {
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     })
   }
 
-  return <Component {...pageProps} />
+  return <Provider store={store}><Component {...pageProps} /></Provider>
 }
 
 export default MyApp

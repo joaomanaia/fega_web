@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "fega-app"
+  },
+  "targets": {
+    "fega-app": {
+      "hosting": {
+        "fega.ml": [
+          "out"
+        ],
+        "fega-app": [
+          "fega.ml"
+        ]
+      }
+    }
   }
 }

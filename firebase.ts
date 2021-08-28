@@ -6,19 +6,21 @@ import 'firebase/performance'
 import 'firebase/app-check'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCbQNn_YTWEIL5WJFQWUbyhlG5MrGKu7J0",
-    authDomain: "fega-app.firebaseapp.com",
-    databaseURL: "https://fega-app-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "fega-app",
-    storageBucket: "fega-app.appspot.com",
-    messagingSenderId: "861331308734",
-    appId: "1:861331308734:web:4209fd8b9d133c94039eef",
-    measurementId: "G-0WZ017FHHK"
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
 
 let app: firebase.app.App
 
-if (firebase.apps.length === 0) {
+const newApp = firebase.apps.length === 0
+
+if (newApp) {
     app = firebase.initializeApp(firebaseConfig)
 } else {
     app = firebase.app()
@@ -30,8 +32,12 @@ const analytics = app.analytics
 const performance = app.performance
 const appCheck = app.appCheck
 
-//auth.useEmulator("http://localhost:9099")
-//firestore.useEmulator("localhost", 8080);
+/*
+if(newApp) {
+    auth.useEmulator("http://localhost:9099")
+    firestore.useEmulator("localhost", 8080);
+}
+*/
 
 export { app, auth, firestore, analytics, performance, appCheck }
 
