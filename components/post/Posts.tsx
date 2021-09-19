@@ -1,4 +1,4 @@
-import firebase from "firebase"
+import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { firestore } from "../../firebase"
 import Post from "./Post"
@@ -10,7 +10,7 @@ type PostsPropsTypes = {
 export type PostType = {
     id: string
     uid: string
-    timestamp: Date,
+    timestamp: string,
     data: PostDataType
 }
 
@@ -24,46 +24,38 @@ function Posts({posts}: PostsPropsTypes) {
     const [postsPaging, setPostsPaging] = useState(Array<PostType>())
     const [lastPostVisible, setLastPostVisible] = useState<any>(null)
 
-    /*
-    const getPostsPaging = () => {
-        const first = firestore.collection("publications")
-            .orderBy("timestamp", "desc")
-            .limit(10)
+    async function getNextPostsPaging() {
+        if (!lastPostVisible) return
 
-        first.get().then((snapshots) => {
-            setPostsPaging(snapshots.docs)
-            setLastPostVisible(snapshots.docs[snapshots.docs.length - 1])
-        }).catch((error) => alert(error))
-    }
-    */
+        const postsRef = collection(firestore, "publications")
+        const postsNextQuery = query(
+            postsRef, 
+            orderBy("timestamp", "desc"),
+            startAfter(lastPostVisible),
+            limit(10)
+        )
 
-    const getNextPostsPaging = () => {
-        const next = firestore.collection("publications")
-            .orderBy("timestamp", "desc")
-            .startAfter(lastPostVisible)
-            .limit(10)
+        const postsSnap = await getDocs(postsNextQuery)
 
-        next.get().then((snapshots) => {
-            const newList = postsPaging
-            snapshots.docs.forEach(doc => {
-                const dbPost = doc.data()
-                const newPost: PostType = {
-                    id: dbPost.id,
-                    uid: dbPost.uid,
-                    timestamp: dbPost.timestamp.toDate(),
-                    data: {
-                      description: dbPost.data.description,
-                      images: dbPost.data.images,
-                    }
-                  }
-                newList.push(newPost)
-            })
-            setPostsPaging(newList)
+        const newList = postsPaging
+        postsSnap.docs.forEach(doc => {
+            const dbPost = doc.data()
+            const newPost: PostType = {
+                id: dbPost.id,
+                uid: dbPost.uid,
+                timestamp: dbPost.timestamp.toDate().toLocaleString(),
+                data: {
+                  description: dbPost.data.description,
+                  images: dbPost.data.images,
+                }
+              }
+            newList.push(newPost)
+        })
+        setPostsPaging(newList)
 
-            if(!snapshots.empty) {
-                setLastPostVisible(snapshots.docs[snapshots.docs.length - 1])
-            }
-        }).catch((error) => alert(error))
+        if(!postsSnap.empty) {
+            setLastPostVisible(postsSnap.docs[postsSnap.docs.length - 1])
+        }
     }
 
     useEffect(() => {

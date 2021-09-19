@@ -1,9 +1,15 @@
-import firebase from 'firebase'
+import { initializeApp, getApps } from 'firebase/app'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { connectAuthEmulator, EmailAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { FirebaseApp } from '@firebase/app'
+/*
+import 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/analytics'
 import 'firebase/performance'
 import 'firebase/app-check'
+*/
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -16,30 +22,29 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
 
-let app: firebase.app.App
-
+/*
 const newApp = firebase.apps.length === 0
 
 if (newApp) {
-    app = firebase.initializeApp(firebaseConfig)
-} else {
-    app = firebase.app()
-}
-
-const auth = app.auth()
-const firestore = app.firestore()
-const analytics = app.analytics
-const performance = app.performance
-const appCheck = app.appCheck
-
-/*
-if(newApp) {
-    auth.useEmulator("http://localhost:9099")
-    firestore.useEmulator("localhost", 8080);
+    initializeApp(firebaseConfig)
 }
 */
 
-export { app, auth, firestore, analytics, performance, appCheck }
+let app: FirebaseApp
+let appArray = getApps()
+if (!appArray.length) {
+    app = initializeApp(firebaseConfig)
+} else {
+    app = appArray[0]
+}
+
+const auth = getAuth()
+const firestore = getFirestore()
+
+connectAuthEmulator(auth, 'http://localhost:9099')
+connectFirestoreEmulator(firestore, 'localhost', 8080)
+
+export { app, auth, firestore }
 
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -48,9 +53,9 @@ const uiConfig = {
     signInSuccessUrl: '/',
     // We will display Google and Facebook as auth providers.
     signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
+        GoogleAuthProvider.PROVIDER_ID,
+        FacebookAuthProvider.PROVIDER_ID,
+        EmailAuthProvider.PROVIDER_ID
     ],
 }
 

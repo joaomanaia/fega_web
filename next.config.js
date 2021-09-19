@@ -2,7 +2,10 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'firebasestorage.googleapis.com'
+    ],
   },
   env: {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
@@ -16,6 +19,7 @@ module.exports = {
     ADMIN_FIREBASE_CLIENT_EMAIL: process.env.ADMIN_FIREBASE_CLIENT_EMAIL,
     ADMIN_FIREBASE_PRIVATE_KEY: process.env.ADMIN_FIREBASE_PRIVATE_KEY,
     ADMIN_FIREBASE_PROJECT_ID: process.env.ADMIN_FIREBASE_PROJECT_ID,
+    FIRESTORE_EMULATOR_HOST: process.env.FIRESTORE_EMULATOR_HOST,
   }
   /*
   i18n: {

@@ -1,6 +1,4 @@
 import type { AppProps } from 'next/app'
-import '../styles/globals.css'
-import '../styles/firebaseui-styling.global.css'
 import Auth from './auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { app, auth, firestore } from '../firebase'
@@ -9,6 +7,12 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { Provider } from 'react-redux'
 import { store } from '../app/store'
+import { getAnalytics, logEvent, setCurrentScreen } from 'firebase/analytics'
+import { getPerformance } from 'firebase/performance'
+import { initializeAppCheck, ReCaptchaV3Provider  } from 'firebase/app-check'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
+import '../styles/globals.css'
+import '../styles/firebaseui-styling.global.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Destructure user, loading, and error out of the hook.
@@ -17,42 +21,48 @@ function MyApp({ Component, pageProps }: AppProps) {
   const routers = useRouter()
 
   useEffect(() => {
-    app.analytics()
-    app.performance()
-    const appCheck = app.appCheck()
-    appCheck.activate("6Ld3sg8cAAAAAG87yUa03kZIYSarmr7EFvnjivK7", true)
-    const logEvent = (url: string) => {
-      app.analytics().setCurrentScreen(url)
-      app.analytics().logEvent("screen_view")
+    const analytics = getAnalytics(app)
+    getPerformance(app)
+    const appCheck = initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider('6Ld3sg8cAAAAAG87yUa03kZIYSarmr7EFvnjivK7'),
+      isTokenAutoRefreshEnabled: true
+    })
+
+    const logEventPage = (url: string) => {
+      logEvent(analytics, 'screen_view')
+      setCurrentScreen(analytics, url)
     }
 
-    routers.events.on('routeChangeComplete', logEvent)
+    routers.events.on('routeChangeComplete', logEventPage)
     // For First page
-    logEvent(window.location.pathname)
+    logEventPage(window.location.pathname)
 
     return () => {
-      routers.events.off('routeChangeComplete', logEvent)
+      routers.events.off('routeChangeComplete', logEventPage)
     }
   }, [])
 
-  if(loadingAuth) return <Provider store={store}><Loading/></Provider> 
+  if(loadingAuth) return <Loading/>
   if(!authUser) return <Provider store={store}><Auth/></Provider>
   if(errorAuth) return <p>{errorAuth.message}</p>
 
+  const loadDBUser = async () => {
+    const userRef = doc(firestore, 'users', authUser.uid)
+    const userSnap = await getDoc(userRef)
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        admin: false,
+        banned: false,
+        name: authUser?.displayName || "Fega User",
+        photoUrl: authUser?.photoURL || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb",
+        uid: authUser?.uid
+      })
+    }
+  }
+
   if(authUser) {
-    firestore.collection("users").doc(authUser.uid).get().then(doc => {
-      if(!doc?.exists) {
-        firestore.collection("users").doc(authUser?.uid).set({
-          admin: false,
-          banned: false,
-          name: authUser?.displayName || "Fega User",
-          photoUrl: authUser?.photoURL || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb",
-          uid: authUser?.uid
-        })
-      }
-    }).catch(err => {
-      return <p>{err.message}</p>
-    })
+    loadDBUser()
   }
 
   return <Provider store={store}><Component {...pageProps} /></Provider>

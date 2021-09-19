@@ -1,16 +1,15 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import React, { useEffect } from 'react'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAppThemeLight } from '../app/appSlice'
 import Header from '../components/header/Header'
 import CreatePost from '../components/post/CreatePost'
-import Posts, { PostType } from '../components/post/Posts'
+import Posts from '../components/post/Posts'
 import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
-import { firestore } from '../firebase'
-import firebase from "firebase"
-import { firestoreAdmin } from '../firebase-admin'
+import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
+import BottomNavItem from '../components/bottomNavigation/BottomNavItem'
+import BottomNav from '../components/bottomNavigation/BottomNav'
 
 const Home: NextPage = ({posts}: any) => {
 
@@ -39,11 +38,17 @@ const Home: NextPage = ({posts}: any) => {
           <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
                 <CreatePost/>
           </div> 
-          <div className="flex-grow pb-64 xl:mr-40 lg:overflow-y-auto scrollbar-hide">
-              <Posts posts={JSON.parse(posts)}/>
+          <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
+              {posts && <Posts posts={JSON.parse(posts)}/>}
+          </div>
+          <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
+            <LeftSidebarMenu/>
           </div>
         </div>
       </main>
+
+      {/** Bottom navigation (mobile) */}
+      <BottomNav/>
     </div>
   )
 }
@@ -51,7 +56,18 @@ const Home: NextPage = ({posts}: any) => {
 export default Home
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await fetch("http://localhost:3000/api/posts/initialPosts")
+  const data = await res.json()
 
+  return {
+    props: {
+      posts: data.posts,
+    }
+  }
+}
+
+/*
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const posts = await firestoreAdmin.collection("publications")
       .orderBy("timestamp", "desc")
       .limit(10)
@@ -66,10 +82,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       images: post.data().data.images,
     }
   }))
-      
+
   return {
     props: {
       posts: JSON.stringify(postsFormatted)
     }
   }
 }
+*/

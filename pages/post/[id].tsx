@@ -1,10 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../../app/appSlice"
-import Header from "../../components/header/Header";
 import Post from "../../components/post/Post";
 import { PostType } from "../../components/post/Posts";
 import { firestoreAdmin } from "../../firebase-admin";
@@ -90,4 +88,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         post: JSON.stringify(postFormatted)
       }
     }
-  }
+}

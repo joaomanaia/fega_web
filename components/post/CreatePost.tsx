@@ -1,7 +1,7 @@
 import { auth, firestore } from "../../firebase"
-import firebase from 'firebase'
 import React, { MouseEvent, useState } from "react"
 import { useRef } from "react"
+import { collection, doc, getDocs, limitToLast, orderBy, query, setDoc, Timestamp, where } from "firebase/firestore"
 
 function CreatePost() {
 
@@ -9,10 +9,10 @@ function CreatePost() {
 
     const [description, setDescription] = useState("")
 
-    const createPost = (e: MouseEvent) => {
+    async function createPost(e: MouseEvent) {
         e.preventDefault()
 
-        const now = firebase.firestore.Timestamp.now()
+        const now = Timestamp.now()
 
         /*
         const postDoc = firestore.collection("publications").doc()
@@ -26,41 +26,38 @@ function CreatePost() {
         }).then(() => alert("Success")).catch((error) => alert(error))
         */
 
-        firestore
-            .collection("publications")
-            .where("uid", "==", auth.currentUser?.uid)
-            .orderBy("timestamp", "asc")
-            .limitToLast(1)
-            .get()
-            .then((post) => {
-                if(post.empty) {
-                    const postDoc = firestore.collection("publications").doc()
-                    postDoc.set({
-                        id: postDoc.id,
-                        uid: auth.currentUser?.uid,
-                        timestamp: now,
-                        data: {
-                            description: description
-                        }
-                    }).then(() => alert("Success")).catch((error) => alert(error))
-                } else if(now.toMillis() > post.docs.at(0)?.data()?.timestamp.toMillis() + 1000000) {
-                    const postDoc = firestore.collection("publications").doc()
-                    postDoc.set({
-                        id: postDoc.id,
-                        uid: auth.currentUser?.uid,
-                        timestamp: now,
-                        data: {
-                            description: description
-                        }
-                    }).then(() => alert("Success")).catch((error) => alert(error))
-                } else {
-                    alert(`Await until ${new Date(post.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
-                }
-            })
+        const postsRef = collection(firestore, "publications")
+        const lastUserPostQuery = query(
+            postsRef,
+            where("uid", "==", auth.currentUser?.uid),
+            orderBy("timestamp", "asc"),
+            limitToLast(1)
+        )
+
+        const lastUserPostSnap = await getDocs(lastUserPostQuery)
+        if(lastUserPostSnap.empty) {
+            createPostDB(now)
+        } else if(now.toMillis() > lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000) {
+            createPostDB(now)
+        } else {
+            alert(`Await until ${new Date(lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
+        }
 
         setDescription("")
     }
 
+    async function createPostDB(now: Timestamp) {
+        const postDoc = doc(collection(firestore, 'publications'))
+        await setDoc(postDoc, {
+            id: postDoc.id,
+            uid: auth.currentUser?.uid,
+            timestamp: now,
+            data: {
+                description: description
+            }
+        })
+    }
+    
     return (
         <div className="flex flex-col p-5 bg-white dark:bg-gray-800 mt-5 rounded-2xl shadow-sm">
             <p className="text-lg font-bold text-gray-500 dark:text-gray-200">
