@@ -18,7 +18,7 @@ const Home: NextPage = ({posts}: any) => {
 
   useEffect(() => {
     localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
-  }, [])
+  }, [dispatch])
 
   return (
     <div className={`w-screen h-screen overflow-hidden ${appThemeLight ? '' : 'dark'}`}>

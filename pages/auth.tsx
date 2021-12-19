@@ -14,7 +14,7 @@ const Auth: NextPage = () => {
 
     useEffect(() => {
         localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
-    }, [])
+    }, [dispatch])
 
     return(
         <div className={`${appThemeLight ? '' : 'dark'}`}>

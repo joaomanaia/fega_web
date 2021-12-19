@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return () => {
       routers.events.off('routeChangeComplete', logEventPage)
     }
-  }, [])
+  }, [routers.events])
 
   if(loadingAuth) return <Loading/>
   if(!authUser) return <Provider store={store}><Auth/></Provider>

@@ -61,7 +61,7 @@ function Posts({posts}: PostsPropsTypes) {
     useEffect(() => {
         //getPostsPaging()
         setPostsPaging(posts)
-    }, [])
+    }, [posts])
     
     return (
         <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">

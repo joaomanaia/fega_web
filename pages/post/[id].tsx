@@ -17,7 +17,7 @@ const PostPage: NextPage = ({post}: any) => {
 
     useEffect(() => {
         localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
-    }, [])
+    }, [dispatch])
 
     console.log(post)
 

@@ -17,17 +17,17 @@
     "@types/react-redux": "^7.1.18",
     "autoprefixer": "^10.3.1",
     "firebase": "^9.6.1",
-    "firebase-admin": "^9.11.1",
-    "next": "11.1.0",
+    "firebase-admin": "^10.0.1",
+    "next": "12.0.7",
     "postcss": "^8.3.6",
     "react": "^17.0.2",
     "react-dom": "17.0.2",
-    "react-firebase-hooks": "^3.0.4",
+    "react-firebase-hooks": "^4.0.1",
     "react-firebaseui": "^6.0.0",
     "react-intl": "^5.20.10",
     "react-redux": "^7.2.4",
     "tailwind-scrollbar-hide": "^1.0.3",
-    "tailwindcss": "^2.2.7"
+    "tailwindcss": "^3.0.7"
   },
   "devDependencies": {
     "@types/react": "17.0.18",
