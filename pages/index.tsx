@@ -56,7 +56,7 @@ const Home: NextPage = ({posts}: any) => {
 export default Home
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch("http://localhost:3000/api/posts/initialPosts")
+  const res = await fetch("https://www.fega.ml/api/posts/initialPosts")
   const data = await res.json()
 
   return {
