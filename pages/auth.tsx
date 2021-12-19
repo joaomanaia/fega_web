@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { StyledFirebaseAuth } from  'react-firebaseui'
+import StyledFirebaseAuth from  "react-firebaseui/StyledFirebaseAuth"
 import { auth, uiConfig } from '../firebase'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
