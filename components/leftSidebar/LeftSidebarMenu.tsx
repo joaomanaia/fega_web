@@ -8,16 +8,19 @@ function LeftSidebarMenu() {
             <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title="Home"
+                selected={true}
                 Icon={HomeRounded}/>
 
             <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title="Events"
+                selected={false}
                 Icon={EventRoundedIcon}/>
 
             <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title="News"
+                selected={false}
                 Icon={NewReleasesRounded}/>
         </div>
     )
