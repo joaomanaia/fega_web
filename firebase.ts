@@ -41,10 +41,8 @@ if (!appArray.length) {
 const auth = getAuth()
 const firestore = getFirestore()
 
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    connectAuthEmulator(auth, 'http://localhost:9099')
-    connectFirestoreEmulator(firestore, 'localhost', 8080)
-}
+//connectAuthEmulator(auth, 'http://localhost:9099')
+//connectFirestoreEmulator(firestore, 'localhost', 8080)
 
 export { app, auth, firestore }
 
