@@ -44,7 +44,6 @@ function Post({uid, description, images, timestamp}: PostParams) {
                     <div>
                         <a 
                             itemProp="author"
-                            name={user.name}
                             href={`/${user?.uid}`}
                             className="font-medium dark:text-white">
                             {user.name}
