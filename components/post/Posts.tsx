@@ -4,7 +4,8 @@ import { firestore } from "../../firebase"
 import Post from "./Post"
 
 type PostsPropsTypes = {
-    posts: PostType[]
+    posts: PostType[],
+    lastPostDocument: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData> | null
 }
 
 export type PostType = {
@@ -19,10 +20,10 @@ type PostDataType = {
     images: string[]
 }
 
-function Posts({posts}: PostsPropsTypes) {
+function Posts({posts, lastPostDocument}: PostsPropsTypes) {
 
     const [postsPaging, setPostsPaging] = useState(Array<PostType>())
-    const [lastPostVisible, setLastPostVisible] = useState<any>(null)
+    const [lastPostVisible, setLastPostVisible] = useState<any>(lastPostDocument)
 
     async function getNextPostsPaging() {
         if (!lastPostVisible) return

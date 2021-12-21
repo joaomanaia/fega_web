@@ -14,18 +14,9 @@ function CreatePost() {
 
         const now = Timestamp.now()
 
-        /*
-        const postDoc = firestore.collection("publications").doc()
-        postDoc.set({
-            id: postDoc.id,
-            uid: auth.currentUser?.uid,
-            timestamp: now,
-            data: {
-                description: description
-            }
-        }).then(() => alert("Success")).catch((error) => alert(error))
-        */
+        createPostDB(now)
 
+        /*
         const postsRef = collection(firestore, "publications")
         const lastUserPostQuery = query(
             postsRef,
@@ -42,6 +33,7 @@ function CreatePost() {
         } else {
             alert(`Await until ${new Date(lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
         }
+        */
 
         setDescription("")
     }

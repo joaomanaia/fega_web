@@ -3,7 +3,8 @@ import { firestoreAdmin } from '../../../firebase-admin'
 
 type InitialPostsData = {
   status: number,
-  posts: string
+  posts: string,
+  lastPostDocument: string | null
 }
 
 export default async function handler(
@@ -14,6 +15,8 @@ export default async function handler(
       .orderBy("timestamp", "desc")
       .limit(10)
       .get()
+
+    const lastPostDocument = posts.docs[posts.docs.length - 1] || null
 
     const postsFormatted = posts.docs.map((post) => ({
         id: post.id,
@@ -27,6 +30,7 @@ export default async function handler(
 
     res.status(200).json({
         status: 200,
-        posts: JSON.stringify(postsFormatted)
+        posts: JSON.stringify(postsFormatted),
+        lastPostDocument: lastPostDocument != null ? JSON.stringify(lastPostDocument) : null
     })
 }

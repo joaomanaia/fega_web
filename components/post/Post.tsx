@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore"
 import { firestore } from "../../firebase"
 import { useState, useEffect } from 'react'
+import useSWR from 'swr'
 
 type PostParams = {
     id: string,
@@ -12,63 +13,67 @@ type PostParams = {
 
 type User = {
     name: string,
-    photoUrl: string
+    photoUrl: string,
+    uid: string
 }
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 function Post({uid, description, images, timestamp}: PostParams) {
 
-    const [user, setUser] = useState<User | undefined>(undefined)
+    const { data } = useSWR(`/api/user/getUserByUid?uid=${uid}`, fetcher)
 
-    useEffect(() => {
-        loadUser()
-    }, [])
-
-    const loadUser = async () => {
-        const userRef = doc(firestore, 'users', uid)
-        const userSnap = await getDoc(userRef)
-        
-        if (userSnap.exists()) {
-            setUser({
-                name: userSnap.data().name,
-                photoUrl: userSnap.data().photoUrl,
-            })
-        }
-    }
+    const user: User = data !== undefined ? JSON.parse(data.user) : {}
 
     return (
-        <div className="flex flex-col">
+        <article
+            itemScope
+            itemType="https://schema.org/Article"
+            className="flex flex-col">
+
+            <meta itemProp="datePublished" content={timestamp} />
+            <meta itemProp="publisher" content={user?.name} />
+
             <div className="p-5 bg-white dark:bg-gray-800 mt-5 rounded-2xl shadow-sm">
                 <div className="flex items-center space-x-2">
                     <img
                         className="rounded-full w-10"
                         alt={user?.name}
-                        src={user?.photoUrl || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb"}/>
+                        src={user?.photoUrl}/>
             
                     <div>
-                        <p className="font-medium dark:text-white">
-                            {user?.name}
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-white">
+                        <a 
+                            itemProp="author"
+                            name={user.name}
+                            href={`/${user?.uid}`}
+                            className="font-medium dark:text-white">
+                            {user.name}
+                        </a>
+                        <p 
+                            itemProp="dateCreated"
+                            className="text-xs text-gray-400 dark:text-white">
                             {timestamp}
                         </p>
                     </div>
                 </div>
 
-                <p className="pt-4 dark:text-white">
+                <p 
+                    itemProp="description"
+                    className="pt-4 dark:text-white">
                     {description}
                 </p>
 
                 <div className={`flex gap-2`}>
                     {images?.map(image => (
                         <img
-                            className={`rounded-2xl mt-4 h-32 md:h-64 w-full ${images.length > 1 && "w-1/2"}`}
+                            className={`rounded-2xl mt-4 ${images.length == 1 ? "aspect-video w-full" : "aspect-square w-1/2"}`}
                             key={image}
                             src={image} 
                             alt="Publication Image"/>
                     ))}
                 </div>
             </div>
-        </div>
+        </article>
     )
 }
 

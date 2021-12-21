@@ -18,8 +18,8 @@ const DropdownItem: React.FC<DropDownItemType> = ({onClick, title, Icon, imageSr
                     <Icon/>
                 </div> 
                 : 
-                <div className="h-12 flex items-center rounded-full bg-gray-200 dark:bg-gray-700 p-2 text-gray-500 dark:text-white">
-                   <img className="h-full w-full rounded-full" src={imageSrc} alt=""/>
+                <div className="h-12 w-12 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 p-2 text-gray-500 dark:text-white">
+                   <img className="h-full w-full rounded-full" src={imageSrc || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb"} alt=""/>
                 </div>
             }
             <p className="text-gray-500 dark:text-white text-lg ml-4">{title}</p>
