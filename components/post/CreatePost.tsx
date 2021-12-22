@@ -14,18 +14,6 @@ function CreatePost() {
 
         const now = Timestamp.now()
 
-        /*
-        const postDoc = firestore.collection("publications").doc()
-        postDoc.set({
-            id: postDoc.id,
-            uid: auth.currentUser?.uid,
-            timestamp: now,
-            data: {
-                description: description
-            }
-        }).then(() => alert("Success")).catch((error) => alert(error))
-        */
-
         const postsRef = collection(firestore, "publications")
         const lastUserPostQuery = query(
             postsRef,

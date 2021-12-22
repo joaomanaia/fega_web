@@ -1,5 +1,5 @@
-import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore"
-import { useEffect, useState } from "react"
+import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter } from "firebase/firestore"
+import { useState } from "react"
 import { firestore } from "../../firebase"
 import Post from "./Post"
 
@@ -21,17 +21,25 @@ type PostDataType = {
 
 function Posts({posts}: PostsPropsTypes) {
 
-    const [postsPaging, setPostsPaging] = useState(Array<PostType>())
-    const [lastPostVisible, setLastPostVisible] = useState<any>(null)
+    const [postsPaging, setPostsPaging] = useState<Array<PostType>>(posts)
+    const [lastPostVisible, setLastPostVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null)
+
+    async function getLastPostSnap() {
+        const nextPost = doc(
+            firestore,
+            "publications", 
+            postsPaging[postsPaging.length - 1].id
+        )
+        return await getDoc(nextPost)
+    }
 
     async function getNextPostsPaging() {
-        if (!lastPostVisible) return
+        const nextPostSnap = lastPostVisible === null ? await getLastPostSnap() : lastPostVisible
 
-        const postsRef = collection(firestore, "publications")
         const postsNextQuery = query(
-            postsRef, 
+            collection(firestore, "publications"), 
             orderBy("timestamp", "desc"),
-            startAfter(lastPostVisible),
+            startAfter(nextPostSnap),
             limit(10)
         )
 
@@ -57,11 +65,6 @@ function Posts({posts}: PostsPropsTypes) {
             setLastPostVisible(postsSnap.docs[postsSnap.docs.length - 1])
         }
     }
-
-    useEffect(() => {
-        //getPostsPaging()
-        setPostsPaging(posts)
-    }, [posts])
     
     return (
         <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">

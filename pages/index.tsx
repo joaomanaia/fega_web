@@ -39,7 +39,7 @@ const Home: NextPage = ({posts}: any) => {
                 <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-              {posts && <Posts posts={JSON.parse(posts)}/>}
+              {posts && <Posts posts={JSON.parse(posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
             <LeftSidebarMenu/>
@@ -57,11 +57,12 @@ export default Home
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch("https://www.fega.ml/api/posts/initialPosts")
+  //const res = await fetch("http://localhost:3000/api/posts/initialPosts")
   const data = await res.json()
 
   return {
     props: {
-      posts: data.posts,
+      posts: data.posts
     }
   }
 }
