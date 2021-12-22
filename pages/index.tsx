@@ -11,7 +11,7 @@ import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
 import BottomNavItem from '../components/bottomNavigation/BottomNavItem'
 import BottomNav from '../components/bottomNavigation/BottomNav'
 
-const Home: NextPage = ({posts, lastPostDocument}: any) => {
+const Home: NextPage = ({posts}: any) => {
 
   const appThemeLight = useSelector(selectAppThemeLight)
   const dispatch = useDispatch()
@@ -39,9 +39,7 @@ const Home: NextPage = ({posts, lastPostDocument}: any) => {
                 <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-              {posts && <Posts 
-                posts={JSON.parse(posts)} 
-                lastPostDocument={lastPostDocument !== null ? JSON.parse(lastPostDocument) : null}/>}
+              {posts && <Posts posts={JSON.parse(posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
             <LeftSidebarMenu/>
@@ -64,8 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      posts: data.posts,
-      lastPostDocument: data.lastPostDocument
+      posts: data.posts
     }
   }
 }

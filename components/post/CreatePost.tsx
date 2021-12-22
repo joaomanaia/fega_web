@@ -14,9 +14,6 @@ function CreatePost() {
 
         const now = Timestamp.now()
 
-        createPostDB(now)
-
-        /*
         const postsRef = collection(firestore, "publications")
         const lastUserPostQuery = query(
             postsRef,
@@ -33,7 +30,6 @@ function CreatePost() {
         } else {
             alert(`Await until ${new Date(lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
         }
-        */
 
         setDescription("")
     }
