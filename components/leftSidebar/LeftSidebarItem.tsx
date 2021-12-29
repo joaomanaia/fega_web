@@ -1,11 +1,8 @@
-import { SvgIconTypeMap } from "@material-ui/core"
-import { OverridableComponent } from "@material-ui/core/OverridableComponent"
-
 type LeftSidebarItemType = {
     onClick?: any,
     title: string,
     selected: boolean,
-    Icon: OverridableComponent<SvgIconTypeMap>
+    Icon: any //OverridableComponent<SvgIconTypeMap>
 }
 
 const LeftSidebarItem: React.FC<LeftSidebarItemType> = ({onClick, title, selected, Icon}) => {

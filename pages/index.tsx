@@ -36,10 +36,10 @@ const Home: NextPage = ({posts}: any) => {
         {/** Posts */}
         <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide"> 
           <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
-                <CreatePost/>
+            <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-              {posts && <Posts posts={JSON.parse(posts)} />}
+            {posts && <Posts posts={JSON.parse(posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
             <LeftSidebarMenu/>

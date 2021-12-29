@@ -1,6 +1,6 @@
 import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter } from "firebase/firestore"
-import { useState } from "react"
-import { firestore } from "../../firebase"
+import { useEffect, useState } from "react"
+import { auth, firestore } from "../../firebase"
 import Post from "./Post"
 
 type PostsPropsTypes = {
@@ -65,17 +65,34 @@ function Posts({posts}: PostsPropsTypes) {
             setLastPostVisible(postsSnap.docs[postsSnap.docs.length - 1])
         }
     }
+
+    function removePostFromList(removePost: PostType) {
+        setPostsPaging(postsPaging.filter((post) => post != removePost))
+    }
+
+    const [userIsAdmin, setUserIsAmin] = useState(false)
+
+    async function getAuthUserAdmin(uid: string) {
+        const adminRef = doc(firestore, "admins", uid)
+        const adminSnap = await getDoc(adminRef)
+        setUserIsAmin(adminSnap.exists() && adminSnap.data().admin === true)
+    }
+
+    useEffect(() => {
+        const uid = auth.currentUser?.uid
+        if (uid !== undefined) {
+            getAuthUserAdmin(uid)
+        }
+    }, [])
     
     return (
         <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
             {postsPaging?.map(post => (
                 <Post
                     key={post.id}
-                    id={post.id}
-                    uid={post.uid}
-                    description={post.data.description}
-                    images={post.data.images}
-                    timestamp={post.timestamp}/>
+                    post={post}
+                    userIsAdmin={userIsAdmin}
+                    onPostDeleted={removePostFromList}/>
             ))}
 
             <button 

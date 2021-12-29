@@ -42,28 +42,29 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [routers.events])
 
-  if(loadingAuth) return <Loading/>
-  if(!authUser) return <Provider store={store}><Auth/></Provider>
-  if(errorAuth) return <p>{errorAuth.message}</p>
-
   const loadDBUser = async () => {
-    const userRef = doc(firestore, 'users', authUser.uid)
-    const userSnap = await getDoc(userRef)
-
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        admin: false,
-        banned: false,
-        name: authUser?.displayName || "Fega User",
-        photoUrl: authUser?.photoURL || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb",
-        uid: authUser?.uid
-      })
+    if (authUser !== null && authUser !== undefined) {
+      const userRef = doc(firestore, 'users', authUser.uid)
+      const userSnap = await getDoc(userRef)
+  
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          banned: false,
+          name: authUser?.displayName || "Fega User",
+          photoUrl: authUser?.photoURL || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb",
+          uid: authUser?.uid
+        })
+      }
     }
   }
 
-  if(authUser) {
+  useEffect(() => {
     loadDBUser()
-  }
+  }, [])
+
+  if(loadingAuth) return <Loading/>
+  if(!authUser) return <Provider store={store}><Auth/></Provider>
+  if(errorAuth) return <p>{errorAuth.message}</p>
 
   return <Provider store={store}><Component {...pageProps} /></Provider>
 }

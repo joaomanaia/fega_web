@@ -3,7 +3,9 @@ import React, { MouseEvent, useState } from "react"
 import { useRef } from "react"
 import { collection, doc, getDocs, limitToLast, orderBy, query, setDoc, Timestamp, where } from "firebase/firestore"
 
-function CreatePost() {
+type CreatePostTypes = {}
+
+const CreatePost: React.FC<CreatePostTypes> = () => {
 
     const descriptionRef = useRef(null)
 
@@ -61,13 +63,13 @@ function CreatePost() {
                     type="text"
                     placeholder="Description"/>
 
-            <button
-                disabled={!description}
-                onClick={createPost}
-                className="mt-4 rounded-2xl bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
-                    text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                    Post
-            </button>
+                <button
+                    disabled={!description}
+                    onClick={createPost}
+                    className="mt-4 rounded-2xl bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
+                        text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
+                        Post
+                </button>
             </form>
         </div>
     )

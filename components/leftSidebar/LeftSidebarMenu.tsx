@@ -1,5 +1,4 @@
-import { HomeRounded, NewReleasesRounded } from '@material-ui/icons'
-import EventRoundedIcon from '@material-ui/icons/EventRounded'
+import { HomeIcon, CalendarIcon, NewspaperIcon } from "@heroicons/react/solid"
 import LeftSidebarItem from './LeftSidebarItem'
 
 function LeftSidebarMenu() {
@@ -9,19 +8,19 @@ function LeftSidebarMenu() {
                 onClick={() => {alert("Comming Soon")}}
                 title="Home"
                 selected={true}
-                Icon={HomeRounded}/>
+                Icon={HomeIcon}/>
 
             <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title="Events"
                 selected={false}
-                Icon={EventRoundedIcon}/>
+                Icon={CalendarIcon}/>
 
             <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title="News"
                 selected={false}
-                Icon={NewReleasesRounded}/>
+                Icon={NewspaperIcon}/>
         </div>
     )
 }

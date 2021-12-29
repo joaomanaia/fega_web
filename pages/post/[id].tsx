@@ -1,10 +1,13 @@
+import { doc, getDoc } from "firebase/firestore";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../../app/appSlice"
+import Header from "../../components/header/Header";
 import Post from "../../components/post/Post";
 import { PostType } from "../../components/post/Posts";
+import { firestore, auth } from "../../firebase";
 import { firestoreAdmin } from "../../firebase-admin";
 
 const PostPage: NextPage = ({post}: any) => {
@@ -19,7 +22,20 @@ const PostPage: NextPage = ({post}: any) => {
         localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
     }, [dispatch])
 
-    console.log(post)
+    const [userIsAdmin, setUserIsAmin] = useState(false)
+
+    async function getAuthUserAdmin(uid: string) {
+        const adminRef = doc(firestore, "admins", uid)
+        const adminSnap = await getDoc(adminRef)
+        setUserIsAmin(adminSnap.exists() && adminSnap.data().admin === true)
+    }
+
+    useEffect(() => {
+        const uid = auth.currentUser?.uid
+        if (uid !== undefined) {
+            getAuthUserAdmin(uid)
+        }
+    }, [])
 
     return(
         <div className={`${appThemeLight ? '' : 'dark'}`}>
@@ -32,15 +48,17 @@ const PostPage: NextPage = ({post}: any) => {
                 <link rel="icon" href="/fega_round_1.ico" />
             </Head>
 
-            <div className="h-screen w-screen flex items-center justify-center bg-white dark:bg-gray-900">
+            <div className="h-screen w-screen flex flex-col bg-white dark:bg-gray-900">
+                <Header/>
+
                 {post ? (
-                    <Post
-                        key={mPost.id}
-                        id={mPost.id}
-                        uid={mPost.uid}
-                        description={mPost.data.description}
-                        images={mPost.data.images}
-                        timestamp={mPost.timestamp}/>
+                    <div className="w-screen mx-auto max-w-md md:max-w-lg lg:max-w-2xl items-center justify-center">
+                        <Post
+                            key={mPost.id}
+                            post={mPost}
+                            userIsAdmin={userIsAdmin}
+                            onPostDeleted={() => {}}/>
+                    </div>
                 ) : (
                     <p className="text-gray-500 dark:text-white text-3xl">
                         Post Not Found
