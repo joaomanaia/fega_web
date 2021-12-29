@@ -10,7 +10,7 @@ type PostDropDownMenuTypes = {
 
 const PostDropDownMenu: React.FC<PostDropDownMenuTypes> = ({isUserAdmin, post, onDeleteClick}) => {
     function sharePost() {
-        const shareLink = `http://localhost:3000/post/${post.id}`
+        const shareLink = `https://fega.ml/post/${post.id}`
         navigator.clipboard.writeText(shareLink)
     }
     
