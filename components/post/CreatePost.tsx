@@ -2,6 +2,9 @@ import { auth, firestore } from "../../firebase"
 import React, { MouseEvent, useState } from "react"
 import { useRef } from "react"
 import { collection, doc, getDocs, limitToLast, orderBy, query, setDoc, Timestamp, where } from "firebase/firestore"
+import { useRouter } from "next/router"
+import en from "../../locales/en"
+import pt from "../../locales/pt"
 
 type CreatePostTypes = {}
 
@@ -10,6 +13,10 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
     const descriptionRef = useRef(null)
 
     const [description, setDescription] = useState("")
+
+    const router = useRouter()
+    const { locale } = router
+    const t = locale === "en" ? en : pt
 
     async function createPost(e: MouseEvent) {
         e.preventDefault()
@@ -51,7 +58,7 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
     return (
         <div className="flex flex-col p-5 bg-white dark:bg-gray-800 mt-5 rounded-2xl shadow-sm">
             <p className="text-lg font-bold text-gray-500 dark:text-gray-200">
-                Create Post
+                {t.create_post}
             </p>
 
             <form className="flex flex-col flex-1 mt-4">
@@ -61,14 +68,14 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
                     value={description}
                     className="rounded-2xl h-12 bg-gray-100 dark:bg-gray-700 dark:text-white flex-grow px-5 outline-none"
                     type="text"
-                    placeholder="Description"/>
+                    placeholder={t.description}/>
 
                 <button
                     disabled={!description}
                     onClick={createPost}
                     className="mt-4 rounded-2xl bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
                         text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                        Post
+                        {t.publish}
                 </button>
             </form>
         </div>

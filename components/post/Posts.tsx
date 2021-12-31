@@ -1,6 +1,9 @@
 import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter } from "firebase/firestore"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { auth, firestore } from "../../firebase"
+import en from "../../locales/en"
+import pt from "../../locales/pt"
 import Post from "./Post"
 
 type PostsPropsTypes = {
@@ -84,6 +87,10 @@ function Posts({posts}: PostsPropsTypes) {
             getAuthUserAdmin(uid)
         }
     }, [])
+
+    const router = useRouter()
+    const { locale } = router
+    const t = locale === "en" ? en : pt
     
     return (
         <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
@@ -99,7 +106,7 @@ function Posts({posts}: PostsPropsTypes) {
                 onClick={getNextPostsPaging}
                 className="bg-white dark:bg-gray-800 mt-4 rounded-2xl p-2 hover:bg-gray-50 dark:hover:bg-gray-700
                     dark:text-white text-lg">
-                Load More
+                {t.load_more}
             </button>
         </div>
     )

@@ -1,5 +1,5 @@
 type LeftSidebarItemType = {
-    onClick?: any,
+    onClick: () => void,
     title: string,
     selected: boolean,
     Icon: any //OverridableComponent<SvgIconTypeMap>
@@ -8,7 +8,7 @@ type LeftSidebarItemType = {
 const LeftSidebarItem: React.FC<LeftSidebarItemType> = ({onClick, title, selected, Icon}) => {
     return (
         <div
-            onClick={onClick}
+            onClick={() => onClick()}
             className={`flex items-center h-12 w-full shadow-sm ${selected ? "bg-red-700 hover:bg-red-800" : "bg-white hover:bg-gray-50"}
                 ${selected ? "dark:bg-red-700 dark:hover:bg-red-800" : "dark:bg-gray-800 dark:hover:bg-gray-700"} 
                 rounded-2xl cursor-pointer`}>

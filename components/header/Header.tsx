@@ -3,10 +3,17 @@ import { auth } from '../../firebase'
 import DropdownMenu from './dropdown/DropdownMenu'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import en from '../../locales/en'
+import pt from '../../locales/pt'
 
 function Header() {
 
     const [menuOpen, setMenuOpen] = useState(false)
+
+    const router = useRouter()
+    const { locale } = router
+    const t = locale === "en" ? en : pt
 
     return (
         <div>
@@ -15,7 +22,7 @@ function Header() {
                     <p
                         className="text-3xl text-white cursor-pointer">
                         <Link href="/">
-                            Fega
+                            {t.appName}
                         </Link>
                     </p>
                 </div>

@@ -8,12 +8,19 @@ import { LogoutIcon, MoonIcon, SunIcon } from "@heroicons/react/solid"
 import { auth } from "../../../firebase"
 import { useDispatch, useSelector } from "react-redux"
 import { changeAppTheme, selectAppThemeLight } from "../../../app/appSlice"
+import { useRouter } from "next/router"
+import en from "../../../locales/en"
+import pt from "../../../locales/pt"
 
 type DropdownMenuType = {
     isOpen: boolean
 }
 
-function DropdownMenu({isOpen}: DropdownMenuType) {
+const DropdownMenu: React.FC<DropdownMenuType> = ({isOpen}) => {
+
+    const router = useRouter()
+    const { locale } = router
+    const t = locale === "en" ? en : pt
 
     const appThemeLight = useSelector(selectAppThemeLight)
     const dispatch = useDispatch()
@@ -26,14 +33,14 @@ function DropdownMenu({isOpen}: DropdownMenuType) {
     return (
         <div className="absolute space-y-2 mt-2 mr-8 w-64 p-3 rounded-2xl shadow-md bg-white dark:bg-gray-800 overflow-hidden">
             <DropdownItem
-                onClick={() => window.location.href=`/${auth.currentUser?.uid}`}
+                onClick={() => router.push(`/${auth.currentUser?.uid}`)}
                 title={auth.currentUser?.displayName || ""}
                 imageSrc={auth.currentUser?.photoURL || ""}/>
             <DropdownItem 
                 onClick={changeTheme} 
-                title={`${appThemeLight ? "Night Mode" : "Light Mode"}`} 
+                title={appThemeLight ? t.nightMode : t.lightMode} 
                 Icon={appThemeLight ? MoonIcon : SunIcon}/>
-            <DropdownItem onClick={() => auth.signOut()} title="Sign Out" Icon={LogoutIcon}/>
+            <DropdownItem onClick={() => auth.signOut()} title={t.signOut} Icon={LogoutIcon}/>
         </div>
     )
 }

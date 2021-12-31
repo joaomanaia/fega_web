@@ -20,11 +20,9 @@ module.exports = {
     ADMIN_FIREBASE_PRIVATE_KEY: process.env.ADMIN_FIREBASE_PRIVATE_KEY,
     ADMIN_FIREBASE_PROJECT_ID: process.env.ADMIN_FIREBASE_PROJECT_ID,
     FIRESTORE_EMULATOR_HOST: process.env.FIRESTORE_EMULATOR_HOST,
-  }
-  /*
+  },
   i18n: {
     locales: ["en", "pt"],
-    defaultLocale: "en"
+    defaultLocale: "pt"
   }
-  */
 }
