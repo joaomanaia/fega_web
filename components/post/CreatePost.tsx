@@ -73,7 +73,7 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
                 <button
                     disabled={!description}
                     onClick={createPost}
-                    className="mt-4 rounded-2xl bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
+                    className="mt-4 rounded-full bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
                         text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
                         {t.publish}
                 </button>

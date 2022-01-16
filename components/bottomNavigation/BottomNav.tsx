@@ -1,26 +1,34 @@
 import BottomNavItem from "./BottomNavItem"
 import { HomeIcon, CalendarIcon, NewspaperIcon } from "@heroicons/react/solid"
 import { useRouter } from "next/router"
+import en from "../../locales/en"
+import pt from "../../locales/pt"
 
 type BottomNavType = {}
 
 const BottomNav: React.FC<BottomNavType> = () => {
+
     const router = useRouter()
+    const { locale } = router
+    const t = locale === "en" ? en : pt
 
     return (
-        <div className="fixed z-50 bottom-0 flex h-14 w-screen items-center bg-white dark:bg-gray-800 justify-between visible lg:invisible">
+        <div className="fixed z-50 bottom-0 flex h-16 w-screen items-center bg-white dark:bg-gray-800 justify-between visible lg:invisible">
             <BottomNavItem
                 onClick={() => router.push("/")}
                 Icon={HomeIcon} 
-                selected={router.pathname === "/"}/>
+                selected={router.pathname === "/"}
+                text={t.home}/>
             <BottomNavItem 
                 onClick={() => router.push("/news")}
                 Icon={NewspaperIcon} 
-                selected={router.pathname.startsWith("/news")}/>
+                selected={router.pathname.startsWith("/news")}
+                text={t.news}/>
             <BottomNavItem 
                 onClick={() => alert("Comming Soon")}
                 Icon={CalendarIcon} 
-                selected={router.pathname.startsWith("/events")}/>
+                selected={router.pathname.startsWith("/events")}
+                text={t.events}/>
         </div>
     )
 }

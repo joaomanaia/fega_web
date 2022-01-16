@@ -91,6 +91,8 @@ function Posts({posts}: PostsPropsTypes) {
     const router = useRouter()
     const { locale } = router
     const t = locale === "en" ? en : pt
+
+    console.log(postsPaging)
     
     return (
         <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
@@ -104,7 +106,7 @@ function Posts({posts}: PostsPropsTypes) {
 
             <button 
                 onClick={getNextPostsPaging}
-                className="bg-white dark:bg-gray-800 mt-4 rounded-2xl p-2 hover:bg-gray-50 dark:hover:bg-gray-700
+                className="bg-white dark:bg-gray-800 mt-4 rounded-full p-2 hover:bg-gray-50 dark:hover:bg-gray-700
                     dark:text-white text-lg">
                 {t.load_more}
             </button>

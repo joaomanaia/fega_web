@@ -1,17 +1,24 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAppThemeLight } from '../app/appSlice'
 import Header from '../components/header/Header'
 import CreatePost from '../components/post/CreatePost'
-import Posts from '../components/post/Posts'
+import Posts, { PostType } from '../components/post/Posts'
 import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
 import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
 import BottomNavItem from '../components/bottomNavigation/BottomNavItem'
 import BottomNav from '../components/bottomNavigation/BottomNav'
+import useSWR from 'swr'
 
-const Home: NextPage = ({posts}: any) => {
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+const Home: NextPage = () => {
+
+  const { data } = useSWR("/api/posts/initialPosts", fetcher)
+
+  console.log(data)
 
   const appThemeLight = useSelector(selectAppThemeLight)
   const dispatch = useDispatch()
@@ -39,7 +46,7 @@ const Home: NextPage = ({posts}: any) => {
             <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-            {posts && <Posts posts={JSON.parse(posts)} />}
+            {data && <Posts posts={JSON.parse(data.posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
             <LeftSidebarMenu/>
@@ -55,6 +62,10 @@ const Home: NextPage = ({posts}: any) => {
 
 export default Home
 
+
+
+/*
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch("https://www.fega.ml/api/posts/initialPosts")
   //const res = await fetch("http://localhost:3000/api/posts/initialPosts")
@@ -67,7 +78,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-/*
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const posts = await firestoreAdmin.collection("publications")
       .orderBy("timestamp", "desc")
