@@ -2,6 +2,7 @@ import { initializeApp, getApps } from 'firebase/app'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectAuthEmulator, EmailAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { FirebaseApp } from '@firebase/app'
+import { connectDatabaseEmulator, getDatabase } from 'firebase/database'
 /*
 import 'firebase/app'
 import 'firebase/auth'
@@ -40,11 +41,13 @@ if (!appArray.length) {
 
 const auth = getAuth()
 const firestore = getFirestore()
+const database = getDatabase()
 
 //connectAuthEmulator(auth, 'http://localhost:9099')
 //connectFirestoreEmulator(firestore, 'localhost', 8080)
+//connectDatabaseEmulator(database, "localhost", 9000)
 
-export { app, auth, firestore }
+export { app, auth, firestore, database }
 
 const uiConfig = {
     // Popup signin flow rather than redirect flow.

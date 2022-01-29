@@ -17,6 +17,7 @@ const en: LocaleTypes = {
     home: "Home",
     events: "Events",
     news: "News",
+    messages: "Messages",
 }
 
 export default en

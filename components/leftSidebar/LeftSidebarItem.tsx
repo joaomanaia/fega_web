@@ -15,7 +15,7 @@ const LeftSidebarItem: React.FC<LeftSidebarItemType> = ({onClick, title, selecte
                <div className={`h-12 w-12 flex items-center rounded-full p-3 ${selected ? "text-white" : "text-gray-500"} dark:text-white`}>
                     <Icon/>
                 </div> 
-                <p className={`${selected ? "text-white" : "text-gray-500"} dark:text-white text-lg ml-2`}>
+                <p className={`${selected ? "text-white" : "text-gray-500"} dark:text-white text-lg ml-2 truncate`}>
                     {title}
                 </p>
         </div>

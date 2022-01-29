@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       routers.events.off('routeChangeComplete', logEventPage)
     }
   }, [routers.events])
-
+    
   const loadDBUser = async () => {
     if (authUser !== null && authUser !== undefined) {
       const userRef = doc(firestore, 'users', authUser.uid)
@@ -58,9 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }
 
-  useEffect(() => {
-    loadDBUser()
-  }, [])
+  loadDBUser()
 
   if(loadingAuth) return <Loading/>
   if(!authUser) return <Provider store={store}><Auth/></Provider>

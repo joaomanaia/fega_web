@@ -7,6 +7,8 @@ import { auth, firestore } from '../../firebase'
 import { deleteDoc, doc } from 'firebase/firestore'
 import { PostType } from './Posts'
 import Link from 'next/link'
+import { fetcher } from '../../utils/data'
+import { defaultImgUrl } from '../../utils/common'
 
 type PostParams = {
     post: PostType,
@@ -19,10 +21,6 @@ type User = {
     photoUrl: string,
     uid: string
 }
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
-
-const defaultImgUrl = "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb"
 
 function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
 

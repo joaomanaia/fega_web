@@ -16,7 +16,8 @@ const pt: LocaleTypes = {
     delete: "Apagar",
     home: "Inicio",
     events: "Eventos",
-    news: "Noticias"
+    news: "Noticias",
+    messages: "Mensagens"
 }
 
 export default pt

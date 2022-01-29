@@ -1,14 +1,13 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAppThemeLight } from '../app/appSlice'
 import Header from '../components/header/Header'
 import CreatePost from '../components/post/CreatePost'
-import Posts, { PostType } from '../components/post/Posts'
+import Posts from '../components/post/Posts'
 import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
 import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
-import BottomNavItem from '../components/bottomNavigation/BottomNavItem'
 import BottomNav from '../components/bottomNavigation/BottomNav'
 import useSWR from 'swr'
 
@@ -17,8 +16,6 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json())
 const Home: NextPage = () => {
 
   const { data } = useSWR("/api/posts/initialPosts", fetcher)
-
-  console.log(data)
 
   const appThemeLight = useSelector(selectAppThemeLight)
   const dispatch = useDispatch()

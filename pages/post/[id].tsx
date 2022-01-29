@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
 
-    let postFormatted: PostType = {
+    const postFormatted: PostType = {
         id: post.id,
         uid: post.data()?.uid,
         timestamp: post.data()?.timestamp.toDate(),

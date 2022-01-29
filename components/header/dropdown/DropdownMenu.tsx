@@ -31,7 +31,7 @@ const DropdownMenu: React.FC<DropdownMenuType> = ({isOpen}) => {
     }
     
     return (
-        <div className="absolute space-y-2 mt-2 mr-8 w-64 p-3 rounded-2xl shadow-md bg-white dark:bg-gray-800 overflow-hidden">
+        <div className="absolute space-y-2 mt-2 mr-8 w-64 p-3 z-50 rounded-2xl shadow-md bg-white dark:bg-gray-800 overflow-hidden">
             <DropdownItem
                 onClick={() => router.push(`/${auth.currentUser?.uid}`)}
                 title={auth.currentUser?.displayName || ""}

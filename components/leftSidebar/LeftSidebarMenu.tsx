@@ -1,4 +1,4 @@
-import { HomeIcon, CalendarIcon, NewspaperIcon } from "@heroicons/react/solid"
+import { HomeIcon, CalendarIcon, NewspaperIcon, ChatIcon } from "@heroicons/react/solid"
 import { useRouter } from "next/router"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
@@ -26,11 +26,17 @@ const LeftSidebarMenu: React.FC<LeftSidebarMenuType> = () => {
                 selected={router.pathname.startsWith("/news")}
                 Icon={NewspaperIcon}/>
 
-        <LeftSidebarItem
+            <LeftSidebarItem
                 onClick={() => {alert("Comming Soon")}}
                 title={t.events}
                 selected={router.pathname.startsWith("/events")}
                 Icon={CalendarIcon}/>
+
+            <LeftSidebarItem
+                onClick={() => router.push("/messages")}
+                title={t.messages}
+                selected={router.pathname.startsWith("/messages")}
+                Icon={ChatIcon}/>
         </div>
     )
 }
