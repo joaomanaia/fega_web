@@ -129,7 +129,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
             onChange={(e) => setTextMessage(e.target.value)}
           />
         </form>
-        {textMessage.length > 0 && (
+        {(textMessage.length > 0 && textMessage.length < 512) && (
           <div
             onClick={() => sendMessage()}
             className="w-11 h-11 p-2 rounded-2xl bg-gray-300 dark:bg-gray-700 cursor-pointer text-black dark:text-white"

@@ -1,6 +1,6 @@
 import { NextPage } from "next"
 import Head from "next/head"
-import { LegacyRef, useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../app/appSlice"
 import BottomNav from "../components/bottomNavigation/BottomNav"

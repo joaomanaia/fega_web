@@ -18,6 +18,7 @@ const en: LocaleTypes = {
     events: "Events",
     news: "News",
     messages: "Messages",
+    groups: "Groups"
 }
 
 export default en

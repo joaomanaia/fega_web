@@ -18,7 +18,7 @@ function Header() {
     return (
         <div>
             <header className="sticky top-0 z-50 flex h-16 w-full bg-red-700 dark:bg-gray-800 items-center">
-                <div className="flex items-center flex-grow ml-8">
+                <div className="flex items-center grow ml-8">
                     <p
                         className="text-3xl text-white cursor-pointer">
                         <Link href="/">

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { defaultImgUrl } from "../../utils/common"
 import UserType from "./UserType"
 
 type UserComponentType = {
@@ -16,7 +17,7 @@ const UserComponent: React.FC<UserComponentType> = ({user, onClick}) => {
                 <Image
                     className="rounded-full"
                     layout="fill"
-                    src={user.photoUrl}
+                    src={user.photoUrl || defaultImgUrl}
                     alt={user.name}/>
             </div>
             <p className="text-lg md:text-xl text-black dark:text-white">

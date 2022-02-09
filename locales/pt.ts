@@ -17,7 +17,8 @@ const pt: LocaleTypes = {
     home: "Inicio",
     events: "Eventos",
     news: "Noticias",
-    messages: "Mensagens"
+    messages: "Mensagens",
+    groups: "Grupos"
 }
 
 export default pt

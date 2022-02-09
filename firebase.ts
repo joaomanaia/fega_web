@@ -3,14 +3,6 @@ import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectAuthEmulator, EmailAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { FirebaseApp } from '@firebase/app'
 import { connectDatabaseEmulator, getDatabase } from 'firebase/database'
-/*
-import 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/analytics'
-import 'firebase/performance'
-import 'firebase/app-check'
-*/
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,

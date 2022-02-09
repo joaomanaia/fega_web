@@ -16,6 +16,7 @@ type LocaleTypes = {
     events: string,
     news: string,
     messages: string,
+    groups: string,
 }
 
 export default LocaleTypes

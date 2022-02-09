@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app'
 import Auth from './auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { app, auth, firestore } from '../firebase'
+import { analytics, app, auth, firestore } from '../firebase'
 import Loading from './loading'
 import { useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
