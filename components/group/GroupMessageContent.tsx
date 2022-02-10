@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { BackspaceIcon, PaperAirplaneIcon, DotsVerticalIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -137,14 +138,11 @@ const GroupMessageContent: React.FC<GroupMessageContentType> = ({
             <BackspaceIcon />
           </div>
         )}
-        <div className="relative h-11 w-11">
-          <Image
-            className="rounded-full"
-            layout="fill"
+        <img
+            className="rounded-full h-10 w-10"
             src={group.groupImage}
             alt={group.groupName}
           />
-        </div>
         <p className="text-dark dark:text-white text-lg grow">{group.groupName}</p>
         <div 
             onClick={() => {

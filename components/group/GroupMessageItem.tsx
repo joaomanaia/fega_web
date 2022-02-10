@@ -47,8 +47,8 @@ const GroupMessageItem: React.FC<GroupMessageItemType> = ({text, byLocalUser, ui
                 </div>
             )}
 
-            <div className={`flex w-min p-3 ${messageCorners()} ${byLocalUser ? "bg-red-700 dark:bg-red-800 self-end" : "bg-gray-100 dark:bg-gray-700 self-start"}`}>
-                <p className={`max-w-prose ${byLocalUser ? "text-white text-right" : "text-black dark:text-white text-right"}`}>
+            <div className={`flex p-3 ${messageCorners()} ${byLocalUser ? "bg-red-700 dark:bg-red-800 self-end" : "bg-gray-100 dark:bg-gray-700 self-start"}`}>
+                <p className={`max-w-prose ${byLocalUser ? "text-white text-right" : "text-black dark:text-white text-left"}`}>
                     {text}
                 </p>
             </div>
