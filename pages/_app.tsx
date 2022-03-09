@@ -9,10 +9,11 @@ import { Provider } from 'react-redux'
 import { store } from '../app/store'
 import { getAnalytics, logEvent, setCurrentScreen } from 'firebase/analytics'
 import { getPerformance } from 'firebase/performance'
-import { initializeAppCheck, ReCaptchaV3Provider  } from 'firebase/app-check'
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import '../styles/globals.css'
 import '../styles/firebaseui-styling.global.css'
+import Script from 'next/script'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Destructure user, loading, and error out of the hook.
@@ -41,12 +42,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       routers.events.off('routeChangeComplete', logEventPage)
     }
   }, [routers.events])
-    
+
   const loadDBUser = async () => {
     if (authUser !== null && authUser !== undefined) {
       const userRef = doc(firestore, 'users', authUser.uid)
       const userSnap = await getDoc(userRef)
-  
+
       if (!userSnap.exists()) {
         await setDoc(userRef, {
           banned: false,
@@ -60,11 +61,21 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   loadDBUser()
 
-  if(loadingAuth) return <Loading/>
-  if(!authUser) return <Provider store={store}><Auth/></Provider>
-  if(errorAuth) return <p>{errorAuth.message}</p>
+  if (loadingAuth) return <Loading />
+  if (!authUser) return <Provider store={store}><Auth /></Provider>
+  if (errorAuth) return <p>{errorAuth.message}</p>
 
-  return <Provider store={store}><Component {...pageProps} /></Provider>
+  return <>
+    <Script
+      id='Adsense-id'
+      data-ad-client="ca-pub-1923025671607389"
+      async={true}
+      strategy='beforeInteractive'
+      src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+    />
+
+    <Provider store={store}><Component {...pageProps} /></Provider>
+  </>
 }
 
 export default MyApp
