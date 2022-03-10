@@ -10,8 +10,12 @@ import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
 import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
 import BottomNav from '../components/bottomNavigation/BottomNav'
 import useSWR from 'swr'
+import Script from 'next/script'
+import GoogleAdsense from 'next-google-ads'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+
 
 const Home: NextPage = () => {
 
@@ -30,8 +34,9 @@ const Home: NextPage = () => {
         <title>Fega</title>
         <meta name="description" content="Fega web" />
         <link rel="icon" href="/fega_round_1.ico" />
-      </Head>
 
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1923025671607389"/>
+      </Head>
       <Header/>
 
       <main className="flex bg-gray-200 dark:bg-gray-900">
@@ -43,6 +48,11 @@ const Home: NextPage = () => {
             <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
+            <GoogleAdsense
+              client='ca-pub-1923025671607389'
+              slot='9467843631'
+              responsive='true'
+              />
             {data && <Posts posts={JSON.parse(data.posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">

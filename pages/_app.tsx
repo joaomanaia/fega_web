@@ -65,17 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (!authUser) return <Provider store={store}><Auth /></Provider>
   if (errorAuth) return <p>{errorAuth.message}</p>
 
-  return <>
-    <Script
-      id='Adsense-id'
-      data-ad-client="ca-pub-1923025671607389"
-      async={true}
-      strategy='beforeInteractive'
-      src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-    />
-
-    <Provider store={store}><Component {...pageProps} /></Provider>
-  </>
+  return <Provider store={store}><Component {...pageProps} /></Provider>
 }
 
 export default MyApp
