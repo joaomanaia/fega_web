@@ -33,12 +33,19 @@ const Groups: NextPage = () => {
         localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
     }, [dispatch])
 
-    const [windowMobile, setWindowMobile] = useState(window.innerWidth < 1024)
+    const [windowMobile, setWindowMobile] = useState(false)
 
     useEffect(() => {
-        window.addEventListener('resize', () => {
+        const onResize = () => {
             setWindowMobile(window.innerWidth < 1024)
-        })
+        }
+
+        window.addEventListener('resize', onResize)
+        onResize()
+
+        return () => {
+            window.removeEventListener("resize", onResize)
+        }
     }, [])
 
     useEffect(() => {
@@ -67,13 +74,13 @@ const Groups: NextPage = () => {
                 <title>{selectedGroup ? selectedGroup.groupName : "Groups"}</title>
             </Head>
 
-            <Header/>
+            <Header />
 
             <main className="flex bg-gray-200 dark:bg-gray-900">
-                <div className="flex-grow h-screen lg:flex overflow-y-hidden scrollbar-hide"> 
+                <div className="flex-grow h-screen lg:flex overflow-y-hidden scrollbar-hide">
                     {(selectedGroup === null || !windowMobile) && (
                         <div className={`mx-auto ${selectedGroup ? "max-w-md md:max-w-lg lg:max-w-2xl" : "w-full"} p-5 space-y-3`}>
-                            <button 
+                            <button
                                 onClick={() => setCreateGroupPopupVisible(!createGroupPopupVisible)}
                                 className="py-2 px-4 rounded-full bg-red-700 cursor-pointer hover:bg-red-600 w-full">
                                 <p className="text-lg text-white">
@@ -81,35 +88,35 @@ const Groups: NextPage = () => {
                                 </p>
                             </button>
 
-                            {createGroupPopupVisible && <CreateGroupPopup authUid={authUid || ""} onGroupCreated={() => setCreateGroupPopupVisible(false)}/> }
-                        
+                            {createGroupPopupVisible && <CreateGroupPopup authUid={authUid || ""} onGroupCreated={() => setCreateGroupPopupVisible(false)} />}
+
                             {groups.map(group => (
                                 <GroupItem
                                     key={group.id}
                                     group={group}
                                     selected={selectedGroup === group}
-                                    onClick={() => setSelectedGroup(group)}/>
+                                    onClick={() => setSelectedGroup(group)} />
                             ))}
-                        </div> 
+                        </div>
                     )}
                     {selectedGroup && (
                         <div className={`flex-grow ${windowMobile ? "pt-0 pb-32" : "pt-5"} pb-24 h-full`}>
                             <GroupMessageContent
                                 windowMobile={windowMobile}
                                 group={selectedGroup}
-                                onBackClick={() => setSelectedGroup(null)}/>
+                                onBackClick={() => setSelectedGroup(null)} />
                         </div>
                     )}
                     {!windowMobile && (
                         <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
-                            <LeftSidebarMenu/>
+                            <LeftSidebarMenu />
                         </div>
                     )}
                 </div>
             </main>
 
             {/** Bottom navigation (mobile) */}
-            <BottomNav/>
+            <BottomNav />
         </div>
     )
 }
