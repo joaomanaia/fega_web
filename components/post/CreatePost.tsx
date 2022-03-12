@@ -18,26 +18,32 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
     const { locale } = router
     const t = locale === "en" ? en : pt
 
+    const isLoggedIn = auth.currentUser !== null
+
     async function createPost(e: MouseEvent) {
         e.preventDefault()
 
-        const now = Timestamp.now()
+        if (isLoggedIn) {
+            const now = Timestamp.now()
 
-        const postsRef = collection(firestore, "publications")
-        const lastUserPostQuery = query(
-            postsRef,
-            where("uid", "==", auth.currentUser?.uid),
-            orderBy("timestamp", "asc"),
-            limitToLast(1)
-        )
-
-        const lastUserPostSnap = await getDocs(lastUserPostQuery)
-        if(lastUserPostSnap.empty) {
-            createPostDB(now)
-        } else if(now.toMillis() > lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000) {
-            createPostDB(now)
+            const postsRef = collection(firestore, "publications")
+            const lastUserPostQuery = query(
+                postsRef,
+                where("uid", "==", auth.currentUser?.uid),
+                orderBy("timestamp", "asc"),
+                limitToLast(1)
+            )
+    
+            const lastUserPostSnap = await getDocs(lastUserPostQuery)
+            if(lastUserPostSnap.empty) {
+                createPostDB(now)
+            } else if(now.toMillis() > lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000) {
+                createPostDB(now)
+            } else {
+                alert(`Await until ${new Date(lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
+            }
         } else {
-            alert(`Await until ${new Date(lastUserPostSnap.docs.at(0)?.data()?.timestamp.toMillis() + 1000000).toLocaleString()} to make new post!`)
+            router.push("/auth")
         }
 
         setDescription("")

@@ -3,6 +3,7 @@ import { HomeIcon, CalendarIcon, NewspaperIcon, ChatIcon , UserGroupIcon} from "
 import { useRouter } from "next/router"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
+import { auth } from "../../firebase"
 
 type BottomNavType = {}
 
@@ -11,6 +12,8 @@ const BottomNav: React.FC<BottomNavType> = () => {
     const router = useRouter()
     const { locale } = router
     const t = locale === "en" ? en : pt
+
+    const isLoggedIn = auth.currentUser !== null
 
     return (
         <div className="fixed z-50 bottom-0 flex h-16 w-screen items-center bg-white dark:bg-gray-800 justify-between visible lg:invisible">
@@ -30,12 +33,12 @@ const BottomNav: React.FC<BottomNavType> = () => {
                 selected={router.pathname.startsWith("/events")}
                 text={t.events}/>
             <BottomNavItem 
-                onClick={() => router.push("/groups")}
+                onClick={() => router.push(isLoggedIn ? "/groups" : "/auth")}
                 Icon={UserGroupIcon} 
                 selected={router.pathname.startsWith("/groups")}
                 text={t.groups}/>
             <BottomNavItem 
-                onClick={() => router.push("/messages")}
+                onClick={() => router.push(isLoggedIn ? "/messages" : "/auth")}
                 Icon={ChatIcon} 
                 selected={router.pathname.startsWith("/messages")}
                 text={t.messages}/>

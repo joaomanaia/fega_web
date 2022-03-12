@@ -1,8 +1,6 @@
 import type { AppProps } from 'next/app'
-import Auth from './auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { app, auth, firestore } from '../firebase'
-import Loading from './loading'
 import { useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { Provider } from 'react-redux'
@@ -13,11 +11,10 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import '../styles/globals.css'
 import '../styles/firebaseui-styling.global.css'
-import Script from 'next/script'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Destructure user, loading, and error out of the hook.
-  const [authUser, loadingAuth, errorAuth] = useAuthState(auth)
+  const [authUser] = useAuthState(auth)
 
   const routers = useRouter()
 
@@ -60,10 +57,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   loadDBUser()
-
-  if (loadingAuth) return <Loading />
-  if (!authUser) return <Provider store={store}><Auth /></Provider>
-  if (errorAuth) return <p>{errorAuth.message}</p>
 
   return <Provider store={store}><Component {...pageProps} /></Provider>
 }

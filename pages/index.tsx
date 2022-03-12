@@ -10,12 +10,11 @@ import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
 import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
 import BottomNav from '../components/bottomNavigation/BottomNav'
 import useSWR from 'swr'
-import Script from 'next/script'
 import GoogleAdsense from 'next-google-ads'
+import { useRouter } from 'next/router'
+import { auth } from '../firebase'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
-
-
 
 const Home: NextPage = () => {
 

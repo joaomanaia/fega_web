@@ -15,6 +15,8 @@ function Header() {
     const { locale } = router
     const t = locale === "en" ? en : pt
 
+    const isLoggedIn = auth.currentUser !== null
+
     return (
         <div>
             <header className="sticky top-0 z-50 flex h-16 w-full bg-red-700 dark:bg-gray-800 items-center">
@@ -29,7 +31,13 @@ function Header() {
                 <div className="flex items-center justify-end mr-8">
                     <div className="h-10 w-10 relative">
                         <Image 
-                            onClick={() => setMenuOpen(!menuOpen)}
+                            onClick={() => {
+                                if (isLoggedIn) {
+                                    setMenuOpen(!menuOpen)
+                                } else {
+                                    router.push("/auth")
+                                }
+                            }}
                             layout="fill"
                             className="rounded-full cursor-pointer"
                             alt={auth.currentUser?.displayName || "Profile Photo"}
