@@ -10,9 +10,6 @@ import { setAppThemeLight, setAppThemeNight } from '../app/appSlice'
 import LeftSidebarMenu from '../components/leftSidebar/LeftSidebarMenu'
 import BottomNav from '../components/bottomNavigation/BottomNav'
 import useSWR from 'swr'
-import GoogleAdsense from 'next-google-ads'
-import { useRouter } from 'next/router'
-import { auth } from '../firebase'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -47,11 +44,6 @@ const Home: NextPage = () => {
             <CreatePost/>
           </div> 
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-            <GoogleAdsense
-              client='ca-pub-1923025671607389'
-              slot='9467843631'
-              responsive='true'
-              />
             {data && <Posts posts={JSON.parse(data.posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">

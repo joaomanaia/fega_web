@@ -32,26 +32,6 @@ const UserPage: NextPage<UserPageType> = ({user}) => {
             <Head>
                 <title>User</title>
             </Head>
-
-            <div className="w-screen h-full bg-gray-100 dark:bg-gray-900">
-                <Header/>
-
-                {userFormatted.uid === "OaFmmMdS8yTfE4nq0duVFZ0uzpk1" && (
-                    <div className="h-full px-32 pb-32 pt-4">
-                        <ReactPlayer
-                            volume={0} 
-                            muted={true}
-                            playing={videoState}
-                            onReady={() => {
-                                setVideoState(true)
-                            }}
-                            controls={true}
-                            width="100%"
-                            height="100%"
-                            url='https://video-auth1.iol.pt/beachcam/figueiradafoz/playlist.m3u8' />
-                    </div>
-                )}
-            </div>
         </div>
     )
 }

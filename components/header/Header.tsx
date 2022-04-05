@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import en from '../../locales/en'
 import pt from '../../locales/pt'
+import { VideoCameraIcon } from "@heroicons/react/solid"
 
 function Header() {
 
@@ -28,7 +29,13 @@ function Header() {
                         </Link>
                     </p>
                 </div>
-                <div className="flex items-center justify-end mr-8">
+                <div className="flex items-center justify-end mr-8 space-x-8">
+                    <div 
+                        onClick={() => router.push('/cameras')}
+                        className="bg-red-800 hover:bg-red-500 dark:bg-gray-700 dark:hover:bg-red-700 w-12 items-center justify-center p-3 rounded-2xl cursor-pointer">
+                        <VideoCameraIcon className="text-white" />
+                    </div>
+
                     <div className="h-10 w-10 relative">
                         <Image 
                             onClick={() => {
