@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../app/appSlice";
-import Header from "../components/header/Header";
+import Header from "../components/header/Header"
+import Image from 'next/image'
 
 type UserPageType = {}
 
