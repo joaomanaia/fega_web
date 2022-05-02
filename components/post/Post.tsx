@@ -38,16 +38,22 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
     return (
         <article
             itemScope
-            itemType="https://schema.org/Article"
+            itemType="https://schema.org/SocialMediaPosting"
+            itemID={`https://www.fega.ml/post/${post.id}`}
             className="flex flex-col">
 
             <meta itemProp="datePublished" content={post.timestamp} />
-            <meta itemProp="publisher" content={user?.name} />
+            <meta itemProp="author" content={user?.name} />
 
             <div className={`p-5 bg-white dark:bg-gray-800 mt-5 ${menuOpen ? "rounded-t-2xl rounded-r-2xl" : "rounded-2xl"} shadow-sm`}>
-                <div className="flex items-center space-x-4">
+                <div 
+                    itemProp="author"
+                    itemScope 
+                    itemType="https://schema.org/Person"
+                    className="flex items-center space-x-4">
                     <div className="relative w-10 h-10">
                         <Image
+                            itemProp='image'
                             className="rounded-full"
                             layout="fill"
                             alt={user?.name}
@@ -56,14 +62,14 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
             
                     <div className="flex-1">
                         <a 
-                            itemProp="author"
+                            itemProp="name"
                             className="font-medium dark:text-white">
                             <Link href={`/${user?.uid}`}>
-                                <a>{user.name}</a>
+                                <a itemProp="url">{user.name}</a>
                             </Link>
                         </a>
                         <p 
-                            itemProp="dateCreated"
+                            itemProp="datePublished"
                             className="text-xs text-gray-400 dark:text-white">
                             {post.timestamp}
                         </p>
@@ -77,7 +83,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                 </div>
 
                 <p 
-                    itemProp="description"
+                    itemProp="headline"
                     className="pt-4 dark:text-white">
                     {post.data.description}
                 </p>
@@ -91,6 +97,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                                 src={image} 
                                 layout="fill"
                                 className="rounded-2xl"
+                                itemProp='image'
                                 alt="Publication Image"/>
                         </div>
                     ))}
