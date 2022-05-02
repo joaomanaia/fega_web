@@ -4,28 +4,38 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../app/appSlice";
-import Header from "../components/header/Header";
+import Header from "../components/header/Header"
+import Image from 'next/image'
 
 type UserPageType = {}
 
 type CameraType = {
     link: string
     name: string
+    video: boolean
 }
 
 const cameras: CameraType[] = [
     {
         link: "https://video-auth1.iol.pt/beachcam/figueiradafoz/playlist.m3u8",
-        name: "Figueira da Foz - Panoramica"
+        name: "Figueira da Foz - Panoramica",
+        video: true
     },
     {
         link: "https://video-auth1.iol.pt/beachcam/bcfigueiradois/playlist.m3u8",
-        name: "Figueira da Foz - Burarcos"
+        name: "Figueira da Foz - Burarcos",
+        video: true
     },
     {
         link: "https://video-auth1.iol.pt/beachcam/arrifana/playlist.m3u8",
-        name: "Arrifana"
+        name: "Arrifana",
+        video: true
     },
+    {
+        link: "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
+        name: "Coimbra",
+        video: false
+    }
 ]
 
 const UserPage: NextPage<UserPageType> = () => {
@@ -34,6 +44,7 @@ const UserPage: NextPage<UserPageType> = () => {
 
     const [selectCameraPopupVisible, setSelectCameraPopupVisibility] = useState(false)
     const [selectedCamera, setSelectedCamera] = useState<CameraType>(cameras[0])
+    const [cameraImageUrl, setCameraImageUrl] = useState<string>("https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG")
 
     const appThemeLight = useSelector(selectAppThemeLight)
     const dispatch = useDispatch()
@@ -41,6 +52,15 @@ const UserPage: NextPage<UserPageType> = () => {
     useEffect(() => {
         localStorage.getItem("theme") === 'light' ? dispatch(setAppThemeLight()) : dispatch(setAppThemeNight())
     }, [dispatch])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const url = "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" + new Date().getTime()
+            setCameraImageUrl(url)
+        }, 250)
+
+        return () => clearInterval(intervalId)
+    }, [])
 
     return (
         <div className={`w-screen h-screen overflow-hidden ${appThemeLight ? '' : 'dark'}`}>
@@ -78,19 +98,28 @@ const UserPage: NextPage<UserPageType> = () => {
                         </div>
                     )}
 
-                    <div className="h-full pb-32 pt-4">
-                        <ReactPlayer
-                            volume={0}
-                            muted={true}
-                            playing={videoState}
-                            onReady={() => {
-                                setVideoState(true)
-                            }}
-                            controls={true}
-                            width="100%"
-                            height="100%"
-                            url={selectedCamera.link} />
-                    </div>
+                    {selectedCamera.video ? (
+                        <div className="h-full pb-32 pt-4">
+                            <ReactPlayer
+                                volume={0}
+                                muted={true}
+                                playing={videoState}
+                                onReady={() => {
+                                    setVideoState(true)
+                                }}
+                                controls={true}
+                                width="100%"
+                                height="100%"
+                                url={selectedCamera.link} />
+                        </div>
+                    ) : (
+                        <div className="h-full pb-32 pt-4">
+                            <img
+                                src={cameraImageUrl}
+                                alt={selectedCamera.name}
+                                className="w-full h-full"/>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
