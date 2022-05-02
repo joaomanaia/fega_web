@@ -57,7 +57,7 @@ const UserPage: NextPage<UserPageType> = () => {
         const intervalId = setInterval(() => {
             const url = "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" + new Date().getTime()
             setCameraImageUrl(url)
-        }, 1000)
+        }, 250)
 
         return () => clearInterval(intervalId)
     }, [])
