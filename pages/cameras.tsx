@@ -33,7 +33,7 @@ const cameras: CameraType[] = [
     },
     {
         link: "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
-        name: "Arrifana",
+        name: "Coimbra",
         video: false
     }
 ]
@@ -114,10 +114,10 @@ const UserPage: NextPage<UserPageType> = () => {
                         </div>
                     ) : (
                         <div className="h-full pb-32 pt-4">
-                            <Image
+                            <img
                                 src={cameraImageUrl}
                                 alt={selectedCamera.name}
-                                layout="fill"/>
+                                className="w-full h-full"/>
                         </div>
                     )}
                 </div>
