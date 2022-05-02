@@ -54,7 +54,7 @@ const UserPage: NextPage<UserPageType> = () => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const url = "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" + Date().now().toString()
+            const url = "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" + new Date().getTime()
             setCameraImageUrl(url)
         }, 1000)
 
