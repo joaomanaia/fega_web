@@ -10,8 +10,8 @@ type CreateGroupPopupItemType = {
     onGroupCreated: () => void
 }
 
-const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({authUid, onGroupCreated}) => {
-    
+const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({ authUid, onGroupCreated }) => {
+
     const [groupName, setGroupName] = useState("")
 
     const [groupImage, setGroupImage] = useState("")
@@ -30,15 +30,28 @@ const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({authUid, onGroupC
         setGroupImage("")
 
         await setDoc(groupDoc, group)
+
+        onGroupCreated()
     }
-    
+
+    // Function to solve problem with security
+    // Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
+    const setGroupImageFormatted = (value: string): string => {
+        return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;")
+    }
+
     return (
         <div className="z-50 absolute shadow-lg p-3 space-y-8 rounded-2xl bg-white dark:bg-gray-800 w-72">
             <form className="flex flex-col">
                 <p className="text-black dark:text-white text-2xl">
                     Create group
-                </p>                
-                <input 
+                </p>
+                <input
                     className="w-full py-2 px-4 mt-4 rounded-2xl bg-gray-100 dark:bg-gray-700 outline-none text-black dark:text-white text-lg"
                     type="text"
                     placeholder="Group Name"
@@ -47,16 +60,16 @@ const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({authUid, onGroupC
                     value={groupName} />
                 <div className="w-full flex items-center justify-center space-x-2 mt-2">
                     {groupImage.length > 0 && (
-                        <img 
+                        <img
                             className="w-10 h-10 rounded-2xl"
-                            src={groupImage} 
+                            src={groupImage}
                             alt="Group Image" />
                     )}
-                    <input 
+                    <input
                         className="w-full py-2 px-4 rounded-2xl bg-gray-100 dark:bg-gray-700 outline-none text-black dark:text-white text-lg"
                         type="link"
                         placeholder="Image Link (Optional)"
-                        onChange={(e) => setGroupImage(e.target.value)}
+                        onChange={(e) => setGroupImageFormatted(e.target.value)}
                         value={groupImage} />
                 </div>
                 <button
@@ -67,7 +80,7 @@ const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({authUid, onGroupC
                     disabled={(!groupName && groupName.length > 32)}
                     className="rounded-full bg-red-700 mt-6 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
                         text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                        Create
+                    Create
                 </button>
             </form>
         </div>
