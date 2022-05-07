@@ -43,7 +43,6 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
             className="flex flex-col">
 
             <meta itemProp="datePublished" content={post.timestamp} />
-            <meta itemProp="author" content={user?.name} />
 
             <div className={`p-5 bg-white dark:bg-gray-800 mt-5 ${menuOpen ? "rounded-t-2xl rounded-r-2xl" : "rounded-2xl"} shadow-sm`}>
                 <div 
@@ -62,15 +61,13 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
             
                     <div className="flex-1">
                         <a 
-                            itemProp="name"
+                            itemProp="url"
                             className="font-medium dark:text-white">
                             <Link href={`/${user?.uid}`}>
-                                <a itemProp="url">{user.name}</a>
+                                <a itemProp="name">{user.name}</a>
                             </Link>
                         </a>
-                        <p 
-                            itemProp="datePublished"
-                            className="text-xs text-gray-400 dark:text-white">
+                        <p className="text-xs text-gray-400 dark:text-white">
                             {post.timestamp}
                         </p>
                     </div>
@@ -82,11 +79,11 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     </div>
                 </div>
 
-                <p 
+                <h1 
                     itemProp="headline"
                     className="pt-4 dark:text-white">
                     {post.data.description}
-                </p>
+                </h1>
 
                 <div className={`flex gap-2`}>
                     {post.data.images?.map(image => (

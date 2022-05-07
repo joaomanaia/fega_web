@@ -2703,11 +2703,6 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-google-ads@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/next-google-ads/-/next-google-ads-0.1.1.tgz#289bfe2ad3e6d66fef287d5f786b95bcf59596fb"
-  integrity sha512-NGtC4ibWJ8EjYM91uS6W70FdaVq1QSCBmmiA9dWU/C4oyIG2CKZs28SdAF3G0WaXBnlc5Crlnl86NjQF2ecl7w==
-
 next@^12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/next/-/next-12.1.0.tgz#c33d753b644be92fc58e06e5a214f143da61dd5d"
