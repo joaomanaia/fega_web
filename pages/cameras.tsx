@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import Header from "../components/header/Header";
 type UserPageType = {};
 
 type CameraType = {
+  id: string;
   link: string;
   name: string;
   description: string;
@@ -23,22 +25,25 @@ type CameraType = {
 
 const cameras: CameraType[] = [
   {
+    id: "figueiradafoz-panoramica",
     link: "https://video-auth1.iol.pt/beachcam/figueiradafoz/playlist.m3u8",
     name: "Figueira da Foz - Panoramica",
     description: "Camera panoramica localizada na figueira da foz",
     video: true,
     imagePoster:
-      "http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg",
+      "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTc-VKCG56MkcaKgQVbQ3VKjHAeBh1pa8ORrBOowL27KyHeOnwKH8k6flxE8szc",
   },
   {
+    id: "figueiradafoz-buarcos",
     link: "https://video-auth1.iol.pt/beachcam/bcfigueiradois/playlist.m3u8",
     name: "Figueira da Foz - Burarcos",
     description: "Camera localizada em burarcos, figueira da foz",
     video: true,
     imagePoster:
-      "http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg",
+      "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTc-VKCG56MkcaKgQVbQ3VKjHAeBh1pa8ORrBOowL27KyHeOnwKH8k6flxE8szc",
   },
   {
+    id: "hoteloslo-coimbra",
     link: "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
     name: "Coimbra",
     description: "Camera localizada no hotel Hoteloslo, Coimbra",
@@ -47,12 +52,19 @@ const cameras: CameraType[] = [
   },
 ];
 
+const getCameraById = (id: string | string[] | undefined): CameraType => {
+  return cameras.filter((camera) => camera.id === id)[0] || cameras[0]
+};
+
 const UserPage: NextPage<UserPageType> = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const selectedCamera = getCameraById(id);
+
   const [videoState, setVideoState] = useState(false);
 
-  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] =
-    useState(false);
-  const [selectedCamera, setSelectedCamera] = useState<CameraType>(cameras[0]);
+  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] =useState(false);
   const [cameraImageUrl, setCameraImageUrl] = useState<string>(
     "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG"
   );
@@ -67,15 +79,17 @@ const UserPage: NextPage<UserPageType> = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      const url =
-        "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" +
-        new Date().getTime();
-      setCameraImageUrl(url);
-    }, 250);
+    if (selectedCamera.id == "hoteloslo-coimbra") {
+      const intervalId = setInterval(() => {
+        const url =
+          "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" +
+          new Date().getTime();
+        setCameraImageUrl(url);
+      }, 250);
 
-    return () => clearInterval(intervalId);
-  }, []);
+      return () => clearInterval(intervalId);
+    }
+  }, [selectedCamera.id]);
 
   return (
     <div
@@ -92,7 +106,7 @@ const UserPage: NextPage<UserPageType> = () => {
         <meta name="description" content={selectedCamera.description} />
 
         {/**  Facebook Meta Tags */}
-        <meta property="og:url" content="https://fega.ml/cameras" />
+        <meta property="og:url" content={`https://fega.ml${router.asPath}`} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={selectedCamera.name} />
         <meta property="og:description" content={selectedCamera.description} />
@@ -105,7 +119,7 @@ const UserPage: NextPage<UserPageType> = () => {
         {/**  Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="fega.ml" />
-        <meta property="twitter:url" content="https://fega.ml/cameras" />
+        <meta property="twitter:url" content={`https://fega.ml${router.asPath}`} />
         <meta name="twitter:title" content={selectedCamera.name} />
         <meta name="twitter:description" content={selectedCamera.description} />
         {selectedCamera.video ? (
@@ -148,7 +162,7 @@ const UserPage: NextPage<UserPageType> = () => {
                   key={camera.link}
                   onClick={() => {
                     setSelectCameraPopupVisibility(false);
-                    setSelectedCamera(camera);
+                    router.push(`/cameras?id=${camera.id}`);
                   }}
                 >
                   <p className="text-white text-lg mx-4">{camera.name}</p>
@@ -164,6 +178,16 @@ const UserPage: NextPage<UserPageType> = () => {
               className="h-full pb-32 pt-4"
             >
               <meta itemProp="name" content={selectedCamera.name} />
+              <meta
+                itemProp="description"
+                content={selectedCamera.description}
+              />
+              <meta
+                itemProp="thumbnailUrl"
+                content={selectedCamera.imagePoster}
+              />
+              <meta itemProp="uploadDate" content="07/05/2022" />
+              <meta itemProp="contentUrl" content={selectedCamera.link} />
 
               <ReactPlayer
                 volume={0}
@@ -184,7 +208,17 @@ const UserPage: NextPage<UserPageType> = () => {
               itemType="https://schema.org/VideoObject"
               className="h-full pb-32 pt-4"
             >
-              <meta itemProp="thumbnail" content={cameraImageUrl} />
+              <meta itemProp="name" content={selectedCamera.name} />
+              <meta
+                itemProp="description"
+                content={selectedCamera.description}
+              />
+              <meta
+                itemProp="thumbnailUrl"
+                content={selectedCamera.imagePoster}
+              />
+              <meta itemProp="uploadDate" content="07/05/2022" />
+              <meta itemProp="contentUrl" content={selectedCamera.link} />
 
               <img
                 src={cameraImageUrl}
