@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,8 +12,6 @@ import {
 } from "../app/appSlice";
 import Header from "../components/header/Header";
 
-type UserPageType = {};
-
 type CameraType = {
   id: string;
   link: string;
@@ -21,6 +19,10 @@ type CameraType = {
   description: string;
   video: boolean;
   imagePoster: string;
+};
+
+type UserPageType = {
+  selectedCamera: CameraType
 };
 
 const cameras: CameraType[] = [
@@ -52,15 +54,8 @@ const cameras: CameraType[] = [
   },
 ];
 
-const getCameraById = (id: string | string[] | undefined): CameraType => {
-  return cameras.filter((camera) => camera.id === id)[0] || cameras[0]
-};
-
-const UserPage: NextPage<UserPageType> = () => {
+const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
   const router = useRouter();
-  const { id } = router.query;
-
-  const selectedCamera = getCameraById(id);
 
   const [videoState, setVideoState] = useState(false);
 
@@ -85,7 +80,7 @@ const UserPage: NextPage<UserPageType> = () => {
           "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" +
           new Date().getTime();
         setCameraImageUrl(url);
-      }, 250);
+      }, 500);
 
       return () => clearInterval(intervalId);
     }
@@ -234,3 +229,15 @@ const UserPage: NextPage<UserPageType> = () => {
 };
 
 export default UserPage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query.id
+      
+  const camera = cameras.filter((camera) => camera.id === id)[0] || cameras[0]
+
+  return {
+    props: {
+      selectedCamera: camera
+    }
+  }
+}
