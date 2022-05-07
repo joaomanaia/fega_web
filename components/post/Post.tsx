@@ -89,12 +89,12 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     {post.data.images?.map(image => (
                         <div 
                             key={image}
+                            itemProp='image'
                             className={`relative mt-4 ${post.data.images.length == 1 ? "aspect-video w-full" : "aspect-square w-1/2"}`}>
                             <Image
                                 src={image} 
                                 layout="fill"
                                 className="rounded-2xl"
-                                itemProp='image'
                                 alt="Publication Image"/>
                         </div>
                     ))}
