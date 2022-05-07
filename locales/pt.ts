@@ -18,7 +18,11 @@ const pt: LocaleTypes = {
     events: "Eventos",
     news: "Noticias",
     messages: "Mensagens",
-    groups: "Grupos"
+    groups: "Grupos",
+    page_not_found: "Página não encontrada",
+    this_page_does_not_exist: "A página que você está a procurar não existe.",
+    go_back_home: "Voltar para o inicio",
+    contact_support: "Contactar suporte",
 }
 
 export default pt

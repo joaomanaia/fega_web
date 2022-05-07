@@ -17,6 +17,10 @@ type LocaleTypes = {
     news: string,
     messages: string,
     groups: string,
+    page_not_found: string,
+    this_page_does_not_exist: string,
+    go_back_home: string,
+    contact_support: string,
 }
 
 export default LocaleTypes

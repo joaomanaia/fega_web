@@ -18,7 +18,11 @@ const en: LocaleTypes = {
     events: "Events",
     news: "News",
     messages: "Messages",
-    groups: "Groups"
+    groups: "Groups",
+    page_not_found: "Page not found",
+    this_page_does_not_exist: "The page you are looking for does not exist.",
+    go_back_home: "Go back home",
+    contact_support: "Contact support",
 }
 
 export default en

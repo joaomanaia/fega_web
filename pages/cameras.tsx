@@ -87,11 +87,7 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
   }, [selectedCamera.id]);
 
   return (
-    <div
-      className={`w-screen h-screen overflow-hidden ${
-        appThemeLight ? "" : "dark"
-      }`}
-    >
+    <div className={`w-screen h-screen overflow-hidden ${appThemeLight ? "" : "dark"}`}>
       <Head>
         <title>{selectedCamera.name}</title>
         <meta name="description" content={selectedCamera.description} />
