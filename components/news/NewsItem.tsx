@@ -32,6 +32,8 @@ const NewsItem: React.FC<NewsItemType> = ({title, description, mainImage}) => {
             <div 
                 itemProp="image"
                 className="relative z-0 w-full h-full bg-local justify-bottom">
+                <meta itemProp="image" content={mainImage} />
+
                 <Image
                     className="rounded-2xl"
                     src={mainImage}

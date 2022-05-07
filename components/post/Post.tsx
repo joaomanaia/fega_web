@@ -52,6 +52,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     className="flex items-center space-x-4">
                     <meta itemProp="image" content={user?.photoUrl || defaultImgUrl} />
                     <meta itemProp="url" content={`https://www.fega.ml/${user?.uid}`} />
+                    <meta itemProp="name" content={user?.name} />
 
                     <div className="relative w-10 h-10">
                         <Image
