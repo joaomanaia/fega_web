@@ -50,6 +50,9 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     itemScope 
                     itemType="https://schema.org/Person"
                     className="flex items-center space-x-4">
+                    <meta itemProp="image" content={user?.photoUrl || defaultImgUrl} />
+                    <meta itemProp="url" content={`https://www.fega.ml/${user?.uid}`} />
+
                     <div className="relative w-10 h-10">
                         <Image
                             itemProp='image'
@@ -60,11 +63,9 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     </div>
             
                     <div className="flex-1">
-                        <a 
-                            itemProp="url"
-                            className="font-medium dark:text-white">
+                        <a itemProp="name" className="font-medium dark:text-white">
                             <Link href={`/${user?.uid}`}>
-                                <a itemProp="name">{user.name}</a>
+                                <a>{user.name}</a>
                             </Link>
                         </a>
                         <p className="text-xs text-gray-400 dark:text-white">
@@ -89,9 +90,10 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     {post.data.images?.map(image => (
                         <div 
                             key={image}
-                            itemProp='image'
                             className={`relative mt-4 ${post.data.images.length == 1 ? "aspect-video w-full" : "aspect-square w-1/2"}`}>
+                            <meta itemProp="image" content={image} />
                             <Image
+                                itemProp='image'
                                 src={image} 
                                 layout="fill"
                                 className="rounded-2xl"
