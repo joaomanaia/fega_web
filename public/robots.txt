@@ -1,3 +1,9 @@
-# Allow all crawlers
+# *
 User-agent: *
 Allow: /
+
+# Host
+Host: https://www.fega.ml
+
+# Sitemaps
+Sitemap: https://www.fega.ml/sitemap.xml
