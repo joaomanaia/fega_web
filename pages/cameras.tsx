@@ -38,7 +38,7 @@ const cameras: CameraType[] = [
   {
     id: "figueiradafoz-buarcos",
     link: "https://video-auth1.iol.pt/beachcam/bcfigueiradois/playlist.m3u8",
-    name: "Figueira da Foz - Burarcos",
+    name: "Figueira da Foz - Buarcos",
     description: "Camera localizada em burarcos, figueira da foz",
     video: true,
     imagePoster:
