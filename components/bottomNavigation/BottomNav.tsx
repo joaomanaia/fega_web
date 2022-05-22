@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
 import { auth } from "../../firebase"
+import Surface from "../material/surface/Surface"
 
 type BottomNavType = {}
 
@@ -16,7 +17,10 @@ const BottomNav: React.FC<BottomNavType> = () => {
     const isLoggedIn = auth.currentUser !== null
 
     return (
-        <div className="fixed z-50 bottom-0 flex h-16 w-screen items-center bg-white dark:bg-gray-800 justify-between visible lg:invisible">
+        <Surface 
+            shadowDisabled
+            elevation={1}
+            className="fixed z-50 bottom-0 flex h-16 w-screen items-center justify-between visible lg:invisible">
             <BottomNavItem
                 onClick={() => router.push("/")}
                 Icon={HomeIcon} 
@@ -42,7 +46,7 @@ const BottomNav: React.FC<BottomNavType> = () => {
                 Icon={ChatIcon} 
                 selected={router.pathname.startsWith("/messages")}
                 text={t.messages}/>
-        </div>
+        </Surface>
     )
 }
 

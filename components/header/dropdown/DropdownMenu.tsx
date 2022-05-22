@@ -11,6 +11,7 @@ import { changeAppTheme, selectAppThemeLight } from "../../../app/appSlice"
 import { useRouter } from "next/router"
 import en from "../../../locales/en"
 import pt from "../../../locales/pt"
+import Surface from "../../material/surface/Surface"
 
 type DropdownMenuType = {
     isOpen: boolean
@@ -31,16 +32,20 @@ const DropdownMenu: React.FC<DropdownMenuType> = ({isOpen}) => {
     }
     
     return (
-        <div className="absolute space-y-2 mt-2 mr-8 w-64 p-3 z-50 rounded-2xl shadow-md bg-white dark:bg-gray-800 overflow-hidden">
-            <DropdownItem
-                onClick={() => router.push(`/${auth.currentUser?.uid}`)}
-                title={auth.currentUser?.displayName || ""}
-                imageSrc={auth.currentUser?.photoURL || ""}/>
-            <DropdownItem 
-                onClick={changeTheme} 
-                title={appThemeLight ? t.nightMode : t.lightMode} 
-                Icon={appThemeLight ? MoonIcon : SunIcon}/>
-            <DropdownItem onClick={() => auth.signOut()} title={t.signOut} Icon={LogoutIcon}/>
+        <div className="absolute bg-background-light dark:bg-background-dark rounded-2xl">
+            <Surface 
+                elevation={3}
+                className="space-y-2 mt-2 mr-8 w-64 p-3 z-50 rounded-2xl overflow-hidden">
+                <DropdownItem
+                    onClick={() => router.push(`/${auth.currentUser?.uid}`)}
+                    title={auth.currentUser?.displayName || ""}
+                    imageSrc={auth.currentUser?.photoURL || ""}/>
+                <DropdownItem 
+                    onClick={changeTheme} 
+                    title={appThemeLight ? t.nightMode : t.lightMode} 
+                    Icon={appThemeLight ? MoonIcon : SunIcon}/>
+                <DropdownItem onClick={() => auth.signOut()} title={t.signOut} Icon={LogoutIcon}/>
+            </Surface>
         </div>
     )
 }

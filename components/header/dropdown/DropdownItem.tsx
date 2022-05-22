@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Surface from "../../material/surface/Surface"
 
 type DropDownItemType = {
     onClick?: any,
@@ -9,15 +10,22 @@ type DropDownItemType = {
 
 const DropdownItem: React.FC<DropDownItemType> = ({onClick, title, Icon, imageSrc}) => {
     return (
-        <div
+        <Surface
             onClick={onClick}
-            className="h-12 flex items-center rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+            shadowDisabled
+            className="h-12 flex items-center rounded-2xl cursor-pointer">
             {Icon ? 
-                <div className="flex w-12 h-12 items-center rounded-full bg-gray-200 dark:bg-gray-700 p-3 text-gray-500 dark:text-white">
+                <Surface 
+                    shadowDisabled
+                    elevation={1}
+                    className="flex w-12 h-12 items-center rounded-full p-3">
                     <Icon/>
-                </div> 
+                </Surface> 
                 : 
-                <div className="relative h-12 w-12 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white">
+                <Surface 
+                    shadowDisabled
+                    elevation={1}
+                    className="relative h-12 w-12 flex items-center justify-center rounded-full">
                    <div className="relative w-9 h-9">
                     <Image 
                         layout="fill"
@@ -25,10 +33,10 @@ const DropdownItem: React.FC<DropDownItemType> = ({onClick, title, Icon, imageSr
                         src={imageSrc || "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/user_default_image.png?alt=media&token=7f18e231-8446-4499-9935-63209fa686cb"} 
                         alt=""/>
                    </div>
-                </div>
+                </Surface>
             }
             <p className="text-gray-500 dark:text-white text-lg ml-4">{title}</p>
-        </div>
+        </Surface>
     )
 }
 

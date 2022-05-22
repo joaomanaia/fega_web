@@ -66,27 +66,30 @@ const Home: NextPage = () => {
           content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
         />
       </Head>
-      <Header />
 
-      <main className="flex bg-gray-200 dark:bg-gray-900">
-        {/** Right Sidebar */}
+      <div className="bg-background-light dark:bg-background-dark">
+        <Header />
 
-        {/** Posts */}
-        <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide">
-          <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
-            <CreatePost />
-          </div>
-          <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-            {data && <Posts posts={JSON.parse(data.posts)} />}
-          </div>
-          <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
-            <LeftSidebarMenu />
-          </div>
-        </div>
-      </main>
+        <main className="flex">
+          {/** Right Sidebar */}
 
-      {/** Bottom navigation (mobile) */}
-      <BottomNav />
+          {/** Posts */}
+          <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide">
+            <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
+              <CreatePost />
+            </div>
+            <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
+              {data && <Posts posts={JSON.parse(data.posts)} />}
+            </div>
+            <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
+              <LeftSidebarMenu />
+            </div>
+          </div>
+        </main>
+
+        {/** Bottom navigation (mobile) */}
+        <BottomNav />
+      </div>
     </div>
   );
 };

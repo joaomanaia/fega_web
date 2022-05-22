@@ -4,6 +4,7 @@ import { PostType } from "../Posts"
 import pt from "../../../locales/pt"
 import en from "../../../locales/en"
 import { useRouter } from "next/router"
+import Surface from "../../material/surface/Surface"
 
 type PostDropDownMenuTypes = {
     isUserAdmin: boolean,
@@ -22,7 +23,9 @@ const PostDropDownMenu: React.FC<PostDropDownMenuTypes> = ({isUserAdmin, post, o
     const t = locale === "en" ? en : pt
     
     return(
-        <div className={"relative border-t-2 border-gray-200 dark:border-gray-700 space-y-2 mr-8 w-64 p-3 rounded-b-2xl shadow-md bg-white dark:bg-gray-800 overflow-hidden"}>
+        <Surface 
+            elevation={1}
+            className={"relative border-t-2 border-primary-light/5 dark:border-primary-dark/5 space-y-2 mr-8 w-64 p-3 rounded-b-2xl shadow-md overflow-hidden"}>
             <PostDropDownItem
                 onClick={sharePost}
                 title={t.share}
@@ -31,7 +34,7 @@ const PostDropDownMenu: React.FC<PostDropDownMenuTypes> = ({isUserAdmin, post, o
                 onClick={onDeleteClick}
                 title={t.delete}
                 Icon={TrashIcon}/>}
-        </div>
+        </Surface>
     )
 }
 

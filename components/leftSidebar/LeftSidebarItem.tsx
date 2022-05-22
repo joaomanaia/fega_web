@@ -1,3 +1,5 @@
+import Surface from "../material/surface/Surface"
+
 type LeftSidebarItemType = {
     onClick: () => void,
     title: string,
@@ -9,13 +11,13 @@ const LeftSidebarItem: React.FC<LeftSidebarItemType> = ({onClick, title, selecte
     return (
         <div
             onClick={() => onClick()}
-            className={`flex items-center h-12 w-full shadow-sm ${selected ? "bg-red-700 hover:bg-red-800" : "bg-white hover:bg-gray-50"}
-                ${selected ? "dark:bg-red-700 dark:hover:bg-red-800" : "dark:bg-gray-800 dark:hover:bg-gray-700"} 
+            className={`flex items-center h-12 w-full 
+                ${selected ? "bg-primary-light hover:bg-primary-light/60 dark:bg-primary-dark dark:hover:bg-primary-dark/70" : "bg-surface-light hover:bg-primary-light/10 dark:bg-surface-dark dark:hover:bg-primary-dark/20"}
                 rounded-2xl cursor-pointer`}>
-               <div className={`h-12 w-12 flex items-center rounded-full p-3 ${selected ? "text-white" : "text-gray-500"} dark:text-white`}>
+               <div className={`h-12 w-12 flex items-center rounded-full p-3 ${selected ? "text-onPrimary-light dark:text-onPrimary-dark" : "text-onSurface-light dark:text-onSurface-dark"}`}>
                     <Icon/>
                 </div> 
-                <p className={`${selected ? "text-white" : "text-gray-500"} dark:text-white text-lg ml-2 truncate`}>
+                <p className={`${selected ? "text-onPrimary-light dark:text-onPrimary-dark" : "text-onSurface-light dark:text-onSurface-dark"} text-lg ml-2 truncate`}>
                     {title}
                 </p>
         </div>

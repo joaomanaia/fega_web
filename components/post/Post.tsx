@@ -9,6 +9,7 @@ import { PostType } from './Posts'
 import Link from 'next/link'
 import { fetcher } from '../../utils/data'
 import { defaultImgUrl } from '../../utils/common'
+import Surface from '../material/surface/Surface'
 
 type PostParams = {
     post: PostType,
@@ -44,7 +45,9 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
 
             <meta itemProp="datePublished" content={post.timestamp} />
 
-            <div className={`p-5 bg-white dark:bg-gray-800 mt-5 ${menuOpen ? "rounded-t-2xl rounded-r-2xl" : "rounded-2xl"} shadow-sm`}>
+            <Surface 
+                elevation={1}
+                className={`p-5 mt-5 ${menuOpen ? "rounded-t-2xl rounded-r-2xl" : "rounded-2xl"} shadow-sm`}>
                 <div 
                     itemProp="author"
                     itemScope 
@@ -64,26 +67,26 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     </div>
             
                     <div className="flex-1">
-                        <a itemProp="name" className="font-medium dark:text-white">
+                        <a itemProp="name" className="font-medium text-onSurface-light dark:text-onSurface-dark">
                             <Link href={`/${user?.uid}`}>
                                 <a>{user.name}</a>
                             </Link>
                         </a>
-                        <p className="text-xs text-gray-400 dark:text-white">
+                        <p className="text-xs text-onSurface-light dark:text-onSurface-dark">
                             {post.timestamp}
                         </p>
                     </div>
 
                     <div
                         onClick={() => setMenuOpen(!menuOpen)} 
-                        className="rounded-full h-9 w-9 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <DotsVerticalIcon className="m-2 dark:text-white "/>
+                        className="rounded-full h-9 w-9 hover:bg-primary-light/5 dark:hover:bg-primary-dark/5 text-onSurface-light dark:text-onSurface-dark">
+                        <DotsVerticalIcon className="m-2 text-onSurface-light dark:text-onSurface-dark"/>
                     </div>
                 </div>
 
                 <h1 
                     itemProp="headline"
-                    className="pt-4 dark:text-white">
+                    className="pt-4 text-onSurface-light dark:text-onSurface-dark">
                     {post.data.description}
                 </h1>
 
@@ -102,7 +105,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                         </div>
                     ))}
                 </div>
-            </div>
+            </Surface>
 
             {menuOpen && <PostDropDownMenu
                 isUserAdmin={auth.currentUser?.uid === post.uid || userIsAdmin}

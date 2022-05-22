@@ -5,6 +5,8 @@ import { collection, doc, getDocs, limitToLast, orderBy, query, setDoc, Timestam
 import { useRouter } from "next/router"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
+import FilledButton from "../material/button/FilledButton"
+import Surface from "../material/surface/Surface"
 
 type CreatePostTypes = {}
 
@@ -62,29 +64,33 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
     }
     
     return (
-        <div className="flex flex-col p-5 bg-white dark:bg-gray-800 mt-5 rounded-2xl shadow-sm">
-            <p className="text-lg font-bold text-gray-500 dark:text-gray-200">
+        <Surface 
+            elevation={1}
+            className="flex flex-col p-5 mt-5 rounded-2xl">
+            <p className="text-lg font-bold">
                 {t.create_post}
             </p>
 
             <form className="flex flex-col flex-1 mt-4">
-                <input 
-                    onChange={(e) => setDescription(e.target.value)}
-                    ref={descriptionRef}
-                    value={description}
-                    className="rounded-2xl h-12 bg-gray-100 dark:bg-gray-700 dark:text-white flex-grow px-5 outline-none"
-                    type="text"
-                    placeholder={t.description}/>
+                <Surface 
+                    shadowDisabled
+                    elevation={1}
+                    className="rounded-2xl mb-4 h-12 flex-grow px-5">
+                    <input 
+                        onChange={(e) => setDescription(e.target.value)}
+                        ref={descriptionRef}
+                        value={description}
+                        className="outline-none bg-transparent w-full h-full text-lg placeholder-onSurface-light dark:placeholder-onSurface-dark"
+                        type="text"
+                        placeholder={t.description}/>
+                </Surface>
 
-                <button
+                <FilledButton
+                    text={t.publish}
                     disabled={!description}
-                    onClick={createPost}
-                    className="mt-4 rounded-full bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
-                        text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                        {t.publish}
-                </button>
+                    onClick={() => {}}/>
             </form>
-        </div>
+        </Surface>
     )
 }
 

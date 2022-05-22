@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { auth, firestore } from "../../firebase"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
+import PostDropDownMenu from "./dropdown/PostDropDownMenu"
 import Post from "./Post"
 
 type PostsPropsTypes = {
@@ -95,7 +96,7 @@ function Posts({posts}: PostsPropsTypes) {
     console.log(postsPaging)
     
     return (
-        <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
+        <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">            
             {postsPaging?.map(post => (
                 <Post
                     key={post.id}
