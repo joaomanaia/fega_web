@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { auth, firestore } from "../../firebase"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
+import FilledButton from "../material/button/FilledButton"
 import PostDropDownMenu from "./dropdown/PostDropDownMenu"
 import Post from "./Post"
 
@@ -105,12 +106,9 @@ function Posts({posts}: PostsPropsTypes) {
                     onPostDeleted={removePostFromList}/>
             ))}
 
-            <button 
-                onClick={getNextPostsPaging}
-                className="bg-white dark:bg-gray-800 mt-4 rounded-full p-2 hover:bg-gray-50 dark:hover:bg-gray-700
-                    dark:text-white text-lg">
-                {t.load_more}
-            </button>
+            <FilledButton 
+                text={t.load_more}
+                onClick={getNextPostsPaging}/>
         </div>
     )
 }
