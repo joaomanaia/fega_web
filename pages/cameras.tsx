@@ -46,11 +46,11 @@ const cameras: CameraType[] = [
   },
   {
     id: "hoteloslo-coimbra",
-    link: "http://www.fega.ml/api/cameras/hoteloslo-coimbra",
+    link: "http://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
     name: "Coimbra",
     description: "Camera localizada no hotel Hoteloslo, Coimbra",
     video: false,
-    imagePoster: "http://www.fega.ml/api/cameras/hoteloslo-coimbra",
+    imagePoster: "http://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
   },
 ];
 
