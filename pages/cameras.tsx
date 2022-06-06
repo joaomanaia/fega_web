@@ -46,23 +46,26 @@ const cameras: CameraType[] = [
   },
   {
     id: "hoteloslo-coimbra",
-    link: "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
+    link: "http://www.fega.ml/api/cameras/hoteloslo-coimbra",
     name: "Coimbra",
     description: "Camera localizada no hotel Hoteloslo, Coimbra",
     video: false,
-    imagePoster: "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
+    imagePoster: "http://www.fega.ml/api/cameras/hoteloslo-coimbra",
   },
 ];
 
-const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
+const getCameraById = (id: string): CameraType | null => {
+  return cameras.find((camera) => camera.id === id) || null;
+};
+
+const UserPage: NextPage<UserPageType> = ({selectedCamera}) => { 
+
   const router = useRouter();
 
   const [videoState, setVideoState] = useState(false);
 
-  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] =useState(false);
-  const [cameraImageUrl, setCameraImageUrl] = useState<string>(
-    "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG"
-  );
+  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] = useState(false);
+  const [cameraImageUrl, setCameraImageUrl] = useState<string>(getCameraById("hoteloslo-coimbra")?.link || "");
 
   const appThemeLight = useSelector(selectAppThemeLight);
   const dispatch = useDispatch();
@@ -75,15 +78,19 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
 
   useEffect(() => {
     if (selectedCamera.id == "hoteloslo-coimbra") {
+      const cameraUrl = getCameraById("hoteloslo-coimbra")?.link
+
+      if (cameraUrl === undefined) return () => {}
+
       const intervalId = setInterval(() => {
-        const url =
-          "https://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG?d=" +
-          new Date().getTime();
+        const url = cameraUrl + "?date=" + new Date().getTime()
         setCameraImageUrl(url);
       }, 500);
 
       return () => clearInterval(intervalId);
     }
+
+    return () => {}
   }, [selectedCamera.id]);
 
   return (
