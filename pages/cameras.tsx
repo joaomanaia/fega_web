@@ -224,7 +224,7 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
             </div>
           )}
 
-          <div className="flex flex-col md:flex-row">
+          <div className="w-full h-full flex flex-col md:flex-row">
             {selectedCamera.video ? (
               <div
                 itemScope
