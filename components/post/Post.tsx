@@ -49,7 +49,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                     itemProp="author"
                     itemScope 
                     itemType="https://schema.org/Person"
-                    className="flex items-center space-x-4">
+                    className="flex items-center">
                     <meta itemProp="image" content={user?.photoUrl || defaultImgUrl} />
                     <meta itemProp="url" content={`https://www.fega.ml/${user?.uid}`} />
                     <meta itemProp="name" content={user?.name} />
@@ -63,7 +63,7 @@ function Post({post, userIsAdmin, onPostDeleted}: PostParams) {
                             src={user?.photoUrl || defaultImgUrl}/>
                     </div>
             
-                    <div className="flex-1">
+                    <div className="flex-1 ml-4">
                         <a itemProp="name" className="font-medium dark:text-white">
                             <Link href={`/${user?.uid}`}>
                                 <a>{user.name}</a>
