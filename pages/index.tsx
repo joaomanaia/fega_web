@@ -12,6 +12,11 @@ import BottomNav from "../components/bottomNavigation/BottomNav";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+declare global {
+  interface Window { adsbygoogle: any; }
+}
+
+declare var adsbygoogle: any[];
 
 const Home: NextPage = () => {
   const { data } = useSWR("/api/posts/initialPosts", fetcher);
@@ -95,12 +100,11 @@ const Home: NextPage = () => {
           </div>
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
             <ins 
-              className="adsbygoogle block w-full min-h-fit"
+              className="adsbygoogle block"
               data-ad-format="fluid"
               data-ad-layout-key="-hm-18-b-1s+et"
               data-ad-client="ca-pub-1923025671607389"
               data-ad-slot="7342059899"
-              data-adtest="on"
               data-full-width-responsive="true">
             </ins>
 
