@@ -2,7 +2,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +22,7 @@ type CameraType = {
 };
 
 type UserPageType = {
-  selectedCamera: CameraType
+  selectedCamera: CameraType;
 };
 
 const cameras: CameraType[] = [
@@ -58,17 +58,39 @@ const getCameraById = (id: string): CameraType | null => {
   return cameras.find((camera) => camera.id === id) || null;
 };
 
-const UserPage: NextPage<UserPageType> = ({selectedCamera}) => { 
+const mobileAtOptions = {
+  key: "341396a7884711005a6398b9692b8010",
+  format: "iframe",
+  height: 90,
+  width: 728,
+  params: {},
+};
 
+const largeAtOptions = {
+  key: "23e33e3141df253ea6172f7ffaa0bee3",
+  format: "iframe",
+  height: 600,
+  width: 160,
+  params: {},
+};
+
+const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
   const router = useRouter();
 
   const [videoState, setVideoState] = useState(false);
 
-  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] = useState(false);
-  const [cameraImageUrl, setCameraImageUrl] = useState<string>(getCameraById("hoteloslo-coimbra")?.link || "");
+  const [selectCameraPopupVisible, setSelectCameraPopupVisibility] =
+    useState(false);
+  const [cameraImageUrl, setCameraImageUrl] = useState<string>(
+    getCameraById("hoteloslo-coimbra")?.link || ""
+  );
 
   const appThemeLight = useSelector(selectAppThemeLight);
   const dispatch = useDispatch();
+
+  const [windowMobile, setWindowMobile] = useState(false)
+
+  const banner = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.getItem("theme") === "light"
@@ -78,28 +100,58 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
 
   useEffect(() => {
     if (selectedCamera.id == "hoteloslo-coimbra") {
-      const cameraUrl = getCameraById("hoteloslo-coimbra")?.link
+      const cameraUrl = getCameraById("hoteloslo-coimbra")?.link;
 
-      if (cameraUrl === undefined) return () => {}
+      if (cameraUrl === undefined) return () => {};
 
       const intervalId = setInterval(() => {
-        const url = cameraUrl + "?date=" + new Date().getTime()
+        const url = cameraUrl + "?date=" + new Date().getTime();
         setCameraImageUrl(url);
       }, 500);
 
       return () => clearInterval(intervalId);
     }
 
-    return () => {}
+    return () => {};
   }, [selectedCamera.id]);
 
-  return (
-    <div className={`w-screen h-screen overflow-hidden ${appThemeLight ? "" : "dark"}`}>
-      <Head>
-        <title>{selectedCamera.name}</title>
-        <meta name="description" content={selectedCamera.description} />
+  useEffect(() => {
+      const onResize = () => {
+          setWindowMobile(window.innerWidth < 1024)
+      }
 
-        {/**  HTML Meta Tags */}
+      window.addEventListener('resize', onResize)
+      onResize()
+
+      return () => {
+          window.removeEventListener("resize", onResize)
+      }
+  }, [])
+
+  useEffect(() => {
+    if (!banner.current?.firstChild) {
+      const atOptions = windowMobile ? mobileAtOptions : largeAtOptions
+
+      const conf = document.createElement("script");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `//www.highperformancedformats.com/${atOptions.key}/invoke.js`;
+      conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`;
+
+      if (banner.current) {
+        banner.current.append(conf);
+        banner.current.append(script);
+      }
+    }
+  }, [windowMobile]);
+
+  return (
+    <div
+      className={`w-screen h-screen overflow-hidden ${
+        appThemeLight ? "" : "dark"
+      }`}
+    >
+      <Head>
         <title>{selectedCamera.name}</title>
         <meta name="description" content={selectedCamera.description} />
 
@@ -117,7 +169,10 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
         {/**  Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="fega.ml" />
-        <meta property="twitter:url" content={`https://fega.ml${router.asPath}`} />
+        <meta
+          property="twitter:url"
+          content={`https://fega.ml${router.asPath}`}
+        />
         <meta name="twitter:title" content={selectedCamera.name} />
         <meta name="twitter:description" content={selectedCamera.description} />
         {selectedCamera.video ? (
@@ -169,62 +224,69 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
             </div>
           )}
 
-          {selectedCamera.video ? (
-            <div
-              itemScope
-              itemType="https://schema.org/VideoObject"
-              className="h-full pb-32 pt-4"
-            >
-              <meta itemProp="name" content={selectedCamera.name} />
-              <meta
-                itemProp="description"
-                content={selectedCamera.description}
-              />
-              <meta
-                itemProp="thumbnailUrl"
-                content={selectedCamera.imagePoster}
-              />
-              <meta itemProp="uploadDate" content="07/05/2022" />
-              <meta itemProp="contentUrl" content={selectedCamera.link} />
+          <div className="flex flex-col md:flex-row">
+            {selectedCamera.video ? (
+              <div
+                itemScope
+                itemType="https://schema.org/VideoObject"
+                className="h-full w-full pb-32 pt-4"
+              >
+                <meta itemProp="name" content={selectedCamera.name} />
+                <meta
+                  itemProp="description"
+                  content={selectedCamera.description}
+                />
+                <meta
+                  itemProp="thumbnailUrl"
+                  content={selectedCamera.imagePoster}
+                />
+                <meta itemProp="uploadDate" content="07/05/2022" />
+                <meta itemProp="contentUrl" content={selectedCamera.link} />
 
-              <ReactPlayer
-                volume={0}
-                muted={true}
-                playing={videoState}
-                onReady={() => {
-                  setVideoState(true);
-                }}
-                controls={true}
-                width="100%"
-                height="100%"
-                url={selectedCamera.link}
-              />
-            </div>
-          ) : (
-            <div
-              itemScope
-              itemType="https://schema.org/VideoObject"
-              className="h-full pb-32 pt-4"
-            >
-              <meta itemProp="name" content={selectedCamera.name} />
-              <meta
-                itemProp="description"
-                content={selectedCamera.description}
-              />
-              <meta
-                itemProp="thumbnailUrl"
-                content={selectedCamera.imagePoster}
-              />
-              <meta itemProp="uploadDate" content="07/05/2022" />
-              <meta itemProp="contentUrl" content={selectedCamera.link} />
+                <ReactPlayer
+                  volume={0}
+                  muted={true}
+                  playing={videoState}
+                  onReady={() => {
+                    setVideoState(true);
+                  }}
+                  controls={true}
+                  width="100%"
+                  height="100%"
+                  url={selectedCamera.link}
+                />
+              </div>
+            ) : (
+              <div
+                itemScope
+                itemType="https://schema.org/VideoObject"
+                className="h-full pb-32 pt-4"
+              >
+                <meta itemProp="name" content={selectedCamera.name} />
+                <meta
+                  itemProp="description"
+                  content={selectedCamera.description}
+                />
+                <meta
+                  itemProp="thumbnailUrl"
+                  content={selectedCamera.imagePoster}
+                />
+                <meta itemProp="uploadDate" content="07/05/2022" />
+                <meta itemProp="contentUrl" content={selectedCamera.link} />
 
-              <img
-                src={cameraImageUrl}
-                alt={selectedCamera.name}
-                className="w-full h-full"
-              />
-            </div>
-          )}
+                <img
+                  src={cameraImageUrl}
+                  alt={selectedCamera.name}
+                  className="w-full h-full"
+                />
+              </div>
+            )}
+
+            <div
+              className="md:h-screen flex items-center justify-center"
+              ref={banner}
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -234,13 +296,13 @@ const UserPage: NextPage<UserPageType> = ({selectedCamera}) => {
 export default UserPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id
-      
-  const camera = cameras.filter((camera) => camera.id === id)[0] || cameras[0]
+  const id = context.query.id;
+
+  const camera = cameras.filter((camera) => camera.id === id)[0] || cameras[0];
 
   return {
     props: {
-      selectedCamera: camera
-    }
-  }
-}
+      selectedCamera: camera,
+    },
+  };
+};

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight } from "../app/appSlice";
 import Header from "../components/header/Header";
@@ -10,13 +10,24 @@ import { setAppThemeLight, setAppThemeNight } from "../app/appSlice";
 import LeftSidebarMenu from "../components/leftSidebar/LeftSidebarMenu";
 import BottomNav from "../components/bottomNavigation/BottomNav";
 import useSWR from "swr";
+import Script from "next/script";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+/*
 declare global {
-  interface Window { adsbygoogle: any; }
+  interface Window {
+    adsbygoogle: any;
+  }
 }
+*/
 
-declare var adsbygoogle: any[];
+const atOptions = {
+  key: "7d89d5ca1a942416f5c88e78454f8797",
+  format: "iframe",
+  height: 250,
+  width: 300,
+  params: {},
+};
 
 const Home: NextPage = () => {
   const { data } = useSWR("/api/posts/initialPosts", fetcher);
@@ -30,99 +41,117 @@ const Home: NextPage = () => {
       : dispatch(setAppThemeNight());
   }, [dispatch]);
 
-  useEffect(() => {
-    var ads = document.getElementsByClassName("adsbygoogle").length;
+  const banner = useRef<HTMLDivElement>(null);
 
-    for (var i = 0; i < ads; i++) {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) { 
-        console.log(e);
+  useEffect(() => {
+    if (!banner.current?.firstChild) {
+      const conf = document.createElement("script");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `//www.highperformancedformats.com/${atOptions.key}/invoke.js`;
+      conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`;
+
+      if (banner.current) {
+        banner.current.append(conf);
+        banner.current.append(script);
       }
     }
-  }, [])
-  
+  }, []);
 
   return (
-    <div
-      className={`w-screen h-screen overflow-hidden ${
-        appThemeLight ? "" : "dark"
-      }`}
-    >
-      <Head>
-        <title>Fega</title>
-        <meta name="description" content="A new social network from ega!" />
-        <link rel="icon" href="/fega_round_1.ico" />
+    <>
+      {/**
+       * <Script
+        async
+        data-cfasync="false"
+        src="//pl17382411.profitablecpmgate.com/c5b172d55e6697e12ec8cfa82c53b329/invoke.js"
+      />
+       */}
 
-        <meta name="propeller" content="af3e688fad5f8514d017b75887d3a1b0"></meta>
+      <Script
+        async
+        crossOrigin="anonymous"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1923025671607389"
+      />
 
-        <script 
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1923025671607389" 
-          crossOrigin="anonymous">
-        </script>
+      <div
+        className={`w-screen h-screen overflow-hidden ${
+          appThemeLight ? "" : "dark"
+        }`}
+      >
+        <Head>
+          <title>Fega</title>
+          <meta name="description" content="A new social network from ega!" />
+          <link rel="icon" href="/fega_round_1.ico" />
 
-        {/**  Facebook Meta Tags */}
-        <meta property="og:url" content="https://fega.ml/" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Fega" />
-        <meta
-          property="og:description"
-          content="A new social network from ega!"
-        />
-        <meta
-          property="og:image"
-          content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
-        />
-        {/**  Twitter Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="fega.ml" />
-        <meta property="twitter:url" content="https://fega.ml/" />
-        <meta name="twitter:title" content="Fega" />
-        <meta
-          name="twitter:description"
-          content="A new social network from ega!"
-        />
-        <meta
-          name="twitter:image"
-          content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
-        />
-      </Head>
-      <Header />
+          {/**  Facebook Meta Tags */}
+          <meta property="og:url" content="https://fega.ml/" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Fega" />
+          <meta
+            property="og:description"
+            content="A new social network from ega!"
+          />
+          <meta
+            property="og:image"
+            content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
+          />
+          {/**  Twitter Meta Tags */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta property="twitter:domain" content="fega.ml" />
+          <meta property="twitter:url" content="https://fega.ml/" />
+          <meta name="twitter:title" content="Fega" />
+          <meta
+            name="twitter:description"
+            content="A new social network from ega!"
+          />
+          <meta
+            name="twitter:image"
+            content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
+          />
+        </Head>
+        <Header />
 
-      <main className="flex bg-gray-200 dark:bg-gray-900">
-        {/** Right Sidebar */}
+        <main className="flex bg-gray-200 dark:bg-gray-900">
+          {/** Right Sidebar */}
 
-        {/** Posts */}
-        <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide">
-          <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
-            <CreatePost />
+          {/** Posts */}
+          <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide">
+            <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
+              <CreatePost />
+              <div 
+                className="w-full flex items-center justify-center mt-4"
+                ref={banner}>
+              </div>
+            </div>
+            <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
+              <ins
+                className="adsbygoogle block"
+                data-ad-format="fluid"
+                data-ad-layout-key="-hm-18-b-1s+et"
+                data-ad-client="ca-pub-1923025671607389"
+                data-ad-slot="7342059899"
+                data-full-width-responsive="true"
+              ></ins>
+
+              {/** <div id="container-c5b172d55e6697e12ec8cfa82c53b329"></div> */}
+
+              <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+              </script>
+
+              {data && <Posts posts={JSON.parse(data.posts)} />}
+            </div>
+            <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
+              <LeftSidebarMenu />
+            </div>
           </div>
-          <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
-            <ins 
-              className="adsbygoogle block"
-              data-ad-format="fluid"
-              data-ad-layout-key="-hm-18-b-1s+et"
-              data-ad-client="ca-pub-1923025671607389"
-              data-ad-slot="7342059899"
-              data-full-width-responsive="true">
-            </ins>
+        </main>
 
-            <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-
-            {data && <Posts posts={JSON.parse(data.posts)} />}
-          </div>
-          <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
-            <LeftSidebarMenu />
-          </div>
-        </div>
-      </main>
-
-      {/** Bottom navigation (mobile) */}
-      <BottomNav />
-    </div>
+        {/** Bottom navigation (mobile) */}
+        <BottomNav />
+      </div>
+    </>
   );
 };
 
