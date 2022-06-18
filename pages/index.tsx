@@ -36,9 +36,13 @@ const Home: NextPage = () => {
         <meta name="description" content="A new social network from ega!" />
         <link rel="icon" href="/fega_round_1.ico" />
 
-        {/**  HTML Meta Tags */}
-        <title>Fega</title>
-        <meta name="description" content="A new social network from ega!" />
+        <meta name="propeller" content="af3e688fad5f8514d017b75887d3a1b0"></meta>
+
+        <script 
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1923025671607389" 
+          crossOrigin="anonymous">
+        </script>
 
         {/**  Facebook Meta Tags */}
         <meta property="og:url" content="https://fega.ml/" />
