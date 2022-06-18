@@ -25,6 +25,19 @@ const Home: NextPage = () => {
       : dispatch(setAppThemeNight());
   }, [dispatch]);
 
+  useEffect(() => {
+    var ads = document.getElementsByClassName("adsbygoogle").length;
+
+    for (var i = 0; i < ads; i++) {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) { 
+        console.log(e);
+      }
+    }
+  }, [])
+  
+
   return (
     <div
       className={`w-screen h-screen overflow-hidden ${
@@ -81,6 +94,20 @@ const Home: NextPage = () => {
             <CreatePost />
           </div>
           <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
+            <ins 
+              className="adsbygoogle block w-full min-h-fit"
+              data-ad-format="fluid"
+              data-ad-layout-key="-hm-18-b-1s+et"
+              data-ad-client="ca-pub-1923025671607389"
+              data-ad-slot="7342059899"
+              data-adtest="on"
+              data-full-width-responsive="true">
+            </ins>
+
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
             {data && <Posts posts={JSON.parse(data.posts)} />}
           </div>
           <div className="invisible lg:visible lg:h-screen lg:w-2/12 lg:px-5 lg:mt-5">
