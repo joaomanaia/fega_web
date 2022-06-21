@@ -21,14 +21,6 @@ declare global {
 }
 */
 
-const atOptions = {
-  key: "7d89d5ca1a942416f5c88e78454f8797",
-  format: "iframe",
-  height: 250,
-  width: 300,
-  params: {},
-};
-
 const Home: NextPage = () => {
   const { data } = useSWR("/api/posts/initialPosts", fetcher);
 
@@ -41,33 +33,8 @@ const Home: NextPage = () => {
       : dispatch(setAppThemeNight());
   }, [dispatch]);
 
-  const banner = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!banner.current?.firstChild) {
-      const conf = document.createElement("script");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `//www.highperformancedformats.com/${atOptions.key}/invoke.js`;
-      conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`;
-
-      if (banner.current) {
-        banner.current.append(conf);
-        banner.current.append(script);
-      }
-    }
-  }, []);
-
   return (
     <>
-      {/**
-       * <Script
-        async
-        data-cfasync="false"
-        src="//pl17382411.profitablecpmgate.com/c5b172d55e6697e12ec8cfa82c53b329/invoke.js"
-      />
-       */}
-
       <Script
         async
         crossOrigin="anonymous"
@@ -119,10 +86,6 @@ const Home: NextPage = () => {
           <div className="flex-grow h-screen lg:flex overflow-y-auto lg:overflow-y-hidden scrollbar-hide">
             <div className="mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-5">
               <CreatePost />
-              <div 
-                className="w-full flex items-center justify-center mt-4"
-                ref={banner}>
-              </div>
             </div>
             <div className="flex-grow pb-64 lg:overflow-y-auto scrollbar-hide">
               <ins

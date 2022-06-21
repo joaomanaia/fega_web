@@ -58,22 +58,6 @@ const getCameraById = (id: string): CameraType | null => {
   return cameras.find((camera) => camera.id === id) || null;
 };
 
-const mobileAtOptions = {
-  key: "341396a7884711005a6398b9692b8010",
-  format: "iframe",
-  height: 90,
-  width: 728,
-  params: {},
-};
-
-const largeAtOptions = {
-  key: "23e33e3141df253ea6172f7ffaa0bee3",
-  format: "iframe",
-  height: 600,
-  width: 160,
-  params: {},
-};
-
 const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
   const router = useRouter();
 
@@ -86,11 +70,7 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
   );
 
   const appThemeLight = useSelector(selectAppThemeLight);
-  const dispatch = useDispatch();
-
-  const [windowMobile, setWindowMobile] = useState(false)
-
-  const banner = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     localStorage.getItem("theme") === "light"
@@ -114,36 +94,6 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
 
     return () => {};
   }, [selectedCamera.id]);
-
-  useEffect(() => {
-      const onResize = () => {
-          setWindowMobile(window.innerWidth < 1024)
-      }
-
-      window.addEventListener('resize', onResize)
-      onResize()
-
-      return () => {
-          window.removeEventListener("resize", onResize)
-      }
-  }, [])
-
-  useEffect(() => {
-    if (!banner.current?.firstChild) {
-      const atOptions = windowMobile ? mobileAtOptions : largeAtOptions
-
-      const conf = document.createElement("script");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `//www.highperformancedformats.com/${atOptions.key}/invoke.js`;
-      conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`;
-
-      if (banner.current) {
-        banner.current.append(conf);
-        banner.current.append(script);
-      }
-    }
-  }, [windowMobile]);
 
   return (
     <div
@@ -282,10 +232,7 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
               </div>
             )}
 
-            <div
-              className="md:h-screen flex items-center justify-center"
-              ref={banner}
-            ></div>
+            <div className="md:h-screen flex items-center justify-center"></div>
           </div>
         </div>
       </div>
