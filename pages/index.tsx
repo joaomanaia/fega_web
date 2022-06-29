@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       <Script
         async
         crossOrigin="anonymous"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5667420475984673"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1252178942585714"
       />
 
       <div
