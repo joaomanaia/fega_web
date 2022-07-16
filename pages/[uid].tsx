@@ -1,21 +1,17 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from "../app/appSlice";
-import Header from "../components/header/Header";
 import UserType from "../components/user/UserType";
 import { firestoreAdmin } from "../firebase-admin";
+import {} from "@material/material-color-utilities/dist/blend/blend"
 
 type UserPageType = {
     user: string
 }
 
 const UserPage: NextPage<UserPageType> = ({user}) => {
-
-    const [videoState, setVideoState] = useState(false)
-
     const appThemeLight = useSelector(selectAppThemeLight)
     const dispatch = useDispatch()
 

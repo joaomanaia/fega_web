@@ -4,12 +4,18 @@ import { auth, uiConfig } from '../firebase'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAppThemeLight, setAppThemeLight, setAppThemeNight } from '../app/appSlice'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import pt from '../locales/pt'
 import en from '../locales/en'
+// import { useTheme } from '@mui/material'
+// import { ThemeSchemeContext } from '../app/theme/context/ThemeSchemeContext'
 
 const Auth: NextPage = () => {
+
+    // const theme = useTheme()
+    // const { themeScheme } = useContext(ThemeSchemeContext)
+    // const { light, dark, tones } = themeScheme
 
     const appThemeLight = useSelector(selectAppThemeLight)
 

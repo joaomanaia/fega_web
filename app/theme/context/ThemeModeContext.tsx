@@ -2,7 +2,7 @@
  * Thanks to @ZakAlbert
  */
 import { FC, ReactNode, createContext, useState, useEffect } from "react"
-import { M3ThemeMode } from "../material3/M3Theme"
+import { M3ThemeMode } from "../m3/M3Theme"
 
 export interface ThemeModeContextType {
   themeMode: M3ThemeMode

@@ -2,7 +2,7 @@
  * Thanks to @ZakAlbert
  */
 import { createContext, FC, ReactNode, useEffect, useState } from "react"
-import { M3ThemeScheme, DEFAULT_M3_THEME_SCHEME } from "../material3/M3Theme"
+import { M3ThemeScheme, DEFAULT_M3_THEME_SCHEME } from "../m3/M3Theme"
 import {
   argbFromHex,
   hexFromArgb,
