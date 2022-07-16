@@ -1,7 +1,7 @@
 import { collection, doc, getDocs, limit, query, setDoc, where } from "firebase/firestore"
 import { useState } from "react"
 import { firestore } from "../../firebase"
-import { getPairUid } from "../../utils/user"
+import { getPairUid } from "../../utils/user-utils"
 import UserComponent from "../user/UserComponent"
 import UserType from "../user/UserType"
 import PrivateChatType from "./PrivateChatType"

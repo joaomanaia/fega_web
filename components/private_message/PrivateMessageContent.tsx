@@ -1,65 +1,63 @@
-import { BackspaceIcon, PaperAirplaneIcon } from "@heroicons/react/solid";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { auth, database } from "../../firebase";
-import PrivateMessageItem from "./PrivateMessageItem";
-import { onValue, ref, push, set, child } from "firebase/database";
-import { getPairUid } from "../../utils/user";
-import ScrollableFeed from "react-scrollable-feed";
-import UserType from "../user/UserType";
+import { BackspaceIcon, PaperAirplaneIcon } from "@heroicons/react/solid"
+import Image from "next/image"
+import { useEffect, useState } from "react"
+import { auth, database } from "../../firebase"
+import PrivateMessageItem from "./PrivateMessageItem"
+import { onValue, ref, push, set, child } from "firebase/database"
+import { getPairUid } from "../../utils/user-utils"
+import ScrollableFeed from "react-scrollable-feed"
+import UserType from "../user/UserType"
 
 type PrivateMessageContentType = {
-  user: UserType;
-  windowMobile: boolean;
-  onBackClick: () => void;
-};
+  user: UserType
+  windowMobile: boolean
+  onBackClick: () => void
+}
 
 type PrivateMessageType = {
-  id: string;
-  pairUid: string;
-  sender: string;
-  receiver: string;
-  text: string;
-};
+  id: string
+  pairUid: string
+  sender: string
+  receiver: string
+  text: string
+}
 
 const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
   user,
   windowMobile,
   onBackClick,
 }) => {
-  const [textMessage, setTextMessage] = useState("");
+  const [textMessage, setTextMessage] = useState("")
 
-  const [messages, setMessages] = useState<PrivateMessageType[]>([]);
+  const [messages, setMessages] = useState<PrivateMessageType[]>([])
 
-  const localUserUid = auth.currentUser?.uid || "";
-  const pairUid = getPairUid(localUserUid, user.uid);
+  const localUserUid = auth.currentUser?.uid || ""
+  const pairUid = getPairUid(localUserUid, user.uid)
 
   useEffect(() => {
-    const messagesRef = ref(database, `privateMessages/${pairUid}/messages`);
+    const messagesRef = ref(database, `privateMessages/${pairUid}/messages`)
 
     onValue(messagesRef, (snapshot) => {
-      const newMessages: PrivateMessageType[] = [];
+      const newMessages: PrivateMessageType[] = []
 
       snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
+        const childData = childSnapshot.val()
         const message: PrivateMessageType = {
           id: childData.id,
           pairUid: childData.pairUid,
           sender: childData.sender,
           receiver: childData.receiver,
           text: childData.text,
-        };
-        newMessages.push(message);
-      });
+        }
+        newMessages.push(message)
+      })
 
-      setMessages(newMessages);
-    });
-  }, [pairUid]);
+      setMessages(newMessages)
+    })
+  }, [pairUid])
 
   const sendMessage = () => {
-    const messageRef = push(
-      child(ref(database), `privateMessages/${pairUid}/messages`)
-    );
+    const messageRef = push(child(ref(database), `privateMessages/${pairUid}/messages`))
 
     const message: PrivateMessageType = {
       id: messageRef.key || "",
@@ -67,12 +65,12 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
       sender: localUserUid || "",
       receiver: user.uid,
       text: textMessage,
-    };
+    }
 
-    set(messageRef, message);
+    set(messageRef, message)
 
-    setTextMessage("");
-  };
+    setTextMessage("")
+  }
 
   return (
     <div
@@ -94,29 +92,26 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
           </div>
         )}
         <div className="relative h-11 w-11">
-          <Image
-            className="rounded-full"
-            layout="fill"
-            src={user.photoUrl}
-            alt={user.name}
-          />
+          <Image className="rounded-full" layout="fill" src={user.photoUrl} alt={user.name} />
         </div>
         <p className="text-dark dark:text-white text-lg">{user.name}</p>
       </div>
-      <ScrollableFeed className="w-full space-y-3 p-4 grow scrollbar-hide">
-        {messages.map((message) => (
-          <PrivateMessageItem
-            key={message.id}
-            text={message.text}
-            byLocalUser={message.sender === localUserUid}
-          />
-        ))}
+      <ScrollableFeed>
+        <div className="w-full space-y-3 p-4 grow scrollbar-hide">
+          {messages.map((message) => (
+            <PrivateMessageItem
+              key={message.id}
+              text={message.text}
+              byLocalUser={message.sender === localUserUid}
+            />
+          ))}
+        </div>
       </ScrollableFeed>
       <div className="flex items-center m-2 space-x-2 mb-12 lg:mb-2">
         <form
           onSubmit={(e) => {
-            e.preventDefault();
-            sendMessage();
+            e.preventDefault()
+            sendMessage()
           }}
           className="rounded-2xl bg-gray-300 dark:bg-gray-700 flex-grow"
         >
@@ -129,7 +124,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
             onChange={(e) => setTextMessage(e.target.value)}
           />
         </form>
-        {(textMessage.length > 0 && textMessage.length < 512) && (
+        {textMessage.length > 0 && textMessage.length < 512 && (
           <div
             onClick={() => sendMessage()}
             className="w-11 h-11 p-2 rounded-2xl bg-gray-300 dark:bg-gray-700 cursor-pointer text-black dark:text-white"
@@ -139,7 +134,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PrivateMessageContent;
+export default PrivateMessageContent
