@@ -66,14 +66,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      <ThemeModeProvider>
-        <ThemeSchemeProvider>
-          <M3ThemeProvider>
-            <CssBaseline enableColorScheme />
-            <Component {...pageProps} />
-          </M3ThemeProvider>
-        </ThemeSchemeProvider>
-      </ThemeModeProvider>
+      <Component {...pageProps} />
     </Provider>
   )
 }
@@ -86,6 +79,7 @@ return (
       <ThemeModeProvider>
         <ThemeSchemeProvider>
           <M3ThemeProvider>
+            <CssBaseline enableColorScheme />
             <Component {...pageProps} />
           </M3ThemeProvider>
         </ThemeSchemeProvider>
