@@ -1,6 +1,3 @@
-/**
- * Thanks to @ZakAlbert
- */
 import { ThemeOptions } from "@mui/material/styles"
 import { Theme, lighten, darken, alpha } from "@mui/material"
 
@@ -19,7 +16,6 @@ interface M3Tone {
   99: string
   100: string
 }
-
 export interface M3ThemeTones {
   primary: M3Tone
   secondary: M3Tone
@@ -213,7 +209,6 @@ declare module "@mui/material/styles/createPalette" {
     shadow: string
   }
 }
-
 declare module "@mui/material/styles/createTheme" {
   interface ThemeOptions {
     tones?: M3ThemeTones

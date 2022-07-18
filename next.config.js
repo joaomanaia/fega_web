@@ -4,7 +4,8 @@ module.exports = {
   images: {
     domains: [
       'lh3.googleusercontent.com',
-      'firebasestorage.googleapis.com'
+      'firebasestorage.googleapis.com',
+      'www.notebookcheck.info'
     ],
   },
   env: {

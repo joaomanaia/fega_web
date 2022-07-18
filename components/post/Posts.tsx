@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -104,12 +105,12 @@ function Posts({posts}: PostsPropsTypes) {
                     onPostDeleted={removePostFromList}/>
             ))}
 
-            <button 
+            <Button 
                 onClick={getNextPostsPaging}
-                className="bg-white dark:bg-gray-800 mt-4 rounded-full p-2 hover:bg-gray-50 dark:hover:bg-gray-700
-                    dark:text-white text-lg">
+                variant="contained"
+                sx={{ marginTop: 4 }}>
                 {t.load_more}
-            </button>
+            </Button>
         </div>
     )
 }

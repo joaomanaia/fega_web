@@ -1,14 +1,11 @@
-/**
- * Thanks to @ZakAlbert
- */
 import React, { FC, useContext, useMemo } from "react"
 
-import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { ThemeProvider, createTheme, useTheme } from "@mui/material/styles"
 import { getDesignTokens, getThemedComponents } from "./M3Theme"
 import { deepmerge } from "@mui/utils"
 import { ThemeModeContext } from "../context/ThemeModeContext"
 import { ThemeSchemeContext } from "../context/ThemeSchemeContext"
-import { CssBaseline } from "@mui/material"
+import { CssBaseline, responsiveFontSizes } from "@mui/material"
 
 interface M3ThemeProps {
   children: React.ReactNode
@@ -20,14 +17,18 @@ const M3ThemeProvider: FC<M3ThemeProps> = ({ children }) => {
 
   const m3Theme = useMemo(() => {
     const designTokens = getDesignTokens(themeMode, themeScheme[themeMode], themeScheme.tones)
-    let newM3Theme = createTheme(designTokens)
-    newM3Theme = deepmerge(newM3Theme, getThemedComponents(newM3Theme))
+    const newM3Theme = createTheme(designTokens)
+    const newM3ThemeReponsiveFontSizes = responsiveFontSizes(newM3Theme)
+    const newM3ThemeThemedComponents = deepmerge(newM3ThemeReponsiveFontSizes, getThemedComponents(newM3ThemeReponsiveFontSizes))
 
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", themeScheme[themeMode].surface)
+    if (typeof window !== "undefined") {
+      window
+        ?.document
+        ?.querySelector('meta[name="theme-color"]')
+        ?.setAttribute("content", themeScheme[themeMode].surface)
+    }
 
-    return newM3Theme
+    return newM3ThemeThemedComponents
   }, [themeMode, themeScheme])
 
   return (

@@ -9,13 +9,15 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "find './node_modules/@material/material-color-utilities/' -type f -name '*.js' -exec sed -Ei '/(import|export)/s/(\\x22|\\x27)(\\.{1,2}\\/(([[:alnum:]_-]+|\\.{2})\\/)*[[:alnum:]_-]+)(\\.js)?\\1/\\1\\2.js\\1/g' {} +"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@heroicons/react": "^1.0.6",
     "@material/material-color-utilities": "^0.1.2",
+    "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@tailwindui/react": "^0.1.1",
