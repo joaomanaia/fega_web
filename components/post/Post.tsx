@@ -9,8 +9,8 @@ import { PostType } from "./Posts"
 import Link from "next/link"
 import { fetcher } from "../../utils/data"
 import { defaultImgUrl } from "../../utils/common"
-import { Avatar, Card, Typography } from "@mui/material"
-import { useTheme } from "@emotion/react"
+import { Avatar, Card, Typography, useTheme  } from "@mui/material"
+
 
 type PostParams = {
   post: PostType
