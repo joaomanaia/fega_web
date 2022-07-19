@@ -871,6 +871,14 @@ export const getThemedComponents = (theme: Theme): { components: Theme["componen
           },
         },
       },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: "28px",
+            padding: "16px"
+          }
+        }
+      }
     },
   }
 }

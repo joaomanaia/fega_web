@@ -79,7 +79,7 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
   }
 
   return (
-    <Card variant="elevation">
+    <Card variant="elevation" className="h-fit" >
       <CardContent>
         <Typography gutterBottom variant="h5">
           {t.create_post}

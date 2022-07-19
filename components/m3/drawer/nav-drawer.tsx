@@ -69,12 +69,12 @@ const categories: NavDrawerItemGroup[] = [
       {
         title: "Private Messages",
         icon: <GroupRounded />,
-        pathName: "/groups",
+        pathName: "/messages",
       },
       {
         title: "Groups",
         icon: <MessageRounded />,
-        pathName: "/messages",
+        pathName: "/groups",
       },
     ],
   },

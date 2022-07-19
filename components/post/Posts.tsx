@@ -1,5 +1,16 @@
-import { Button } from "@mui/material"
-import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter } from "firebase/firestore"
+import { Button, List } from "@mui/material"
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  startAfter,
+} from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { auth, firestore } from "../../firebase"
@@ -8,111 +19,105 @@ import pt from "../../locales/pt"
 import Post from "./Post"
 
 type PostsPropsTypes = {
-    posts: PostType[]
+  posts: PostType[]
 }
 
 export type PostType = {
-    id: string
-    uid: string
-    timestamp: string,
-    data: PostDataType
+  id: string
+  uid: string
+  timestamp: string
+  data: PostDataType
 }
 
 type PostDataType = {
-    description: string
-    images: string[]
+  description: string
+  images: string[]
 }
 
-function Posts({posts}: PostsPropsTypes) {
+const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
+  const [postsPaging, setPostsPaging] = useState<Array<PostType>>(posts)
+  const [lastPostVisible, setLastPostVisible] =
+    useState<QueryDocumentSnapshot<DocumentData> | null>(null)
 
-    const [postsPaging, setPostsPaging] = useState<Array<PostType>>(posts)
-    const [lastPostVisible, setLastPostVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null)
+  async function getLastPostSnap() {
+    const nextPost = doc(firestore, "publications", postsPaging[postsPaging.length - 1].id)
+    return await getDoc(nextPost)
+  }
 
-    async function getLastPostSnap() {
-        const nextPost = doc(
-            firestore,
-            "publications", 
-            postsPaging[postsPaging.length - 1].id
-        )
-        return await getDoc(nextPost)
-    }
+  async function getNextPostsPaging() {
+    const nextPostSnap = lastPostVisible === null ? await getLastPostSnap() : lastPostVisible
 
-    async function getNextPostsPaging() {
-        const nextPostSnap = lastPostVisible === null ? await getLastPostSnap() : lastPostVisible
-
-        const postsNextQuery = query(
-            collection(firestore, "publications"), 
-            orderBy("timestamp", "desc"),
-            startAfter(nextPostSnap),
-            limit(10)
-        )
-
-        const postsSnap = await getDocs(postsNextQuery)
-
-        const newList = postsPaging
-        postsSnap.docs.forEach(doc => {
-            const dbPost = doc.data()
-            const newPost: PostType = {
-                id: dbPost.id,
-                uid: dbPost.uid,
-                timestamp: dbPost.timestamp.toDate().toLocaleString(),
-                data: {
-                  description: dbPost.data.description,
-                  images: dbPost.data.images,
-                }
-              }
-            newList.push(newPost)
-        })
-        setPostsPaging(newList)
-
-        if(!postsSnap.empty) {
-            setLastPostVisible(postsSnap.docs[postsSnap.docs.length - 1])
-        }
-    }
-
-    function removePostFromList(removePost: PostType) {
-        setPostsPaging(postsPaging.filter((post) => post != removePost))
-    }
-
-    const [userIsAdmin, setUserIsAmin] = useState(false)
-
-    async function getAuthUserAdmin(uid: string) {
-        const adminRef = doc(firestore, "admins", uid)
-        const adminSnap = await getDoc(adminRef)
-        setUserIsAmin(adminSnap.exists() && adminSnap.data().admin === true)
-    }
-
-    useEffect(() => {
-        const uid = auth.currentUser?.uid
-        if (uid !== undefined) {
-            getAuthUserAdmin(uid)
-        }
-    }, [])
-
-    const router = useRouter()
-    const { locale } = router
-    const t = locale === "en" ? en : pt
-
-    console.log(postsPaging)
-    
-    return (
-        <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
-            {postsPaging?.map(post => (
-                <Post
-                    key={post.id}
-                    post={post}
-                    userIsAdmin={userIsAdmin}
-                    onPostDeleted={removePostFromList}/>
-            ))}
-
-            <Button 
-                onClick={getNextPostsPaging}
-                variant="contained"
-                sx={{ marginTop: 4 }}>
-                {t.load_more}
-            </Button>
-        </div>
+    const postsNextQuery = query(
+      collection(firestore, "publications"),
+      orderBy("timestamp", "desc"),
+      startAfter(nextPostSnap),
+      limit(10)
     )
+
+    const postsSnap = await getDocs(postsNextQuery)
+
+    const newList = postsPaging
+    postsSnap.docs.forEach((doc) => {
+      const dbPost = doc.data()
+      const newPost: PostType = {
+        id: dbPost.id,
+        uid: dbPost.uid,
+        timestamp: dbPost.timestamp.toDate().toLocaleString(),
+        data: {
+          description: dbPost.data.description,
+          images: dbPost.data.images,
+        },
+      }
+      newList.push(newPost)
+    })
+    setPostsPaging(newList)
+
+    if (!postsSnap.empty) {
+      setLastPostVisible(postsSnap.docs[postsSnap.docs.length - 1])
+    }
+  }
+
+  function removePostFromList(removePost: PostType) {
+    setPostsPaging(postsPaging.filter((post) => post != removePost))
+  }
+
+  const [userIsAdmin, setUserIsAmin] = useState(false)
+
+  async function getAuthUserAdmin(uid: string) {
+    const adminRef = doc(firestore, "admins", uid)
+    const adminSnap = await getDoc(adminRef)
+    setUserIsAmin(adminSnap.exists() && adminSnap.data().admin === true)
+  }
+
+  useEffect(() => {
+    const uid = auth.currentUser?.uid
+    if (uid !== undefined) {
+      getAuthUserAdmin(uid)
+    }
+  }, [])
+
+  const router = useRouter()
+  const { locale } = router
+  const t = locale === "en" ? en : pt
+
+  return (
+    <div className="flex flex-col mx-auto max-w-md md:max-w-lg lg:max-w-2xl px-4 scrollbar-hide">
+      <List className="space-y-4">
+        {postsPaging?.map((post) => (
+          <Post
+            key={post.id}
+            post={post}
+            userIsAdmin={userIsAdmin}
+            onPostDeleted={removePostFromList}
+          />
+        ))}
+      </List>
+
+      <Button onClick={getNextPostsPaging} variant="contained" sx={{ marginTop: 4 }}>
+        {t.load_more}
+      </Button>
+    </div>
+  )
 }
 
 export default Posts
