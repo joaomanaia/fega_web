@@ -17,6 +17,7 @@ import {
   DialogContentText,
   DialogTitle,
   Fab,
+  List,
   TextField,
 } from "@mui/material"
 import { AddRounded } from "@mui/icons-material"
@@ -86,6 +87,7 @@ const PrivateMessageList: NextPage = () => {
             <Fab
               variant="extended"
               color="primary"
+              sx={{ width: "100%" }}
               onClick={() => setCreateChatPopupVisible(!createChatPopupVisible)}
             >
               <AddRounded sx={{ mr: 1 }} />
@@ -100,6 +102,7 @@ const PrivateMessageList: NextPage = () => {
               />
             </Dialog>
 
+            <List>
             {chats.map((chat) => (
               <PrivateMessageUser
                 key={chat.uid}
@@ -109,6 +112,7 @@ const PrivateMessageList: NextPage = () => {
                 onClick={(user) => setSelectedChat(user)}
               />
             ))}
+            </List>
           </div>
         )}
         {selectedChat && (

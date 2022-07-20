@@ -1,18 +1,27 @@
+import { Box, Card, Typography, useTheme } from "@mui/material"
+
 type PrivateMessageItemType = {
-    text: string,
-    byLocalUser: boolean
+  text: string
+  byLocalUser: boolean
 }
 
-const PrivateMessageItem: React.FC<PrivateMessageItemType> = ({text, byLocalUser}) => {
-    return (
-        <div className={`flex w-full ${byLocalUser ? "justify-end"  : "justify-start"}`}>
-            <div className={`p-3 rounded-2xl ${byLocalUser ? "bg-red-700 dark:bg-red-800" : "bg-gray-100 dark:bg-gray-700"}`}>
-                <p className={`max-w-prose ${byLocalUser ? "text-white text-right" : "text-black dark:text-white text-right"}`}>
-                    {text}
-                </p>
-            </div>
-        </div>
-    )
+const PrivateMessageItem: React.FC<PrivateMessageItemType> = ({ text, byLocalUser }) => {
+  const { palette } = useTheme()
+
+  return (
+    <Box className={`flex w-full ${byLocalUser ? "justify-end" : "justify-start"}`}>
+      <Card
+        variant={byLocalUser ? "filled" : "outlined"}
+        className="p-3 rounded-2xl"
+        sx={{
+          bgcolor: byLocalUser ? palette.primary.main : palette.surfaceVariant.main,
+          color: byLocalUser ? palette.onPrimary.main : palette.onSurfaceVariant.main,
+        }}
+      >
+        <Typography variant="body1">{text}</Typography>
+      </Card>
+    </Box>
+  )
 }
 
 export default PrivateMessageItem

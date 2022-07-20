@@ -93,13 +93,6 @@ const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
               >
                 Fega
               </Typography>
-
-              <Fade in={trigger}>
-                <Typography color="inherit" sx={{ ml: 1, fontSize: 16, fontWeight: 500 }}>
-                  <ArrowIcon sx={{ fontSize: 12, marginRight: 1 }} color="inherit" />
-                  {typeof document !== "undefined" ? document.title : routerName}
-                </Typography>
-              </Fade>
             </Grid>
 
             <Grid item xs></Grid>

@@ -30,6 +30,8 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
 
   const [searchText, setSearchText] = useState("")
 
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null)
+
   const searchUser = async () => {
     const usersRef = collection(firestore, "users")
     const q = query(usersRef, where("name", "==", searchText), limit(10))
@@ -51,14 +53,16 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
     setSearchText("")
   }
 
-  const createPrivateChat = async (user: UserType) => {
-    const pairUid = getPairUid(authUid, user.uid)
+  const createPrivateChat = async () => {
+    if (selectedUser === null) return
+
+    const pairUid = getPairUid(authUid, selectedUser.uid)
 
     const privateChatsDoc = doc(firestore, "privateChats", pairUid)
 
     const privateChat: PrivateChatType = {
       pairUid: pairUid,
-      uids: [authUid, user.uid],
+      uids: [authUid, selectedUser.uid],
     }
 
     await setDoc(privateChatsDoc, privateChat, {
@@ -87,9 +91,18 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
           variant="outlined"
         />
 
+        <Button sx={{ marginY: 2, marginRight: 1 }} variant="contained" onClick={searchUser}>
+          Seach user
+        </Button>
+
         <List>
           {users.map((user) => (
-            <UserComponent key={user.uid} user={user} onClick={() => createPrivateChat(user)} />
+            <UserComponent
+              key={user.uid}
+              user={user}
+              selected={selectedUser === user}
+              onClick={() => setSelectedUser(user)}
+            />
           ))}
         </List>
       </DialogContent>
@@ -97,8 +110,9 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
         <Button variant="text" onClick={onCloseDialog}>
           Close
         </Button>
-        <Button variant="text" onClick={searchUser}>Seach user</Button>
-        <Button variant="text">Create</Button>
+        <Button disabled={selectedUser === null} variant="text" onClick={createPrivateChat}>
+          Create
+        </Button>
       </DialogActions>
     </>
   )

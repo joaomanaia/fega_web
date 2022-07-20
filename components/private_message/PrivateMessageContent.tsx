@@ -1,4 +1,4 @@
-import { BackspaceIcon, PaperAirplaneIcon } from "@heroicons/react/solid"
+import { PaperAirplaneIcon } from "@heroicons/react/solid"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { auth, database } from "../../firebase"
@@ -7,6 +7,9 @@ import { onValue, ref, push, set, child } from "firebase/database"
 import { getPairUid } from "../../utils/user-utils"
 import ScrollableFeed from "react-scrollable-feed"
 import UserType from "../user/UserType"
+import { alpha, Box, IconButton, List, Typography, useTheme } from "@mui/material"
+import { BackspaceRounded } from "@mui/icons-material"
+import Avatar from "../m3/avatar"
 
 type PrivateMessageContentType = {
   user: UserType
@@ -33,6 +36,8 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
 
   const localUserUid = auth.currentUser?.uid || ""
   const pairUid = getPairUid(localUserUid, user.uid)
+
+  const { palette } = useTheme()
 
   useEffect(() => {
     const messagesRef = ref(database, `privateMessages/${pairUid}/messages`)
@@ -73,67 +78,79 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
   }
 
   return (
-    <div
-      className={`w-full h-full bg-white flex flex-col ${
-        windowMobile ? "dark:bg-gray-900" : "dark:bg-gray-800 rounded-2xl"
-      }`}
+    <Box
+      bgcolor={alpha(palette.surfaceVariant.main, 0.25)}
+      className="w-full h-full flex flex-col rounded-2xl"
     >
-      <div
-        className={`w-full flex bg-gray-100 dark:bg-gray-800 border-b-2 border-gray-200 dark:border-gray-700 ${
-          windowMobile ? "rounded-none" : "rounded-t-2xl"
-        } items-center space-x-2 p-2`}
+      <Box
+        bgcolor={palette.surfaceVariant.main}
+        color={palette.onSurfaceVariant.main}
+        className="w-full flex rounded-2xl items-center space-x-2 p-3"
       >
         {windowMobile && (
-          <div
-            onClick={() => onBackClick()}
-            className="rounded-full cursor-pointer w-10 h-10 p-2 hover:bg-gray-300 dark:hover:bg-gray-700 text-dark dark:text-white"
-          >
-            <BackspaceIcon />
-          </div>
+          <IconButton onClick={() => onBackClick()}>
+            <BackspaceRounded />
+          </IconButton>
         )}
-        <div className="relative h-11 w-11">
-          <Image className="rounded-full" layout="fill" src={user.photoUrl} alt={user.name} />
-        </div>
-        <p className="text-dark dark:text-white text-lg">{user.name}</p>
-      </div>
+
+        <Avatar name={user.name} photoUrl={user.photoUrl} />
+
+        <Typography variant="subtitle1">{user.name}</Typography>
+      </Box>
+
       <ScrollableFeed>
-        <div className="w-full space-y-3 p-4 grow scrollbar-hide">
-          {messages.map((message) => (
-            <PrivateMessageItem
-              key={message.id}
-              text={message.text}
-              byLocalUser={message.sender === localUserUid}
-            />
-          ))}
-        </div>
+        <List>
+          <div className="w-full space-y-3 p-4 grow scrollbar-hide">
+            {messages.map((message) => (
+              <PrivateMessageItem
+                key={message.id}
+                text={message.text}
+                byLocalUser={message.sender === localUserUid}
+              />
+            ))}
+          </div>
+        </List>
       </ScrollableFeed>
+
       <div className="flex items-center m-2 space-x-2 mb-12 lg:mb-2">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            sendMessage()
+        <Box
+          className="rounded-2xl w-full"
+          sx={{
+            bgcolor: palette.surfaceVariant.main,
+            color: palette.onSurfaceVariant.main,
           }}
-          className="rounded-2xl bg-gray-300 dark:bg-gray-700 flex-grow"
         >
-          <input
-            className="bg-transparent p-2 border-0 outline-none text-dark dark:text-white text-lg w-full"
-            type="text"
-            value={textMessage}
-            maxLength={512}
-            placeholder={`Message to ${user.name}`}
-            onChange={(e) => setTextMessage(e.target.value)}
-          />
-        </form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              sendMessage()
+            }}
+            className="rounded-2xl flex-grow"
+          >
+            <input
+              className="bg-transparent p-2 border-0 outline-none text-dark text-lg w-full"
+              type="text"
+              value={textMessage}
+              maxLength={512}
+              placeholder={`Message to ${user.name}`}
+              onChange={(e) => setTextMessage(e.target.value)}
+            />
+          </form>
+        </Box>
         {textMessage.length > 0 && textMessage.length < 512 && (
-          <div
+          <Box
             onClick={() => sendMessage()}
-            className="w-11 h-11 p-2 rounded-2xl bg-gray-300 dark:bg-gray-700 cursor-pointer text-black dark:text-white"
+            sx={{
+              bgcolor: palette.surfaceVariant.main,
+              color: palette.onSurfaceVariant.main,
+            }}
+            className="w-11 h-11 p-2 rounded-2xl cursor-pointer"
           >
             <PaperAirplaneIcon />
-          </div>
+          </Box>
         )}
       </div>
-    </div>
+    </Box>
   )
 }
 
