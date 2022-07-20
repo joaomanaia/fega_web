@@ -10,7 +10,7 @@ import UserType from "./UserType"
 
 type UserComponentType = {
   user: UserType
-  selected: boolean
+  selected?: boolean
   onClick: () => void
 }
 
