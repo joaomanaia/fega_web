@@ -103,15 +103,15 @@ const PrivateMessageList: NextPage = () => {
             </Dialog>
 
             <List>
-            {chats.map((chat) => (
-              <PrivateMessageUser
-                key={chat.uid}
-                uid={chat.uid}
-                lastMessage={chat.lastMessage}
-                selected={selectedChat?.uid === chat.uid}
-                onClick={(user) => setSelectedChat(user)}
-              />
-            ))}
+              {chats.map((chat) => (
+                <PrivateMessageUser
+                  key={chat.uid}
+                  uid={chat.uid}
+                  lastMessage={chat.lastMessage}
+                  selected={selectedChat?.uid === chat.uid}
+                  onClick={(user) => setSelectedChat(user)}
+                />
+              ))}
             </List>
           </div>
         )}

@@ -5,6 +5,10 @@ import {
   Fade,
   Grid,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Toolbar,
   Tooltip,
   Typography,
@@ -21,6 +25,7 @@ import { useRouter } from "next/router"
 import { ThemeModeContext } from "../../../app/theme/context/ThemeModeContext"
 import { ThemeSchemeContext } from "../../../app/theme/context/ThemeSchemeContext"
 import { auth } from "../../../firebase"
+import { ExitToAppRounded, PersonRounded } from "@mui/icons-material"
 
 interface HeaderProps {
   onDrawerToggle?: () => void
@@ -30,26 +35,32 @@ interface HeaderProps {
 interface HeaderAuthUserProps {
   avatar?: string
   name?: string
+  loggedIn: boolean
 }
 
 const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
   const { palette } = useTheme()
   const router = useRouter()
 
-  const [routerName, setRouterName] = useState("")
-
   const headerAuthUser: HeaderAuthUserProps = {
     avatar: auth?.currentUser?.photoURL || undefined,
-    name: auth?.currentUser?.displayName || undefined
+    name: auth?.currentUser?.displayName || undefined,
+    loggedIn: auth?.currentUser !== null
   }
-
-  useEffect(() => {
-    const name = router.asPath.replace("/", "")
-    setRouterName(name == "" ? "Home" : name)
-  }, [router.asPath])
 
   const { toggleThemeMode, resetThemeMode } = useContext(ThemeModeContext)
   const { generateThemeScheme, resetThemeScheme } = useContext(ThemeSchemeContext)
+
+  const [avatarMenuAnchorEl, setAvatarMenuAnchorEl] = useState<null | HTMLElement>(null)
+  const avatarMenuOpen = Boolean(avatarMenuAnchorEl)
+
+  const handleAvatarMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAvatarMenuAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAvatarMenuAnchorEl(null)
+  }
 
   const changeThemeMode = () => toggleThemeMode()
 
@@ -69,10 +80,22 @@ const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
     target: window ? window() : undefined,
   })
 
-  const onAvatarClicked = () => {
+  const onAvatarClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
     const isLoggedIn = auth.currentUser !== null
 
-    router.push(isLoggedIn ? `/${auth.currentUser?.uid}` : "/auth")
+    if (isLoggedIn) {
+      handleAvatarMenuClick(event)
+    } else {
+      router.push("/auth")
+    }
+  }
+
+  const navigateToAuthUserProfile = () => {
+    router.push(`/${auth.currentUser?.uid}`)
+  }
+
+  const signOut = () => {
+    auth.signOut()
   }
 
   return (
@@ -123,7 +146,15 @@ const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
 
             <Grid item>
               <Tooltip title={headerAuthUser.name || "Make login"}>
-                <IconButton color="inherit" sx={{ p: 0.5 }} onClick={onAvatarClicked}>
+                <IconButton
+                  id="avatar-button"
+                  aria-controls={avatarMenuOpen ? "avatar-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={avatarMenuOpen ? "true" : undefined}
+                  aria-label="avatar"
+                  color="inherit" 
+                  sx={{ p: 0.5 }}
+                  onClick={onAvatarClicked}>
                   <Avatar
                     alt={headerAuthUser.name}
                     src={headerAuthUser.avatar}
@@ -137,6 +168,29 @@ const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
                 </IconButton>
               </Tooltip>
             </Grid>
+
+            <Menu
+              id="avatar-menu"
+              anchorEl={avatarMenuAnchorEl}
+              open={avatarMenuOpen}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "settings-button",
+              }}>
+              <MenuItem onClick={navigateToAuthUserProfile}>
+                <ListItemIcon>
+                  <PersonRounded fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>View profile</ListItemText>
+              </MenuItem>
+
+              <MenuItem onClick={signOut}>
+                <ListItemIcon>
+                  <ExitToAppRounded fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Sign out</ListItemText>
+              </MenuItem>
+            </Menu>
           </Grid>
         </Toolbar>
       </AppBar>

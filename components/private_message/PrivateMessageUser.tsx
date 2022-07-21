@@ -2,13 +2,13 @@ import useSWR from "swr"
 import { fetcher } from "../../utils/data"
 import UserType from "../user/UserType"
 import {
-  Avatar,
   ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
   useTheme,
 } from "@mui/material"
+import Avatar from "../m3/avatar"
 
 type PrivateMessageUserType = {
   uid: string
@@ -36,16 +36,8 @@ const PrivateMessageUser: React.FC<PrivateMessageUserType> = ({
         onClick={() => onClick(user)}>
         <ListItemAvatar>
           <Avatar
-            src={user?.photoUrl}
-            alt={user?.name}
-            aria-label="image"
-            sx={{
-              background: palette.secondary.main,
-              color: palette.onSecondary.main,
-            }}
-          >
-            {user?.name}
-          </Avatar>
+            photoUrl={user?.photoUrl}
+            name={user?.name} />
         </ListItemAvatar>
 
         <ListItemText primary={user?.name} secondary={lastMessage} />
