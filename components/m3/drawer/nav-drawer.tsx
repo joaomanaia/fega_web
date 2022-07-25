@@ -21,6 +21,7 @@ import {
   GroupRounded,
   CameraAltRounded
 } from "@mui/icons-material"
+import { auth } from "../../../firebase"
 
 export interface NavDrawerProps extends DrawerProps {}
 
@@ -28,6 +29,7 @@ interface NavDrawerItem {
   title: string
   icon: any
   pathName: string
+  requireAuth?: boolean
 }
 
 interface NavDrawerItemGroup {
@@ -70,11 +72,13 @@ const categories: NavDrawerItemGroup[] = [
         title: "Private Messages",
         icon: <GroupRounded />,
         pathName: "/messages",
+        requireAuth: true
       },
       {
         title: "Groups",
         icon: <MessageRounded />,
         pathName: "/groups",
+        requireAuth: true
       },
     ],
   },
@@ -89,8 +93,12 @@ const NavDrawer: FC<NavDrawerProps> = (props) => {
   const routerPathSubString = routerAsPath.substring(0, routerAsPath.lastIndexOf("?"))
   const routerPath = routerPathSubString == "" ? routerAsPath : routerPathSubString
 
-  const handleListItemClick = (path: string) => {
-    router.push(path)
+  const isLoggedIn = auth.currentUser !== null
+
+  const handleListItemClick = (navDrawerItem: NavDrawerItem) => {
+    const goToAuth = navDrawerItem.requireAuth && !isLoggedIn
+    
+    router.push(goToAuth ? "/auth" : navDrawerItem.pathName)
   }
   
   return (
@@ -110,14 +118,14 @@ const NavDrawer: FC<NavDrawerProps> = (props) => {
                 </ListItemText>
               </ListItem>
             )}
-            {children.map(({ title, icon, pathName }) => (
-              <ListItem key={title}>
+            {children.map((navDrawerItem) => (
+              <ListItem key={navDrawerItem.title}>
                 <ListItemButton
-                  selected={routerPath == pathName}
-                  onClick={() => handleListItemClick(pathName)}
+                  selected={routerPath == navDrawerItem.pathName}
+                  onClick={() => handleListItemClick(navDrawerItem)}
                 >
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{title}</ListItemText>
+                  <ListItemIcon>{navDrawerItem.icon}</ListItemIcon>
+                  <ListItemText>{navDrawerItem.title}</ListItemText>
                 </ListItemButton>
               </ListItem>
             ))}

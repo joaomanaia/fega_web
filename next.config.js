@@ -3,9 +3,9 @@ module.exports = {
   reactStrictMode: true,
   images: {
     domains: [
-      'lh3.googleusercontent.com',
-      'firebasestorage.googleapis.com',
-      'www.notebookcheck.info'
+      "lh3.googleusercontent.com",
+      "firebasestorage.googleapis.com",
+      "www.notebookcheck.info",
     ],
   },
   env: {
@@ -24,6 +24,6 @@ module.exports = {
   },
   i18n: {
     locales: ["en", "pt"],
-    defaultLocale: "pt"
+    defaultLocale: "pt",
   }
 }

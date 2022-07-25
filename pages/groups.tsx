@@ -11,7 +11,7 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore"
 import GroupItem from "../components/group/GroupItem"
 import GroupMessageContent from "../components/group/GroupMessageContent"
 import RootLayout from "../components/layout/root-layout"
-import { Dialog, Fab, List } from "@mui/material"
+import { Dialog, Fab, List, Snackbar } from "@mui/material"
 import { AddRounded } from "@mui/icons-material"
 
 type GroupsType = {}
@@ -26,6 +26,12 @@ const Groups: NextPage = () => {
   const [createGroupPopupVisible, setCreateGroupPopupVisible] = useState(false)
 
   const [windowMobile, setWindowMobile] = useState(false)
+
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false)
+
+  const handleSuccessSnackbarClose = () => {
+    setSuccessSnackbarOpen(false)
+  }
 
   useEffect(() => {
     const onResize = () => {
@@ -94,10 +100,20 @@ const Groups: NextPage = () => {
               >
                 <CreateGroupPopup
                   authUid={authUid || ""}
-                  onGroupCreated={() => setCreateGroupPopupVisible(false)}
+                  onGroupCreated={() => {
+                    setSuccessSnackbarOpen(true)
+                    setCreateGroupPopupVisible(false)
+                  }}
                   onCloseDialog={() => setCreateGroupPopupVisible(false)}
                 />
               </Dialog>
+
+              <Snackbar
+                open={successSnackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSuccessSnackbarClose}
+                message="Group created"
+              />
 
               <List>
                 {groups.map((group) => (

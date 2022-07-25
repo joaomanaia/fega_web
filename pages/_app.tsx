@@ -14,7 +14,7 @@ import "../styles/firebaseui-styling.global.css"
 import ThemeModeProvider from "../app/theme/context/ThemeModeContext"
 import ThemeSchemeProvider from "../app/theme/context/ThemeSchemeContext"
 import M3ThemeProvider from "../app/theme/m3/M3ThemeProvider"
-import { CssBaseline, ThemeProvider } from "@mui/material"
+import { CssBaseline } from "@mui/material"
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Destructure user, loading, and error out of the hook.
@@ -71,6 +71,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
       />
 
+      <link rel="manifest" href="manifest.json" />
+
       <Provider store={store}>
         <ThemeModeProvider>
           <ThemeSchemeProvider>
@@ -86,21 +88,3 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp
-
-// FIXME: ThemeSchemeProvider, M3ThemeProvider error
-// Cannot find module '/mnt/sdb1/projects/fega_web/node_modules/@material/material-color-utilities/dist/blend/blend' imported from /mnt/sdb1/projects/fega_web/node_modules/@material/material-color-utilities/dist/index.js
-
-/*
-return (
-    <Provider store={store}>
-      <ThemeModeProvider>
-        <ThemeSchemeProvider>
-          <M3ThemeProvider>
-            <CssBaseline enableColorScheme />
-            <Component {...pageProps} />
-          </M3ThemeProvider>
-        </ThemeSchemeProvider>
-      </ThemeModeProvider>
-    </Provider>
-  )
-  */

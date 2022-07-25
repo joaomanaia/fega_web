@@ -5,8 +5,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemButton,
-  ListItemText,
-  useTheme,
+  ListItemText
 } from "@mui/material"
 import Avatar from "../m3/avatar"
 
@@ -26,8 +25,6 @@ const PrivateMessageUser: React.FC<PrivateMessageUserType> = ({
   const { data } = useSWR(`/api/user/getUserByUid?uid=${uid}`, fetcher)
 
   const user: UserType = data !== undefined ? JSON.parse(data.user) : {}
-
-  const { palette } = useTheme()
 
   return (
     <ListItem disablePadding>
