@@ -14,7 +14,7 @@ const UserUidComponent: React.FC<UserUidComponentType> = ({ uid, selected, onCli
 
   const user: UserType = data !== undefined ? JSON.parse(data.user) : {}
 
-  return <UserComponent user={user} selected={selected} onClick={() => onClick()} />
+  return <UserComponent user={user} selected={selected} onClick={onClick} />
 }
 
 export default UserUidComponent

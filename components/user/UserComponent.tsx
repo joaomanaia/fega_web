@@ -18,7 +18,7 @@ const UserComponent: React.FC<UserComponentType> = ({ user, selected, onClick })
   const { palette } = useTheme()
 
   return (
-    <ListItem onClick={() => onClick()} disablePadding>
+    <ListItem onClick={onClick} disablePadding>
       <ListItemButton selected={selected}>
         <ListItemAvatar>
           <Avatar

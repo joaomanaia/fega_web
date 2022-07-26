@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-import { PaperAirplaneIcon } from "@heroicons/react/solid"
 import { useEffect, useState } from "react"
 import { auth, database } from "../../firebase"
 import { onValue, ref, push, set, child } from "firebase/database"
@@ -20,7 +18,7 @@ import {
   ListItemText,
   Dialog,
 } from "@mui/material"
-import { BackspaceRounded, MoreVertRounded } from "@mui/icons-material"
+import { BackspaceRounded, MoreVertRounded, SendRounded } from "@mui/icons-material"
 import Avatar from "../m3/avatar"
 import AddUserGroupPopup from "./options_popup/AddUserGroupPopup"
 import RemoveUserGroupPopup from "./options_popup/RemoveUserGroupPopup"
@@ -213,9 +211,9 @@ const GroupMessageContent: React.FC<GroupMessageContentType> = ({
                 bgcolor: palette.surfaceVariant.main,
                 color: palette.onSurfaceVariant.main,
               }}
-              className="w-11 h-11 p-2 rounded-2xl cursor-pointer"
+              className="w-11 h-11 p-2 flex items-center rounded-2xl cursor-pointer"
             >
-              <PaperAirplaneIcon />
+              <SendRounded />
             </Box>
           )}
         </div>

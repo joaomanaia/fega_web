@@ -1,8 +1,6 @@
 import { NextPage } from "next"
 import Head from "next/head"
 import { useEffect, useState } from "react"
-import BottomNav from "../components/bottomNavigation/BottomNav"
-import LeftSidebarMenu from "../components/leftSidebar/LeftSidebarMenu"
 import React from "react"
 import CreateGroupPopup from "../components/group/CreateGroupPopup"
 import { auth, firestore } from "../firebase"

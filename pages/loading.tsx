@@ -1,9 +1,10 @@
-import type { NextPage } from 'next'
+import { Typography } from "@mui/material"
+import type { NextPage } from "next"
 
 const Loading: NextPage = () => {
   return (
-    <div className="w-screen h-screen bg-white dark:bg-gray-900">
-        <p className="text-3xl">Loading...</p>
+    <div className="w-screen h-screen flex items-center justify-center">
+      <Typography variant="h1">Loading...</Typography>
     </div>
   )
 }

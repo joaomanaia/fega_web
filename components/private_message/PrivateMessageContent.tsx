@@ -1,5 +1,3 @@
-import { PaperAirplaneIcon } from "@heroicons/react/solid"
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import { auth, database } from "../../firebase"
 import PrivateMessageItem from "./PrivateMessageItem"
@@ -8,7 +6,7 @@ import { getPairUid } from "../../utils/user-utils"
 import ScrollableFeed from "react-scrollable-feed"
 import UserType from "../user/UserType"
 import { alpha, Box, IconButton, List, Typography, useTheme } from "@mui/material"
-import { BackspaceRounded } from "@mui/icons-material"
+import { BackspaceRounded, SendRounded } from "@mui/icons-material"
 import Avatar from "../m3/avatar"
 
 type PrivateMessageContentType = {
@@ -144,9 +142,9 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
               bgcolor: palette.surfaceVariant.main,
               color: palette.onSurfaceVariant.main,
             }}
-            className="w-11 h-11 p-2 rounded-2xl cursor-pointer"
+            className="w-11 h-11 p-2 flex items-center rounded-2xl cursor-pointer"
           >
-            <PaperAirplaneIcon />
+            <SendRounded />
           </Box>
         )}
       </div>

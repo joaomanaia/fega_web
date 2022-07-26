@@ -40,8 +40,6 @@ const AddUserGroupPopup: React.FC<AddUserGroupPopupType> = ({
 
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null)
 
-  console.log("s")
-
   const addUser = async () => {
     if (selectedUser === null) return
 

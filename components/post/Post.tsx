@@ -5,7 +5,7 @@ import { auth, firestore } from "../../firebase"
 import { deleteDoc, doc } from "firebase/firestore"
 import { PostType } from "./Posts"
 import { fetcher } from "../../utils/data"
-import { defaultImgUrl } from "../../utils/common"
+import { defaultImgUrl } from "../../app/common"
 import {
   Avatar,
   Card,
