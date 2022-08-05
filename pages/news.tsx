@@ -9,12 +9,18 @@ const News: NextPage = () => {
   const [news, setNews] = useState<NewsItemType[]>([
     {
       id: "0",
+      title: "Parabéns João Neves",
+      description: "O maior bêbado da ega faz anos!",
+      mainImage: "https://firebasestorage.googleapis.com/v0/b/infinitepower-ipc.appspot.com/o/joaoneves2.jpg?alt=media&token=fbf37dd5-491e-400b-a30a-1cd3328245f6"
+    },
+    {
+      id: "1",
       title: "Atualização de design",
       description: "O fega foi atualizado para o material you!",
       mainImage: "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc3/unnamed85.png",
     },
     {
-      id: "1",
+      id: "2",
       title: "Novo Ano 2022",
       description:
         "Novo ano e muitas novidades em breve no Fega. Um feliz novo ano 2022 para todos.",
