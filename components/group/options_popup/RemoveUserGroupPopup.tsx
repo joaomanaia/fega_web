@@ -1,68 +1,115 @@
-import { arrayRemove, collection, doc, getDoc, getDocs, limit, query, runTransaction, updateDoc, where } from "firebase/firestore"
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  List,
+} from "@mui/material"
+import { arrayRemove, doc, getDoc, updateDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { auth, firestore } from "../../../firebase"
 import UserUidComponent from "../../user/UserUidComponent"
 import GroupType from "../GroupType"
 
 type RemoveUserGroupPopupType = {
-    groupId: string
-    onUserRemoved: () => void
+  groupId: string
+  onUserRemoved: () => void
+  onCloseDialog: () => void
 }
 
-const RemoveUserGroupPopup: React.FC<RemoveUserGroupPopupType> = ({groupId, onUserRemoved}) => {    
+const RemoveUserGroupPopup: React.FC<RemoveUserGroupPopupType> = ({
+  groupId,
+  onUserRemoved,
+  onCloseDialog,
+}) => {
+  const [users, setUsers] = useState<string[]>([])
+
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
+
+  console.log(Date.now())
+
+  useEffect(() => {
+    const searchUsers = async () => {
+      const groupRef = doc(firestore, "groups", groupId)
+      const groupDoc = await getDoc(groupRef)
+
+      const group: GroupType = {
+        id: groupDoc.id,
+        groupName: groupDoc?.data()?.groupName,
+        groupImage: groupDoc?.data()?.groupImage,
+        participants: groupDoc?.data()?.participants,
+      }
+
+      setUsers(group.participants)
+    }
+
+    searchUsers()
+  }, [groupId])
+
+  const selectUser = (uid: string) => {
+    if (auth.currentUser?.uid === uid) return
+
+    if (selectedUsers.includes(uid)) {
+      unselectUser(uid)
+      return
+    }
+    const newUsers = selectedUsers.concat(uid)
+
+    setSelectedUsers(newUsers)
+  }
+
+  const unselectUser = (uid: string) => {
+    const newUsers = selectedUsers.filter(user => user !== uid)
+    setSelectedUsers(newUsers)
+  }
+
+  const removeUser = async () => {
+    if (auth.currentUser?.uid === undefined) return
+
+    if (selectedUsers.includes(auth.currentUser?.uid)) {
+      alert("You can't remove yourself!")
+      return
+    }
 
     const groupRef = doc(firestore, "groups", groupId)
 
-    const [users, setUsers] = useState<string[]>([])
-    
-    useEffect(() => {
-        const searchUsers = async () => {
-            const groupDoc = await getDoc(groupRef)
-    
-            const group: GroupType = {
-                id: groupDoc.id,
-                groupName: groupDoc?.data()?.groupName,
-                groupImage: groupDoc?.data()?.groupImage,
-                participants: groupDoc?.data()?.participants
-            }
-    
-            setUsers(group.participants)
-        }
+    await updateDoc(groupRef, {
+      participants: arrayRemove(...selectedUsers),
+    })
 
-        searchUsers()
-    }, [groupRef])
+    onUserRemoved()
+  }
 
-    const removeUser = async (uid: string) => {
+  return (
+    <>
+      <DialogTitle>Remove user</DialogTitle>
+      <DialogContent>
+        <DialogContentText paddingBottom="16px">
+          Selecione as pessoas para remover do grupo.
+        </DialogContentText>
 
-        if (uid === auth.currentUser?.uid) {
-            alert("You can't remove yourself!")
-            return
-        }
-
-        await updateDoc(
-            groupRef,
-            {
-                participants: arrayRemove(uid)
-            }
-        )
-
-        onUserRemoved()
-    }
-    
-    return (
-        <div className="z-50 absolute shadow-lg p-3 rounded-2xl bg-gray-100 dark:bg-gray-700 w-72 ml-4 mt-16">
-            <p className="text-xl text-black dark:text-white mb-4">
-                Remove User
-            </p>
-
-            {users.map((uid) => (
-                <UserUidComponent
-                    key={uid}
-                    uid={uid}
-                    onClick={() => removeUser(uid)}/>
-            ))}
-        </div>
-    )
+        <List>
+          {users.map((uid) => (
+            <UserUidComponent
+              key={uid}
+              uid={uid}
+              selected={selectedUsers.includes(uid)}
+              onClick={() => selectUser(uid)}
+            />
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="text" onClick={onCloseDialog}>
+          Close
+        </Button>
+        <Button disabled={selectedUsers === []} variant="text" onClick={() => removeUser()}>
+          Remove
+        </Button>
+      </DialogActions>
+    </>
+  )
 }
 
 export default RemoveUserGroupPopup

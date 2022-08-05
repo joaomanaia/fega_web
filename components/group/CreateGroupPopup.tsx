@@ -1,90 +1,125 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@mui/material"
 import { collection, doc, setDoc } from "firebase/firestore"
 import { useState } from "react"
 import { firestore } from "../../firebase"
-import { defaultImgUrl } from "../../utils/common"
+import { defaultImgUrl } from "../../app/common"
+import Avatar from "../m3/avatar"
 import GroupType from "./GroupType"
 
 type CreateGroupPopupItemType = {
-    authUid: string,
-    onGroupCreated: () => void
+  authUid: string
+  onGroupCreated: () => void
+  onCloseDialog: () => void
 }
 
-const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({ authUid, onGroupCreated }) => {
+const CreateGroupPopup: React.FC<CreateGroupPopupItemType> = ({
+  authUid,
+  onGroupCreated,
+  onCloseDialog,
+}) => {
+  const [groupName, setGroupName] = useState("")
+  const [groupNameError, setGroupNameError] = useState<string | null>("")
 
-    const [groupName, setGroupName] = useState("")
+  const [groupImage, setGroupImage] = useState("")
 
-    const [groupImage, setGroupImage] = useState("")
+  const createGroup = async () => {
+    setGroupNameError(null)
 
-    const createGroup = async () => {
-        const groupDoc = doc(collection(firestore, 'groups'))
-
-        const group: GroupType = {
-            id: groupDoc.id,
-            groupName: groupName,
-            groupImage: groupImage || defaultImgUrl,
-            participants: [authUid]
-        }
-
-        setGroupName("")
-        setGroupImage("")
-
-        await setDoc(groupDoc, group)
-
-        onGroupCreated()
+    if (groupName === "") {
+        setGroupNameError("Group name is null")
+        return
     }
 
-    // Function to solve problem with security
-    // Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
-    const setGroupImageFormatted = (value: string): string => {
-        return value
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;")
+    const groupDoc = doc(collection(firestore, "groups"))
+
+    const group: GroupType = {
+      id: groupDoc.id,
+      groupName: groupName,
+      groupImage: groupImage || defaultImgUrl,
+      participants: [authUid],
     }
 
-    return (
-        <div className="z-50 absolute shadow-lg p-3 space-y-8 rounded-2xl bg-white dark:bg-gray-800 w-72">
-            <form className="flex flex-col">
-                <p className="text-black dark:text-white text-2xl">
-                    Create group
-                </p>
-                <input
-                    className="w-full py-2 px-4 mt-4 rounded-2xl bg-gray-100 dark:bg-gray-700 outline-none text-black dark:text-white text-lg"
-                    type="text"
-                    placeholder="Group Name"
-                    maxLength={32}
-                    onChange={(e) => setGroupName(e.target.value)}
-                    value={groupName} />
-                <div className="w-full flex items-center justify-center space-x-2 mt-2">
-                    {groupImage.length > 0 && (
-                        <img
-                            className="w-10 h-10 rounded-2xl"
-                            src={groupImage}
-                            alt="Group Image" />
-                    )}
-                    <input
-                        className="w-full py-2 px-4 rounded-2xl bg-gray-100 dark:bg-gray-700 outline-none text-black dark:text-white text-lg"
-                        type="link"
-                        placeholder="Image Link (Optional)"
-                        onChange={(e) => setGroupImageFormatted(e.target.value)}
-                        value={groupImage} />
-                </div>
-                <button
-                    onClick={(e) => {
-                        e.preventDefault()
-                        createGroup()
-                    }}
-                    disabled={(!groupName && groupName.length > 32)}
-                    className="rounded-full bg-red-700 mt-6 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
-                        text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                    Create
-                </button>
-            </form>
-        </div>
-    )
+    setGroupName("")
+    setGroupImage("")
+
+    await setDoc(groupDoc, group)
+
+    onGroupCreated()
+  }
+
+  // Function to solve problem with security
+  // Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
+  const setGroupImageFormatted = (value: string) => {
+    const newValue = value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+
+    setGroupImage(newValue)
+  }
+
+  return (
+    <>
+      <DialogTitle>Create group</DialogTitle>
+
+      <DialogContent>
+        <DialogContentText paddingBottom="16px">
+          Crie um grupo para falar com varias pessoas.
+        </DialogContentText>
+
+        <Box component="form">
+          <TextField
+            onChange={(e) => setGroupName(e.target.value)}
+            error={groupName === ""}
+            helperText={groupNameError}
+            autoFocus
+            required
+            margin="dense"
+            id="group-name"
+            label="Group name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            sx={{ marginBottom: 1 }}
+          />
+
+          <Box className="flex items-center space-x-2">
+            <Avatar photoUrl={groupImage} name={groupName} />
+
+            <TextField
+              onChange={(e) => setGroupImageFormatted(e.target.value)}
+              margin="dense"
+              id="group-image-url"
+              label="Group image url (optional)"
+              type="url"
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+        </Box>
+      </DialogContent>
+
+      <DialogActions>
+        <Button variant="text" onClick={onCloseDialog}>
+          Close
+        </Button>
+        <Button disabled={groupName === null} variant="text" onClick={createGroup}>
+          Create
+        </Button>
+      </DialogActions>
+    </>
+  )
 }
 
 export default CreateGroupPopup

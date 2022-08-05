@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+
+const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
   images: {
     domains: [
-      'lh3.googleusercontent.com',
-      'firebasestorage.googleapis.com'
+      "lh3.googleusercontent.com",
+      "firebasestorage.googleapis.com",
+      "www.notebookcheck.info",
     ],
   },
   env: {
@@ -23,6 +26,8 @@ module.exports = {
   },
   i18n: {
     locales: ["en", "pt"],
-    defaultLocale: "pt"
+    defaultLocale: "pt",
   }
 }
+
+module.exports = nextConfig

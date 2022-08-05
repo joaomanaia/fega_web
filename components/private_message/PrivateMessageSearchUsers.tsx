@@ -1,93 +1,121 @@
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  List,
+  TextField,
+} from "@mui/material"
 import { collection, doc, getDocs, limit, query, setDoc, where } from "firebase/firestore"
 import { useState } from "react"
 import { firestore } from "../../firebase"
-import { getPairUid } from "../../utils/user"
+import { getPairUid } from "../../utils/user-utils"
 import UserComponent from "../user/UserComponent"
 import UserType from "../user/UserType"
 import PrivateChatType from "./PrivateChatType"
 
 type PrivateMessageSearchUsersItemType = {
-    authUid: string,
-    onChatCreated: () => void
+  authUid: string
+  onChatCreated: () => void
+  onCloseDialog: () => void
 }
 
-const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = ({authUid, onChatCreated}) => {
+const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = ({
+  authUid,
+  onChatCreated,
+  onCloseDialog,
+}) => {
+  const [users, setUsers] = useState<UserType[]>([])
 
-    const [users, setUsers] = useState<UserType[]>([])
+  const [searchText, setSearchText] = useState("")
 
-    const [searchText, setSearchText] = useState("")
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null)
 
-    const searchUser = async () => {
-        const usersRef = collection(firestore, "users")
-        const q = query(usersRef, where("name", "==", searchText), limit(10))
+  const searchUser = async () => {
+    const usersRef = collection(firestore, "users")
+    const q = query(usersRef, where("name", "==", searchText), limit(10))
 
-        const querySnapshot = await getDocs(q)
+    const querySnapshot = await getDocs(q)
 
-        const newUsers: UserType[] = []
-        querySnapshot.forEach((doc) => {
-            newUsers.push({
-                name: doc.data().name,
-                photoUrl: doc.data().photoUrl,
-                uid: doc.data().uid,
-                banned: doc.data().banned,
-            })
-        })
+    const newUsers: UserType[] = []
+    querySnapshot.forEach((doc) => {
+      newUsers.push({
+        name: doc.data().name,
+        photoUrl: doc.data().photoUrl,
+        uid: doc.data().uid,
+        banned: doc.data().banned,
+      })
+    })
 
-        setUsers(newUsers)
+    setUsers(newUsers)
 
-        setSearchText("")
+    setSearchText("")
+  }
+
+  const createPrivateChat = async () => {
+    if (selectedUser === null) return
+
+    const pairUid = getPairUid(authUid, selectedUser.uid)
+
+    const privateChatsDoc = doc(firestore, "privateChats", pairUid)
+
+    const privateChat: PrivateChatType = {
+      pairUid: pairUid,
+      uids: [authUid, selectedUser.uid],
     }
 
-    const createPrivateChat = async (user: UserType) => {
-        const pairUid = getPairUid(authUid, user.uid)
+    await setDoc(privateChatsDoc, privateChat, {
+      merge: true,
+    })
 
-        const privateChatsDoc = doc(firestore, 'privateChats', pairUid)
+    onChatCreated()
+  }
 
-        const privateChat: PrivateChatType = {
-            pairUid: pairUid,
-            uids: [authUid, user.uid]
-        }
+  return (
+    <>
+      <DialogTitle>Create chat</DialogTitle>
+      <DialogContent>
+        <DialogContentText paddingBottom="16px">
+          Para criar um chat com alguem insira o nome da pessoa.
+        </DialogContentText>
 
-        await setDoc(
-            privateChatsDoc,
-            privateChat,
-            {
-                merge: true
-            }
-        )
-        
-        onChatCreated()
-    }
+        <TextField
+          onChange={(e) => setSearchText(e.target.value)}
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Person name"
+          type="text"
+          fullWidth
+          variant="outlined"
+        />
 
-    return (
-        <div className="z-50 absolute shadow-lg p-3 space-y-2 rounded-2xl bg-white dark:bg-gray-800 w-72">
-            <form className="flex flex-col space-y-2">
-                <input 
-                    className="w-full py-2 px-4 rounded-2xl bg-gray-100 dark:bg-gray-700 outline-none text-black dark:text-white text-lg"
-                    type="text"
-                    placeholder="Search name"
-                    onChange={(e) => setSearchText(e.target.value)}
-                    value={searchText} />
-                <button
-                    onClick={(e) => {
-                        e.preventDefault()
-                        searchUser()
-                    }}
-                    disabled={!searchText}
-                    className="mt-4 rounded-full bg-red-700 hover:bg-red-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 
-                        text-white disabled:text-gray-400 text-lg p-1 disabled:cursor-not-allowed">
-                        Search
-                </button>
-            </form>
-            
-            {users.map(user => (
-                <UserComponent
-                    key={user.uid}
-                    user={user}
-                    onClick={() => createPrivateChat(user)}/>
-            ))}
-        </div>
-    )
+        <Button sx={{ marginY: 2, marginRight: 1 }} variant="contained" onClick={searchUser}>
+          Seach user
+        </Button>
+
+        <List>
+          {users.map((user) => (
+            <UserComponent
+              key={user.uid}
+              user={user}
+              selected={selectedUser === user}
+              onClick={() => setSelectedUser(user)}
+            />
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="text" onClick={onCloseDialog}>
+          Close
+        </Button>
+        <Button disabled={selectedUser === null} variant="text" onClick={createPrivateChat}>
+          Create
+        </Button>
+      </DialogActions>
+    </>
+  )
 }
 
 export default PrivateMessageSearchUsers
