@@ -6,7 +6,7 @@ import {
   ListItemText,
   useTheme,
 } from "@mui/material"
-import UserType from "./UserType"
+import UserType from "../../types/UserType"
 
 type UserComponentType = {
   user: UserType

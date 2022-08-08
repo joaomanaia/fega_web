@@ -2,7 +2,7 @@ import { Box, Card, Typography, useTheme } from "@mui/material"
 import useSWR from "swr"
 import { fetcher } from "../../utils/data"
 import Avatar from "../m3/avatar"
-import UserType from "../user/UserType"
+import UserType from "../../types/UserType"
 
 type GroupMessageItemType = {
   text: string

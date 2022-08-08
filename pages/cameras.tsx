@@ -1,13 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
 import { Button, Menu, MenuItem, Typography } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import ReactPlayer from "react-player"
+import { useState } from "react"
 import RootLayout from "../components/layout/root-layout"
+import { useRouter } from "next/router"
+import VideoComponent from "../components/cameras/VideoComponent"
+import ImageVideoComponent from "../components/cameras/ImageVideoComponent"
 
-type CameraType = {
+interface CameraType {
   id: string
   link: string
   name: string
@@ -16,7 +16,7 @@ type CameraType = {
   imagePoster: string
 }
 
-type UserPageType = {
+export interface CamerasPageType {
   selectedCamera: CameraType
 }
 
@@ -49,18 +49,12 @@ const cameras: CameraType[] = [
   },
 ]
 
-const getCameraById = (id: string): CameraType | null => {
+export const getCameraById = (id: string): CameraType | null => {
   return cameras.find((camera) => camera.id === id) || null
 }
 
-const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
+const CamerasPage: NextPage<CamerasPageType> = ({ selectedCamera }) => {
   const router = useRouter()
-
-  const [videoState, setVideoState] = useState(false)
-
-  const [cameraImageUrl, setCameraImageUrl] = useState<string>(
-    getCameraById("hoteloslo-coimbra")?.link || ""
-  )
 
   const [anchorCamerasButton, setAnchorCamerasButton] = useState<null | HTMLElement>(null)
   const openCamerasPopup = Boolean(anchorCamerasButton)
@@ -68,26 +62,8 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
   const handleCamerasButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorCamerasButton(event.currentTarget)
   }
-  const handleCamerasPopupClose = () => {
-    setAnchorCamerasButton(null)
-  }
 
-  useEffect(() => {
-    if (selectedCamera.id == "hoteloslo-coimbra") {
-      const cameraUrl = getCameraById("hoteloslo-coimbra")?.link
-
-      if (cameraUrl === undefined) return () => {}
-
-      const intervalId = setInterval(() => {
-        const url = cameraUrl + "?date=" + new Date().getTime()
-        setCameraImageUrl(url)
-      }, 500)
-
-      return () => clearInterval(intervalId)
-    }
-
-    return () => {}
-  }, [selectedCamera.id])
+  const handleCamerasPopupClose = () => setAnchorCamerasButton(null)
 
   return (
     <RootLayout>
@@ -96,27 +72,19 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
         <meta name="description" content={selectedCamera.description} />
 
         {/**  Facebook Meta Tags */}
-        <meta property="og:url" content={`https://fega.ml${router.asPath}`} />
+        <meta property="og:url" content={`https://fega.ml/cameras?id=${selectedCamera.id}`} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={selectedCamera.name} />
         <meta property="og:description" content={selectedCamera.description} />
-        {selectedCamera.video ? (
-          <meta property="og:image" content={selectedCamera.imagePoster} />
-        ) : (
-          <meta property="og:image" content={cameraImageUrl} />
-        )}
+        <meta property="og:image" content={selectedCamera.imagePoster} />
 
         {/**  Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="fega.ml" />
-        <meta property="twitter:url" content={`https://fega.ml${router.asPath}`} />
+        <meta property="twitter:url" content={`https://fega.ml/cam?id=${selectedCamera.id}`} />
         <meta name="twitter:title" content={selectedCamera.name} />
         <meta name="twitter:description" content={selectedCamera.description} />
-        {selectedCamera.video ? (
-          <meta property="twitter:image" content={selectedCamera.imagePoster} />
-        ) : (
-          <meta property="twitter:image" content={cameraImageUrl} />
-        )}
+        <meta property="twitter:image" content={selectedCamera.imagePoster} />
       </Head>
 
       <div itemScope itemType="https://schema.org/Place" className="w-full h-full">
@@ -127,7 +95,9 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
           {selectedCamera.name}
         </Typography>
 
-        <Typography variant="body1" paddingBottom={4}>{selectedCamera.description}</Typography>
+        <Typography variant="body1" paddingBottom={4}>
+          {selectedCamera.description}
+        </Typography>
 
         <Button
           id="cameras-button"
@@ -162,40 +132,9 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
 
         <div className="w-full h-full flex flex-col md:flex-row">
           {selectedCamera.video ? (
-            <div
-              itemScope
-              itemType="https://schema.org/VideoObject"
-              className="h-full w-full pb-32"
-            >
-              <meta itemProp="name" content={selectedCamera.name} />
-              <meta itemProp="description" content={selectedCamera.description} />
-              <meta itemProp="thumbnailUrl" content={selectedCamera.imagePoster} />
-              <meta itemProp="uploadDate" content="07/05/2022" />
-              <meta itemProp="contentUrl" content={selectedCamera.link} />
-
-              <ReactPlayer
-                volume={0}
-                muted={true}
-                playing={videoState}
-                onReady={() => {
-                  setVideoState(true)
-                }}
-                controls={true}
-                width="100%"
-                height="100%"
-                url={selectedCamera.link}
-              />
-            </div>
+            <VideoComponent selectedCamera={selectedCamera} />
           ) : (
-            <div itemScope itemType="https://schema.org/VideoObject" className="h-full w-full pb-32 pt-8">
-              <meta itemProp="name" content={selectedCamera.name} />
-              <meta itemProp="description" content={selectedCamera.description} />
-              <meta itemProp="thumbnailUrl" content={selectedCamera.imagePoster} />
-              <meta itemProp="uploadDate" content="07/05/2022" />
-              <meta itemProp="contentUrl" content={selectedCamera.link} />
-
-              <img src={cameraImageUrl} alt={selectedCamera.name} className="w-full h-full" />
-            </div>
+            <ImageVideoComponent selectedCamera={selectedCamera} />
           )}
 
           <div className="md:h-screen flex items-center justify-center"></div>
@@ -205,7 +144,7 @@ const UserPage: NextPage<UserPageType> = ({ selectedCamera }) => {
   )
 }
 
-export default UserPage
+export default CamerasPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query.id

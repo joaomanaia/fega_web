@@ -1,12 +1,11 @@
 import type { AppProps } from "next/app"
 import { useAuthState } from "react-firebase-hooks/auth"
-import { app, auth, firestore } from "../firebase"
+import { app, auth } from "../firebase"
 import { useEffect } from "react"
 import { useRouter } from "next/dist/client/router"
-import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics"
+import { getAnalytics, logEvent } from "firebase/analytics"
 import { getPerformance } from "firebase/performance"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check"
-import { doc, getDoc, setDoc } from "firebase/firestore"
 import "../styles/globals.css"
 import "../styles/firebaseui-styling.global.css"
 import ThemeModeProvider from "../app/theme/context/ThemeModeContext"
@@ -15,22 +14,30 @@ import M3ThemeProvider from "../app/theme/m3/M3ThemeProvider"
 import { CssBaseline } from "@mui/material"
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // Destructure user, loading, and error out of the hook.
   const [authUser] = useAuthState(auth)
 
   const routers = useRouter()
 
   useEffect(() => {
-    const analytics = getAnalytics(app)
     getPerformance(app)
+  }, [])
+
+  useEffect(() => {
     const appCheck = initializeAppCheck(app, {
       provider: new ReCaptchaV3Provider("6Ld3sg8cAAAAAG87yUa03kZIYSarmr7EFvnjivK7"),
       isTokenAutoRefreshEnabled: true,
     })
+  }, [])
+  
+
+  useEffect(() => {
+    const analytics = getAnalytics(app)
 
     const logEventPage = (url: string) => {
-      logEvent(analytics, "screen_view")
-      setCurrentScreen(analytics, url)
+      logEvent(analytics, 'screen_view', {
+        firebase_screen: url,
+        firebase_screen_class: url
+      })
     }
 
     routers.events.on("routeChangeComplete", logEventPage)
@@ -42,31 +49,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [routers.events])
 
-  const loadDBUser = async () => {
-    if (authUser !== null && authUser !== undefined) {
-      const userRef = doc(firestore, "users", authUser.uid)
-      const userSnap = await getDoc(userRef)
-
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          banned: false,
-          name: authUser?.displayName || "Fega User",
-          photoUrl: authUser?.photoURL,
-          uid: authUser?.uid,
-        })
+  useEffect(() => {
+    const loadDBUser = async () => {
+      if (authUser !== null && authUser !== undefined) {
+        const user = await fetch(`/api/user/verifyUserDB?uid=${authUser.uid}&displayName=${authUser.displayName}&photoURL=${authUser.photoURL}`)
+        console.log(user.status)
       }
     }
-  }
-
-  loadDBUser()
+  
+    loadDBUser()
+  }, [authUser])
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      />
-
       <link rel="manifest" href="manifest.json" />
 
       <ThemeModeProvider>

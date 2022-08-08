@@ -12,7 +12,7 @@ import { useState } from "react"
 import { firestore } from "../../firebase"
 import { getPairUid } from "../../utils/user-utils"
 import UserComponent from "../user/UserComponent"
-import UserType from "../user/UserType"
+import UserType from "../../types/UserType"
 import PrivateChatType from "./PrivateChatType"
 
 type PrivateMessageSearchUsersItemType = {
