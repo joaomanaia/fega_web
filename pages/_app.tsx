@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { app, auth } from "../firebase"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { useRouter } from "next/dist/client/router"
 import { getAnalytics, logEvent } from "firebase/analytics"
 import { getPerformance } from "firebase/performance"
@@ -28,15 +28,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       isTokenAutoRefreshEnabled: true,
     })
   }, [])
-  
 
   useEffect(() => {
     const analytics = getAnalytics(app)
 
     const logEventPage = (url: string) => {
-      logEvent(analytics, 'screen_view', {
+      logEvent(analytics, "screen_view", {
         firebase_screen: url,
-        firebase_screen_class: url
+        firebase_screen_class: url,
       })
     }
 
@@ -52,11 +51,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const loadDBUser = async () => {
       if (authUser !== null && authUser !== undefined) {
-        const user = await fetch(`/api/user/verifyUserDB?uid=${authUser.uid}&displayName=${authUser.displayName}&photoURL=${authUser.photoURL}`)
+        const user = await fetch(
+          `/api/user/verifyUserDB?uid=${authUser.uid}&displayName=${authUser.displayName}&photoURL=${authUser.photoURL}`
+        )
         console.log(user.status)
       }
     }
-  
+
     loadDBUser()
   }, [authUser])
 

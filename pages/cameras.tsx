@@ -53,8 +53,11 @@ export const getCameraById = (id: string): CameraType | null => {
   return cameras.find((camera) => camera.id === id) || null
 }
 
-const CamerasPage: NextPage<CamerasPageType> = ({ selectedCamera }) => {
+const CamerasPage: NextPage<CamerasPageType> = () => {
   const router = useRouter()
+
+  const cameraId = router.query.id
+  const selectedCamera = cameras.filter((camera) => camera.id === cameraId)[0] || cameras[0]
 
   const [anchorCamerasButton, setAnchorCamerasButton] = useState<null | HTMLElement>(null)
   const openCamerasPopup = Boolean(anchorCamerasButton)
@@ -145,15 +148,3 @@ const CamerasPage: NextPage<CamerasPageType> = ({ selectedCamera }) => {
 }
 
 export default CamerasPage
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.query.id
-
-  const camera = cameras.filter((camera) => camera.id === id)[0] || cameras[0]
-
-  return {
-    props: {
-      selectedCamera: camera,
-    },
-  }
-}
