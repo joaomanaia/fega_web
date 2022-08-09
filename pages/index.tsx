@@ -1,25 +1,21 @@
-import type { GetServerSideProps, NextPage } from "next"
+import type { NextPage } from "next"
 import Head from "next/head"
 import React, { Suspense } from "react"
 import CreatePost from "../components/post/CreatePost"
 import RootLayout from "../components/layout/root-layout"
 import { CircularProgress, Container } from "@mui/material"
 import dynamic from "next/dynamic"
-import { PostType } from "../components/post/Posts"
 import useSWR from "swr"
 import { InitialPostsData } from "./api/posts/initialPosts"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { fetcher } from "../utils/data"
 
 const DynamicPosts = dynamic(() => import("../components/post/Posts"), {
   suspense: true
 })
 
-interface HomeProps {
-  posts: string
-}
+const Home: NextPage = () => {
+  const { data } = useSWR<InitialPostsData>("/api/posts/initialPosts", fetcher)
 
-const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <RootLayout>
       <Head>
@@ -55,7 +51,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 
         <Container className="ml-4">
           <Suspense fallback={<CircularProgress />}>
-            <DynamicPosts posts={JSON.parse(posts)} />
+            <DynamicPosts posts={JSON.parse(data?.posts || "[]")} />
           </Suspense>
         </Container>
       </main>
@@ -64,18 +60,3 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 }
 
 export default Home
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const dev = process.env.NODE_ENV !== 'production'
-
-  const baseUrl = dev ? "http://localhost:3000" : "https://www.fega.ml"
-
-  const postsRes = await fetch(`${baseUrl}/api/posts/initialPosts`)
-  const postsJson = await postsRes.json()
-
-  return {
-    props: {
-      posts: postsJson.posts
-    },
-  }
-}

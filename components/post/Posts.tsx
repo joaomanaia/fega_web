@@ -35,7 +35,13 @@ type PostDataType = {
 }
 
 const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
-  const [postsPaging, setPostsPaging] = useState<Array<PostType>>(posts)
+  const [postsPaging, setPostsPaging] = useState<PostType[]>(posts)
+
+  useEffect(() => {
+    if (postsPaging.length === 0) setPostsPaging(posts)
+    
+  }, [posts, postsPaging.length])
+
   const [lastPostVisible, setLastPostVisible] =
     useState<QueryDocumentSnapshot<DocumentData> | null>(null)
 
@@ -114,16 +120,16 @@ const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
       </List>
 
       <Typography 
-        visibility={posts.length > 0 ? "hidden" : "visible"}
-        variant="h4">
-        Não existem publicações
+        visibility={postsPaging.length > 0 ? "hidden" : "visible"}
+        variant="h3">
+        Não foram encontradas publicações
       </Typography>
 
       <Button 
         onClick={getNextPostsPaging} 
         variant="contained" 
         sx={{ marginTop: 4 }}
-        disabled={posts.length === 0}>
+        disabled={postsPaging.length === 0}>
         {t.load_more}
       </Button>
     </div>
