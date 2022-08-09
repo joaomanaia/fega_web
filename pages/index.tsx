@@ -1,6 +1,6 @@
 import type { NextPage } from "next"
 import Head from "next/head"
-import React, { Suspense } from "react"
+import React, { Suspense, useRef } from "react"
 import CreatePost from "../components/post/CreatePost"
 import RootLayout from "../components/layout/root-layout"
 import { CircularProgress, Container } from "@mui/material"
@@ -8,13 +8,39 @@ import dynamic from "next/dynamic"
 import useSWR from "swr"
 import { InitialPostsData } from "./api/posts/initialPosts"
 import { fetcher } from "../utils/data"
+import { useEffect } from "react"
+
+const adOptions = {
+  key: "7d89d5ca1a942416f5c88e78454f8797",
+  format: "iframe",
+  height: 250,
+  width: 300,
+  params: {},
+}
 
 const DynamicPosts = dynamic(() => import("../components/post/Posts"), {
-  suspense: true
+  suspense: true,
 })
 
 const Home: NextPage = () => {
   const { data } = useSWR<InitialPostsData>("/api/posts/initialPosts", fetcher)
+
+  const bannerAd = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!bannerAd.current?.firstChild) {
+      const conf = document.createElement("script")
+      const script = document.createElement("script")
+      script.type = "text/javascript"
+      script.src = `//www.highperformancedformats.com/${adOptions.key}/invoke.js`
+      conf.innerHTML = `atOptions = ${JSON.stringify(adOptions)}`
+
+      if (bannerAd.current) {
+        bannerAd.current.append(conf)
+        bannerAd.current.append(script)
+      }
+    }
+  }, [])
 
   return (
     <RootLayout>
@@ -47,6 +73,7 @@ const Home: NextPage = () => {
       <main className="flex flex-col lg:flex-row-reverse relative">
         <div className="lg:fixed">
           <CreatePost />
+          <div className="mt-4" ref={bannerAd}></div>
         </div>
 
         <Container className="ml-4">

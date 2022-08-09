@@ -15,7 +15,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ selectedCamera }) => {
   const playVideo = () => setVideoPlaying(true)
 
   return (
-    <div itemScope itemType="https://schema.org/VideoObject" className="h-full w-full pb-32">
+    <div itemScope itemType="https://schema.org/VideoObject" className="h-full w-full">
       <meta itemProp="name" content={selectedCamera.name} />
       <meta itemProp="description" content={selectedCamera.description} />
       <meta itemProp="thumbnailUrl" content={selectedCamera.imagePoster} />
