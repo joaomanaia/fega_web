@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
-import UserType from "../components/user/UserType"
+import UserType from "../types/UserType"
 import { firestoreAdmin } from "../firebase-admin"
 
 type UserPageType = {

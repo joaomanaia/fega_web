@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { fetcher } from "../../utils/data"
 import UserComponent from "./UserComponent"
-import UserType from "./UserType"
+import UserType from "../../types/UserType"
 
 type UserUidComponentType = {
   uid: string

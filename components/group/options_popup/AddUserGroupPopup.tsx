@@ -20,7 +20,7 @@ import {
 import { useState } from "react"
 import { firestore } from "../../../firebase"
 import UserComponent from "../../user/UserComponent"
-import UserType from "../../user/UserType"
+import UserType from "../../../types/UserType"
 import GroupType from "../GroupType"
 
 type AddUserGroupPopupType = {

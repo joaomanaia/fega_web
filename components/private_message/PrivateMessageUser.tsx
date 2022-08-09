@@ -1,6 +1,6 @@
 import useSWR from "swr"
 import { fetcher } from "../../utils/data"
-import UserType from "../user/UserType"
+import UserType from "../../types/UserType"
 import {
   ListItem,
   ListItemAvatar,

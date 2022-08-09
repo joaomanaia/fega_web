@@ -1,17 +1,46 @@
 import type { NextPage } from "next"
 import Head from "next/head"
-import React from "react"
+import React, { Suspense, useRef } from "react"
 import CreatePost from "../components/post/CreatePost"
-import Posts from "../components/post/Posts"
-import useSWR from "swr"
 import RootLayout from "../components/layout/root-layout"
-import { Container } from "@mui/material"
+import { CircularProgress, Container } from "@mui/material"
+import dynamic from "next/dynamic"
+import useSWR from "swr"
 import { InitialPostsData } from "./api/posts/initialPosts"
+import { fetcher } from "../utils/data"
+import { useEffect } from "react"
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+const adOptions = {
+  key: "7d89d5ca1a942416f5c88e78454f8797",
+  format: "iframe",
+  height: 250,
+  width: 300,
+  params: {},
+}
+
+const DynamicPosts = dynamic(() => import("../components/post/Posts"), {
+  suspense: true,
+})
 
 const Home: NextPage = () => {
   const { data } = useSWR<InitialPostsData>("/api/posts/initialPosts", fetcher)
+
+  const bannerAd = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!bannerAd.current?.firstChild) {
+      const conf = document.createElement("script")
+      const script = document.createElement("script")
+      script.type = "text/javascript"
+      script.src = `//www.highperformancedformats.com/${adOptions.key}/invoke.js`
+      conf.innerHTML = `atOptions = ${JSON.stringify(adOptions)}`
+
+      if (bannerAd.current) {
+        bannerAd.current.append(conf)
+        bannerAd.current.append(script)
+      }
+    }
+  }, [])
 
   return (
     <RootLayout>
@@ -44,49 +73,17 @@ const Home: NextPage = () => {
       <main className="flex flex-col lg:flex-row-reverse relative">
         <div className="lg:fixed">
           <CreatePost />
+          <div className="mt-4" ref={bannerAd}></div>
         </div>
 
-        <Container className="ml-4">{<Posts posts={JSON.parse(data?.posts || "[]")} />}</Container>
+        <Container className="ml-4">
+          <Suspense fallback={<CircularProgress />}>
+            <DynamicPosts posts={JSON.parse(data?.posts || "[]")} />
+          </Suspense>
+        </Container>
       </main>
     </RootLayout>
   )
 }
 
 export default Home
-
-/*
-const testPosts: PostType[] = [
-    {
-      id: "a",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [
-          "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc3/unnamed85.png",
-        ],
-      },
-    },
-    {
-      id: "b",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [
-          "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/news%2Fhappy-new-year-2022-banner-template-vector.webp?alt=media&token=ccaa2187-7fe6-44cc-9ebd-8626871325e6",
-          "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc3/unnamed85.png",
-        ],
-      },
-    },
-    {
-      id: "c",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [],
-      },
-    },
-  ]
-*/

@@ -1,8 +1,7 @@
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useContext, useState } from "react"
 import {
   AppBar,
   Avatar,
-  Fade,
   Grid,
   IconButton,
   ListItemIcon,
@@ -20,7 +19,6 @@ import ColorIcon from "@mui/icons-material/ColorLensOutlined"
 import DarkIcon from "@mui/icons-material/DarkModeOutlined"
 import LightIcon from "@mui/icons-material/LightModeOutlined"
 import RestartIcon from "@mui/icons-material/RefreshOutlined"
-import ArrowIcon from "@mui/icons-material/ArrowForwardIosOutlined"
 import { useRouter } from "next/router"
 import { ThemeModeContext } from "../../../app/theme/context/ThemeModeContext"
 import { ThemeSchemeContext } from "../../../app/theme/context/ThemeSchemeContext"
@@ -104,9 +102,11 @@ const Header: FC<HeaderProps> = ({ onDrawerToggle, window }) => {
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid item sx={{ display: { md: "none", sm: "block" } }}>
-              <IconButton color="inherit" edge="start" onClick={onDrawerToggle}>
-                <MenuIcon />
-              </IconButton>
+              <Tooltip title="Menu">
+                <IconButton color="inherit" edge="start" onClick={onDrawerToggle}>
+                  <MenuIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
 
             <Grid item sx={{ display: "flex", alignItems: "baseline" }}>
