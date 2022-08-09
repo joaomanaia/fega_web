@@ -1,4 +1,4 @@
-import { Button, List } from "@mui/material"
+import { Button, List, Typography } from "@mui/material"
 import {
   collection,
   doc,
@@ -113,7 +113,17 @@ const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
         ))}
       </List>
 
-      <Button onClick={getNextPostsPaging} variant="contained" sx={{ marginTop: 4 }}>
+      <Typography 
+        visibility={posts.length > 0 ? "hidden" : "visible"}
+        variant="h4">
+        Não existem publicações
+      </Typography>
+
+      <Button 
+        onClick={getNextPostsPaging} 
+        variant="contained" 
+        sx={{ marginTop: 4 }}
+        disabled={posts.length === 0}>
         {t.load_more}
       </Button>
     </div>

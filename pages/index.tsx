@@ -1,18 +1,25 @@
-import type { NextPage } from "next"
+import type { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
-import React from "react"
+import React, { Suspense } from "react"
 import CreatePost from "../components/post/CreatePost"
-import Posts from "../components/post/Posts"
-import useSWR from "swr"
 import RootLayout from "../components/layout/root-layout"
-import { Container } from "@mui/material"
+import { CircularProgress, Container } from "@mui/material"
+import dynamic from "next/dynamic"
+import { PostType } from "../components/post/Posts"
+import useSWR from "swr"
 import { InitialPostsData } from "./api/posts/initialPosts"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
-const Home: NextPage = () => {
-  const { data } = useSWR<InitialPostsData>("/api/posts/initialPosts", fetcher)
+const DynamicPosts = dynamic(() => import("../components/post/Posts"), {
+  suspense: true
+})
 
+interface HomeProps {
+  posts: string
+}
+
+const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <RootLayout>
       <Head>
@@ -46,7 +53,11 @@ const Home: NextPage = () => {
           <CreatePost />
         </div>
 
-        <Container className="ml-4">{<Posts posts={JSON.parse(data?.posts || "[]")} />}</Container>
+        <Container className="ml-4">
+          <Suspense fallback={<CircularProgress />}>
+            <DynamicPosts posts={JSON.parse(posts)} />
+          </Suspense>
+        </Container>
       </main>
     </RootLayout>
   )
@@ -54,39 +65,17 @@ const Home: NextPage = () => {
 
 export default Home
 
-/*
-const testPosts: PostType[] = [
-    {
-      id: "a",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [
-          "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc3/unnamed85.png",
-        ],
-      },
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const dev = process.env.NODE_ENV !== 'production'
+
+  const baseUrl = dev ? "http://localhost:3000" : "https://www.fega.ml"
+
+  const postsRes = await fetch(`${baseUrl}/api/posts/initialPosts`)
+  const postsJson = await postsRes.json()
+
+  return {
+    props: {
+      posts: postsJson.posts
     },
-    {
-      id: "b",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [
-          "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/news%2Fhappy-new-year-2022-banner-template-vector.webp?alt=media&token=ccaa2187-7fe6-44cc-9ebd-8626871325e6",
-          "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc3/unnamed85.png",
-        ],
-      },
-    },
-    {
-      id: "c",
-      uid: "b",
-      timestamp: "21:32",
-      data: {
-        description: "Era uma vez um post",
-        images: [],
-      },
-    },
-  ]
-*/
+  }
+}
