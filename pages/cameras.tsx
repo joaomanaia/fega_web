@@ -83,7 +83,7 @@ const CamerasPage: NextPage<CamerasPageType> = () => {
       const conf = document.createElement("script")
       const script = document.createElement("script")
       script.type = "text/javascript"
-      script.src = `//www.highperformancedformats.com/${adOptions.key}/invoke.js`
+      script.src = `https://www.highperformancedisplayformat.com/${adOptions.key}/invoke.js`
       conf.innerHTML = `atOptions = ${JSON.stringify(adOptions)}`
 
       if (bannerAd.current) {
