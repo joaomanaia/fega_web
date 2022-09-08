@@ -10,37 +10,12 @@ import { InitialPostsData } from "./api/posts/initialPosts"
 import { fetcher } from "../utils/data"
 import { useEffect } from "react"
 
-const adOptions = {
-  key: "7d89d5ca1a942416f5c88e78454f8797",
-  format: "iframe",
-  height: 250,
-  width: 300,
-  params: {},
-}
-
 const DynamicPosts = dynamic(() => import("../components/post/Posts"), {
   suspense: true,
 })
 
 const Home: NextPage = () => {
   const { data } = useSWR<InitialPostsData>("/api/posts/initialPosts", fetcher)
-
-  const bannerAd = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!bannerAd.current?.firstChild) {
-      const conf = document.createElement("script")
-      const script = document.createElement("script")
-      script.type = "text/javascript"
-      script.src = `https://www.highperformancedisplayformat.com/${adOptions.key}/invoke.js`
-      conf.innerHTML = `atOptions = ${JSON.stringify(adOptions)}`
-
-      if (bannerAd.current) {
-        bannerAd.current.append(conf)
-        bannerAd.current.append(script)
-      }
-    }
-  }, [])
 
   return (
     <RootLayout>
@@ -73,7 +48,6 @@ const Home: NextPage = () => {
       <main className="flex flex-col lg:flex-row-reverse relative">
         <div className="lg:fixed">
           <CreatePost />
-          <div className="mt-4" ref={bannerAd}></div>
         </div>
 
         <Container className="ml-4">

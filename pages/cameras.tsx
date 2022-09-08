@@ -53,14 +53,6 @@ export const getCameraById = (id: string): CameraType | null => {
   return cameras.find((camera) => camera.id === id) || null
 }
 
-const adOptions = {
-  key: "3b67f620aad5ec173c870bc25ff2fda0",
-  format: "iframe",
-  height: 60,
-  width: 468,
-  params: {},
-}
-
 const CamerasPage: NextPage<CamerasPageType> = () => {
   const router = useRouter()
 
@@ -75,23 +67,6 @@ const CamerasPage: NextPage<CamerasPageType> = () => {
   }
 
   const handleCamerasPopupClose = () => setAnchorCamerasButton(null)
-
-  const bannerAd = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!bannerAd.current?.firstChild) {
-      const conf = document.createElement("script")
-      const script = document.createElement("script")
-      script.type = "text/javascript"
-      script.src = `https://www.highperformancedisplayformat.com/${adOptions.key}/invoke.js`
-      conf.innerHTML = `atOptions = ${JSON.stringify(adOptions)}`
-
-      if (bannerAd.current) {
-        bannerAd.current.append(conf)
-        bannerAd.current.append(script)
-      }
-    }
-  }, [])
 
   return (
     <RootLayout>
@@ -157,8 +132,6 @@ const CamerasPage: NextPage<CamerasPageType> = () => {
             </MenuItem>
           ))}
         </Menu>
-
-        <div className="mt-8" ref={bannerAd}></div>
 
         <div className="w-full h-full flex flex-col md:flex-row">
           {selectedCamera.video ? (
