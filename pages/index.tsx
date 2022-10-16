@@ -43,6 +43,8 @@ const Home: NextPage = () => {
           name="twitter:image"
           content="http://www.jf-ega.pt/imagens/geral/picota_serrazina_valejanes/_MG_6062.jpg"
         />
+
+        <meta name="exoclick-site-verification" content="049c45d68d6f38e9978ca2fe36acd13f"/>
       </Head>
 
       <main className="flex flex-col lg:flex-row-reverse relative">
