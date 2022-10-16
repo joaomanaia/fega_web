@@ -64,6 +64,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <link rel="manifest" href="manifest.json" />
+      
+      <meta name="exoclick-site-verification" content="049c45d68d6f38e9978ca2fe36acd13f">
 
       <ThemeModeProvider>
         <ThemeSchemeProvider>
