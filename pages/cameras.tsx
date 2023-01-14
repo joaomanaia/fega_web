@@ -40,6 +40,15 @@ const cameras: CameraType[] = [
       "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTc-VKCG56MkcaKgQVbQ3VKjHAeBh1pa8ORrBOowL27KyHeOnwKH8k6flxE8szc",
   },
   {
+    id: "figueiradafoz-cabedelo",
+    link: "https://video-auth1.iol.pt/beachcam/bcfigueiracabeledo/playlist.m3u8",
+    name: "Figueira da Foz - Cabedelo",
+    description: "Camera localizada no cabedelo, figueira da foz",
+    video: true,
+    imagePoster:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/01/e5/78/praia-do-cabedelo.jpg?w=1200&h=-1&s=1",
+  },
+  {
     id: "hoteloslo-coimbra",
     link: "http://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
     name: "Coimbra",
