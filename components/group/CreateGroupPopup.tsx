@@ -11,7 +11,7 @@ import {
 import { collection, doc, setDoc } from "firebase/firestore"
 import { useState } from "react"
 import { firestore } from "../../firebase"
-import { defaultImgUrl } from "../../app/common"
+import { defaultImgUrl } from "../../core/common"
 import Avatar from "../m3/avatar"
 import GroupType from "./GroupType"
 

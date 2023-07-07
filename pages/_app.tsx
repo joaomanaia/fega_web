@@ -8,9 +8,9 @@ import { getPerformance } from "firebase/performance"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check"
 import "../styles/globals.css"
 import "../styles/firebaseui-styling.global.css"
-import ThemeModeProvider from "../app/theme/context/ThemeModeContext"
-import ThemeSchemeProvider from "../app/theme/context/ThemeSchemeContext"
-import M3ThemeProvider from "../app/theme/m3/M3ThemeProvider"
+import ThemeModeProvider from "../core/theme/context/ThemeModeContext"
+import ThemeSchemeProvider from "../core/theme/context/ThemeSchemeContext"
+import M3ThemeProvider from "../core/theme/m3/M3ThemeProvider"
 import { CssBaseline } from "@mui/material"
 
 function MyApp({ Component, pageProps }: AppProps) {
