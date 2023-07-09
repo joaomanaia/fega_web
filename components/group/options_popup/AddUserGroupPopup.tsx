@@ -110,7 +110,7 @@ const AddUserGroupPopup: React.FC<AddUserGroupPopupType> = ({
           variant="outlined"
         />
 
-        <Button sx={{ marginY: 2, marginRight: 1 }} variant="contained" onClick={searchUser}>
+        <Button sx={{ marginY: 2, marginRight: 1 }} variant="filled" onClick={searchUser}>
           Seach user
         </Button>
 

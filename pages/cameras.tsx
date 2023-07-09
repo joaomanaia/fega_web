@@ -113,7 +113,7 @@ const CamerasPage: NextPage<CamerasPageType> = () => {
 
         <Button
           id="cameras-button"
-          variant="contained"
+          variant="filled"
           aria-controls={openCamerasPopup ? "cameras-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={openCamerasPopup ? "true" : undefined}

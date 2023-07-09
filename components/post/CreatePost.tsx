@@ -99,7 +99,7 @@ const CreatePost: React.FC<CreatePostTypes> = () => {
           />
 
           <Button
-            variant="contained"
+            variant="filled"
             fullWidth
             disabled={!description}
             onClick={createPost}

@@ -127,7 +127,7 @@ const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
 
       <Button 
         onClick={getNextPostsPaging} 
-        variant="contained" 
+        variant="filled" 
         sx={{ marginTop: 4 }}
         disabled={postsPaging.length === 0}>
         {t.load_more}

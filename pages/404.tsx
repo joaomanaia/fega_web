@@ -35,7 +35,7 @@ const NotFoundPage: NextPage<NotFoundPageType> = () => {
       </Typography>
 
       <div className="flex space-x-2 mt-16">
-        <Button onClick={() => router.push("/")} variant="contained">
+        <Button onClick={() => router.push("/")} variant="filled">
           {t.go_back_home}
         </Button>
 
