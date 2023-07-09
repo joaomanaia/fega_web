@@ -1,3 +1,5 @@
+"use client"
+
 import { useMediaQuery, useTheme, SxProps, Paper } from "@mui/material"
 
 interface MainContainerProps {

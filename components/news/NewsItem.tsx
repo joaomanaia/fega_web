@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, Button, CardActions, CardContent, CardMedia, ListItem, Paper, Typography } from "@mui/material"
+import { Card, Button, CardActions, CardContent, CardMedia, ListItem, Typography } from "@mui/material"
 
 import Image from "next/image"
 
@@ -17,7 +17,7 @@ const NewsItem: React.FC<NewsItemType> = ({ title, description, mainImage }) => 
       disablePadding
       itemScope
       itemType="https://schema.org/NewsArticle"
-      className="relative group rounded-2xl aspect-video mb-8"
+      className="relative group rounded-2xl aspect-video w-full"
     >
       <meta itemProp="author" content="João Manaia" />
 
