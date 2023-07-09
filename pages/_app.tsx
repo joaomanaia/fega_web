@@ -8,10 +8,8 @@ import { getPerformance } from "firebase/performance"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check"
 import "../styles/globals.css"
 import "../styles/firebaseui-styling.global.css"
-import ThemeModeProvider from "../core/theme/context/ThemeModeContext"
-import ThemeSchemeProvider from "../core/theme/context/ThemeSchemeContext"
-import M3ThemeProvider from "../core/theme/m3/M3ThemeProvider"
 import { CssBaseline } from "@mui/material"
+import M3 from "@/core/theme/M3"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [authUser] = useAuthState(auth)
@@ -65,14 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <link rel="manifest" href="manifest.json" />
 
-      <ThemeModeProvider>
-        <ThemeSchemeProvider>
-          <M3ThemeProvider>
-            <CssBaseline enableColorScheme />
-            <Component {...pageProps} />
-          </M3ThemeProvider>
-        </ThemeSchemeProvider>
-      </ThemeModeProvider>
+      <M3><Component {...pageProps} /></M3>
     </>
   )
 }

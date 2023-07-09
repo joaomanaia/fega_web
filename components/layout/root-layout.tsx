@@ -1,3 +1,5 @@
+"use client"
+
 import { Box, Container, useMediaQuery, useTheme } from "@mui/material"
 import { useState } from "react"
 import NavDrawer from "../m3/drawer/nav-drawer"

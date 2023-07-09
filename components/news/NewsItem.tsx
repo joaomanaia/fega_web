@@ -1,4 +1,7 @@
-import { Button, Card, CardActions, CardContent, CardMedia, ListItem, Paper, Typography } from "@mui/material"
+"use client"
+
+import { Card, Button, CardActions, CardContent, CardMedia, ListItem, Paper, Typography } from "@mui/material"
+
 import Image from "next/image"
 
 export type NewsItemType = {
@@ -43,7 +46,7 @@ const NewsItem: React.FC<NewsItemType> = ({ title, description, mainImage }) => 
         </CardContent>
 
         <CardActions>
-            <Button variant="contained">Mais informações</Button>
+            <Button variant="filled">Mais informações</Button>
         </CardActions>
       </Card>
     </ListItem>

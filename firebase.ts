@@ -35,9 +35,9 @@ const auth = getAuth()
 const firestore = getFirestore()
 const database = getDatabase()
 
-//connectAuthEmulator(auth, 'http://localhost:9099')
-//connectFirestoreEmulator(firestore, 'localhost', 8080)
-//connectDatabaseEmulator(database, "localhost", 9000)
+connectAuthEmulator(auth, 'http://localhost:9099')
+connectFirestoreEmulator(firestore, 'localhost', 8080)
+connectDatabaseEmulator(database, "localhost", 9000)
 
 export { app, auth, firestore, database }
 

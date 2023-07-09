@@ -13,7 +13,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { FC } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
   HomeRounded,
@@ -21,11 +20,11 @@ import {
   CalendarMonthRounded,
   MessageRounded,
   GroupRounded,
-  CameraAltRounded
+  CameraAltRounded,
 } from "@mui/icons-material"
-import { auth } from "../../../firebase"
+import { auth } from "@/firebase"
 
-export interface NavDrawerProps extends DrawerProps {}
+export interface MainDrawerProps extends DrawerProps {}
 
 interface NavDrawerItem {
   title: string
@@ -74,38 +73,39 @@ const categories: NavDrawerItemGroup[] = [
         title: "Private Messages",
         icon: <GroupRounded />,
         pathName: "/messages",
-        requireAuth: true
+        requireAuth: true,
       },
       {
         title: "Groups",
         icon: <MessageRounded />,
         pathName: "/groups",
-        requireAuth: true
+        requireAuth: true,
       },
     ],
   },
 ]
 
-const NavDrawer: FC<NavDrawerProps> = (props) => {
+const MainDrawer: React.FC<MainDrawerProps> = (props) => {
   const { ...others } = props
 
   const router = useRouter()
-
   const routerPath = usePathname()
 
   const isLoggedIn = auth.currentUser !== null
 
   const handleListItemClick = (navDrawerItem: NavDrawerItem) => {
     const goToAuth = navDrawerItem.requireAuth && !isLoggedIn
-    
+
     router.push(goToAuth ? "/auth" : navDrawerItem.pathName)
   }
-  
+
   return (
     <Drawer variant="permanent" {...others}>
-      <AppBar color="default" elevation={0} position="sticky">
-        <Toolbar></Toolbar>
-      </AppBar>
+      <Toolbar>
+        <Typography color="inherit" sx={{ fontWeight: 500, letterSpacing: 0.5, fontSize: 20 }}>
+          Fega
+        </Typography>
+      </Toolbar>
       <List>
         {categories.map(({ id, children, hideTitle }) => (
           <Box key={id}>
@@ -136,4 +136,4 @@ const NavDrawer: FC<NavDrawerProps> = (props) => {
   )
 }
 
-export default NavDrawer
+export default MainDrawer
