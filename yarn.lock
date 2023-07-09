@@ -3614,10 +3614,10 @@ firebase@^10.0.0:
     "@firebase/storage-compat" "0.3.2"
     "@firebase/util" "1.9.3"
 
-firebaseui@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-6.0.1.tgz#bdabc69de9c245975a1277d507b2f0ff0044e558"
-  integrity sha512-SMNCFt/xns3mnvd0hImEDu7di5fqRU3MVyIaXpVEfg6v0bH6f3m+YybivU7KElRUT/47DHMn++D8MrZYYnoN5g==
+firebaseui@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-6.0.2.tgz#14411920e17a7986e2ae969cb4890dfbf94fbfc5"
+  integrity sha512-Jwwn2I657loKrvedeCrwED9UibLFl8Cm0uH2ntDBSCpruWzG4HXlIWb35WsDdXMILRPQjJ1PwVwuRsrnsxcaXA==
   dependencies:
     dialog-polyfill "^0.4.7"
     material-design-lite "^1.2.0"
@@ -6010,13 +6010,6 @@ react-firebase-hooks@^5.1.1:
   resolved "https://registry.yarnpkg.com/react-firebase-hooks/-/react-firebase-hooks-5.1.1.tgz#fc92bb4b860c6753c806583f64d7f069b6ee6785"
   integrity sha512-y2UpWs82xs+39q5Rc/wq316ca52QsC0n8m801V+yM4IC4hbfOL4yQPVSh7w+ydstdvjN9F+lvs1WrO2VYxpmdA==
 
-react-firebaseui@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-firebaseui/-/react-firebaseui-6.0.0.tgz#97a075e7caa2fb969c8ded9efbbcefccb1f33ce1"
-  integrity sha512-VzLMiW7DBZCsW/qpP9nky/pPlAoIjDxA2Qyc+QAPf+RjelIkvPPiCBXR2aAz+Upy+ujrx6pYDXj547DW5uC4ww==
-  dependencies:
-    firebaseui "^6.0.0"
-
 react-intl@^6.4.4:
   version "6.4.4"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-6.4.4.tgz#14b45ce046bfbb60c0e6d392d8ddc30e9ead5a4f"
@@ -6590,6 +6583,11 @@ synckit@^0.8.5:
   dependencies:
     "@pkgr/utils" "^2.3.1"
     tslib "^2.5.0"
+
+tailwind-merge@^1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.13.2.tgz#1d06c9e95ffda2320efc50ed33c65be0cda23091"
+  integrity sha512-R2/nULkdg1VR/EL4RXg4dEohdoxNUJGLMnWIQnPKL+O9Twu7Cn3Rxi4dlXkDzZrEGtR+G+psSXFouWlpTyLhCQ==
 
 tailwind-scrollbar-hide@^1.1.7:
   version "1.1.7"

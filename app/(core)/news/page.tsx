@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import NewsItem from "../../components/news/NewsItem"
+import NewsItem from "../../../components/news/NewsItem"
 
 const getNews = async () => {
   return [
