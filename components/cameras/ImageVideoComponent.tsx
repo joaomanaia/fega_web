@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react"
-import { CamerasPageType, getCameraById } from "../../pages/cameras"
+import { CamerasPageType, getCameraById } from "../../pages/cameras_old"
 
 interface ImageVideoComponentProps extends CamerasPageType {}
 

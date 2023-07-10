@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material"
 import dynamic from "next/dynamic"
 import { Suspense, useState } from "react"
-import { CamerasPageType } from "../../pages/cameras"
+import { CamerasPageType } from "../../pages/cameras_old"
 
 interface VideoComponentProps extends CamerasPageType {}
 
