@@ -104,7 +104,7 @@ const RemoveUserGroupPopup: React.FC<RemoveUserGroupPopupType> = ({
         <Button variant="text" onClick={onCloseDialog}>
           Close
         </Button>
-        <Button disabled={selectedUsers === []} variant="text" onClick={() => removeUser()}>
+        <Button disabled={selectedUsers.length === 0} variant="text" onClick={() => removeUser()}>
           Remove
         </Button>
       </DialogActions>

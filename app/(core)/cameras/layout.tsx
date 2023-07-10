@@ -1,5 +1,4 @@
 import MainContainer from "@/components/m3/MainContainer"
-import fetchServer from "@/core/fetchServer"
 import CameraType from "@/types/CameraType"
 import { Metadata } from "next"
 import CameraItem from "./components/CameraItem"
@@ -8,11 +7,17 @@ export const metadata: Metadata = {
   title: "Cameras",
 }
 
-const getAllCameras = async () => {
+const getAllCameras = async (): Promise<CameraType[]> => {
+  /*
   const response = await fetchServer("/api/cameras")
-  const cameras = await response.json()
 
-  return cameras as CameraType[]
+  return response.json()
+  */
+
+  const api = await import("@/app/api/cameras/route")
+  const res = await api.GET()
+  
+  return res.json()
 }
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
