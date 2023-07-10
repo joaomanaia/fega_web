@@ -3,10 +3,11 @@
 import { useMediaQuery, useTheme, SxProps, Paper } from "@mui/material"
 
 interface MainContainerProps {
-    children?: React.ReactNode
+  className?: string
+  children?: React.ReactNode
 }
 
-const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
+const MainContainer: React.FC<MainContainerProps> = ({ className, children }) => {
   const theme = useTheme()
   const isSmUp = useMediaQuery(theme.breakpoints.up("md"))
   const isSxUp = useMediaQuery(theme.breakpoints.up("sm"))
@@ -30,7 +31,7 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
   }
 
   return (
-    <Paper sx={paperStyle} elevation={0}>
+    <Paper sx={paperStyle} elevation={0} className={className}>
       {children}
     </Paper>
   )

@@ -1,3 +1,4 @@
+import MainContainer from "@/components/m3/MainContainer"
 import { Metadata } from "next"
 import NewsItem from "../../../components/news/NewsItem"
 
@@ -36,7 +37,7 @@ export default async function Page() {
   const news = await getNews()
 
   return (
-    <div className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
+    <MainContainer className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
       {news.map((item) => (
         <NewsItem
           key={item.id}
@@ -46,6 +47,6 @@ export default async function Page() {
           description={item.description}
         />
       ))}
-    </div>
+    </MainContainer>
   )
 }

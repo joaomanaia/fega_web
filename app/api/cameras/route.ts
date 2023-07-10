@@ -1,3 +1,4 @@
+import { formatUrlWithBasePath } from "@/core/fetchServer"
 import CameraType from "@/types/CameraType"
 import { NextResponse } from "next/server"
 
@@ -31,7 +32,7 @@ const cameras: CameraType[] = [
   },
   {
     id: "hoteloslo-coimbra",
-    link: "http://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG",
+    link: formatUrlWithBasePath("api/cameras/hoteloslo-coimbra"),
     name: "Coimbra",
     description: "Camera localizada no hotel oslo, Coimbra",
     video: false,
