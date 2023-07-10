@@ -11,6 +11,11 @@ interface RootLayoutProps {
 
 const drawerWidth = 256
 
+/**
+ * TODO: Remove this component
+ * 
+ * @deprecated
+ */
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const theme = useTheme()
   const isSmUp = useMediaQuery(theme.breakpoints.up("md"))

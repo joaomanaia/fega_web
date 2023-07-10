@@ -86,6 +86,11 @@ const categories: NavDrawerItemGroup[] = [
   },
 ]
 
+/**
+ * TODO: Remove this component
+ * 
+ * @deprecated
+ */
 const NavDrawer: FC<NavDrawerProps> = (props) => {
   const { ...others } = props
 

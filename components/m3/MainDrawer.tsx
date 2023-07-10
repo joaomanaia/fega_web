@@ -1,7 +1,4 @@
-"use client"
-
 import {
-  AppBar,
   Box,
   Drawer,
   DrawerProps,
@@ -13,7 +10,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import {
   HomeRounded,
   NewspaperRounded,
@@ -22,7 +19,8 @@ import {
   GroupRounded,
   CameraAltRounded,
 } from "@mui/icons-material"
-import { auth } from "@/firebase"
+import NextLink from "next/link"
+import { twMerge } from "tailwind-merge"
 
 export interface MainDrawerProps extends DrawerProps {}
 
@@ -31,6 +29,7 @@ interface NavDrawerItem {
   icon: any
   pathName: string
   requireAuth?: boolean
+  disabled?: boolean
 }
 
 interface NavDrawerItemGroup {
@@ -58,6 +57,7 @@ const categories: NavDrawerItemGroup[] = [
         title: "Events",
         icon: <CalendarMonthRounded />,
         pathName: "/events",
+        disabled: true,
       },
       {
         title: "Cameras",
@@ -88,16 +88,7 @@ const categories: NavDrawerItemGroup[] = [
 const MainDrawer: React.FC<MainDrawerProps> = (props) => {
   const { ...others } = props
 
-  const router = useRouter()
   const routerPath = usePathname()
-
-  const isLoggedIn = auth.currentUser !== null
-
-  const handleListItemClick = (navDrawerItem: NavDrawerItem) => {
-    const goToAuth = navDrawerItem.requireAuth && !isLoggedIn
-
-    router.push(goToAuth ? "/auth" : navDrawerItem.pathName)
-  }
 
   return (
     <Drawer variant="permanent" {...others}>
@@ -119,15 +110,21 @@ const MainDrawer: React.FC<MainDrawerProps> = (props) => {
               </ListItem>
             )}
             {children.map((navDrawerItem) => (
-              <ListItem key={navDrawerItem.title}>
-                <ListItemButton
-                  selected={routerPath == navDrawerItem.pathName}
-                  onClick={() => handleListItemClick(navDrawerItem)}
-                >
-                  <ListItemIcon>{navDrawerItem.icon}</ListItemIcon>
-                  <ListItemText>{navDrawerItem.title}</ListItemText>
-                </ListItemButton>
-              </ListItem>
+              <NextLink
+                className={twMerge("text-inherit bg-inherit decoration-transparent", navDrawerItem.disabled && "cursor-default")}
+                href={navDrawerItem.pathName}
+                key={navDrawerItem.title}
+                passHref
+              >
+                <ListItem>
+                  <ListItemButton
+                    disabled={navDrawerItem.disabled}
+                    selected={routerPath == navDrawerItem.pathName}>
+                    <ListItemIcon>{navDrawerItem.icon}</ListItemIcon>
+                    <ListItemText>{navDrawerItem.title}</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+              </NextLink>
             ))}
           </Box>
         ))}
