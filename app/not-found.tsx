@@ -1,16 +1,9 @@
-import { alpha, Box, Button, Typography, useTheme } from "@mui/material"
-import { NextPage } from "next"
-import { useRouter } from "next/router"
-import en from "../locales/en"
-import pt from "../locales/pt"
+"use client"
 
-type NotFoundPageType = {}
+import { Box, Button, Typography, alpha, useTheme } from "@mui/material"
+import Link from "next/link"
 
-const NotFoundPage: NextPage<NotFoundPageType> = () => {
-  const router = useRouter()
-  const { locale } = router
-  const t = locale === "en" ? en : pt
-
+export default function NotFound() {
   const { palette } = useTheme()
 
   return (
@@ -26,25 +19,19 @@ const NotFoundPage: NextPage<NotFoundPageType> = () => {
           }}
         />
         <Typography variant="h2" fontWeight="bold">
-          {t.page_not_found}
+          Page not found
         </Typography>
       </div>
 
       <Typography variant="body1" fontWeight="bold" color={alpha(palette.primary.main, 0.7)}>
-        {t.this_page_does_not_exist}
+        This page does not exist
       </Typography>
 
       <div className="flex space-x-2 mt-16">
-        <Button onClick={() => router.push("/")} variant="filled">
-          {t.go_back_home}
-        </Button>
-
-        <Button onClick={() => {}}  variant="outlined">
-          {t.contact_support}
-        </Button>
+        <Link href="/">
+          <Button variant="filled">Go back home</Button>
+        </Link>
       </div>
     </div>
   )
 }
-
-export default NotFoundPage
