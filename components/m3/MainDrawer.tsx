@@ -18,6 +18,7 @@ import {
   MessageRounded,
   GroupRounded,
   CameraAltRounded,
+  SettingsRounded,
 } from "@mui/icons-material"
 import NextLink from "next/link"
 import { twMerge } from "tailwind-merge"
@@ -83,6 +84,16 @@ const categories: NavDrawerItemGroup[] = [
       },
     ],
   },
+  {
+    id: "Other",
+    children: [
+      {
+        title: "Settings",
+        icon: <SettingsRounded />,
+        pathName: "/settings",
+      }
+    ]
+  }
 ]
 
 const MainDrawer: React.FC<MainDrawerProps> = (props) => {

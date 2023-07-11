@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useState } from "react"
+import { useState } from "react"
 import {
   AppBar,
   Avatar,
@@ -14,16 +14,9 @@ import {
   Tooltip,
   Typography,
   useScrollTrigger,
-  useTheme,
 } from "@mui/material"
 
 import MenuIcon from "@mui/icons-material/MenuTwoTone"
-import ColorIcon from "@mui/icons-material/Shuffle"
-import DarkIcon from "@mui/icons-material/DarkModeOutlined"
-import LightIcon from "@mui/icons-material/LightModeOutlined"
-import RestartIcon from "@mui/icons-material/RefreshOutlined"
-import { ThemeModeContext } from "@/core/theme/providers/ThemeModeProvider"
-import { ThemeSchemeContext } from "@/core/theme/providers/ThemeSchemeProvider"
 import { usePathname, useRouter } from "next/navigation"
 import { auth } from "@/firebase"
 import { ExitToAppRounded, PersonRounded } from "@mui/icons-material"
@@ -40,9 +33,6 @@ interface HeaderAuthUserProps {
 }
 
 const MainAppBar: React.FC<HeaderProps> = ({ onDrawerToggle, window }) => {
-  const { toggleTheme, themeMode, setThemeMode } = useContext(ThemeModeContext)
-  const { generateScheme, themeScheme } = useContext(ThemeSchemeContext)
-
   const router = useRouter()
   const pathname = usePathname()
 
@@ -88,24 +78,6 @@ const MainAppBar: React.FC<HeaderProps> = ({ onDrawerToggle, window }) => {
     target: window ? window() : undefined,
   })
 
-  const DIGITS: string = "0123456789ABCDEF"
-
-  const randomColor = (): string => {
-    let result = ""
-    for (let i = 0; i < 6; ++i) {
-      const index = Math.floor(16 * Math.random())
-      result += DIGITS[index]
-    }
-    return "#" + result
-  }
-
-  const onGenerate = () => generateScheme(randomColor())
-
-  const onReset = () => {
-    generateScheme("#6750a4") //#6750a4 #005fb0
-    setThemeMode("light")
-  }
-
   return (
     <>
       <AppBar position="sticky" elevation={trigger ? 2 : 0}>
@@ -127,30 +99,6 @@ const MainAppBar: React.FC<HeaderProps> = ({ onDrawerToggle, window }) => {
             </Grid>
 
             <Grid item xs></Grid>
-
-            <Grid item>
-              <Tooltip title="Switch Theme">
-                <IconButton size="large" color="inherit" onClick={toggleTheme}>
-                  {themeMode == "light" ? <DarkIcon /> : <LightIcon />}
-                </IconButton>
-              </Tooltip>
-            </Grid>
-
-            <Grid item>
-              <Tooltip title="Shuffle Color">
-                <IconButton size="large" color="inherit" onClick={onGenerate}>
-                  <ColorIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-
-            <Grid item>
-              <Tooltip title="Reset">
-                <IconButton size="large" color="inherit" onClick={onReset}>
-                  <RestartIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
 
             <Grid item>
               <Tooltip title={headerAuthUser.name || "Make login"}>
