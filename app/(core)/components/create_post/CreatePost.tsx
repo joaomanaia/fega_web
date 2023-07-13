@@ -24,7 +24,7 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
     const newPost: PostType = {
       id: randomUUID(),
       uid: auth.currentUser?.uid ?? "",
-      timestamp: new Date(),
+      timestamp: new Date().toString(),
       description: description,
       images: [],
     }

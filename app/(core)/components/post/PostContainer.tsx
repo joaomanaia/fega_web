@@ -3,11 +3,16 @@
 import { Box, useTheme } from "@mui/material"
 
 interface PostContainerProps {
+  hideContainer?: boolean
   children: React.ReactNode
 }
 
-const PostContainer: React.FC<PostContainerProps> = ({ children }) => {
+const PostContainer: React.FC<PostContainerProps> = ({ hideContainer, children }) => {
   const { palette } = useTheme()
+
+  if (hideContainer) {
+    return <>{children}</>
+  }
 
   return (
     <Box

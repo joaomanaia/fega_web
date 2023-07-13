@@ -8,6 +8,7 @@ import PostImages from "./PostImages"
 interface PostProps {
   post: PostType
   user: UserType
+  hideContainer?: boolean
 }
 
 const DAY_MILLISECONDS = 1000 * 60 * 60 * 24
@@ -21,11 +22,11 @@ function getRelativeTime(timestamp: number) {
   return rtf.format(daysDifference, "day")
 }
 
-const Post: React.FC<PostProps> = ({ post, user }) => {
+const Post: React.FC<PostProps> = ({ post, user, hideContainer }) => {
   // const time = getRelativeTime(Date.parse(post.timestamp))
 
   return (
-    <PostContainer>
+    <PostContainer hideContainer={hideContainer}>
       <div className="flex flex-col space-y-4">
         <PostUserHeader postTimestamp={post.timestamp} userName={user.name} userProfileUrl={defaultImgUrl} />
         <p className="text-lg">{post.description}</p>
