@@ -1,12 +1,15 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: 'jit',
+  corePlugins: {
+    preflight: false
+  },
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './core/theme/components/**/*.{js,ts,jsx,tsx,mdx}', // TODO: remove this
   ],
-  darkMode: "class", // or 'media' or 'class'
+  important: "#__next",
   theme: {
     extend: {},
   },
