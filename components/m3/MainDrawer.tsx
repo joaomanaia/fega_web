@@ -75,12 +75,14 @@ const categories: NavDrawerItemGroup[] = [
         icon: <GroupRounded />,
         pathName: "/messages",
         requireAuth: true,
+        disabled: true
       },
       {
         title: "Groups",
         icon: <MessageRounded />,
         pathName: "/groups",
         requireAuth: true,
+        disabled: true
       },
     ],
   },
