@@ -14,7 +14,10 @@ const ImageVideoComponent: React.FC<ImageVideoComponentProps> = ({ camera }) => 
   useEffect(() => {
     if (!camera.video) {
       const intervalId = setInterval(() => {
-        fetch(camera.link)
+        fetch(camera.link, {
+          method: "GET",
+          cache: "no-cache",
+        })
           .then((res) => res.blob())
           .then((data) => URL.createObjectURL(data))
           .then((data) => setCameraImage(data))
