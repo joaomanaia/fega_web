@@ -3,7 +3,6 @@ import Image from "next/image"
 import { useState } from "react"
 import { auth, firestore } from "../../firebase"
 import { deleteDoc, doc } from "firebase/firestore"
-import { PostType } from "./Posts"
 import { fetcher } from "../../utils/data"
 import { defaultImgUrl } from "../../core/common"
 import {
@@ -23,6 +22,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { DeleteRounded, MoreVertRounded, ShareRounded } from "@mui/icons-material"
+import PostType from "@/types/PostType"
 
 type PostParams = {
   post: PostType

@@ -42,7 +42,7 @@ export const getMUIComponents = (theme: Theme) => {
             ...getSwitch(theme),
             ...getToggleButton(theme),
             ...getToggleButtonGroup(theme),
-            ...getTooltip(theme),
+            ...getTooltip(theme)
         }
     } as M3Components;
 };

@@ -16,22 +16,11 @@ import { useEffect, useState } from "react"
 import { auth, firestore } from "../../firebase"
 import en from "../../locales/en"
 import pt from "../../locales/pt"
-import Post from "./Post"
+import Post from "./Post_old"
+import PostType from "@/types/PostType"
 
 type PostsPropsTypes = {
   posts: PostType[]
-}
-
-export type PostType = {
-  id: string
-  uid: string
-  timestamp: string
-  data: PostDataType
-}
-
-type PostDataType = {
-  description: string
-  images: string[]
 }
 
 const Posts: React.FC<PostsPropsTypes> = ({ posts }) => {
