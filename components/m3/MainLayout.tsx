@@ -4,14 +4,16 @@ import { Box, SxProps, useMediaQuery, useTheme } from "@mui/material"
 import { useState } from "react"
 import MainAppBar from "./MainAppBar"
 import MainDrawer from "./MainDrawer"
+import { User } from "@supabase/supabase-js"
 
 const drawerWidth = 260
 
 interface MainLayoutProps {
+  authUser: User | null
   children: React.ReactNode
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ authUser, children }) => {
   const theme = useTheme()
   const isSmUp = useMediaQuery(theme.breakpoints.up("md"))
 
@@ -59,7 +61,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         />
       </Box>
       <Box sx={mainStyles}>
-        <MainAppBar onDrawerToggle={handleDrawerToggle} />
+        <MainAppBar authUser={authUser} onDrawerToggle={handleDrawerToggle} />
         <Box sx={containerStyles}>{children}</Box>
       </Box>
     </Box>

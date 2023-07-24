@@ -15,17 +15,15 @@ export const getBasePath = () => {
  *
  * @param {string} path The path to format.
  * @returns {string} The formatted path.
- * @example formatUrl("api/users") // returns "http://localhost:3000/api/users"
+ * @example formatUrlWithBasePath("api/users") // returns "http://localhost:3000/api/users"
  */
 export const formatUrlWithBasePath = (path: string) => {
   const basePath = getBasePath()
   return `${basePath}/${path}`
 }
 
-const fetchServer = async (path: string, options?: RequestInit) => {
+export const fetchServer = async (path: string, options?: RequestInit) => {
   const url = formatUrlWithBasePath(path)
 
   return fetch(url, options)
 }
-
-export default fetchServer

@@ -1,76 +1,31 @@
 "use client"
 
-import { useState } from "react"
-import {
-  AppBar,
-  Avatar,
-  Grid,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-  useScrollTrigger,
-} from "@mui/material"
-
+import { AppBar, Avatar, Grid, IconButton, Toolbar, Tooltip, useScrollTrigger } from "@mui/material"
 import MenuIcon from "@mui/icons-material/MenuTwoTone"
-import { usePathname, useRouter } from "next/navigation"
-import { auth } from "@/firebase"
-import { ExitToAppRounded, PersonRounded } from "@mui/icons-material"
+import type { User } from "@supabase/supabase-js"
+import { use, useMemo } from "react"
+import Link from "next/link"
 
 interface HeaderProps {
+  authUser: User | null
   onDrawerToggle?: () => void
   window?: () => Window
 }
 
-interface HeaderAuthUserProps {
-  avatar?: string
-  name?: string
-  loggedIn: boolean
+type AppBarUser = {
+  name: string | null
+  avatar: string | null
+  actionLink: string
 }
 
-const MainAppBar: React.FC<HeaderProps> = ({ onDrawerToggle, window }) => {
-  const router = useRouter()
-  const pathname = usePathname()
-
-  // Profile Avatar
-  const headerAuthUser: HeaderAuthUserProps = {
-    avatar: auth?.currentUser?.photoURL || undefined,
-    name: auth?.currentUser?.displayName || undefined,
-    loggedIn: auth?.currentUser !== null
-  }
-
-  const [avatarMenuAnchorEl, setAvatarMenuAnchorEl] = useState<null | HTMLElement>(null)
-  const avatarMenuOpen = Boolean(avatarMenuAnchorEl)
-
-  const handleAvatarMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAvatarMenuAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAvatarMenuAnchorEl(null)
-  }
-
-  const onAvatarClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const isLoggedIn = auth.currentUser !== null
-
-    if (isLoggedIn) {
-      handleAvatarMenuClick(event)
-    } else {
-      router.push("/auth")
+const MainAppBar: React.FC<HeaderProps> = ({ authUser, onDrawerToggle, window }) => {
+  const userData = useMemo<AppBarUser>(() => {
+    return {
+      name: authUser?.user_metadata.full_name ?? authUser?.email ?? null,
+      avatar: authUser?.user_metadata.avatar_url ?? null,
+      actionLink: authUser ? `/${authUser.id}` : "/auth",
     }
-  }
-
-  const navigateToAuthUserProfile = () => {
-    router.push(`/${auth.currentUser?.uid}`)
-  }
-
-  const signOut = () => {
-    auth.signOut()
-  }
+  }, [authUser])
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -89,64 +44,26 @@ const MainAppBar: React.FC<HeaderProps> = ({ onDrawerToggle, window }) => {
               </IconButton>
             </Grid>
 
-            <Grid item sx={{ display: "flex", alignItems: "baseline" }}>
-              <Typography
-                color="inherit"
-                sx={{ fontWeight: 500, letterSpacing: 0.5, fontSize: 20 }}
-              >
-                {pathname?.replace("/", "")}
-              </Typography>
-            </Grid>
-
             <Grid item xs></Grid>
 
             <Grid item>
-              <Tooltip title={headerAuthUser.name || "Make login"}>
-                <IconButton
-                  id="avatar-button"
-                  aria-controls={avatarMenuOpen ? "avatar-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={avatarMenuOpen ? "true" : undefined}
-                  aria-label="avatar"
-                  color="inherit" 
-                  sx={{ p: 0.5 }}
-                  onClick={onAvatarClicked}>
-                  <Avatar
-                    alt={headerAuthUser.name}
-                    src={headerAuthUser.avatar}
-                    sx={{
-                      bgcolor: 'primary.main', 
-                      color: 'onPrimary.main'
-                    }}
-                  >
-                    {headerAuthUser.name}
-                  </Avatar>
-                </IconButton>
+              <Tooltip title={userData.name ?? "Make login"}>
+                <Link href={userData.actionLink}>
+                  <IconButton id="avatar-button" color="inherit" sx={{ p: 0.5 }}>
+                    <Avatar
+                      alt={userData.name ?? "Fega User"}
+                      src={userData.avatar ?? undefined}
+                      sx={{
+                        bgcolor: "primary.main",
+                        color: "onPrimary.main",
+                      }}
+                    >
+                      {userData.name ?? "Fega User"}
+                    </Avatar>
+                  </IconButton>
+                </Link>
               </Tooltip>
             </Grid>
-
-            <Menu
-              id="avatar-menu"
-              anchorEl={avatarMenuAnchorEl}
-              open={avatarMenuOpen}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "settings-button",
-              }}>
-              <MenuItem onClick={navigateToAuthUserProfile}>
-                <ListItemIcon>
-                  <PersonRounded fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>View profile</ListItemText>
-              </MenuItem>
-
-              <MenuItem onClick={signOut}>
-                <ListItemIcon>
-                  <ExitToAppRounded fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Sign out</ListItemText>
-              </MenuItem>
-            </Menu>
           </Grid>
         </Toolbar>
       </AppBar>

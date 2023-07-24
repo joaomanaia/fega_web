@@ -28,8 +28,7 @@ export default async function HomePage() {
             <Post key={post.id} post={post} user={{
               name: "John Doe",
               photoUrl: "https://randomuser.me/api/portraits/men/32.jpg",
-              uid: "1",
-              banned: false,
+              uid: "1"
             }} />
           ))}
         </div>
