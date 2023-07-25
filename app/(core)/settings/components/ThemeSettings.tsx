@@ -8,7 +8,7 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText, Switch } from "@m
 import BaseSettingsContainer from "./BaseSettingsContainer"
 import ColorsComponent from "./theme/ColorsComponent"
 
-const ThemeSettings = () => {
+const ThemeSettings: React.FC = () => {
   const { toggleTheme, themeMode, setThemeMode } = useContext(ThemeModeContext)
 
   const resetTheme = () => {
