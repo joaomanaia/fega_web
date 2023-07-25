@@ -59,7 +59,7 @@ const AddUserGroupPopup: React.FC<AddUserGroupPopupType> = ({
 
         if (group.participants.length < 20) {
           transaction.update(groupRef, {
-            participants: arrayUnion(selectedUser.uid),
+            participants: arrayUnion(selectedUser.id),
           })
         } else {
           alert("You have reached the maximum number of user in the group")
@@ -81,9 +81,9 @@ const AddUserGroupPopup: React.FC<AddUserGroupPopupType> = ({
     const newUsers: UserType[] = []
     querySnapshot.forEach((doc) => {
       newUsers.push({
-        name: doc.data().name,
-        photoUrl: doc.data().photoUrl,
-        uid: doc.data().uid,
+        full_name: doc.data().name,
+        avatar_url: doc.data().photoUrl,
+        id: doc.data().uid,
         banned: doc.data().banned,
       })
     })
@@ -117,7 +117,7 @@ const AddUserGroupPopup: React.FC<AddUserGroupPopupType> = ({
         <List>
           {users.map((user) => (
             <UserComponent
-              key={user.uid}
+              key={user.id}
               user={user}
               selected={selectedUser === user}
               onClick={() => setSelectedUser(user)}

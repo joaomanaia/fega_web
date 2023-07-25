@@ -2,18 +2,22 @@ import MainContainer from "@/components/m3/MainContainer"
 import CreatePost from "./components/create_post/CreatePost"
 import PostType from "@/types/PostType"
 import Post from "./components/post/Post"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
+import { Database } from "@/types/database.types"
 import UserType from "@/types/UserType"
 
-const getPosts = async (): Promise<PostType[]> => {
-  const res = await fetch("https://64ae79e1c85640541d4d24a9.mockapi.io/posts", {
-    method: "GET",
-    cache: "no-cache",
-    next: {
-      tags: ["posts"],
-    }
-  })
+type PostWithUser = PostType & { author: UserType }
 
-  return res.json()
+const getPosts = async (): Promise<PostWithUser[]> => {
+  const supabase = createServerComponentClient<Database>({ cookies })
+
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("*, author:users(*)")
+    .order("created_at", { ascending: false })
+
+  return posts as PostWithUser[]
 }
 
 export default async function HomePage() {
@@ -25,11 +29,7 @@ export default async function HomePage() {
       <MainContainer className="lg:w-full">
         <div className="flex flex-col space-y-8">
           {posts.map((post) => (
-            <Post key={post.id} post={post} user={{
-              name: "John Doe",
-              photoUrl: "https://randomuser.me/api/portraits/men/32.jpg",
-              uid: "1"
-            }} />
+            <Post key={post.id} post={post} user={post.author} />
           ))}
         </div>
       </MainContainer>

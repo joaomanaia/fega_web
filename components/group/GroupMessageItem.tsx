@@ -44,9 +44,9 @@ const GroupMessageItem: React.FC<GroupMessageItemType> = ({
     <Box className="flex flex-col space-y-2 w-full">
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Avatar photoUrl={user?.photoUrl} name={user?.name} size={22} />
+          <Avatar photoUrl={user?.avatar_url} name={user?.full_name} size={22} />
 
-          <Typography variant="body1">{user?.name}</Typography>
+          <Typography variant="body1">{user?.full_name}</Typography>
         </div>
       )}
 

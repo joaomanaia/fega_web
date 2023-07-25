@@ -1,7 +1,7 @@
 type PostType = {
   id: string
   uid: string
-  timestamp: string
+  created_at: string
   description: string
   images: string[]
 }

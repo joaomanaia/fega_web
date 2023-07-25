@@ -31,10 +31,9 @@ export default async function PostPage({ params }: PostPageProps) {
         hideContainer
         post={post}
         user={{
-          name: "John Doe",
-          photoUrl: "https://randomuser.me/api/portraits/men/32.jpg",
-          uid: "1",
-          banned: false,
+          full_name: "John Doe",
+          avatar_url: "https://randomuser.me/api/portraits/men/32.jpg",
+          id: "1"
         }}
       />
     </MainContainer>

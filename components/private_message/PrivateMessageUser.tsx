@@ -33,11 +33,11 @@ const PrivateMessageUser: React.FC<PrivateMessageUserType> = ({
         onClick={() => onClick(user)}>
         <ListItemAvatar>
           <Avatar
-            photoUrl={user?.photoUrl}
-            name={user?.name} />
+            photoUrl={user?.avatar_url}
+            name={user?.full_name} />
         </ListItemAvatar>
 
-        <ListItemText primary={user?.name} secondary={lastMessage} />
+        <ListItemText primary={user?.full_name} secondary={lastMessage} />
       </ListItemButton>
     </ListItem>
   )

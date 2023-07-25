@@ -22,19 +22,19 @@ const UserComponent: React.FC<UserComponentType> = ({ user, selected, onClick })
       <ListItemButton selected={selected}>
         <ListItemAvatar>
           <Avatar
-            src={user?.photoUrl}
-            alt={user?.name}
+            src={user?.avatar_url}
+            alt={user?.full_name}
             aria-label="image"
             sx={{
               background: palette.secondary.main,
               color: palette.onSecondary.main,
             }}
           >
-            {user?.name}
+            {user?.full_name}
           </Avatar>
         </ListItemAvatar>
 
-        <ListItemText>{user.name}</ListItemText>
+        <ListItemText>{user.full_name}</ListItemText>
       </ListItemButton>
     </ListItem>
   )

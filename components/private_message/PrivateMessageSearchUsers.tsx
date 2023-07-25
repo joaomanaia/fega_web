@@ -41,9 +41,9 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
     const newUsers: UserType[] = []
     querySnapshot.forEach((doc) => {
       newUsers.push({
-        name: doc.data().name,
-        photoUrl: doc.data().photoUrl,
-        uid: doc.data().uid,
+        full_name: doc.data().name,
+        avatar_url: doc.data().photoUrl,
+        id: doc.data().uid,
         banned: doc.data().banned,
       })
     })
@@ -56,13 +56,13 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
   const createPrivateChat = async () => {
     if (selectedUser === null) return
 
-    const pairUid = getPairUid(authUid, selectedUser.uid)
+    const pairUid = getPairUid(authUid, selectedUser.id)
 
     const privateChatsDoc = doc(firestore, "privateChats", pairUid)
 
     const privateChat: PrivateChatType = {
       pairUid: pairUid,
-      uids: [authUid, selectedUser.uid],
+      uids: [authUid, selectedUser.id],
     }
 
     await setDoc(privateChatsDoc, privateChat, {
@@ -98,7 +98,7 @@ const PrivateMessageSearchUsers: React.FC<PrivateMessageSearchUsersItemType> = (
         <List>
           {users.map((user) => (
             <UserComponent
-              key={user.uid}
+              key={user.id}
               user={user}
               selected={selectedUser === user}
               onClick={() => setSelectedUser(user)}

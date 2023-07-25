@@ -4,7 +4,7 @@ import Image from "next/image"
 interface PostUserHeaderProps {
   postTimestamp: string
   userName: string
-  userProfileUrl?: string
+  userProfileUrl: string | null
 }
 
 const PostUserHeader: React.FC<PostUserHeaderProps> = ({

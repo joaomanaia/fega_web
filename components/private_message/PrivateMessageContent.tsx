@@ -33,7 +33,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
   const [messages, setMessages] = useState<PrivateMessageType[]>([])
 
   const localUserUid = auth.currentUser?.uid || ""
-  const pairUid = getPairUid(localUserUid, user.uid)
+  const pairUid = getPairUid(localUserUid, user.id)
 
   const { palette } = useTheme()
 
@@ -66,7 +66,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
       id: messageRef.key || "",
       pairUid: pairUid,
       sender: localUserUid || "",
-      receiver: user.uid,
+      receiver: user.id,
       text: textMessage,
     }
 
@@ -91,9 +91,9 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
           </IconButton>
         )}
 
-        <Avatar name={user.name} photoUrl={user.photoUrl} />
+        <Avatar name={user.full_name} photoUrl={user.avatar_url} />
 
-        <Typography variant="subtitle1">{user.name}</Typography>
+        <Typography variant="subtitle1">{user.full_name}</Typography>
       </Box>
 
       <ScrollableFeed>
@@ -130,7 +130,7 @@ const PrivateMessageContent: React.FC<PrivateMessageContentType> = ({
               type="text"
               value={textMessage}
               maxLength={512}
-              placeholder={`Message to ${user.name}`}
+              placeholder={`Message to ${user.full_name}`}
               onChange={(e) => setTextMessage(e.target.value)}
             />
           </form>

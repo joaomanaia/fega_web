@@ -4,6 +4,8 @@ import PostContainer from "./PostContainer"
 import PostUserHeader from "./PostUserHeader"
 import { defaultImgUrl } from "@/core/common"
 import PostImages from "./PostImages"
+import { useMemo } from "react"
+import moment from "moment"
 
 interface PostProps {
   post: PostType
@@ -11,31 +13,23 @@ interface PostProps {
   hideContainer?: boolean
 }
 
-const DAY_MILLISECONDS = 1000 * 60 * 60 * 24
-
-function getRelativeTime(timestamp: number) {
-  const rtf = new Intl.RelativeTimeFormat("en", {
-    numeric: "auto",
-  })
-  const daysDifference = Math.round((timestamp - new Date().getTime()) / DAY_MILLISECONDS)
-
-  return rtf.format(daysDifference, "day")
+function getRelativeTime(createdAt: string) {
+  return moment(createdAt).fromNow()
 }
 
 const Post: React.FC<PostProps> = ({ post, user, hideContainer }) => {
-  // const time = getRelativeTime(Date.parse(post.timestamp))
+  const createdAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
 
   return (
     <PostContainer hideContainer={hideContainer}>
       <div className="flex flex-col space-y-4">
-        <PostUserHeader postTimestamp={post.timestamp} userName={user.name} userProfileUrl={defaultImgUrl} />
-        <p className="text-lg">{post.description}</p>
-        <PostImages
-          images={[
-            "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/cameras%2Ffigueiradafoz-panoramica.jpeg?alt=media&token=a4cae7d0-111e-4e33-a70f-329091a9fb38",
-            "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/cameras%2Ffigueiradafoz-panoramica.jpeg?alt=media&token=a4cae7d0-111e-4e33-a70f-329091a9fb38",
-          ]}
+        <PostUserHeader
+          postTimestamp={createdAt}
+          userName={user.full_name}
+          userProfileUrl={user.avatar_url}
         />
+        <p className="text-lg">{post.description}</p>
+        <PostImages images={post.images} />
       </div>
     </PostContainer>
   )
