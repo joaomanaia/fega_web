@@ -1,23 +1,23 @@
+import { forwardRef } from "react"
 import MessageInput from "./MessageInput"
 import SendMessageButton from "./SendMessageButton"
 
-interface MessageFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+interface MessageFormProps {
   messageTo: string
+  action: (formData: FormData) => void
 }
 
-const MessageForm: React.FC<MessageFormProps> = ({ messageTo, ...props }) => {
-  const sendMessage = async (formData: FormData) => {
-    "use server"
-
-    console.log(formData)
+const MessageForm = forwardRef<HTMLFormElement, MessageFormProps>(
+  ({ messageTo, action, ...props }, ref) => {
+    return (
+      <form ref={ref} action={action} className="flex rounded-2xl space-x-2 w-full" {...props}>
+        <MessageInput messageTo={messageTo} />
+        <SendMessageButton />
+      </form>
+    )
   }
+)
 
-  return (
-    <form action={sendMessage} className="flex rounded-2xl space-x-2 w-full" {...props}>
-      <MessageInput messageTo={messageTo} />
-      <SendMessageButton />
-    </form>
-  )
-}
+MessageForm.displayName = "MessageForm"
 
 export default MessageForm

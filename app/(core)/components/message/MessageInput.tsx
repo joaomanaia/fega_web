@@ -14,6 +14,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ messageTo, ...props }) => {
       <input
         className="bg-transparent rounded-2xl py-2 px-4 border-0 outline-none text-lg w-full"
         type="text"
+        name="message"
         maxLength={512}
         placeholder={`Message to ${messageTo}`}
         {...props}
