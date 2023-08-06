@@ -1,3 +1,5 @@
+"use client"
+
 import { useTheme, Avatar as MuiAvatar } from "@mui/material"
 
 interface AvatarProps {

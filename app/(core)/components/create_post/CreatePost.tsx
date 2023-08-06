@@ -1,40 +1,28 @@
 import MainContainer from "@/components/m3/MainContainer"
 import CreatePostButton from "./CreatePostButton"
 import CreatePostInput from "./CreatePostInput"
-import PostType from "@/types/PostType"
-import { randomUUID } from "crypto"
 import { twMerge } from "tailwind-merge"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
 
 type CreatePostTypes = {
   className?: string
 }
 
 const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
-  const addPostToDB = async (e: FormData) => {
+  const addPostToDB = async (formData: FormData) => {
     "use server"
 
-    const description = e.get("description")?.toString()
-
+    const description = formData.get("description")?.toString()
     if (!description) return
 
-    const newPost: PostType = {
-      id: randomUUID(),
-      uid: "",
-      created_at: new Date().toString(),
-      description: description,
-      images: [],
-    }
+    const supabase = createServerActionClient({ cookies })
 
-    await fetch("https://64ae79e1c85640541d4d24a9.mockapi.io/posts", {
-      method: "POST",
-      body: JSON.stringify(newPost),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    await supabase.from("posts").insert({ description })
 
     revalidateTag("posts")
+    revalidatePath("/")
   }
 
   return (

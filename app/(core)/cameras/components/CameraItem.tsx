@@ -15,7 +15,7 @@ const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
       <ListItemButton>
         <ListItemAvatar>
             <Avatar>
-                <Image src={camera.imagePoster} alt={camera.name} width={40} height={40} />
+                <Image src={camera.image_poster} alt={camera.name} width={40} height={40} />
             </Avatar>
         </ListItemAvatar>
         <ListItemText primary={camera.name} secondary={camera.description} />

@@ -2,10 +2,10 @@ import PostType from "@/types/PostType"
 import UserType from "@/types/UserType"
 import PostContainer from "./PostContainer"
 import PostUserHeader from "./PostUserHeader"
-import { defaultImgUrl } from "@/core/common"
 import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
+import PostActions from "./PostActions"
 
 interface PostProps {
   post: PostType
@@ -21,7 +21,7 @@ const Post: React.FC<PostProps> = ({ post, user, hideContainer }) => {
   const createdAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
 
   return (
-    <PostContainer hideContainer={hideContainer}>
+    <PostContainer hideContainer={hideContainer} /* actionsContent={<PostActions postId={post.id} />} */>
       <div className="flex flex-col space-y-4">
         <PostUserHeader
           postTimestamp={createdAt}

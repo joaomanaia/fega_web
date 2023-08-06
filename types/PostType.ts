@@ -1,3 +1,5 @@
+import UserType from "./UserType"
+
 type PostType = {
   id: string
   uid: string
@@ -7,3 +9,5 @@ type PostType = {
 }
 
 export default PostType
+
+export type PostWithUser = PostType & { author: UserType }

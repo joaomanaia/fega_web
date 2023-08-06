@@ -1,5 +1,4 @@
 import "@/styles/globals.css"
-import "@/styles/firebaseui-styling.global.css"
 import MainLayout from "@/components/m3/MainLayout"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"

@@ -1,13 +1,10 @@
 import MainContainer from "@/components/m3/MainContainer"
 import CreatePost from "./components/create_post/CreatePost"
-import PostType from "@/types/PostType"
+import { PostWithUser } from "@/types/PostType"
 import Post from "./components/post/Post"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { Database } from "@/types/database.types"
-import UserType from "@/types/UserType"
-
-type PostWithUser = PostType & { author: UserType }
 
 const getPosts = async (): Promise<PostWithUser[]> => {
   const supabase = createServerComponentClient<Database>({ cookies })
@@ -28,7 +25,7 @@ export default async function HomePage() {
       <CreatePost />
       <MainContainer className="lg:w-full">
         <div className="flex flex-col space-y-8">
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <Post key={post.id} post={post} user={post.author} />
           ))}
         </div>

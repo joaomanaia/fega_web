@@ -4,7 +4,7 @@ type CameraType = {
   name: string
   description: string
   video: boolean
-  imagePoster: string
+  image_poster: string
 }
 
 export default CameraType

@@ -16,6 +16,7 @@ const CreatePostInput = () => {
       placeholder="What's on your mind?"
       name="description"
       type="text"
+      required
     />
   )
 }
