@@ -1,14 +1,10 @@
-import MainContainer from "@/components/m3/MainContainer"
-import MessageForm from "../../components/message/MessageForm"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/types/database.types"
-import { cookies } from "next/headers"
+import { createServerComponentClient } from "@/supabase"
 import { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
-import GroupMessage from "./components/GroupMessage"
 import { redirect } from "next/navigation"
 import RealtimeMessages from "./components/RealtimeMessages"
 import GroupMessageForm from "./components/GroupMessageForm"
 import GroupType from "@/types/group/GroupType"
+import MainContainer from "../../components/m3/MainContainer"
 
 interface GroupMessagePageProps {
   params: {
@@ -17,7 +13,7 @@ interface GroupMessagePageProps {
 }
 
 const getLocalUserUid = async (): Promise<string | null> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const {
     data: { user },
@@ -27,7 +23,7 @@ const getLocalUserUid = async (): Promise<string | null> => {
 }
 
 const getGroup = async (groupId: string): Promise<GroupType | null> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const { data: group } = await supabase.from("groups").select("*").eq("id", groupId).single()
 
@@ -35,7 +31,7 @@ const getGroup = async (groupId: string): Promise<GroupType | null> => {
 }
 
 const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const { data: groupMessages } = await supabase
     .from("group_messages")
@@ -45,6 +41,8 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
 
   return groupMessages as GroupMessageWithUserType[]
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function GroupMessagePage({ params }: GroupMessagePageProps) {
   const localUserUid = await getLocalUserUid()

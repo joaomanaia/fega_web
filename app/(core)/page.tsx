@@ -1,13 +1,12 @@
-import MainContainer from "@/components/m3/MainContainer"
 import CreatePost from "./components/create_post/CreatePost"
 import { PostWithUser } from "@/types/PostType"
 import Post from "./components/post/Post"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
 import { Database } from "@/types/database.types"
+import MainContainer from "./components/m3/MainContainer"
+import { createServerComponentClient } from "@/supabase"
 
 const getPosts = async (): Promise<PostWithUser[]> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const { data: posts } = await supabase
     .from("posts")

@@ -1,16 +1,14 @@
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { PostWithUser } from "@/types/PostType"
 import Post from "../../components/post/Post"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/types/database.types"
-import { cookies } from "next/headers"
+import { createServerComponentClient } from "@/supabase"
 
 interface PostPageProps {
   params: { id: string }
 }
 
 const getPostById = async (id: string): Promise<PostWithUser | null> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const { data: post } = await supabase
     .from("posts")
@@ -20,6 +18,8 @@ const getPostById = async (id: string): Promise<PostWithUser | null> => {
 
   return post as PostWithUser
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostById(params.id)

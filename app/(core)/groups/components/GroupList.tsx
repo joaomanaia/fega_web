@@ -1,18 +1,16 @@
-import MainContainer from "@/components/m3/MainContainer"
 import CreateGroupButton from "../new/components/CreateGroupButton"
 import { twMerge } from "tailwind-merge"
 import GroupType from "@/types/group/GroupType"
 import GroupItem from "./GroupItem"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/types/database.types"
-import { cookies } from "next/headers"
+import MainContainer from "../../components/m3/MainContainer"
+import { createServerComponentClient } from "@/supabase"
 
 interface GroupListProps {
   className?: string
 }
 
 const getGroups = async (): Promise<GroupType[]> => {
-  const supabase = createServerComponentClient<Database>({ cookies })
+  const supabase = createServerComponentClient()
 
   const { data: groups } = await supabase.from("groups").select("*")
 

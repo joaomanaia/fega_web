@@ -1,4 +1,4 @@
-import Avatar from "@/components/m3/avatar"
+import Avatar from "@/app/(core)/components/m3/avatar"
 import UserType from "@/types/UserType"
 import { Card, Typography } from "@mui/material"
 

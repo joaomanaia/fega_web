@@ -1,4 +1,4 @@
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import CameraType from "@/types/CameraType"
 import { Metadata } from "next"
 import CameraItem from "./components/CameraItem"
@@ -19,6 +19,8 @@ const getAllCameras = async (): Promise<CameraType[]> => {
   
   return res.json()
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const cameras = await getAllCameras()

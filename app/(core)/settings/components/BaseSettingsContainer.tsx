@@ -1,6 +1,6 @@
 "use client"
 
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { List, ListSubheader } from "@mui/material"
 
 interface BaseSettingsContainerProps {

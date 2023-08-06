@@ -1,7 +1,6 @@
 import "@/styles/globals.css"
-import MainLayout from "@/components/m3/MainLayout"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
+import MainLayout from "@/app/(core)/components/m3/MainLayout"
+import { createServerComponentClient } from "@/supabase"
 
 export const metadata = {
   title: "Fega",
@@ -9,7 +8,7 @@ export const metadata = {
 }
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient()
 
   const {
     data: { user },

@@ -1,7 +1,7 @@
-import Avatar from "@/components/m3/avatar"
 import GroupType from "@/types/group/GroupType"
 import { ListItemAvatar, ListItemButton, ListItemText } from "@mui/material"
 import Link from "next/link"
+import Avatar from "../../components/m3/avatar"
 
 type GroupItemType = {
   group: GroupType

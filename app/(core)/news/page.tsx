@@ -1,4 +1,4 @@
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { Metadata } from "next"
 import NewsItem from "./components/NewsItem"
 

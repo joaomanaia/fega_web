@@ -1,10 +1,9 @@
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import CreatePostButton from "./CreatePostButton"
 import CreatePostInput from "./CreatePostInput"
 import { twMerge } from "tailwind-merge"
 import { revalidatePath, revalidateTag } from "next/cache"
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
+import { createServerActionClient } from "@/supabase"
 
 type CreatePostTypes = {
   className?: string
@@ -17,7 +16,7 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
     const description = formData.get("description")?.toString()
     if (!description) return
 
-    const supabase = createServerActionClient({ cookies })
+    const supabase = createServerActionClient()
 
     await supabase.from("posts").insert({ description })
 

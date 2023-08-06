@@ -1,11 +1,10 @@
 import CameraType from "@/types/CameraType"
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
 import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
+import { createRouteHandlerClient } from "@/supabase"
 
 export async function GET() {
-  const supabase = createRouteHandlerClient({ cookies })
+  const supabase = createRouteHandlerClient()
 
   const { data, error } = await supabase.from("cameras").select("*")
 

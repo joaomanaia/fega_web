@@ -1,10 +1,8 @@
-import MainContainer from "@/components/m3/MainContainer"
-import Avatar from "@/components/m3/avatar"
-import { Box, Button, TextField, Typography } from "@mui/material"
+import { Button, TextField, Typography } from "@mui/material"
 import { Metadata } from "next"
 import BackButton from "./components/BackButton"
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
-import { cookies } from "next/headers"
+import MainContainer from "../../components/m3/MainContainer"
+import { createServerActionClient } from "@/supabase"
 
 export const metadata: Metadata = {
   title: "Create group",
@@ -19,7 +17,7 @@ export default async function CreateGroupPage() {
     const name = formData.get("group-name")?.toString()
     if (!name) return
 
-    const supabase = createServerActionClient({ cookies })
+    const supabase = createServerActionClient()
 
     const { error } = await supabase.from("groups").insert({ name: name })
 

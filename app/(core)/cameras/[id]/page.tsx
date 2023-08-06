@@ -1,6 +1,6 @@
 import ImageVideoComponent from "@/app/(core)/cameras/[id]/components/ImageVideoComponent"
 import VideoComponent from "@/app/(core)/cameras/[id]/components/VideoComponent"
-import MainContainer from "@/components/m3/MainContainer"
+import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import CameraType from "@/types/CameraType"
 import { Metadata } from "next"
 
@@ -27,6 +27,8 @@ export async function generateMetadata({ params }: CameraPageProps): Promise<Met
     description: camera?.description ?? "",
   }
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function CameraPage({ params }: CameraPageProps) {
   const camera = await getCameraById(params.id)
