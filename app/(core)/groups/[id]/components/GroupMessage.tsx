@@ -1,33 +1,22 @@
-import { Box, Card, Typography, useTheme } from "@mui/material"
-import useSWR from "swr"
-import { fetcher } from "../../utils/data"
-import Avatar from "../m3/avatar"
-import UserType from "../../types/UserType"
+import Avatar from "@/components/m3/avatar"
+import UserType from "@/types/UserType"
+import { Card, Typography } from "@mui/material"
 
-type GroupMessageItemType = {
-  text: string
+type GroupMessageProps = {
+  message: string
+  user: UserType
   byLocalUser: boolean
-  uid: string
   hasMessageAbove: boolean
   hasMessageBelow: boolean
 }
 
-const GroupMessageItem: React.FC<GroupMessageItemType> = ({
-  text,
+const GroupMessage: React.FC<GroupMessageProps> = ({
+  message,
+  user,
   byLocalUser,
-  uid,
   hasMessageAbove,
   hasMessageBelow,
 }) => {
-  const { data } = useSWR(
-    !hasMessageAbove && !byLocalUser ? `/api/user/getUserByUid?uid=${uid}` : null,
-    fetcher
-  )
-
-  const { palette } = useTheme()
-
-  const user: UserType = data !== undefined ? JSON.parse(data.user) : {}
-
   const messageCorners = () => {
     if (hasMessageAbove && hasMessageBelow) {
       return `rounded-2xl ${byLocalUser ? "rounded-r-md" : "rounded-l-md"}`
@@ -41,10 +30,10 @@ const GroupMessageItem: React.FC<GroupMessageItemType> = ({
   }
 
   return (
-    <Box className="flex flex-col space-y-2 w-full">
+    <div className="flex flex-col space-y-2 w-full">
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Avatar photoUrl={user?.avatar_url} name={user?.full_name} size={22} />
+          <Avatar photoUrl={user?.avatar_url || undefined} name={user?.full_name} size={22} />
 
           <Typography variant="body1">{user?.full_name}</Typography>
         </div>
@@ -54,16 +43,12 @@ const GroupMessageItem: React.FC<GroupMessageItemType> = ({
         <Card
           variant={byLocalUser ? "filled" : "outlined"}
           className={`p-3 w-fit ${messageCorners()}`}
-          sx={{
-            bgcolor: byLocalUser ? palette.primary.main : palette.surfaceVariant.main,
-            color: byLocalUser ? palette.onPrimary.main : palette.onSurfaceVariant.main,
-          }}
         >
-          <Typography variant="body1">{text}</Typography>
+          <Typography variant="body1">{message}</Typography>
         </Card>
       </div>
-    </Box>
+    </div>
   )
 }
 
-export default GroupMessageItem
+export default GroupMessage

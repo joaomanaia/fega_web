@@ -1,10 +1,19 @@
-import { Theme, ComponentsProps, ComponentsOverrides, ComponentsVariants } from "@mui/material"
+import {
+  Theme,
+  ComponentsProps,
+  ComponentsOverrides,
+  ComponentsVariants,
+  Interpolation,
+  CardPropsColorOverrides,
+} from "@mui/material"
 import { alpha } from "@mui/material"
 import { getStateLayerColor, StateLayer } from "../utils/getStayeLayerColor"
 
 declare module "@mui/material/Paper" {
   interface PaperPropsVariantOverrides {
     filled: true
+    primary: true
+    tertiary: true
   }
 }
 
@@ -70,48 +79,6 @@ export const getCard = (theme: Theme): M3Card => {
           },
         },
         {
-          props: { variant: "filled" },
-          style: {
-            boxShadow: theme.shadows[0],
-            backgroundColor: palette.surfaceContainerHighest.main,
-            transition: theme.transitions.create(
-              ["background-color", "box-shadow", "border-color", "color"],
-              {
-                duration: theme.transitions.duration.short,
-              }
-            ),
-            "&:hover": {
-              background: getStateLayerColor(
-                StateLayer.Hover,
-                palette.surfaceContainerHighest.main,
-                palette.primary.main
-              ),
-              boxShadow: theme.shadows[1],
-            },
-            "&:focus": {
-              boxShadow: theme.shadows[0],
-              background: getStateLayerColor(
-                StateLayer.Focus,
-                palette.surfaceContainerHighest.main,
-                palette.primary.main
-              ),
-            },
-            "&:active": {
-              boxShadow: theme.shadows[1],
-              background: getStateLayerColor(
-                StateLayer.Press,
-                palette.surfaceContainerHighest.main,
-                palette.primary.main
-              ),
-            },
-            "&.Mui-disabled": {
-              backgroundColor: alpha(palette.surfaceContainerHighest.main, 0.38),
-              color: palette.surfaceVariant.main,
-              boxShadow: theme.shadows[1],
-            },
-          },
-        },
-        {
           props: { variant: "outlined" },
           style: {
             boxShadow: theme.shadows[0],
@@ -153,7 +120,58 @@ export const getCard = (theme: Theme): M3Card => {
             },
           },
         },
+        getFilledColors(
+          "filled",
+          theme,
+          palette.surfaceContainerHighest.main,
+          palette.onSurface.main
+        ),
+        getFilledColors("primary", theme, palette.primary.main, palette.onPrimary.main)
       ],
+    },
+  }
+}
+
+const getFilledColors = (
+  variant: string,
+  theme: Theme,
+  containerColor: string,
+  contentColor: string
+): {
+  props: Partial<CardPropsColorOverrides>
+  style: Interpolation<{
+    theme: Theme
+  }>
+} => {
+  return {
+    props: { variant: variant },
+    style: {
+      boxShadow: theme.shadows[0],
+      backgroundColor: containerColor,
+      color: contentColor,
+      transition: theme.transitions.create(
+        ["background-color", "box-shadow", "border-color", "color"],
+        {
+          duration: theme.transitions.duration.short,
+        }
+      ),
+      "&:hover": {
+        background: getStateLayerColor(StateLayer.Hover, containerColor, contentColor),
+        boxShadow: theme.shadows[1],
+      },
+      "&:focus": {
+        boxShadow: theme.shadows[0],
+        background: getStateLayerColor(StateLayer.Focus, containerColor, contentColor),
+      },
+      "&:active": {
+        boxShadow: theme.shadows[1],
+        background: getStateLayerColor(StateLayer.Press, containerColor, contentColor),
+      },
+      "&.Mui-disabled": {
+        backgroundColor: alpha(containerColor, 0.38),
+        color: contentColor,
+        boxShadow: theme.shadows[1],
+      },
     },
   }
 }

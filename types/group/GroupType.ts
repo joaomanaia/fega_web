@@ -1,4 +1,4 @@
-import { Database } from "./database.types"
+import { Database } from "../database.types"
 
 type GroupType = Database["public"]["Tables"]["groups"]["Row"]
 

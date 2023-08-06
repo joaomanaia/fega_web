@@ -23,12 +23,10 @@ export default async function HomePage() {
   return (
     <div className="relative flex flex-col lg:flex-row-reverse w-full">
       <CreatePost />
-      <MainContainer className="lg:w-full">
-        <div className="flex flex-col space-y-8">
-          {posts?.map((post) => (
-            <Post key={post.id} post={post} user={post.author} />
-          ))}
-        </div>
+      <MainContainer className="flex flex-col space-y-8 lg:w-full">
+        {posts?.map((post) => (
+          <Post key={post.id} post={post} user={post.author} />
+        ))}
       </MainContainer>
     </div>
   )

@@ -1,7 +1,7 @@
 import MainContainer from "@/components/m3/MainContainer"
 import CreateGroupButton from "../new/components/CreateGroupButton"
 import { twMerge } from "tailwind-merge"
-import GroupType from "@/types/GroupType"
+import GroupType from "@/types/group/GroupType"
 import GroupItem from "./GroupItem"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database.types"

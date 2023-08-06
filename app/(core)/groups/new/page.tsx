@@ -30,7 +30,7 @@ export default async function CreateGroupPage() {
   }
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:h-auto xl:w-4/6">
+    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
       <Typography variant="h4">Create a Group</Typography>
 
       <form className="flex flex-col mt-8 w-full" action={createGroup}>
