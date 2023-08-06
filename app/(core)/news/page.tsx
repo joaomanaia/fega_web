@@ -1,6 +1,6 @@
 import MainContainer from "@/components/m3/MainContainer"
 import { Metadata } from "next"
-import NewsItem from "../../../components/news/NewsItem"
+import NewsItem from "./components/NewsItem"
 
 const getNews = async () => {
   return [
