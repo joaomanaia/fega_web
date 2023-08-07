@@ -5,21 +5,12 @@ import RealtimeMessages from "./components/RealtimeMessages"
 import GroupMessageForm from "./components/GroupMessageForm"
 import GroupType from "@/types/group/GroupType"
 import MainContainer from "../../components/m3/MainContainer"
+import { getLocalUserUid } from "@/utils/user-utils"
 
 interface GroupMessagePageProps {
   params: {
     id: string
   }
-}
-
-const getLocalUserUid = async (): Promise<string | null> => {
-  const supabase = createServerComponentClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  return user?.id ?? null
 }
 
 const getGroup = async (groupId: string): Promise<GroupType | null> => {
