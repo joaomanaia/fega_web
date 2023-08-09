@@ -7,6 +7,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect } from "react"
 import GroupMessage from "./GroupMessage"
 import UserType from "@/types/UserType"
+import ScrollContainer from "@/app/(core)/components/ScrollContainer"
 
 interface RealtimeMessagesProps {
   localUserUid: string
@@ -73,7 +74,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   }
 
   return (
-    <div className="w-full space-y-3 p-4 flex-grow overflow-y-scroll">
+    <ScrollContainer className="w-full space-y-3 p-4 grow">
       {messages.map((message, index) => (
         <GroupMessage
           key={message.id}
@@ -84,7 +85,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
           hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
         />
       ))}
-    </div>
+    </ScrollContainer>
   )
 }
 

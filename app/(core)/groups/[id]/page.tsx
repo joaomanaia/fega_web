@@ -45,7 +45,7 @@ export default async function GroupMessagePage({ params }: GroupMessagePageProps
   const messages = await getMessages(params.id)
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:h-auto xl:w-4/6">
+    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
       <RealtimeMessages localUserUid={localUserUid} groupId={params.id} serverMessages={messages} />
       <GroupMessageForm group={group} />
     </MainContainer>

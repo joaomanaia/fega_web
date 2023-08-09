@@ -35,7 +35,7 @@ const MainAppBar: React.FC<HeaderProps> = ({ authUser, onDrawerToggle, window })
 
   return (
     <>
-      <AppBar position="sticky" elevation={trigger ? 2 : 0}>
+      <AppBar className="sticky" position="sticky" elevation={trigger ? 2 : 0}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid item sx={{ display: { md: "none", sm: "block" } }}>

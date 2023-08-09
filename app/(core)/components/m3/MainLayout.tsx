@@ -44,7 +44,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ authUser, children }) => {
   }
 
   return (
-    <Box sx={rootStyles}>
+    <Box className="flex h-screen min-h-screen overflow-hidden pb-[6vh]">
       <Box component="nav" sx={navStyles}>
         {isSmUp ? null : (
           <MainDrawer
@@ -62,7 +62,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ authUser, children }) => {
       </Box>
       <Box sx={mainStyles}>
         <MainAppBar authUser={authUser} onDrawerToggle={handleDrawerToggle} />
-        <Box sx={containerStyles}>{children}</Box>
+        <Box sx={containerStyles} className="h-full">{children}</Box>
       </Box>
     </Box>
   )

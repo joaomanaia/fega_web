@@ -3,6 +3,8 @@ import { Metadata } from "next"
 import BackButton from "./components/BackButton"
 import MainContainer from "../../components/m3/MainContainer"
 import { createServerActionClient } from "@/supabase"
+import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 export const metadata: Metadata = {
   title: "Create group",
@@ -25,6 +27,9 @@ export default async function CreateGroupPage() {
       console.error(error)
       return
     }
+
+    revalidatePath("/groups")
+    redirect("/groups")
   }
 
   return (

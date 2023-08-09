@@ -13,7 +13,7 @@ export default async function GroupLayout({ children }: GroupLayoutProps) {
   if (!localUser) return redirect("/auth")
 
   return (
-    <div className="flex xl:flex-row w-full h-full overflow-none">
+    <div className="flex xl:flex-row w-full h-full overflow-hidden">
       <GroupList className="hidden xl:block xl:w-2/6 flex-grow" />
       {children}
     </div>

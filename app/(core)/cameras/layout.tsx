@@ -26,7 +26,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const cameras = await getAllCameras()
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full overflow-y-auto">
       {children}
       <MainContainer>
         <div className="flex flex-col xl:grid xl:grid-cols-2 2xl:grid-cols-3 w-full h-full">

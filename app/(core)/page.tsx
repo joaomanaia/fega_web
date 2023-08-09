@@ -20,13 +20,13 @@ export default async function HomePage() {
   const posts = await getPosts()
 
   return (
-    <div className="relative flex flex-col lg:flex-row-reverse w-full">
+    <main className="flex flex-col lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
       <CreatePost />
-      <MainContainer className="flex flex-col space-y-8 lg:w-full">
+      <MainContainer className="flex flex-col space-y-8 lg:w-full lg:overflow-auto">
         {posts?.map((post) => (
           <Post key={post.id} post={post} user={post.author} />
         ))}
       </MainContainer>
-    </div>
+    </main>
   )
 }

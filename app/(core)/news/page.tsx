@@ -37,7 +37,7 @@ export default async function Page() {
   const news = await getNews()
 
   return (
-    <MainContainer className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
+    <MainContainer className="w-full h-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3 overflow-auto">
       {news.map((item) => (
         <NewsItem
           key={item.id}
