@@ -1,34 +1,33 @@
+"use client"
+
 import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import CreatePostButton from "./CreatePostButton"
 import CreatePostInput from "./CreatePostInput"
 import { twMerge } from "tailwind-merge"
-import { revalidatePath, revalidateTag } from "next/cache"
-import { createServerActionClient } from "@/supabase"
+import { createPost } from "@/core/actions/postActions"
+import { useRef } from "react"
 
 type CreatePostTypes = {
   className?: string
 }
 
 const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
-  const addPostToDB = async (formData: FormData) => {
-    "use server"
-
-    const description = formData.get("description")?.toString()
-    if (!description) return
-
-    const supabase = createServerActionClient()
-
-    await supabase.from("posts").insert({ description })
-
-    revalidateTag("posts")
-    revalidatePath("/")
-  }
+  const ref = useRef<HTMLFormElement>(null)
 
   return (
     <MainContainer className={twMerge("h-fit", className)}>
-      <p className="text-2xl">Create post</p>
+      <form
+        ref={ref}
+        action={async (formData) => {
+          const description = formData.get("description")?.toString()
+          if (!description) return
 
-      <form action={addPostToDB}>
+          ref.current?.reset()
+
+          await createPost(description)
+        }}
+      >
+        <p className="text-2xl">Create post</p>
         <CreatePostInput />
         <CreatePostButton />
       </form>

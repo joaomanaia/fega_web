@@ -1,7 +1,6 @@
 import CreatePost from "./components/create_post/CreatePost"
 import { PostWithUser } from "@/types/PostType"
 import Post from "./components/post/Post"
-import { Database } from "@/types/database.types"
 import MainContainer from "./components/m3/MainContainer"
 import { createServerComponentClient } from "@/supabase"
 

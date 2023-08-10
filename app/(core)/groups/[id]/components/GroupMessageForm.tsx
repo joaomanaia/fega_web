@@ -1,6 +1,7 @@
 "use client"
 
-import MessageForm from "@/app/(core)/components/message/MessageForm"
+import MessageInput from "@/app/(core)/components/message/MessageInput"
+import SendMessageButton from "@/app/(core)/components/message/SendMessageButton"
 import sendGroupMessage from "@/core/actions/group/sendGroupMessage"
 import GroupType from "@/types/group/GroupType"
 import { useRef } from "react"
@@ -10,20 +11,21 @@ interface GroupMessageFormProps {
 }
 
 const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ group }) => {
-  const formRef = useRef<HTMLFormElement>(null)
+  const ref = useRef<HTMLFormElement>(null)
 
-  console.log(formRef)
-
-  const sendMessage = async (formData: FormData) => {
-    const message = formData.get("message")
-    if (!message) return
-
-    formRef.current?.reset()
-
-    await sendGroupMessage(group.id, message as string)
-  }
-
-  return <MessageForm ref={formRef} messageTo={group.name} action={sendMessage} />
+  return (
+    <form ref={ref} action={async formData => {
+      const message = formData.get("message")
+      if (!message) return
+  
+      ref.current?.reset()
+  
+      await sendGroupMessage(group.id, message as string)
+    }} className="flex rounded-2xl space-x-2 w-full">
+      <MessageInput messageTo={group.name} />
+      <SendMessageButton />
+    </form>
+  )
 }
 
 export default GroupMessageForm
