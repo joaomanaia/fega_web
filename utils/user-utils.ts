@@ -6,7 +6,7 @@ export const getPairUid = (uid1: string, uid2: string): string => {
 }
 
 export const getPairUids = (uids: string[]): string => {
-    return uids.sort().join("")
+  return uids.sort().join("")
 }
 
 export const getLocalUser = async (): Promise<User | null> => {
@@ -23,4 +23,10 @@ export const getLocalUserUid = async (): Promise<string | null> => {
   const user = await getLocalUser()
 
   return user?.id ?? null
+}
+
+export const isUserAuthenticated = async (): Promise<boolean> => {
+  const user = await getLocalUser()
+
+  return user !== null
 }
