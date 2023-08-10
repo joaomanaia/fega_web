@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.fega.ml
+Host: https://fega.vercel.app/en
 
 # Sitemaps
-Sitemap: https://www.fega.ml/sitemap.xml
+Sitemap: https://fega.vercel.app/en/sitemap.xml
