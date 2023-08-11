@@ -1,7 +1,6 @@
 "use client"
 
 import { useThemeMode } from "@/core/theme/hooks/useThemeMode"
-import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
 import { alpha, useTheme } from "@mui/material"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Auth } from "@supabase/auth-ui-react"
@@ -17,7 +16,7 @@ const AuthContent: React.FC = () => {
     <Auth
       supabaseClient={supabase}
       providers={["google"]}
-      redirectTo={formatUrlWithBasePath("auth/callback")}
+      redirectTo={`${location.origin}/auth/callback`}
       appearance={{
         theme: ThemeSupa,
         variables: {
