@@ -1,6 +1,8 @@
 import Avatar from "@/app/(core)/components/m3/avatar"
 import UserType from "@/types/UserType"
 import { Card, Typography } from "@mui/material"
+import { twMerge } from "tailwind-merge"
+import GroupMessagePopup from "./popup/GroupMessagePopup"
 
 type GroupMessageProps = {
   message: string
@@ -17,15 +19,15 @@ const GroupMessage: React.FC<GroupMessageProps> = ({
   hasMessageAbove,
   hasMessageBelow,
 }) => {
-  const messageCorners = () => {
+  const messageCorners = (): string => {
     if (hasMessageAbove && hasMessageBelow) {
-      return `rounded-2xl ${byLocalUser ? "rounded-r-md" : "rounded-l-md"}`
+      return byLocalUser ? "rounded-r-md" : "rounded-l-md"
     } else if (hasMessageAbove && !hasMessageBelow) {
-      return `rounded-2xl ${byLocalUser ? "rounded-tr-md" : "rounded-tl-md"}`
+      return byLocalUser ? "rounded-tr-md" : "rounded-tl-md"
     } else if (!hasMessageAbove && hasMessageBelow) {
-      return `rounded-2xl ${byLocalUser ? "rounded-br-md" : "rounded-bl-md"}`
+      return byLocalUser ? "rounded-br-md" : "rounded-bl-md"
     } else {
-      return "rounded-2xl"
+      return ""
     }
   }
 
@@ -39,10 +41,10 @@ const GroupMessage: React.FC<GroupMessageProps> = ({
         </div>
       )}
 
-      <div className={`flex w-full ${byLocalUser ? "justify-end" : "justify-start"}`}>
+      <div className={twMerge("flex w-full", byLocalUser ? "justify-end" : "justify-start")}>
         <Card
           variant={byLocalUser ? "filled" : "outlined"}
-          className={`p-3 w-fit ${messageCorners()}`}
+          className={twMerge("p-3 w-fit rounded-2xl", messageCorners())}
         >
           <Typography variant="body1">{message}</Typography>
         </Card>
