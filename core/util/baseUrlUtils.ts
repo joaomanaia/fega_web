@@ -19,7 +19,9 @@ export const getBasePath = () => {
  */
 export const formatUrlWithBasePath = (path: string) => {
   const basePath = getBasePath()
-  return `${basePath}/${path}`
+  const pathWithoutLeadingSlash = path.replace(/^\//, "")
+
+  return `${basePath}/${pathWithoutLeadingSlash}`
 }
 
 export const fetchServer = async (path: string, options?: RequestInit) => {
