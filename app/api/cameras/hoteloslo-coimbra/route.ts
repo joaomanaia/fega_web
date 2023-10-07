@@ -7,6 +7,11 @@ export async function GET() {
 
   const res = await fetch(cameraUrl, {
     cache: "no-cache",
+    headers: {
+      "Cache-Control": "no-cache",
+      "Content-Type": "image/jpeg",
+      "Access-Control-Allow-Origin": "*",
+    }
   })
 
   return res
