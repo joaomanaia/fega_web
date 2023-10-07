@@ -16,7 +16,7 @@ const AuthContent: React.FC = () => {
   return (
     <Auth
       supabaseClient={supabase}
-      providers={["google"]}
+      providers={["google", "github", "discord"]}
       redirectTo={formatUrlWithBasePath("auth/callback")}
       appearance={{
         theme: ThemeSupa,
