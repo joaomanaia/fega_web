@@ -25,7 +25,7 @@ export default async function GroupList({ className }: GroupListProps) {
       <CreateGroupButton />
       <MainContainer className="h-auto w-auto flex flex-col">
         {groups.map((group) => (
-          <GroupItem key={group.id} group={group} selected={false} />
+          <GroupItem key={group.id} group={group} />
         ))}
       </MainContainer>
     </div>
