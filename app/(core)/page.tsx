@@ -9,7 +9,7 @@ const getPosts = async (): Promise<PostWithUser[]> => {
 
   const { data: posts } = await supabase
     .from("posts")
-    .select("*, author:users(*)")
+    .select("*, author:users!posts_uid_fkey(*)")
     .order("created_at", { ascending: false })
 
   return posts as PostWithUser[]

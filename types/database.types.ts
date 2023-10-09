@@ -135,6 +135,40 @@ export interface Database {
           }
         ]
       }
+      post_votes: {
+        Row: {
+          created_at: string
+          post_id: string
+          uid: string
+          up_vote: boolean
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          uid: string
+          up_vote: boolean
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          uid?: string
+          up_vote?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_votes_post_id_fkey"
+            columns: ["post_id"]
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_votes_uid_fkey"
+            columns: ["uid"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       posts: {
         Row: {
           created_at: string
@@ -200,6 +234,12 @@ export interface Database {
         Args: {
           group_id: string
           uid: string
+        }
+        Returns: boolean
+      }
+      user_can_post: {
+        Args: {
+          user_id: string
         }
         Returns: boolean
       }
