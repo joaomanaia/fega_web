@@ -140,19 +140,19 @@ export interface Database {
           created_at: string
           post_id: string
           uid: string
-          up_vote: boolean
+          vote_type: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Insert: {
           created_at?: string
           post_id: string
-          uid: string
-          up_vote: boolean
+          uid?: string
+          vote_type?: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Update: {
           created_at?: string
           post_id?: string
           uid?: string
-          up_vote?: boolean
+          vote_type?: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Relationships: [
           {
@@ -176,6 +176,7 @@ export interface Database {
           id: string
           images: string[]
           uid: string
+          votes: number
         }
         Insert: {
           created_at?: string
@@ -183,6 +184,7 @@ export interface Database {
           id?: string
           images?: string[]
           uid?: string
+          votes?: number
         }
         Update: {
           created_at?: string
@@ -190,6 +192,7 @@ export interface Database {
           id?: string
           images?: string[]
           uid?: string
+          votes?: number
         }
         Relationships: [
           {
@@ -230,6 +233,20 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_post_with_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          uid: string
+          created_at: string
+          description: string
+          images: string[]
+          votes: number
+          full_name: string
+          avatar_url: string
+          vote_type: Database["public"]["Enums"]["post_vote_type"]
+        }[]
+      }
       is_group_participant: {
         Args: {
           group_id: string
@@ -245,7 +262,7 @@ export interface Database {
       }
     }
     Enums: {
-      [_ in never]: never
+      post_vote_type: "up" | "down"
     }
     CompositeTypes: {
       [_ in never]: never
