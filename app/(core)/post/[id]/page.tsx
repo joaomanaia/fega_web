@@ -1,5 +1,5 @@
 import MainContainer from "@/app/(core)/components/m3/MainContainer"
-import { PostWithUser } from "@/types/PostType"
+import { PostWithData, PostsWithData } from "@/types/PostType"
 import Post from "../../components/post/Post"
 import { createServerComponentClient } from "@/supabase"
 
@@ -7,16 +7,12 @@ interface PostPageProps {
   params: { id: string }
 }
 
-const getPostById = async (id: string): Promise<PostWithUser | null> => {
+const getPostById = async (id: string): Promise<PostWithData | null> => {
   const supabase = createServerComponentClient()
 
-  const { data: post } = await supabase
-    .from("posts")
-    .select("*, author:users(*)")
-    .eq("id", id)
-    .single()
+  const { data: post } = await supabase.rpc("get_post_with_data").eq("id", id).single()
 
-  return post as PostWithUser
+  return post
 }
 
 export const dynamic = "force-dynamic"
@@ -31,7 +27,9 @@ export default async function PostPage({ params }: PostPageProps) {
       <Post
         hideContainer
         post={post}
-        user={post.author}
+        authorName={post.full_name}
+        authorAvatarUrl={post.avatar_url}
+        localUserVotedType={post.vote_type}
       />
     </MainContainer>
   )
