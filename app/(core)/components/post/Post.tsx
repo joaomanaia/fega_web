@@ -4,7 +4,7 @@ import PostUserHeader from "./PostUserHeader"
 import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
-import { VotePostAction } from "./actions/VotePostAction"
+import { VotePostAction } from "./actions/vote/VotePostAction"
 import { SharePostAction } from "./actions/SharePostAction"
 
 interface PostProps {
