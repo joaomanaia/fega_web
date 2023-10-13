@@ -7,7 +7,7 @@ export default PostType
 
 export type PostWithUser = PostType & { author: UserType }
 
-export type PostsWithData = Database["public"]["Functions"]["get_post_with_data"]["Returns"]
+export type PostsWithData = Database["public"]["Functions"]["get_posts_with_data"]["Returns"]
 
 export type PostWithData = PostsWithData[0]
 

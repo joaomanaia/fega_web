@@ -9,6 +9,7 @@ import { SharePostAction } from "./actions/SharePostAction"
 
 interface PostProps {
   post: PostType
+  postVotes: number
   authorName: string
   authorAvatarUrl: string
   localUserVotedType?: PostVoteType
@@ -21,6 +22,7 @@ function getRelativeTime(createdAt: string) {
 
 const Post: React.FC<PostProps> = ({
   post,
+  postVotes,
   authorName,
   authorAvatarUrl,
   localUserVotedType,
@@ -38,7 +40,7 @@ const Post: React.FC<PostProps> = ({
       <p className="text-lg">{post.description}</p>
       {post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex items-center space-x-4">
-        <VotePostAction voteCount={post.votes} votedType={localUserVotedType} />
+        <VotePostAction postId={post.id} voteCount={postVotes} votedType={localUserVotedType} />
         <SharePostAction postId={post.id} />
       </div>
     </PostContainer>

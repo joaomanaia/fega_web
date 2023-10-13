@@ -10,7 +10,7 @@ interface PostPageProps {
 const getPostById = async (id: string): Promise<PostWithData | null> => {
   const supabase = createServerComponentClient()
 
-  const { data: post } = await supabase.rpc("get_post_with_data").eq("id", id).single()
+  const { data: post } = await supabase.rpc("get_posts_with_data").eq("id", id).single()
 
   return post
 }
@@ -27,6 +27,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <Post
         hideContainer
         post={post}
+        postVotes={post.votes}
         authorName={post.full_name}
         authorAvatarUrl={post.avatar_url}
         localUserVotedType={post.vote_type}

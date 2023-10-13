@@ -176,7 +176,6 @@ export interface Database {
           id: string
           images: string[]
           uid: string
-          votes: number
         }
         Insert: {
           created_at?: string
@@ -184,7 +183,6 @@ export interface Database {
           id?: string
           images?: string[]
           uid?: string
-          votes?: number
         }
         Update: {
           created_at?: string
@@ -192,7 +190,6 @@ export interface Database {
           id?: string
           images?: string[]
           uid?: string
-          votes?: number
         }
         Relationships: [
           {
@@ -233,7 +230,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      get_post_with_data: {
+      get_post_votes: {
+        Args: {
+          post_id: string
+        }
+        Returns: number
+      }
+      get_posts_with_data: {
         Args: Record<PropertyKey, never>
         Returns: {
           id: string
@@ -241,10 +244,10 @@ export interface Database {
           created_at: string
           description: string
           images: string[]
-          votes: number
           full_name: string
           avatar_url: string
           vote_type: Database["public"]["Enums"]["post_vote_type"]
+          votes: number
         }[]
       }
       is_group_participant: {
