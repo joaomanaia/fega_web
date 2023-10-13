@@ -15,6 +15,7 @@ declare module "@mui/material/Button" {
     outlined: true
     text: true
     contained: false
+    surfaceVariant: true
   }
   interface ButtonPropsColorOverrides {
     tertiary: true
@@ -236,6 +237,43 @@ export const getButton = (theme: Theme): M3Button => {
                 palette.surface.main,
                 palette.primary.main
               ),
+            },
+          },
+        },
+        {
+          props: { variant: "surfaceVariant" },
+          style: {
+            backgroundColor: palette.surfaceVariant.main,
+            color: palette.onSurfaceVariant.main,
+            boxShadow: theme.shadows[0],
+            "&.Mui-disabled": {
+              backgroundColor: alpha(palette.onSurface.main, 0.12),
+              color: alpha(palette.onSurface.main, 0.38),
+              boxShadow: theme.shadows[0],
+            },
+            "&:hover": {
+              backgroundColor: getStateLayerColor(
+                StateLayer.Hover,
+                palette.surfaceVariant.main,
+                palette.onSurfaceVariant.main
+              ),
+              boxShadow: theme.shadows[1],
+            },
+            "&:focus": {
+              backgroundColor: getStateLayerColor(
+                StateLayer.Focus,
+                palette.surfaceVariant.main,
+                palette.onSurfaceVariant.main
+              ),
+              boxShadow: theme.shadows[0],
+            },
+            "&:active": {
+              backgroundColor: getStateLayerColor(
+                StateLayer.Press,
+                palette.surfaceVariant.main,
+                palette.onSurfaceVariant.main
+              ),
+              boxShadow: theme.shadows[0],
             },
           },
         },

@@ -140,19 +140,19 @@ export interface Database {
           created_at: string
           post_id: string
           uid: string
-          up_vote: boolean
+          vote_type: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Insert: {
           created_at?: string
           post_id: string
-          uid: string
-          up_vote: boolean
+          uid?: string
+          vote_type?: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Update: {
           created_at?: string
           post_id?: string
           uid?: string
-          up_vote?: boolean
+          vote_type?: Database["public"]["Enums"]["post_vote_type"] | null
         }
         Relationships: [
           {
@@ -230,6 +230,26 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_post_votes: {
+        Args: {
+          post_id: string
+        }
+        Returns: number
+      }
+      get_posts_with_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          uid: string
+          created_at: string
+          description: string
+          images: string[]
+          full_name: string
+          avatar_url: string
+          vote_type: Database["public"]["Enums"]["post_vote_type"]
+          votes: number
+        }[]
+      }
       is_group_participant: {
         Args: {
           group_id: string
@@ -245,7 +265,7 @@ export interface Database {
       }
     }
     Enums: {
-      [_ in never]: never
+      post_vote_type: "up" | "down"
     }
     CompositeTypes: {
       [_ in never]: never
