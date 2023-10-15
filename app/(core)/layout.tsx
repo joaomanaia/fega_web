@@ -5,6 +5,12 @@ import { createServerComponentClient } from "@/supabase"
 export const metadata = {
   title: "Fega",
   description: "The best social network in ega!",
+  icons: [
+    {
+      rel: "icon",
+      url: "/fega_round_1.ico",
+    },
+  ]
 }
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
