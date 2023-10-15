@@ -3,9 +3,9 @@
 import { useTheme, Avatar as MuiAvatar } from "@mui/material"
 
 interface AvatarProps {
-    name?: string
-    photoUrl?: string
-    size?: number
+  name?: string | null
+  photoUrl?: string | null
+  size?: number
 }
 
 const Avatar: React.FC<AvatarProps> = ({ name, photoUrl, size }) => {
@@ -13,14 +13,14 @@ const Avatar: React.FC<AvatarProps> = ({ name, photoUrl, size }) => {
 
   return (
     <MuiAvatar
-      src={photoUrl}
-      alt={name}
+      src={photoUrl ?? undefined}
+      alt={name ?? undefined}
       aria-label="image"
       sx={{
         background: palette.secondary.main,
         color: palette.onSecondary.main,
         width: size,
-        height: size
+        height: size,
       }}
     >
       {name}
