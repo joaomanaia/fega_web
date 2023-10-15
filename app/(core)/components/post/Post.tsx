@@ -33,6 +33,7 @@ const Post: React.FC<PostProps> = ({
   return (
     <PostContainer hideContainer={hideContainer} className="flex flex-col space-y-4 pb-4">
       <PostUserHeader
+        uid={post.uid}
         postTimestamp={createdAt}
         userName={authorName}
         userProfileUrl={authorAvatarUrl}

@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@/supabase"
 import UserType from "@/types/UserType"
 import Avatar from "../../components/m3/avatar"
+import { defaultImgUrl } from "@/core/common"
 
 const getUserByUid = async (uid: string): Promise<UserType | null> => {
   const supabase = createServerComponentClient()
@@ -26,7 +27,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({ ui
 
   return (
     <div className="flex items-center space-x-4">
-      <Avatar photoUrl={user.avatar_url} name={user.full_name} size={40} />
+      <Avatar photoUrl={user.avatar_url ?? defaultImgUrl} name={user.full_name} size={40} />
       <h1 className="text-xl font-bold">{user.full_name}</h1>
     </div>
   )
