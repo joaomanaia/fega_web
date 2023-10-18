@@ -5,7 +5,7 @@ import { Button } from "@mui/material"
 import ThumbUpRounded from "@mui/icons-material/ThumbUpRounded"
 import ThumbDownRounded from "@mui/icons-material/ThumbDownRounded"
 import { cn } from "@/core/util/tailwindcssUtils"
-import { experimental_useFormStatus as useFormStatus } from "react-dom"
+import { useFormStatus } from "react-dom"
 
 interface VotePostActionButtonProps {
   type: PostVoteType

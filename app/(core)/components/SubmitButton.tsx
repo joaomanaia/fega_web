@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@mui/material"
-import { experimental_useFormStatus as useFormStatus } from "react-dom"
+import { useFormStatus } from "react-dom"
 
 interface SubmitButtonProps {
   className?: string
