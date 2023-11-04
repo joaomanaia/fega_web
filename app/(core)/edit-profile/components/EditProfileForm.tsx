@@ -22,7 +22,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
         <Input id="full_name" name="full_name" type="text" placeholder="Full Name" />
       </div>
 
-      <SubmitButton>Save</SubmitButton>
+      <SubmitButton text="Save" />
     </form>
   )
 }

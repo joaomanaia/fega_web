@@ -1,11 +1,7 @@
 import { redirect } from "next/navigation"
 import MainContainer from "../components/m3/MainContainer"
-import { EditAvatarImage } from "./components/EditAvatarImage"
 import UserType from "@/types/UserType"
 import { createServerComponentClient } from "@/supabase"
-import { defaultImgUrl } from "@/core/common"
-import { SubmitButton } from "../components/SubmitButton"
-import { Input } from "../components/CreatePostInput"
 import { EditProfileForm } from "./components/EditProfileForm"
 
 const getLocalUser = async (): Promise<UserType | null> => {

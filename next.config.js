@@ -9,9 +9,6 @@ const nextConfig = {
       "firebasestorage.googleapis.com",
       "www.notebookcheck.info",
     ],
-  },
-  experimental: {
-    serverActions: true
   }
 }
 
