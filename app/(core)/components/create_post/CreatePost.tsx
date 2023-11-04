@@ -2,7 +2,7 @@
 
 import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import CreatePostButton from "./CreatePostButton"
-import CreatePostInput from "./CreatePostInput"
+import { Input } from "../CreatePostInput"
 import { twMerge } from "tailwind-merge"
 import { createPost } from "@/core/actions/postActions"
 import { useRef } from "react"
@@ -28,7 +28,11 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
         }}
       >
         <p className="text-2xl">Create post</p>
-        <CreatePostInput />
+        <Input
+           placeholder="What's on your mind?"
+           name="description"
+           type="text"
+           required />
         <CreatePostButton />
       </form>
     </MainContainer>

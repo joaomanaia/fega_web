@@ -11,8 +11,8 @@ export default async function UserPage({ params }: { params: { uid: string } }) 
   return (
     <main className="flex flex-col lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
       <div className="flex flex-col">
-        <MainContainer className="h-fit lg:w-96">
-          <UserProfileContent uid={params.uid} />
+        <MainContainer className="h-fit lg:w-96 flex flex-col space-y-4">
+          <UserProfileContent uid={params.uid} isLocalUser={isLocalUser} />
         </MainContainer>
         {isLocalUser && <CreatePost />}
       </div>
