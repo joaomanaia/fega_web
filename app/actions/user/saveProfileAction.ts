@@ -1,25 +1,62 @@
 "use server"
 
+import { createServerActionClient } from "@/supabase"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import * as z from "zod"
 
 const schema = z.object({
   full_name: z.string().min(3).max(30),
-  // avatar_url: z.string().url(),
 })
 
-export default async function saveProfile(formData: FormData) {
+export default async function saveProfile(prevState: any, formData: FormData) {
   try {
     const parsed = schema.parse({
       full_name: formData.get("full_name"),
-      // avatar_url: formData.get("avatar_url"),
     })
 
-    console.log("Full Name", parsed.full_name)
-    // console.log("Avatar URL", parsed.avatar_url)
-  } catch (err) {
-    console.log("Error saving profile", err)
+    const supabase = createServerActionClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    // Check if user is authenticated
+    if (!user) return redirect("/")
+
+    const { error } = await supabase
+      .from("users")
+      .update({
+        full_name: parsed.full_name,
+      })
+      .eq("id", user.id)
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    revalidatePath("/edit-profile")
+
     return {
-      message: `Error saving profile: ${err}`,
+      successMessage: "Profile updated successfully",
+    }
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      if (err.isEmpty) {
+        return {
+          fullNameError: "",
+        }
+      }
+
+      const fullNameIssue = err.issues.find((issue) => issue.path[0] === "full_name")
+
+      return {
+        fullNameError: fullNameIssue?.message,
+      }
+    } else {
+      return {
+        errorMessage: err,
+      }
     }
   }
 }

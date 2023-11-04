@@ -5,9 +5,10 @@ import { EditRounded } from "@mui/icons-material"
 interface EditAvatarImageProps {
   avatarImage: string
   name?: string | null
+  disabled?: boolean
 }
 
-export const EditAvatarImage: React.FC<EditAvatarImageProps> = ({ avatarImage, name }) => {
+export const EditAvatarImage: React.FC<EditAvatarImageProps> = ({ avatarImage, name, disabled }) => {
   return (
     <Badge
       overlap="circular"
@@ -17,6 +18,7 @@ export const EditAvatarImage: React.FC<EditAvatarImageProps> = ({ avatarImage, n
       }}
       color="primary"
       badgeContent={<EditAvatarBadge />}
+      invisible={disabled}
     >
       <Avatar photoUrl={avatarImage} name={name} size={100} />
     </Badge>
@@ -25,7 +27,7 @@ export const EditAvatarImage: React.FC<EditAvatarImageProps> = ({ avatarImage, n
 
 const EditAvatarBadge: React.FC = () => {
   return (
-    <IconButton size="small">
+    <IconButton size="small" component="span">
       <EditRounded fontSize="inherit" />
     </IconButton>
   )
