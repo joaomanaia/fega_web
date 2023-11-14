@@ -1,6 +1,6 @@
 import CreateGroupButton from "../new/components/CreateGroupButton"
 import { twMerge } from "tailwind-merge"
-import GroupType from "@/types/group/GroupType"
+import { GroupViewType } from "@/types/group/GroupType"
 import GroupItem from "./GroupItem"
 import MainContainer from "../../components/m3/MainContainer"
 import { createServerComponentClient } from "@/supabase"
@@ -9,12 +9,12 @@ interface GroupListProps {
   className?: string
 }
 
-const getGroups = async (): Promise<GroupType[]> => {
+const getGroups = async (): Promise<GroupViewType[]> => {
   const supabase = createServerComponentClient()
 
-  const { data: groups } = await supabase.from("groups").select("*")
+  const { data: groups } = await supabase.from("group_view").select("*")
 
-  return groups as GroupType[]
+  return groups as GroupViewType[]
 }
 
 export default async function GroupList({ className }: GroupListProps) {

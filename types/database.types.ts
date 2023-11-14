@@ -62,12 +62,21 @@ export interface Database {
           {
             foreignKeyName: "group_messages_group_id_fkey"
             columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
             referencedRelation: "groups"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "group_messages_uid_fkey"
             columns: ["uid"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -93,12 +102,21 @@ export interface Database {
           {
             foreignKeyName: "group_participants_group_id_fkey"
             columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_participants_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
             referencedRelation: "groups"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "group_participants_uid_fkey"
             columns: ["uid"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -130,6 +148,7 @@ export interface Database {
           {
             foreignKeyName: "groups_created_by_fkey"
             columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -158,12 +177,14 @@ export interface Database {
           {
             foreignKeyName: "post_votes_post_id_fkey"
             columns: ["post_id"]
+            isOneToOne: false
             referencedRelation: "posts"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "post_votes_uid_fkey"
             columns: ["uid"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -195,6 +216,7 @@ export interface Database {
           {
             foreignKeyName: "posts_uid_fkey"
             columns: ["uid"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -220,6 +242,7 @@ export interface Database {
           {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -227,7 +250,73 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      group_participants_view: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          group_id: string | null
+          uid: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_participants_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_participants_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_participants_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      group_view: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          icon_url: string | null
+          id: string | null
+          is_owner: boolean | null
+          name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          icon_url?: string | null
+          id?: string | null
+          is_owner?: never
+          name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          icon_url?: string | null
+          id?: string | null
+          is_owner?: never
+          name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "groups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Functions: {
       get_post_votes: {

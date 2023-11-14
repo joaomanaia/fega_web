@@ -39,12 +39,16 @@ export default async function saveProfile(prevState: any, formData: FormData) {
 
     return {
       successMessage: "Profile updated successfully",
+      fullNameError: "",
+      errorMessage: "",
     }
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof z.ZodError) {
       if (err.isEmpty) {
         return {
           fullNameError: "",
+          successMessage: "",
+          errorMessage: "Something went wrong",
         }
       }
 
@@ -56,6 +60,8 @@ export default async function saveProfile(prevState: any, formData: FormData) {
     } else {
       return {
         errorMessage: err,
+        fullNameError: "",
+        successMessage: "",
       }
     }
   }

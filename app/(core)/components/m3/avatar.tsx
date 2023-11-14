@@ -6,9 +6,10 @@ interface AvatarProps {
   name?: string | null
   photoUrl?: string | null
   size?: number
+  className?: string
 }
 
-const Avatar: React.FC<AvatarProps> = ({ name, photoUrl, size }) => {
+const Avatar: React.FC<AvatarProps> = ({ name, photoUrl, size, className }) => {
   const { palette } = useTheme()
 
   return (
@@ -22,6 +23,7 @@ const Avatar: React.FC<AvatarProps> = ({ name, photoUrl, size }) => {
         width: size,
         height: size,
       }}
+      className={className}
     >
       {name}
     </MuiAvatar>

@@ -14,9 +14,9 @@ interface EditProfileFormProps {
 }
 
 const initialState = {
-  fullNameError: "",
-  errorMessage: "",
   successMessage: "",
+  fullNameError: "",  
+  errorMessage: "",
 }
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {

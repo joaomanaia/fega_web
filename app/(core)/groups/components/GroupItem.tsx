@@ -1,13 +1,14 @@
 "use client"
 
-import GroupType from "@/types/group/GroupType"
+import { GroupViewType } from "@/types/group/GroupType"
 import { ListItemAvatar, ListItemButton, ListItemText } from "@mui/material"
 import Link from "next/link"
 import Avatar from "../../components/m3/avatar"
 import { useParams } from "next/navigation"
+import { InfoGroupButtton } from "./EditGroupButton"
 
 type GroupItemType = {
-  group: GroupType
+  group: GroupViewType
 }
 
 const GroupItem: React.FC<GroupItemType> = ({ group }) => {
@@ -24,6 +25,8 @@ const GroupItem: React.FC<GroupItemType> = ({ group }) => {
         </ListItemAvatar>
 
         <ListItemText primary={group.name} />
+
+        {selected && <InfoGroupButtton groupHref={groupHref} isOwner={group.is_owner ?? false} />}
       </ListItemButton>
     </Link>
   )
