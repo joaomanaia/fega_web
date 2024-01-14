@@ -12,11 +12,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@material/material-color-utilities": "^0.2.7",
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
+    "@mui/material-nextjs": "^5.15.3",
     "@mui/utils": "^5.15.4",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/auth-ui-react": "^0.4.7",

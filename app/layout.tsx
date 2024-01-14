@@ -1,5 +1,5 @@
 import "@/styles/globals.css"
-import M3 from "@/core/theme/M3"
+import { MuiProvider } from "@/core/theme/mui-provider"
 
 export const metadata = {
   title: "Fega",
@@ -11,7 +11,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head />
       <body id="__next">
-        <M3>{children}</M3>
+        <MuiProvider>
+          {children}
+        </MuiProvider>
       </body>
     </html>
   )
