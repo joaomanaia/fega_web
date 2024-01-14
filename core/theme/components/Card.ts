@@ -126,7 +126,8 @@ export const getCard = (theme: Theme): M3Card => {
           palette.surfaceContainerHighest.main,
           palette.onSurface.main
         ),
-        getFilledColors("primary", theme, palette.primary.main, palette.onPrimary.main)
+        getFilledColors("primary", theme, palette.primary.main, palette.onPrimary.main),
+        getFilledColors("tertiary", theme, palette.tertiary.main, palette.onTertiary.main),
       ],
     },
   }
@@ -138,10 +139,10 @@ const getFilledColors = (
   containerColor: string,
   contentColor: string
 ): {
-  props: Partial<CardPropsColorOverrides>
+  props: Partial<CardPropsColorOverrides>;
   style: Interpolation<{
-    theme: Theme
-  }>
+      theme: unknown;
+  }>;
 } => {
   return {
     props: { variant: variant },
