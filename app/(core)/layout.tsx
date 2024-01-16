@@ -1,4 +1,3 @@
-import "@/styles/globals.css"
 import MainLayout from "@/app/(core)/components/m3/MainLayout"
 import { createServerComponentClient } from "@/supabase"
 
