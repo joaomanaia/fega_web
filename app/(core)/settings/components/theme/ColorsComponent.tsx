@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from "react"
-import BasicColorComponent from "./BasicColorComponent"
+import { BasicColorComponent } from "./BasicColorComponent"
 import CustomColorComponent from "./CustomColorComponent"
 import { Divider, useTheme } from "@mui/material"
 import { ThemeSchemeContext } from "@/core/theme/providers/ThemeSchemeProvider"
@@ -15,7 +15,9 @@ const basicColors = [
   "#ffcc00",
   "#ff00ff",
   "#00ffff",
-]
+] as const
+
+export type BasicColor = typeof basicColors[number]
 
 const ColorsComponent: React.FC = () => {
   const { generateScheme } = useContext(ThemeSchemeContext)
@@ -23,7 +25,7 @@ const ColorsComponent: React.FC = () => {
   const { palette } = useTheme()
 
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-3 md:gap-4">
       <CustomColorComponent currentColor={palette.primary.main} onChange={generateScheme} />
       <Divider orientation="vertical" flexItem className="my-2 rounded-full" />
       {basicColors.map((color, index) => (

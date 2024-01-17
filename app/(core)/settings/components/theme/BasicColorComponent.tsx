@@ -1,41 +1,38 @@
-import { CheckRounded } from "@mui/icons-material"
-import { Card } from "@mui/material"
-import { twMerge } from "tailwind-merge"
+import { cn } from "@/lib/utils"
+import { Check } from "lucide-react"
+import { BasicColor } from "./ColorsComponent"
 
 interface BasicColorComponentProps {
-  color: "#6750a4" | string
+  color: BasicColor
   selected?: boolean
   className?: string
   onClick?: () => void
 }
 
-const BasicColorComponent: React.FC<BasicColorComponentProps> = ({
+export const BasicColorComponent: React.FC<BasicColorComponentProps> = ({
   color,
   selected,
   className,
   onClick,
 }) => {
   return (
-    <Card
+    <div
       onClick={onClick}
-      variant="filled"
-      className="w-16 h-16 p-2 flex items-center justify-center cursor-pointer"
+      className="h-14 md:h-16 aspect-square rounded-2xl bg-accent p-2 flex items-center justify-center cursor-pointer group hover:opacity-60 transition"
     >
       <div
         style={{ backgroundColor: color }}
-        className={twMerge(
-          `flex items-center justify-center w-full h-full rounded-full hover:bg-opacity-80 transition group`,
+        className={cn(
+          "flex items-center justify-center w-full h-full rounded-full",
           className
         )}
       >
         {selected && (
           <div className="flex items-center justify-center w-4/6 h-4/6 bg-black/20 group-hover:bg-transparent transition rounded-full">
-            <CheckRounded />
+            <Check />
           </div>
         )}
       </div>
-    </Card>
+    </div>
   )
 }
-
-export default BasicColorComponent

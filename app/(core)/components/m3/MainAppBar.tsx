@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/MenuTwoTone"
 import type { User } from "@supabase/supabase-js"
 import { use, useMemo } from "react"
 import Link from "next/link"
+import { ModeToggle } from "@/components/ui/mode-toggle"
 
 interface HeaderProps {
   authUser: User | null
@@ -45,6 +46,10 @@ const MainAppBar: React.FC<HeaderProps> = ({ authUser, onDrawerToggle, window })
             </Grid>
 
             <Grid item xs></Grid>
+
+            <Grid item>
+              <ModeToggle />
+            </Grid>
 
             <Grid item>
               <Tooltip title={userData.name ?? "Make login"}>

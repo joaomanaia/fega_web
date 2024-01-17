@@ -2,6 +2,7 @@ import { MuiProvider } from "@/core/theme/mui-provider"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata = {
   title: "Fega",
@@ -21,7 +22,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         id="__next"
         className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}
       >
-        <MuiProvider>{children}</MuiProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <MuiProvider>{children}</MuiProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
