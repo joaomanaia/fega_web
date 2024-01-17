@@ -49,12 +49,17 @@
   }
 }
 
- 
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .next-link {
+    @apply text-inherit bg-inherit decoration-transparent;
   }
 }

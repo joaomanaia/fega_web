@@ -1,5 +1,5 @@
-import MainLayout from "@/app/(core)/components/m3/MainLayout"
 import { createServerComponentClient } from "@/supabase"
+import { MainLayout } from "./components/m3/main-layout"
 
 export const metadata = {
   title: "Fega",
@@ -9,7 +9,7 @@ export const metadata = {
       rel: "icon",
       url: "/fega_round_1.ico",
     },
-  ]
+  ],
 }
 
 export default async function Layout({ children }: { children: React.ReactNode }) {

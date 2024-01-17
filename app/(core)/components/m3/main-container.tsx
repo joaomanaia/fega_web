@@ -5,7 +5,7 @@ interface MainContainerProps {
   children?: React.ReactNode
 }
 
-export const MainContainer2: React.FC<MainContainerProps> = ({ className, children }) => {
+export const MainContainer: React.FC<MainContainerProps> = ({ className, children }) => {
   return (
     <div
       className={cn(
