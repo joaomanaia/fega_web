@@ -1,40 +1,20 @@
-"use client"
-
-import { Box, Typography, useTheme } from "@mui/material"
-
 interface LoginContainerProps {
   children: React.ReactNode
 }
 
-const LoginContainer: React.FC<LoginContainerProps> = ({ children }) => {
-  const { palette } = useTheme()
-
+export const LoginContainer: React.FC<LoginContainerProps> = ({ children }) => {
   return (
-    <Box
-      bgcolor={palette.primary.main}
-      color={palette.onPrimary.main}
-      className="h-screen w-screen flex flex-col lg:flex-row items-center justify-center"
-    >
-      <Box className="h-1/3 lg:h-full w-full lg:w-1/2 flex flex-col items-center justify-center">
-        <Typography variant="h2" fontWeight="400" gutterBottom>
-          Welcome to Fega
-        </Typography>
+    <div className="h-screen w-screen bg-primary text-primary-foreground flex flex-col lg:flex-row items-center justify-center">
+      <div className="h-fit lg:h-full w-full lg:w-1/2 flex flex-col items-center justify-center">
+        <h2 className="text-3xl lg:text-4xl xl:text-6xl">Welcome to Fega</h2>
 
-        <Typography variant="h6">Best social network in ega!</Typography>
-      </Box>
+        <p className="text-lg lg:text-xl mt-0">Best social network in ega!</p>
+      </div>
 
-      <Box
-        bgcolor={palette.surface.main}
-        color={palette.onSurface.main}
-        className="h-2/3 lg:h-full w-full lg:w-1/2 rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl flex flex-col items-center justify-center"
-      >
-        <Typography variant="h2" fontWeight="400" gutterBottom>
-          Sign In
-        </Typography>
+      <main className="h-5/6 lg:h-full w-full lg:w-1/2 bg-background text-foreground rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl flex flex-col items-center justify-center">
+        <h2 className="text-3xl lg:text-4xl xl:text-6xl">Sign In</h2>
         {children}
-      </Box>
-    </Box>
+      </main>
+    </div>
   )
 }
-
-export default LoginContainer

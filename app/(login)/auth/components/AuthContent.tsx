@@ -1,13 +1,12 @@
 "use client"
 
 import { useThemeMode } from "@/core/theme/hooks/useThemeMode"
-import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
 import { alpha, useTheme } from "@mui/material"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Auth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
 
-const AuthContent: React.FC = () => {
+export const AuthContent: React.FC = () => {
   const supabase = createClientComponentClient()
 
   const { palette } = useTheme()
@@ -45,5 +44,3 @@ const AuthContent: React.FC = () => {
     />
   )
 }
-
-export default AuthContent

@@ -11,9 +11,9 @@ export default async function SettingsPage() {
   const userAuthenticated = await isUserAuthenticated()
 
   return (
-    <div className="flex flex-col w-full space-y-4">
+    <main className="flex flex-col w-full space-y-4">
       {userAuthenticated && <UserSettings />}
       <ThemeSettings />
-    </div>
+    </main>
   )
 }
