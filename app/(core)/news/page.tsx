@@ -1,6 +1,6 @@
-import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { Metadata } from "next"
-import NewsItem from "./components/NewsItem"
+import { NewsItem } from "./components/NewsItem"
+import { MainContainer } from "../components/m3/main-container"
 
 const getNews = async () => {
   return [
@@ -24,20 +24,20 @@ const getNews = async () => {
         "Novo ano e muitas novidades em breve no Fega. Um feliz novo ano 2022 para todos.",
       mainImage:
         "https://firebasestorage.googleapis.com/v0/b/fega-app.appspot.com/o/news%2Fhappy-new-year-2022-banner-template-vector.webp?alt=media&token=ccaa2187-7fe6-44cc-9ebd-8626871325e6",
-    }
+    },
   ]
 }
 
 export const metadata: Metadata = {
-    title: "News",
-    description: "News page"
+  title: "News",
+  description: "News page",
 }
 
 export default async function Page() {
   const news = await getNews()
 
   return (
-    <MainContainer className="w-full h-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3 overflow-auto">
+    <MainContainer className="w-full h-full rounded-b-none md:rounded-[30px] grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3 overflow-auto">
       {news.map((item) => (
         <NewsItem
           key={item.id}

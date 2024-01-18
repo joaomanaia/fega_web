@@ -30,7 +30,7 @@ export const MainAppBar: React.FC<HeaderProps> = ({ authUser }) => {
 
   return (
     <>
-      <header className="sticky py-3 px-4 flex w-full items-center justify-end gap-4">
+      <header className="sticky py-3 px-4 md:pr-0 flex w-full items-center justify-end gap-4">
         <Sheet>
           <SheetTrigger asChild>
             <Button
