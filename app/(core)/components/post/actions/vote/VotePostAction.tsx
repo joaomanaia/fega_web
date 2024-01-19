@@ -44,7 +44,7 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
         vote_type: voteType,
       })
       .eq("post_id", postId)
-      .eq("user_id", user.id)
+      .eq("uid", user.id)
       .select()
       .single()
 
