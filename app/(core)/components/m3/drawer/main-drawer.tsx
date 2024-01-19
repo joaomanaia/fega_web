@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import { useSelectedLayoutSegments } from "next/navigation"
 import Link from "next/link"
 import { DrawerItem } from "./drawer-item"
 import React from "react"
@@ -84,7 +84,8 @@ const categories: NavDrawerItemGroup[] = [
 ]
 
 export const MainDrawer: React.FC<MainDrawerProps> = ({ className }) => {
-  const routerPath = usePathname()
+  const layoutSegments = useSelectedLayoutSegments()
+  const firstSegment = `/${layoutSegments.at(0) ?? ""}`
 
   return (
     <nav className={cn("flex flex-col px-4 py-4 space-y-7 justify-start", className)}>
@@ -101,7 +102,10 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({ className }) => {
             {!hideTitle && <p className="py-2 px-3 text-sm self-start">{id}</p>}
             {children.map((navDrawerItem) => (
               <li key={navDrawerItem.title} className="list-none">
-                <DrawerItem item={navDrawerItem} selected={routerPath == navDrawerItem.pathName} />
+                <DrawerItem
+                  item={navDrawerItem}
+                  selected={firstSegment == navDrawerItem.pathName}
+                />
               </li>
             ))}
           </React.Fragment>
