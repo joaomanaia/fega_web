@@ -1,5 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { defaultImgUrl } from "@/core/common"
-import Image from "next/image"
 import Link from "next/link"
 
 interface PostUserHeaderProps {
@@ -19,13 +19,11 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
 
   return (
     <div className="flex items-center">
-      <Link href={profileUrl} className="relative w-10 h-10">
-        <Image
-          src={userProfileUrl ?? defaultImgUrl}
-          alt={`Photo of ${userName}`}
-          fill
-          className="rounded-full"
-        />
+      <Link href={profileUrl}>
+        <Avatar>
+          <AvatarImage src={userProfileUrl ?? defaultImgUrl} />
+          <AvatarFallback>{`Photo of ${userName}`}</AvatarFallback>
+        </Avatar>
       </Link>
       <div className="flex flex-col ml-2 space-y-1 justify-center">
         <Link href={profileUrl} className="font-semibold my-0 next-link">

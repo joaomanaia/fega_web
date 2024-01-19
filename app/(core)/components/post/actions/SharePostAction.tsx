@@ -1,7 +1,7 @@
 "use client"
 
-import { ShareRounded } from "@mui/icons-material"
-import { Button } from "@mui/material"
+import { Button } from "@/components/ui/button"
+import { Share } from "lucide-react"
 
 interface SharePostActionProps {
   postId: string
@@ -16,7 +16,8 @@ export const SharePostAction: React.FC<SharePostActionProps> = ({ postId }) => {
   }
 
   return (
-    <Button variant="surfaceVariant" startIcon={<ShareRounded />} onClick={copyUrl}>
+    <Button variant="accent" onClick={copyUrl}>
+      <Share size={20} className="mr-2" />
       Share
     </Button>
   )

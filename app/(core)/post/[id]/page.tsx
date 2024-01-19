@@ -1,7 +1,7 @@
-import MainContainer from "@/app/(core)/components/m3/MainContainer"
-import { PostWithData, PostsWithData } from "@/types/PostType"
+import { PostWithData } from "@/types/PostType"
 import Post from "../../components/post/Post"
 import { createServerComponentClient } from "@/supabase"
+import { MainContainer } from "../../components/m3/main-container"
 
 interface PostPageProps {
   params: { id: string }
@@ -20,10 +20,10 @@ export const dynamic = "force-dynamic"
 export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostById(params.id)
 
-  if (!post) return <MainContainer>Post not found</MainContainer>
+  if (!post) return <MainContainer className="mx-3 md:mx-0">Post not found</MainContainer>
 
   return (
-    <MainContainer>
+    <MainContainer className="mx-3 md:mx-0">
       <Post
         hideContainer
         post={post}

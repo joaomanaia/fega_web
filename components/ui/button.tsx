@@ -17,6 +17,8 @@ const buttonVariants = cva(
           "border border-border disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
         secondary:
           "bg-secondary text-secondary-foreground disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] hover:bg-secondary/80 border-none",
+        accent:
+          "bg-accent text-accent-foreground disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] hover:bg-accent/80 border-none",
         ghost:
           "bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08] border-none",
         link: "bg-inherit text-primary disabled:text-foreground/[0.38] underline-offset-4 hover:underline border-none",
