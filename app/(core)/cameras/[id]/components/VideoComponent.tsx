@@ -2,11 +2,9 @@
 
 import dynamic from "next/dynamic"
 import { useState } from "react"
-import { twMerge } from "tailwind-merge"
 
 interface VideoComponentProps {
   url: string
-  className?: string
 }
 
 const DynamicReactPlayer = dynamic(() => import("react-player/lazy"), {
@@ -14,13 +12,13 @@ const DynamicReactPlayer = dynamic(() => import("react-player/lazy"), {
   loading: () => <p>Loading camera...</p>,
 })
 
-const VideoComponent: React.FC<VideoComponentProps> = ({ url, className }) => {
+const VideoComponent: React.FC<VideoComponentProps> = ({ url }) => {
   const [videoPlaying, setVideoPlaying] = useState(false)
 
   const playVideo = () => setVideoPlaying(true)
 
   return (
-    <div className={twMerge("h-full w-full", className)}>
+    <>
       <DynamicReactPlayer
         volume={0}
         muted={true}
@@ -31,7 +29,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ url, className }) => {
         height="100%"
         url={url}
       />
-    </div>
+    </>
   )
 }
 

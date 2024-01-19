@@ -23,7 +23,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <div className="flex h-screen min-h-screen overflow-hidden">
       <MainDrawer className="hidden md:block w-72" />
-      <main className="w-full flex flex-col md:pb-3 md:px-3">
+      <main className="w-full flex flex-col md:px-3">
         <MainAppBar authUser={user} />
         {children}
       </main>
