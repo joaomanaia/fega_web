@@ -59,8 +59,8 @@ export const EditGroupForm: React.FC<EditGroupFormProps> = ({
         {children}
       </GroupParticipantsContainer>
 
-      {formType === "edit" && <SubmitButton className="mt-8" text="Save"></SubmitButton>}
-      {!group.is_owner && <SubmitButton className="mt-8" text="Leave Group" />}
+      {formType === "edit" && <SubmitButton className="mt-8">Save</SubmitButton>}
+      {!group.is_owner && <SubmitButton className="mt-8">Leave Group</SubmitButton>}
     </form>
   )
 }

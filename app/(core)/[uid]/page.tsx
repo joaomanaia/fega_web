@@ -1,22 +1,28 @@
 import { getLocalUserUid } from "@/utils/user-utils"
 import CreatePost from "../components/create_post/CreatePost"
-import MainContainer from "../components/m3/MainContainer"
 import { UserProfileContent } from "./components/UserProfileContent"
 import PostsContent from "../PostsContent"
+import { MainContainer } from "../components/m3/main-container"
+import { cn } from "@/lib/utils"
 
 export default async function UserPage({ params }: { params: { uid: string } }) {
   const localUserUid = await getLocalUserUid()
   const isLocalUser = localUserUid === params.uid
 
   return (
-    <main className="flex flex-col lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
-      <div className="flex flex-col">
-        <MainContainer className="h-fit lg:w-96 flex flex-col space-y-4">
+    <main className="flex flex-col gap-4 md:pb-3 lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
+      <div className="flex flex-col md:gap-4">
+        <MainContainer
+          className={cn(
+            "h-fit xl:w-96 flex flex-col space-y-4",
+            isLocalUser && "rounded-b-none md:rounded-[30px]"
+          )}
+        >
           <UserProfileContent uid={params.uid} isLocalUser={isLocalUser} />
         </MainContainer>
-        {isLocalUser && <CreatePost />}
+        {isLocalUser && <CreatePost className="rounded-none rounded-b-[30px]" />}
       </div>
-      <MainContainer className="flex flex-col space-y-8 lg:w-full lg:overflow-auto">
+      <MainContainer className="flex flex-col space-y-4 md:space-y-6 h-full lg:w-full rounded-b-none md:rounded-[30px] lg:overflow-auto">
         <PostsContent uid={params.uid} />
       </MainContainer>
     </main>

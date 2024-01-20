@@ -3,6 +3,8 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster as SonnerToaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: "Fega",
@@ -29,6 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
         >
           <MuiProvider>{children}</MuiProvider>
+          <Toaster />
+          <SonnerToaster />
         </ThemeProvider>
       </body>
     </html>
