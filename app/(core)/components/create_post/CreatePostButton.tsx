@@ -1,23 +1,20 @@
 "use client"
 
-import { Button } from "@mui/material"
+import { Button } from "@/components/ui/button"
 import { useFormStatus } from "react-dom"
 
-const CreatePostButton: React.FC = () => {
+export const CreatePostButton: React.FC = () => {
   const { pending } = useFormStatus()
 
   return (
     <Button
       disabled={pending}
-      variant="filled"
-      fullWidth
-      sx={{ mt: 3 }}
+      variant="default"
       color="primary"
       type="submit"
+      className="w-full"
     >
       {pending ? "Creating..." : "Create"}
     </Button>
   )
 }
-
-export default CreatePostButton
