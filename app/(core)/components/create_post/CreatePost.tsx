@@ -1,11 +1,11 @@
 "use client"
 
 import { CreatePostButton } from "./CreatePostButton"
-import { Input } from "../CreatePostInput"
 import { createPost } from "@/core/actions/postActions"
 import { useRef } from "react"
 import { MainContainer } from "../m3/main-container"
 import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
 
 type CreatePostTypes = {
   className?: string
@@ -30,10 +30,12 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
       >
         <p className="text-2xl mt-4 mb-0">Create post</p>
         <Input
-           placeholder="What's on your mind?"
-           name="description"
-           type="text"
-           required />
+          className="py-6"
+          placeholder="What's on your mind?"
+          name="description"
+          type="text"
+          required
+        />
         <CreatePostButton />
       </form>
     </MainContainer>

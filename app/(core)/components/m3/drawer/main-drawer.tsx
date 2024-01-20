@@ -5,7 +5,7 @@ import Link from "next/link"
 import { DrawerItem } from "./drawer-item"
 import React from "react"
 import { cn } from "@/lib/utils"
-import { CalendarDays, Camera, Home, MessageCircle, Newspaper, Settings, Users } from "lucide-react"
+import { CalendarDays, Camera, Home, LucideIcon, MessageCircle, Newspaper, Settings, Users } from "lucide-react"
 
 export interface MainDrawerProps {
   className?: string
@@ -13,7 +13,7 @@ export interface MainDrawerProps {
 
 export interface NavDrawerItem {
   title: string
-  icon: any
+  Icon: LucideIcon
   pathName: string
   requireAuth?: boolean
   disabled?: boolean
@@ -32,23 +32,23 @@ const categories: NavDrawerItemGroup[] = [
     children: [
       {
         title: "Home",
-        icon: <Home />,
+        Icon: Home,
         pathName: "/",
       },
       {
         title: "News",
-        icon: <Newspaper />,
+        Icon: Newspaper,
         pathName: "/news",
       },
       {
         title: "Events",
-        icon: <CalendarDays />,
+        Icon: CalendarDays,
         pathName: "/events",
         disabled: true,
       },
       {
         title: "Cameras",
-        icon: <Camera />,
+        Icon: Camera,
         pathName: "/cameras",
       },
     ],
@@ -58,14 +58,14 @@ const categories: NavDrawerItemGroup[] = [
     children: [
       {
         title: "Private Messages",
-        icon: <Users />,
+        Icon: Users,
         pathName: "/messages",
         requireAuth: true,
         disabled: true,
       },
       {
         title: "Groups",
-        icon: <MessageCircle />,
+        Icon: MessageCircle,
         pathName: "/groups",
         requireAuth: true,
       },
@@ -76,7 +76,7 @@ const categories: NavDrawerItemGroup[] = [
     children: [
       {
         title: "Settings",
-        icon: <Settings />,
+        Icon: Settings,
         pathName: "/settings",
       },
     ],
