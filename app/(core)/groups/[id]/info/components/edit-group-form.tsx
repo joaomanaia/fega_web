@@ -4,24 +4,16 @@ import { GroupViewType } from "@/types/group/GroupType"
 import { AvatarInput } from "./AvatarInput"
 import { SubmitButton } from "@/app/(core)/components/SubmitButton"
 import { EditGroupFormType } from "../page"
-import { GroupParticipantsContainer } from "./GroupParticipantsContainer"
-import { AddGroupParticipants } from "./AddGroupParticipants"
 import { saveGroup } from "@/app/actions/groupActions"
 import { Input } from "@/components/ui/input"
 
 interface EditGroupFormProps {
   group: GroupViewType
-  localUid: string
   formType: EditGroupFormType
   children?: React.ReactNode
 }
 
-export const EditGroupForm: React.FC<EditGroupFormProps> = ({
-  group,
-  localUid,
-  formType,
-  children,
-}) => {
+export const EditGroupForm: React.FC<EditGroupFormProps> = ({ group, formType }) => {
   if (!group) return null
   if (!group.id) return null
 
@@ -51,16 +43,12 @@ export const EditGroupForm: React.FC<EditGroupFormProps> = ({
         readOnly={formType === "info"}
       />
 
-      <GroupParticipantsContainer
-        isGroupOwner={group.is_owner ?? false}
-        addParticipantChildren={<AddGroupParticipants localUid={localUid} />}
-        initialMode="view"
-      >
-        {children}
-      </GroupParticipantsContainer>
-
       {formType === "edit" && <SubmitButton className="mt-8">Save</SubmitButton>}
-      {!group.is_owner && <SubmitButton className="mt-8">Leave Group</SubmitButton>}
+      {!group.is_owner && (
+        <SubmitButton variant="destructive" className="mt-8">
+          Leave Group
+        </SubmitButton>
+      )}
     </form>
   )
 }

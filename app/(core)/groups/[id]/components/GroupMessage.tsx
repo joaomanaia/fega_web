@@ -1,8 +1,6 @@
-import Avatar from "@/app/(core)/components/m3/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { cn } from "@/lib/utils"
 import UserType from "@/types/UserType"
-import { Card, Typography } from "@mui/material"
-import { twMerge } from "tailwind-merge"
-import GroupMessagePopup from "./popup/GroupMessagePopup"
 
 type GroupMessageProps = {
   message: string
@@ -21,34 +19,51 @@ const GroupMessage: React.FC<GroupMessageProps> = ({
 }) => {
   const messageCorners = (): string => {
     if (hasMessageAbove && hasMessageBelow) {
-      return byLocalUser ? "rounded-r-md" : "rounded-l-md"
+      return byLocalUser ? "rounded-r-[8px]" : "rounded-l-[8px]"
     } else if (hasMessageAbove && !hasMessageBelow) {
-      return byLocalUser ? "rounded-tr-md" : "rounded-tl-md"
+      return byLocalUser ? "rounded-tr-[8px]" : "rounded-tl-[8px]"
     } else if (!hasMessageAbove && hasMessageBelow) {
-      return byLocalUser ? "rounded-br-md" : "rounded-bl-md"
+      return byLocalUser ? "rounded-br-[8px]" : "rounded-bl-[8px]"
     } else {
       return ""
     }
   }
 
+  const margins = (): string => {
+    if (hasMessageAbove && hasMessageBelow) {
+      return "my-[2px]"
+    } else if (hasMessageAbove && !hasMessageBelow) {
+      return "mt-[2px] mb-2"
+    } else if (!hasMessageAbove && hasMessageBelow) {
+      return "mb-[2px] mt-2"
+    } else {
+      return "my-2"
+    }
+  }
+
   return (
-    <div className="flex flex-col space-y-2 w-full">
+    <div className="flex flex-col w-full">
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Avatar photoUrl={user?.avatar_url || undefined} name={user?.full_name} size={22} />
+          <Avatar className="h-4 w-4">
+            <AvatarImage src={user?.avatar_url ?? undefined} />
+            <AvatarFallback>{user?.full_name}</AvatarFallback>
+          </Avatar>
 
-          <Typography variant="body1">{user?.full_name}</Typography>
+          <p className="my-0">{user?.full_name}</p>
         </div>
       )}
 
-      <div className={twMerge("flex w-full", byLocalUser ? "justify-end" : "justify-start")}>
-        <Card
-          variant={byLocalUser ? "filled" : "outlined"}
-          className={twMerge("p-3 w-fit rounded-2xl", messageCorners())}
-        >
-          <Typography variant="body1">{message}</Typography>
-        </Card>
-      </div>
+      <p
+        className={cn(
+          "my-0 p-3 w-fit rounded-2xl",
+          byLocalUser ? "bg-primary text-primary-foreground self-end" : "border border-border bg-accent self-start",
+          messageCorners(),
+          margins()
+        )}
+      >
+        {message}
+      </p>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
-import { Input } from "@/app/(core)/components/CreatePostInput"
 import Avatar from "@/app/(core)/components/m3/avatar"
+import { Input } from "@/components/ui/input"
 import { useState } from "react"
 
 interface AvatarInputProps {

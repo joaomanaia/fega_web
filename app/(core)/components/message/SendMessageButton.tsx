@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, ButtonProps } from "@mui/material"
+import { Button, ButtonProps } from "@/components/ui/button"
 import { useFormStatus } from "react-dom"
 
 interface SendMessageButtonProps extends ButtonProps {}
@@ -12,8 +12,7 @@ const SendMessageButton: React.FC<SendMessageButtonProps> = ({ ...props }) => {
     <Button
       disabled={pending}
       className="rounded-2xl"
-      variant="filled"
-      color="primary"
+      variant="default"
       type="submit"
       {...props}
     >

@@ -1,7 +1,6 @@
 "use client"
 
 import saveProfile from "@/app/actions/user/saveProfileAction"
-import { Button } from "@/components/ui/button"
 import { DialogFooter, closeDialog } from "@/components/ui/dialog"
 import {
   Form,
@@ -16,7 +15,6 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import UserType from "@/types/UserType"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { revalidatePath } from "next/cache"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { SubmitButton } from "../../components/SubmitButton"

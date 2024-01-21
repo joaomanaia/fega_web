@@ -4,8 +4,8 @@ import { redirect } from "next/navigation"
 import RealtimeMessages from "./components/RealtimeMessages"
 import GroupMessageForm from "./components/GroupMessageForm"
 import GroupType from "@/types/group/GroupType"
-import MainContainer from "../../components/m3/MainContainer"
 import { getLocalUserUid } from "@/utils/user-utils"
+import { MainContainer } from "../../components/m3/main-container"
 
 interface GroupMessagePageProps {
   params: {
@@ -45,7 +45,7 @@ export default async function GroupMessagePage({ params }: GroupMessagePageProps
   const messages = await getMessages(params.id)
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
+    <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center xl:w-4/6">
       <RealtimeMessages localUserUid={localUserUid} groupId={params.id} serverMessages={messages} />
       <GroupMessageForm group={group} />
     </MainContainer>

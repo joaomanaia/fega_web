@@ -1,10 +1,10 @@
 "use client"
 
 import { PostVoteType } from "@/types/PostType"
-import { cn } from "@/core/util/tailwindcssUtils"
 import { useFormStatus } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface VotePostActionButtonProps {
   type: PostVoteType

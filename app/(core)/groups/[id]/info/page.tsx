@@ -1,8 +1,7 @@
-import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { createServerComponentClient } from "@/supabase"
 import { redirect } from "next/navigation"
-import { EditGroupForm } from "./components/EditGroupForm"
-import { GroupParticipants } from "./components/GroupParticipants"
+import { MainContainer } from "@/app/(core)/components/m3/main-container"
+import { EditGroupForm } from "./components/edit-group-form"
 
 interface EditGroupPageProps {
   params: {
@@ -29,11 +28,9 @@ export default async function EditGroupPage({ params }: EditGroupPageProps) {
   const formType: EditGroupFormType = group.is_owner ? "edit" : "info"
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
-      <h1>{group.name}</h1>
-      <EditGroupForm group={group} localUid={user.id} formType={formType}>
-        <GroupParticipants groupId={params.id} formType={formType} />
-      </EditGroupForm>
+    <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center xl:w-4/6">
+      <h2>{group.name}</h2>
+      <EditGroupForm group={group} formType={formType} />
     </MainContainer>
   )
 }

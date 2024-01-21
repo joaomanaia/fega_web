@@ -1,11 +1,11 @@
 "use client"
 
-import { Input } from "@/app/(core)/components/CreatePostInput"
 import { searchNoParticipants } from "@/app/actions/groupActions"
 import UserType from "@/types/UserType"
 import { Button } from "@mui/material"
 import { useFormState, useFormStatus } from "react-dom"
 import { ParticipantUser } from "./participants/ParticipantUser"
+import { Input } from "@/components/ui/input"
 
 interface AddGroupParticipantsProps {
   localUid: string

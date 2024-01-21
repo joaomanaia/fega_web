@@ -23,7 +23,7 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ group }) => {
       await sendGroupMessage(group.id, message as string)
     }} className="flex rounded-2xl space-x-2 w-full">
       <MessageInput messageTo={group.name} />
-      <SendMessageButton />
+      <SendMessageButton className="h-full rounded-2xl" />
     </form>
   )
 }

@@ -37,6 +37,10 @@ const config = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        primaryContainer: {
+          DEFAULT: "hsl(var(--primary-container))",
+          foreground: "hsl(var(--primary-container-foreground))",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
