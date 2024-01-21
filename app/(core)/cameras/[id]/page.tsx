@@ -41,7 +41,7 @@ export default async function CameraPage({ params }: CameraPageProps) {
 
   return (
     <MainContainer className="flex flex-col">
-      <h1 className="text-xl font-normal mb-0">{camera.name}</h1>
+      <h1 className="text-xl font-normal mb-2">{camera.name}</h1>
       <p className="mb-4">{camera.description}</p>
 
       {camera.original_camera && (

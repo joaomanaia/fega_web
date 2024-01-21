@@ -1,8 +1,6 @@
-import Avatar from "@/app/(core)/components/m3/avatar"
 import { createServerComponentClient } from "@/supabase"
 import { GroupParticipantsViewType } from "@/types/group/GroupType"
 import { EditGroupFormType } from "../page"
-import { AddRemoveParticipantButton } from "./AddRemoveParticipantButton"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { ParticipantUser } from "./participants/ParticipantUser"
 

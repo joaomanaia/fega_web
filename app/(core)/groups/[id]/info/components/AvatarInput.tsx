@@ -1,6 +1,6 @@
 "use client"
 
-import Avatar from "@/app/(core)/components/m3/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 
@@ -15,7 +15,10 @@ export const AvatarInput: React.FC<AvatarInputProps> = ({ defaultValue, name, in
 
   return (
     <>
-      <Avatar photoUrl={photoUrl} name={name} className="h-12 w-12" />
+      <Avatar className="h-12 w-12">
+        <AvatarImage src={photoUrl} />
+        <AvatarFallback>{name}</AvatarFallback>
+      </Avatar>
       {!inputInvisible && (
         <Input
           type="url"

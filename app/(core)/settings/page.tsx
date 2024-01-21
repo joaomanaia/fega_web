@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import ThemeSettings from "./components/ThemeSettings"
 import UserSettings from "./components/UserSettings"
 import { isUserAuthenticated } from "@/utils/user-utils"
 
@@ -13,7 +12,6 @@ export default async function SettingsPage() {
   return (
     <main className="flex flex-col w-full space-y-4">
       {userAuthenticated && <UserSettings />}
-      <ThemeSettings />
     </main>
   )
 }

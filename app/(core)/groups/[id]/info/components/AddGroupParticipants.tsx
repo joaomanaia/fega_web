@@ -2,10 +2,10 @@
 
 import { searchNoParticipants } from "@/app/actions/groupActions"
 import UserType from "@/types/UserType"
-import { Button } from "@mui/material"
 import { useFormState, useFormStatus } from "react-dom"
 import { ParticipantUser } from "./participants/ParticipantUser"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 interface AddGroupParticipantsProps {
   localUid: string
@@ -61,7 +61,7 @@ const SearchButton: React.FC<SearchButtonProps> = ({ formAction }) => {
       disabled={pending}
       className="w-full p-0 outline-none bg-transparent border-0"
     >
-      <Button className="w-full my-2" disabled={pending} variant="tonal">
+      <Button className="w-full my-2" disabled={pending} variant="accent">
         Search
       </Button>
     </button>

@@ -1,5 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { EditGroupFormType } from "../../page"
-import Avatar from "@/app/(core)/components/m3/avatar"
 import { AddRemoveParticipantButton } from "../AddRemoveParticipantButton"
 
 interface ParticipantUserProps {
@@ -21,7 +21,11 @@ export const ParticipantUser: React.FC<ParticipantUserProps> = ({
 }) => {
   return (
     <>
-      <Avatar photoUrl={avatar_url} name={full_name} size={35} />
+      <Avatar>
+        <AvatarImage src={avatar_url} />
+        <AvatarFallback>{full_name}</AvatarFallback>
+      </Avatar>
+
       <span className="font-semibold mx-4">{full_name}</span>
       {formType === "edit" && uid !== localUid && (
         <AddRemoveParticipantButton uid={uid ?? ""} type={type} />

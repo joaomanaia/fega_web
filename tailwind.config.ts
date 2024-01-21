@@ -2,11 +2,7 @@ import type { Config } from "tailwindcss"
 const { fontFamily } = require("tailwindcss/defaultTheme")
 
 const config = {
-  corePlugins: {
-    preflight: false,
-  },
   darkMode: ["class"],
-  important: "#__next",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",

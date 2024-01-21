@@ -22,7 +22,7 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       <Link href={profileUrl}>
         <Avatar>
           <AvatarImage src={userProfileUrl ?? defaultImgUrl} />
-          <AvatarFallback>{`Photo of ${userName}`}</AvatarFallback>
+          <AvatarFallback>{userName}</AvatarFallback>
         </Avatar>
       </Link>
       <div className="flex flex-col ml-2 space-y-1 justify-center">

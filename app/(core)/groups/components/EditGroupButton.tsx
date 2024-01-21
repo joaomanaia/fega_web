@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { EditRounded, InfoRounded } from "@mui/icons-material"
+import { EditIcon, InfoIcon } from "lucide-react"
 import Link from "next/link"
 
 interface EditGroupButtonProps {
@@ -17,7 +17,7 @@ export const InfoGroupButtton: React.FC<EditGroupButtonProps> = ({
   return (
     <Link href={`${groupHref}/info`} className="next-link">
       <Button variant="ghost" size="icon" className={cn("text-inherit", className)}>
-        {isOwner ? <EditRounded /> : <InfoRounded />}
+        {isOwner ? <EditIcon /> : <InfoIcon />}
       </Button>
     </Link>
   )

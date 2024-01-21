@@ -1,7 +1,7 @@
 "use client"
 
-import { GroupAddRounded, GroupRounded } from "@mui/icons-material"
-import { Card, IconButton } from "@mui/material"
+import { Button } from "@/components/ui/button"
+import { UserRoundPlus, UserRoundXIcon } from "lucide-react"
 import { useState } from "react"
 
 type Mode = "add" | "view"
@@ -28,16 +28,16 @@ export const GroupParticipantsContainer: React.FC<GroupParticipantsContainerProp
   }
 
   return (
-    <Card variant="filled" className="flex flex-col mt-8 px-4">
+    <div className="flex flex-col mt-8 px-4 bg-accent/[0.38]">
       <div className="flex items-center justify-between">
         <label>{mode === "view" ? "Participants" : "Add Participants"}</label>
         {isGroupOwner && (
-          <IconButton color="inherit" onClick={switchMode}>
-            {mode === "view" ? <GroupAddRounded /> : <GroupRounded />}
-          </IconButton>
+          <Button variant="ghost" size="icon" onClick={switchMode}>
+            {mode === "view" ? <UserRoundPlus /> : <UserRoundXIcon />}
+          </Button>
         )}
       </div>
       {mode === "add" && isGroupOwner ? addParticipantChildren : children}
-    </Card>
+    </div>
   )
 }

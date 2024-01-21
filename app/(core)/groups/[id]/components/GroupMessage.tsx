@@ -57,7 +57,7 @@ const GroupMessage: React.FC<GroupMessageProps> = ({
       <p
         className={cn(
           "my-0 p-3 w-fit rounded-2xl",
-          byLocalUser ? "bg-primary text-primary-foreground self-end" : "border border-border bg-accent self-start",
+          byLocalUser ? "bg-primary text-primary-foreground self-end" : "border border-border self-start",
           messageCorners(),
           margins()
         )}

@@ -1,4 +1,3 @@
-import MenuIcon from "@mui/icons-material/MenuTwoTone"
 import type { User } from "@supabase/supabase-js"
 import { useMemo } from "react"
 import Link from "next/link"
@@ -8,6 +7,7 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/comp
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
 import { MainDrawer } from "./drawer/main-drawer"
+import { MenuIcon } from "lucide-react"
 
 interface HeaderProps {
   authUser: User | null
