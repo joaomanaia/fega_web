@@ -21,7 +21,7 @@ export const GroupItem: React.FC<GroupItemType> = ({ group, className }) => {
   return (
     <Link
       className={cn(
-        "flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-accent/[0.38] transition-colors",
+        "flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
         selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
       )}
       href={groupHref}

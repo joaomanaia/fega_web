@@ -10,15 +10,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] hover:bg-primary/90 border-none",
+          "bg-primary text-primary-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-primary/90 border-none shadow-shadow",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] border-none",
+          "bg-error text-error-foreground hover:bg-error/90 disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] border-none",
         outline:
-          "border border-border disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
+          "border border-outline disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
         secondary:
-          "bg-secondary text-secondary-foreground disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] hover:bg-secondary/80 border-none",
-        accent:
-          "bg-accent text-accent-foreground disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] hover:bg-accent/80 border-none",
+          "bg-secondary text-secondary-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-secondary/80 border-none",
+        tonal:
+          "bg-secondaryContainer text-secondaryContainer-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-secondaryContainer/80 border-none",
+        surfaceVariant:
+          "bg-surfaceVariant text-surfaceVariant-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-surfaceVariant/80 border-none",
         ghost:
           "bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08] border-none",
         link: "bg-inherit text-primary disabled:text-foreground/[0.38] underline-offset-4 hover:underline border-none",

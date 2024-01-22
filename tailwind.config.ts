@@ -24,43 +24,61 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        border: "hsl(var(--border))",
+        border: "hsl(var(--outline))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          foreground: "hsl(var(--on-primary))",
+          inverse: "hsl(var(--inverse-primary))",
         },
         primaryContainer: {
           DEFAULT: "hsl(var(--primary-container))",
-          foreground: "hsl(var(--primary-container-foreground))",
+          foreground: "hsl(var(--on-primary-container))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          foreground: "hsl(var(--on-secondary))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        secondaryContainer: {
+          DEFAULT: "hsl(var(--secondary-container))",
+          foreground: "hsl(var(--on-secondary-container))",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+        tertiary: {
+          DEFAULT: "hsl(var(--tertiary))",
+          foreground: "hsl(var(--on-tertiary))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+        tertiaryContainer: {
+          DEFAULT: "hsl(var(--tertiary-container))",
+          foreground: "hsl(var(--on-tertiary-container))",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--on-error))",
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        errorContainer: {
+          DEFAULT: "hsl(var(--error-container))",
+          foreground: "hsl(var(--on-error-container))",
         },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--on-background))",
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          foreground: "hsl(var(--on-surface))",
+          inverse: "hsl(var(--inverse-surface))",
+          inverseForeground: "hsl(var(--inverse-on-surface))",
+          tint: "hsl(var(--surface-tint))",
+        },
+        surfaceVariant: {
+          DEFAULT: "hsl(var(--surface-variant))",
+          foreground: "hsl(var(--on-surface-variant))",
+        },
+        outline: {
+          DEFAULT: "hsl(var(--outline))",
+          variant: "hsl(var(--outline-variant))",
+        },
+        shadow: "hsl(var(--shadow))",
+        scrim: "hsl(var(--scrim))",
       },
       borderRadius: {
         lg: "var(--radius)",

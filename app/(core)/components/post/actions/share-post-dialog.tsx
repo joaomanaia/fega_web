@@ -30,7 +30,7 @@ export const SharePostDialog: React.FC<SharePostDialogProps> = ({ postId }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="accent">
+        <Button variant="surfaceVariant">
           <Share size={20} className="mr-2" />
           Share
         </Button>
@@ -47,6 +47,7 @@ export const SharePostDialog: React.FC<SharePostDialogProps> = ({ postId }) => {
             </Label>
             <Input
               id="link"
+              className="border-none"
               defaultValue={`https://newquiz-app.vercel.app/post/${postId}`}
               readOnly
             />

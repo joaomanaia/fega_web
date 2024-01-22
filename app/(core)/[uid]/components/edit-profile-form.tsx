@@ -87,7 +87,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Full Name" {...field} />
+                  <Input className="border-none" placeholder="Full Name" {...field} />
                 </FormControl>
                 <FormDescription>This is your public display name.</FormDescription>
                 <FormMessage />

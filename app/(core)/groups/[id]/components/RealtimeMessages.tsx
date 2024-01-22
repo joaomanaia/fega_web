@@ -5,7 +5,7 @@ import { Database } from "@/types/database.types"
 import GroupMessageType, { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect } from "react"
-import GroupMessage from "./GroupMessage"
+import { GroupMessage } from "./GroupMessage"
 import UserType from "@/types/UserType"
 import ScrollContainer from "@/app/(core)/components/ScrollContainer"
 
@@ -78,7 +78,9 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
       {messages.map((message, index) => (
         <GroupMessage
           key={message.id}
+          messageId={message.id}
           message={message.message}
+          groupId={message.group_id}
           user={message.user}
           byLocalUser={message.uid === localUserUid}
           hasMessageAbove={messages.at(index - 1)?.uid === message.uid}

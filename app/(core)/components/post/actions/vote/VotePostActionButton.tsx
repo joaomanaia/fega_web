@@ -27,7 +27,7 @@ export const VotePostActionButton: React.FC<VotePostActionButtonProps> = ({
       name="vote_button"
       value={type}
       disabled={pending}
-      variant={votedType === type ? "default" : "accent"}
+      variant={votedType === type ? "default" : "surfaceVariant"}
       className={cn(
         "flex items-center space-x-2 rounded-none first:rounded-l-full last:rounded-r-full",
         className

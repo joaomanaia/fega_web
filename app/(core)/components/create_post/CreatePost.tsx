@@ -30,7 +30,7 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
       >
         <p className="text-2xl mt-4 mb-0">Create post</p>
         <Input
-          className="py-6"
+          className="py-6 border-none"
           placeholder="What's on your mind?"
           name="description"
           type="text"

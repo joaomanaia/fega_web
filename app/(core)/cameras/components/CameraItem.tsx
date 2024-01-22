@@ -17,7 +17,7 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
   return (
     <Link
       className={cn(
-        "flex items-center h-fit px-4 py-4 next-link rounded-3xl hover:bg-accent/[0.38] transition-colors",
+        "flex items-center h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
         selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
       )}
       href={`/cameras/${camera.id}`}
