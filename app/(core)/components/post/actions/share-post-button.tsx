@@ -15,11 +15,11 @@ import { Label } from "@/components/ui/label"
 import { Copy, Share } from "lucide-react"
 import { toast } from "sonner"
 
-interface SharePostDialogProps {
+interface SharePostButtonProps {
   postId: string
 }
 
-export const SharePostDialog: React.FC<SharePostDialogProps> = ({ postId }) => {
+export const SharePostButtont: React.FC<SharePostButtonProps> = ({ postId }) => {
   const copyUrl = () => {
     const postUrl = `${location.origin}/post/${postId}`
     navigator.clipboard.writeText(postUrl)

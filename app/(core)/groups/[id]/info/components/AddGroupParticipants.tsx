@@ -61,7 +61,7 @@ const SearchButton: React.FC<SearchButtonProps> = ({ formAction }) => {
       disabled={pending}
       className="w-full p-0 outline-none bg-transparent border-0"
     >
-      <Button className="w-full my-2" disabled={pending} variant="accent">
+      <Button className="w-full my-2" disabled={pending} variant="surfaceVariant">
         Search
       </Button>
     </button>

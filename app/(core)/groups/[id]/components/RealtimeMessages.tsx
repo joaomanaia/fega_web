@@ -74,7 +74,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   }
 
   return (
-    <ScrollContainer className="w-full p-4 grow">
+    <ScrollContainer className="w-full py-4 grow">
       {messages.map((message, index) => (
         <GroupMessage
           key={message.id}
