@@ -51,8 +51,8 @@ export async function GroupMembers({ group }: GroupMembersProps) {
             uid={member.uid ?? ""}
             full_name={member.full_name ?? ""}
             avatar_url={member.avatar_url ?? ""}
-            type="view"
             localUid={localUid}
+            isLocalAdmin={group.is_owner ?? false}
           />
         ))}
       </ul>

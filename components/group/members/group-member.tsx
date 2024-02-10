@@ -17,8 +17,8 @@ interface GroupMemberProps {
   uid: string
   full_name: string
   avatar_url: string
-  type: "add" | "view"
   localUid: string
+  isLocalAdmin: boolean
 }
 
 export const GroupMember: React.FC<GroupMemberProps> = ({
@@ -27,6 +27,7 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
   full_name,
   avatar_url,
   localUid,
+  isLocalAdmin,
 }) => {
   return (
     <li className="group flex w-full items-center py-4 first:pt-0 last:pb-0">
@@ -42,7 +43,7 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
         uid={uid}
         userName={full_name}
         localUid={localUid}
-        isLocalAdmin
+        isLocalAdmin={isLocalAdmin}
       />
     </li>
   )
