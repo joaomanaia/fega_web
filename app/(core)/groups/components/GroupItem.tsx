@@ -3,9 +3,9 @@
 import { GroupViewType } from "@/types/group/GroupType"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { InfoGroupButtton } from "./EditGroupButton"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { GroupOptionsDropdown } from "./group-options-dropdown"
 
 type GroupItemType = {
   group: GroupViewType
@@ -22,7 +22,8 @@ export const GroupItem: React.FC<GroupItemType> = ({ group, className }) => {
     <Link
       className={cn(
         "flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
-        selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
+        selected && "bg-primary hover:bg-primary/90 text-primary-foreground",
+        className
       )}
       href={groupHref}
     >
@@ -32,7 +33,13 @@ export const GroupItem: React.FC<GroupItemType> = ({ group, className }) => {
       </Avatar>
       <p className="text-xl font-semibold truncate w-full">{group.name}</p>
 
-      {selected && <InfoGroupButtton groupHref={groupHref} isOwner={group.is_owner ?? false} />}
+      {selected && (
+        <GroupOptionsDropdown
+          group={group}
+          groupHref={groupHref}
+          isOwner={group.is_owner ?? false}
+        />
+      )}
     </Link>
   )
 }

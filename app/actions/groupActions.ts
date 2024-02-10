@@ -84,9 +84,7 @@ export async function exitGroup(formData: FormData) {
   return redirect("/")
 }
 
-export async function removeParticipant(uid: string, formData: FormData) {
-  const groupId = formData.get("group_id")
-
+export async function removeParticipant(uid: string, groupId: string) {
   if (!groupId) {
     console.log("Group ID not found")
     throw new Error("Group ID not found")
@@ -108,9 +106,7 @@ export async function removeParticipant(uid: string, formData: FormData) {
   return revalidatePath(`/group/${groupId}/info`)
 }
 
-export async function addParticipant(uid: string, formData: FormData) {
-  const groupId = formData.get("group_id") as string
-
+export async function addParticipant(uid: string, groupId: string) {
   if (!groupId) {
     console.log("Group ID not found")
     throw new Error("Group ID not found")

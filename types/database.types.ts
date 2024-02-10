@@ -1,6 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       cameras: {
@@ -281,28 +281,14 @@ export interface Database {
       }
       group_view: {
         Row: {
+          author_name: string | null
           created_at: string | null
           created_by: string | null
           icon_url: string | null
           id: string | null
           is_owner: boolean | null
           name: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          icon_url?: string | null
-          id?: string | null
-          is_owner?: never
-          name?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          icon_url?: string | null
-          id?: string | null
-          is_owner?: never
-          name?: string | null
+          participants_count: number | null
         }
         Relationships: [
           {

@@ -5,6 +5,7 @@ import "./styles/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { Toaster } from "@/components/ui/toaster"
+import { ModalProvider } from "@/components/providers/modal-provider"
 
 export const metadata = {
   title: "Fega",
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Toaster />
           <SonnerToaster />
+          <ModalProvider />
         </ThemeProvider>
       </body>
     </html>
