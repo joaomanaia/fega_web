@@ -5,22 +5,20 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
 
-const saveGroupSchema = z.object({
-  groupName: z.string().min(1).max(50),
+const editGroupSchema = z.object({
+  groupName: z.string().min(1, "Group name is required").max(50, "Group name is too long"),
   iconUrl: z.string().url(),
 })
 
-export async function saveGroup(formData: FormData) {
-  const groupId = formData.get("group_id")
-
+export async function editGroup(groupId: string, formData: FormData) {
   if (!groupId) {
     console.log("Group ID not found")
     throw new Error("Group ID not found")
   }
 
-  const parsed = saveGroupSchema.parse({
-    groupName: formData.get("group_name"),
-    iconUrl: formData.get("icon_url"),
+  const parsed = editGroupSchema.parse({
+    groupName: formData.get("groupName"),
+    iconUrl: formData.get("iconUrl"),
   })
 
   const supabase = createServerActionClient()
@@ -48,7 +46,6 @@ export async function saveGroup(formData: FormData) {
   }
 
   revalidatePath("/groups")
-  return redirect(`/groups/${groupId}`)
 }
 
 export async function exitGroup(formData: FormData) {

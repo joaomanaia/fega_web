@@ -20,9 +20,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { useFormStatus } from "react-dom"
 import { addParticipant } from "@/app/actions/groupActions"
 import { toast } from "sonner"
+import { SubmitButton } from "@/app/(core)/components/SubmitButton"
 
 export const InviteMemberModal: React.FC = () => {
   const { isOpen, onClose, type, data } = useModal()
@@ -161,7 +161,6 @@ interface InviteUserProps {
 }
 
 export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
-  const { pending } = useFormStatus()
   const addParticipantWithUid = addParticipant.bind(null, user.id, groupId)
 
   const { onClose } = useModal()
@@ -173,8 +172,7 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
         <AvatarFallback>{user.full_name?.charAt(0)}</AvatarFallback>
       </Avatar>
       <p>{user.full_name}</p>
-      <Button
-        disabled={pending}
+      <SubmitButton
         onClick={async () => {
           try {
             await addParticipantWithUid()
@@ -188,8 +186,8 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
         variant="tonal"
         className="ml-auto"
       >
-        {pending ? "Inviting..." : "Invite"}
-      </Button>
+        Invite
+      </SubmitButton>
     </>
   )
 }

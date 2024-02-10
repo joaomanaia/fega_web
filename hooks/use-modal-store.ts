@@ -1,7 +1,7 @@
 import { GroupViewType } from "@/types/group/GroupType"
 import { create } from "zustand"
 
-export type ModalType = "group-invite"
+export type ModalType = "group-invite" | "edit-group"
 
 interface ModalData {
   group?: GroupViewType

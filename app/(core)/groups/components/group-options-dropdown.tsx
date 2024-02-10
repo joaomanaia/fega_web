@@ -36,8 +36,11 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
         <DropdownMenuSeparator />
         {isOwner && (
           <>
-            <DropdownMenuItem disabled className="px-3 py-2 cursor-pointer">
-              Edit Group Info
+            <DropdownMenuItem
+              onClick={() => onOpen("edit-group", { group })}
+              className="px-3 py-2 cursor-pointer"
+            >
+              Edit Group
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onOpen("group-invite", { group })}
