@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import GroupList from "./components/GroupList"
+import { BaseGroupList } from "./base-group-list"
 
 export const metadata: Metadata = {
   title: "Groups",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function GroupPage() {
-  return <GroupList className="xl:hidden w-full h-full" />
+  return (
+    <BaseGroupList>
+      <GroupList className="xl:hidden w-full h-full" />
+    </BaseGroupList>
+  )
 }

@@ -5,7 +5,7 @@ import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
 import { VotePostAction } from "./actions/vote/VotePostAction"
-import { SharePostAction } from "./actions/SharePostAction"
+import { SharePostButtont } from "./actions/share-post-button"
 
 interface PostProps {
   post: PostType
@@ -42,7 +42,7 @@ const Post: React.FC<PostProps> = ({
       {post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex items-center space-x-4">
         <VotePostAction postId={post.id} voteCount={postVotes} votedType={localUserVotedType} />
-        <SharePostAction postId={post.id} />
+        <SharePostButtont postId={post.id} />
       </div>
     </PostContainer>
   )

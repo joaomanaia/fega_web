@@ -1,7 +1,4 @@
-"use client"
-
-import MainContainer from "@/app/(core)/components/m3/MainContainer"
-import { List, ListSubheader } from "@mui/material"
+import { MainContainer } from "../../components/m3/main-container"
 
 interface BaseSettingsContainerProps {
   header: string
@@ -10,14 +7,9 @@ interface BaseSettingsContainerProps {
 
 const BaseSettingsContainer: React.FC<BaseSettingsContainerProps> = ({ header, children }) => {
   return (
-    <MainContainer className="flex flex-col">
-      <List
-        sx={{ width: "100%" }}
-        className="space-y-2"
-        subheader={<ListSubheader>{header}</ListSubheader>}
-      >
-        {children}
-      </List>
+    <MainContainer className="flex flex-col gap-2">
+      <p className="text-sm ml-2">{header}</p>
+      {children}
     </MainContainer>
   )
 }

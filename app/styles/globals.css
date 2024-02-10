@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Default theme color: #0066ff */
+
+@layer base {
+  :root {
+    --primary: var(--md-sys-color-primary-light);
+    --on-primary: var(--md-sys-color-on-primary-light);
+    --primary-container: var(--md-sys-color-primary-container-light);
+    --on-primary-container: var(--md-sys-color-on-primary-container-light);
+    --secondary: var(--md-sys-color-secondary-light);
+    --on-secondary: var(--md-sys-color-on-secondary-light);
+    --secondary-container: var(--md-sys-color-secondary-container-light);
+    --on-secondary-container: var(--md-sys-color-on-secondary-container-light);
+    --tertiary: var(--md-sys-color-tertiary-light);
+    --on-tertiary: var(--md-sys-color-on-tertiary-light);
+    --tertiary-container: var(--md-sys-color-tertiary-container-light);
+    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-light);
+    --error: var(--md-sys-color-error-light);
+    --error-container: var(--md-sys-color-error-container-light);
+    --on-error: var(--md-sys-color-on-error-light);
+    --on-error-container: var(--md-sys-color-on-error-container-light);
+    --background: var(--md-sys-color-background-light);
+    --on-background: var(--md-sys-color-on-background-light);
+    --surface: var(--md-sys-color-surface-light);
+    --on-surface: var(--md-sys-color-on-surface-light);
+    --surface-variant: var(--md-sys-color-surface-variant-light);
+    --on-surface-variant: var(--md-sys-color-on-surface-variant-light);
+    --outline: var(--md-sys-color-outline-light);
+    --inverse-on-surface: var(--md-sys-color-inverse-on-surface-light);
+    --inverse-surface: var(--md-sys-color-inverse-surface-light);
+    --inverse-primary: var(--md-sys-color-inverse-primary-light);
+    --shadow: var(--md-sys-color-shadow-light);
+    --surface-tint: var(--md-sys-color-surface-tint-light);
+    --outline-variant: var(--md-sys-color-outline-variant-light);
+    --scrim: var(--md-sys-color-scrim-light);
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --primary: var(--md-sys-color-primary-dark);
+    --on-primary: var(--md-sys-color-on-primary-dark);
+    --primary-container: var(--md-sys-color-primary-container-dark);
+    --on-primary-container: var(--md-sys-color-on-primary-container-dark);
+    --secondary: var(--md-sys-color-secondary-dark);
+    --on-secondary: var(--md-sys-color-on-secondary-dark);
+    --secondary-container: var(--md-sys-color-secondary-container-dark);
+    --on-secondary-container: var(--md-sys-color-on-secondary-container-dark);
+    --tertiary: var(--md-sys-color-tertiary-dark);
+    --on-tertiary: var(--md-sys-color-on-tertiary-dark);
+    --tertiary-container: var(--md-sys-color-tertiary-container-dark);
+    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-dark);
+    --error: var(--md-sys-color-error-dark);
+    --error-container: var(--md-sys-color-error-container-dark);
+    --on-error: var(--md-sys-color-on-error-dark);
+    --on-error-container: var(--md-sys-color-on-error-container-dark);
+    --background: var(--md-sys-color-background-dark);
+    --on-background: var(--md-sys-color-on-background-dark);
+    --surface: var(--md-sys-color-surface-dark);
+    --on-surface: var(--md-sys-color-on-surface-dark);
+    --surface-variant: var(--md-sys-color-surface-variant-dark);
+    --on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
+    --outline: var(--md-sys-color-outline-dark);
+    --inverse-on-surface: var(--md-sys-color-inverse-on-surface-dark);
+    --inverse-surface: var(--md-sys-color-inverse-surface-dark);
+    --inverse-primary: var(--md-sys-color-inverse-primary-dark);
+    --shadow: var(--md-sys-color-shadow-dark);
+    --surface-tint: var(--md-sys-color-surface-tint-dark);
+    --outline-variant: var(--md-sys-color-outline-variant-dark);
+    --scrim: var(--md-sys-color-scrim-dark);
+
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .next-link {
+    @apply text-inherit bg-inherit decoration-transparent;
+  }
+}

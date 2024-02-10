@@ -1,11 +1,10 @@
 "use client"
 
 import { PostVoteType } from "@/types/PostType"
-import { Button } from "@mui/material"
-import ThumbUpRounded from "@mui/icons-material/ThumbUpRounded"
-import ThumbDownRounded from "@mui/icons-material/ThumbDownRounded"
-import { cn } from "@/core/util/tailwindcssUtils"
 import { useFormStatus } from "react-dom"
+import { Button } from "@/components/ui/button"
+import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface VotePostActionButtonProps {
   type: PostVoteType
@@ -28,14 +27,24 @@ export const VotePostActionButton: React.FC<VotePostActionButtonProps> = ({
       name="vote_button"
       value={type}
       disabled={pending}
-      variant={votedType === type ? "filled" : "surfaceVariant"}
+      variant={votedType === type ? "default" : "surfaceVariant"}
       className={cn(
         "flex items-center space-x-2 rounded-none first:rounded-l-full last:rounded-r-full",
         className
       )}
-      startIcon={type === "up" ? <ThumbUpRounded /> : <ThumbDownRounded />}
     >
+      <ButtonIcon type={type} votedType={votedType} Icon={type === "up" ? ThumbsUp : ThumbsDown} />
       {voteCount}
     </Button>
   )
+}
+
+interface ButtonIconProps {
+  type: PostVoteType
+  votedType?: PostVoteType
+  Icon: LucideIcon
+}
+
+const ButtonIcon: React.FC<ButtonIconProps> = ({ type, votedType, Icon }) => {
+  return <Icon fill={votedType === type ? "currentColor" : "none"} size={20} className="mr-2" />
 }

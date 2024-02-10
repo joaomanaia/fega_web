@@ -3,7 +3,6 @@ import { revalidatePath } from "next/cache"
 import { createServerActionClient } from "@/supabase"
 import { redirect } from "next/navigation"
 import { VotePostActionButton } from "./VotePostActionButton"
-import { ButtonGroup } from "@mui/material"
 
 interface VotePostActionProps {
   postId: string
@@ -58,10 +57,10 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
 
   return (
     <form action={handleVote}>
-      <ButtonGroup>
+      <div className="flex">
         <VotePostActionButton type="up" votedType={votedType} voteCount={voteCount} />
         <VotePostActionButton type="down" votedType={votedType} />
-      </ButtonGroup>
+      </div>
     </form>
   )
 }

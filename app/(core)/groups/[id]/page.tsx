@@ -3,9 +3,10 @@ import { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import { redirect } from "next/navigation"
 import RealtimeMessages from "./components/RealtimeMessages"
 import GroupMessageForm from "./components/GroupMessageForm"
-import GroupType from "@/types/group/GroupType"
-import MainContainer from "../../components/m3/MainContainer"
+import { GroupViewType } from "@/types/group/GroupType"
 import { getLocalUserUid } from "@/utils/user-utils"
+import { MainContainer } from "../../components/m3/main-container"
+import { GroupMessageHeader } from "./components/group-message-header"
 
 interface GroupMessagePageProps {
   params: {
@@ -13,10 +14,10 @@ interface GroupMessagePageProps {
   }
 }
 
-const getGroup = async (groupId: string): Promise<GroupType | null> => {
+const getGroup = async (groupId: string): Promise<GroupViewType | null> => {
   const supabase = createServerComponentClient()
 
-  const { data: group } = await supabase.from("groups").select("*").eq("id", groupId).single()
+  const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
 
   return group ?? null
 }
@@ -40,14 +41,15 @@ export default async function GroupMessagePage({ params }: GroupMessagePageProps
   if (!localUserUid) return redirect("/auth")
 
   const group = await getGroup(params.id)
-  if (!group) return redirect("/groups")
+  if (!group || !group.id || !group.name) return redirect("/groups")
 
   const messages = await getMessages(params.id)
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
+    <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center xl:w-4/6">
+      <GroupMessageHeader group={group} className="xl:hidden" />
       <RealtimeMessages localUserUid={localUserUid} groupId={params.id} serverMessages={messages} />
-      <GroupMessageForm group={group} />
+      <GroupMessageForm groupId={group.id} groupName={group.name} />
     </MainContainer>
   )
 }

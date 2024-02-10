@@ -1,19 +1,18 @@
 "use client"
 
-import { Button } from "@mui/material"
+import { Button, ButtonProps } from "@/components/ui/button"
+import React from "react"
 import { useFormStatus } from "react-dom"
 
-interface SubmitButtonProps {
-  className?: string
-  text: string
-}
+interface SubmitButtonProps extends ButtonProps {}
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ className, text }) => {
-  const { pending } = useFormStatus()
+export const SubmitButton = React.forwardRef<HTMLButtonElement, SubmitButtonProps>(
+  ({ className, variant = "default", ...props }, ref) => {
+    const { pending } = useFormStatus()
 
-  return (
-    <Button variant="filled" type="submit" disabled={pending} className={className}>
-      {text}
-    </Button>
-  )
-}
+    return (
+      <Button variant={variant} type="submit" disabled={pending} className={className} {...props} />
+    )
+  }
+)
+SubmitButton.displayName = "SubmitButton"

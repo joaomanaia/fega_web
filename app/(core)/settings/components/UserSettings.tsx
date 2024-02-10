@@ -1,9 +1,9 @@
 "use client"
 
-import { ListItemButton } from "@mui/material"
 import BaseSettingsContainer from "./BaseSettingsContainer"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
 
 const UserSettings: React.FC = () => {
   const supabase = createClientComponentClient()
@@ -17,7 +17,9 @@ const UserSettings: React.FC = () => {
 
   return (
     <BaseSettingsContainer header="User">
-      <ListItemButton onClick={signOut}>Sign out</ListItemButton>
+      <Button variant="destructive" onClick={signOut} className="w-40">
+        Sign out
+      </Button>
     </BaseSettingsContainer>
   )
 }

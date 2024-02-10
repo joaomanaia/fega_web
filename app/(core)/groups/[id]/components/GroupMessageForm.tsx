@@ -3,14 +3,14 @@
 import MessageInput from "@/app/(core)/components/message/MessageInput"
 import SendMessageButton from "@/app/(core)/components/message/SendMessageButton"
 import sendGroupMessage from "@/core/actions/group/sendGroupMessage"
-import GroupType from "@/types/group/GroupType"
 import { useRef } from "react"
 
 interface GroupMessageFormProps {
-  group: GroupType
+  groupId: string
+  groupName: string
 }
 
-const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ group }) => {
+const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ groupId, groupName }) => {
   const ref = useRef<HTMLFormElement>(null)
 
   return (
@@ -20,10 +20,10 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ group }) => {
   
       ref.current?.reset()
   
-      await sendGroupMessage(group.id, message as string)
+      await sendGroupMessage(groupId, message as string)
     }} className="flex rounded-2xl space-x-2 w-full">
-      <MessageInput messageTo={group.name} />
-      <SendMessageButton />
+      <MessageInput messageTo={groupName} />
+      <SendMessageButton className="h-full rounded-2xl" />
     </form>
   )
 }

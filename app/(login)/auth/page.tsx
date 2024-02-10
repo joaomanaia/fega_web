@@ -1,5 +1,5 @@
-import LoginContainer from "./components/LoginContainer"
-import AuthContent from "./components/AuthContent"
+import { LoginContainer } from "./components/LoginContainer"
+import { AuthContent } from "./components/AuthContent"
 import { redirect } from "next/navigation"
 import { getLocalUser } from "@/utils/user-utils"
 

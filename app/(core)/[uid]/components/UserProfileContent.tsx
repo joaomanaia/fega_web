@@ -1,9 +1,10 @@
 import { createServerComponentClient } from "@/supabase"
 import UserType from "@/types/UserType"
-import Avatar from "../../components/m3/avatar"
 import { defaultImgUrl } from "@/core/common"
-import { Button } from "@mui/material"
 import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { EditProfileDialog } from "./edit-profile-dialog"
 
 const getUserByUid = async (uid: string): Promise<UserType | null> => {
   const supabase = createServerComponentClient()
@@ -34,10 +35,13 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
   return (
     <>
       <div className="flex items-center space-x-4">
-        <Avatar photoUrl={user.avatar_url ?? defaultImgUrl} name={user.full_name} size={40} />
+        <Avatar className="w-12 h-12">
+          <AvatarImage src={user.avatar_url ?? defaultImgUrl} />
+          <AvatarFallback>{user.full_name}</AvatarFallback>
+        </Avatar>
         <h1 className="text-xl font-bold">{user.full_name}</h1>
       </div>
-      {isLocalUser && <EditProfileButton />}
+      {isLocalUser && <EditProfileDialog user={user} />}
     </>
   )
 }
@@ -45,7 +49,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
 const EditProfileButton: React.FC = () => {
   return (
     <Link href="/edit-profile" className="next-link">
-      <Button variant="outlined" className="w-full">
+      <Button variant="outline" className="w-full">
         Edit Profile
       </Button>
     </Link>

@@ -5,15 +5,20 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
 
-const schema = z.object({
-  full_name: z.string().min(3).max(30),
+const formSchema = z.object({
+  full_name: z
+    .string()
+    .min(3, "Full name must be at least 3 characters long")
+    .max(255, "Full name must be at most 255 characters long"),
 })
 
-export default async function saveProfile(prevState: any, formData: FormData) {
+export default async function saveProfile(formData: FormData) {
   try {
-    const parsed = schema.parse({
+    const parsed = formSchema.parse({
       full_name: formData.get("full_name"),
     })
+
+    console.log(parsed)
 
     const supabase = createServerActionClient()
 
@@ -37,17 +42,15 @@ export default async function saveProfile(prevState: any, formData: FormData) {
 
     revalidatePath("/edit-profile")
 
+    revalidatePath("/" + user.id)
+
     return {
-      successMessage: "Profile updated successfully",
-      fullNameError: "",
       errorMessage: "",
     }
-  } catch (err: any) {
+  } catch (err) {
     if (err instanceof z.ZodError) {
       if (err.isEmpty) {
         return {
-          fullNameError: "",
-          successMessage: "",
           errorMessage: "Something went wrong",
         }
       }
@@ -55,13 +58,15 @@ export default async function saveProfile(prevState: any, formData: FormData) {
       const fullNameIssue = err.issues.find((issue) => issue.path[0] === "full_name")
 
       return {
-        fullNameError: fullNameIssue?.message,
+        fullNameErrorMessage: fullNameIssue?.message ?? "Something went wrong",
+      }
+    } else if (err instanceof Error) {
+      return {
+        errorMessage: err.message,
       }
     } else {
       return {
-        errorMessage: err,
-        fullNameError: "",
-        successMessage: "",
+        errorMessage: "Something went wrong",
       }
     }
   }

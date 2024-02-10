@@ -1,8 +1,10 @@
-import MainContainer from "@/app/(core)/components/m3/MainContainer"
 import { createServerComponentClient } from "@/supabase"
 import { redirect } from "next/navigation"
-import { EditGroupForm } from "./components/EditGroupForm"
-import { GroupParticipants } from "./components/GroupParticipants"
+import { MainContainer } from "@/app/(core)/components/m3/main-container"
+import { Suspense } from "react"
+import { GroupMembers } from "@/components/group/members/group-members"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface EditGroupPageProps {
   params: {
@@ -21,19 +23,50 @@ export default async function EditGroupPage({ params }: EditGroupPageProps) {
 
   if (!user) return redirect("/auth")
 
-  // No need to check if user is logged in, because it's done in the layout
-  // No need to check if user is in group, because it's done in the supabase RLS
   const { data: group } = await supabase.from("group_view").select("*").eq("id", params.id).single()
   if (!group) return redirect("/groups")
 
-  const formType: EditGroupFormType = group.is_owner ? "edit" : "info"
+  const groupCreatedAt = group.created_at
+    ? new Date(group.created_at).toLocaleDateString()
+    : "Unknown"
 
   return (
-    <MainContainer className="w-full h-auto flex flex-col items-center xl:w-4/6">
-      <h1>{group.name}</h1>
-      <EditGroupForm group={group} localUid={user.id} formType={formType}>
-        <GroupParticipants groupId={params.id} formType={formType} />
-      </EditGroupForm>
+    <MainContainer className="w-full h-auto overflow-hidden max-md:rounded-b-none md:mb-3 flex flex-col items-center xl:w-4/6 gap-4">
+      <h2 className="text-2xl font-bold truncate w-full text-center">{group.name}</h2>
+      <GroupInfo
+        name={group.name ?? "Group"}
+        iconUrl={group.icon_url ?? undefined}
+        author={group.author_name ?? "Unknown"}
+        createdAt={groupCreatedAt}
+      />
+      <ScrollArea className="rounded-2xl p-4 bg-surfaceVariant/[0.28] w-full min-h-0">
+        <Suspense fallback={<div>Loading members...</div>}>
+          <GroupMembers group={group} />
+        </Suspense>
+      </ScrollArea>
     </MainContainer>
+  )
+}
+
+interface GroupInfoProps {
+  name: string
+  iconUrl?: string
+  author: string
+  createdAt: string
+}
+
+const GroupInfo: React.FC<GroupInfoProps> = ({ name, iconUrl, author, createdAt }) => {
+  return (
+    <div className="flex flex-col w-full gap-4 py-4">
+      <Avatar className="h-20 w-20 self-center">
+        <AvatarImage src={iconUrl} alt={name} />
+        <AvatarFallback>{name.at(0)}</AvatarFallback>
+      </Avatar>
+
+      <p>
+        Created by <span className="font-bold">{author}</span> on{" "}
+        <span className="font-bold">{createdAt}</span>
+      </p>
+    </div>
   )
 }

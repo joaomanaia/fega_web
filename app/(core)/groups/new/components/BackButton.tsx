@@ -1,13 +1,13 @@
 "use client"
 
-import { Button } from "@mui/material"
+import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
 const BackButton: React.FC = () => {
   const router = useRouter()
 
   return (
-    <Button onClick={() => router.back()} variant="text">
+    <Button onClick={() => router.back()} variant="ghost">
       Cancel
     </Button>
   )
