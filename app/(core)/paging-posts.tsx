@@ -6,7 +6,8 @@ import Post from "./components/post/Post"
 import { Button } from "@/components/ui/button"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "@/types/database.types"
-import { ITEMS_PER_PAGE } from "./PostsContent"
+
+const ITEMS_PER_PAGE = 7
 
 interface PagingPostsProps {
   uid?: string

@@ -2,7 +2,7 @@ import { createServerComponentClient } from "@/supabase"
 import { PostsWithData } from "@/types/PostType"
 import { PagingPosts } from "./paging-posts"
 
-export const ITEMS_PER_PAGE = 7
+const ITEMS_PER_PAGE = 7
 
 /**
  * Get posts from the database.
