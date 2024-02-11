@@ -1,6 +1,8 @@
 import { createServerComponentClient } from "@/supabase"
 import { PostsWithData } from "@/types/PostType"
-import Post from "./components/post/Post"
+import { PagingPosts } from "./paging-posts"
+
+export const ITEMS_PER_PAGE = 7
 
 /**
  * Get posts from the database.
@@ -16,6 +18,7 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
       .rpc("get_posts_with_data")
       .eq("uid", uid)
       .order("created_at", { ascending: false })
+      .range(0, ITEMS_PER_PAGE - 1) // Get the first page
 
     return posts || []
   }
@@ -23,6 +26,7 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
   const { data: posts } = await supabase
     .rpc("get_posts_with_data")
     .order("created_at", { ascending: false })
+    .range(0, ITEMS_PER_PAGE - 1) // Get the first page
 
   return posts || []
 }
@@ -32,16 +36,7 @@ export default async function PostsContent({ uid }: { uid?: string }) {
 
   return (
     <>
-      {posts?.map((post) => (
-        <Post
-          key={post.id}
-          post={post}
-          postVotes={post.votes}
-          authorName={post.full_name}
-          authorAvatarUrl={post.avatar_url}
-          localUserVotedType={post.vote_type}
-        />
-      ))}
+      <PagingPosts uid={uid} initialPosts={posts} />
     </>
   )
 }
