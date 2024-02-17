@@ -12,7 +12,7 @@ interface PostProps {
   postVotes: number
   authorName: string
   authorAvatarUrl: string
-  localUserVotedType?: PostVoteType
+  localUserVotedType: PostVoteType | null
   hideContainer?: boolean
 }
 

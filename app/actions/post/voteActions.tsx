@@ -2,7 +2,6 @@
 
 import { createServerActionClient } from "@/supabase"
 import { PostVoteType } from "@/types/PostType"
-import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 export const handleVote = async (postId: string, formData: FormData) => {
@@ -44,5 +43,5 @@ export const handleVote = async (postId: string, formData: FormData) => {
     throw new Error(voteError.message)
   }
 
-  revalidatePath("/")
+  return vote
 }

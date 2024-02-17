@@ -2,46 +2,49 @@
 
 import { PostVoteType } from "@/types/PostType"
 import { useFormStatus } from "react-dom"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { forwardRef } from "react"
 
-interface VotePostActionButtonProps {
-  type: PostVoteType
-  votedType?: PostVoteType
+interface VotePostActionButtonProps extends ButtonProps {
+  voteType: PostVoteType
+  votedType: PostVoteType | null
   voteCount?: number
-  className?: string
 }
 
-export const VotePostActionButton: React.FC<VotePostActionButtonProps> = ({
-  type,
-  votedType,
-  voteCount,
-  className,
-}) => {
-  const { pending } = useFormStatus()
+export const VotePostActionButton = forwardRef<HTMLButtonElement, VotePostActionButtonProps>(
+  ({ voteType, votedType, voteCount, className, variant = "default", ...props }, ref) => {
+    const { pending } = useFormStatus()
 
-  return (
-    <Button
-      type="submit"
-      name="vote_button"
-      value={type}
-      disabled={pending}
-      variant={votedType === type ? "default" : "surfaceVariant"}
-      className={cn(
-        "flex items-center space-x-2 rounded-none first:rounded-l-full last:rounded-r-full",
-        className
-      )}
-    >
-      <ButtonIcon type={type} votedType={votedType} Icon={type === "up" ? ThumbsUp : ThumbsDown} />
-      {voteCount}
-    </Button>
-  )
-}
+    return (
+      <Button
+        type="submit"
+        name="vote_button"
+        value={voteType}
+        disabled={pending}
+        variant={votedType === voteType ? "default" : "surfaceVariant"}
+        className={cn(
+          "flex items-center space-x-2 rounded-none first:rounded-l-full last:rounded-r-full",
+          className
+        )}
+        {...props}
+      >
+        <ButtonIcon
+          type={voteType}
+          votedType={votedType}
+          Icon={voteType === "up" ? ThumbsUp : ThumbsDown}
+        />
+        {voteCount}
+      </Button>
+    )
+  }
+)
+VotePostActionButton.displayName = "VotePostActionButton"
 
 interface ButtonIconProps {
   type: PostVoteType
-  votedType?: PostVoteType
+  votedType: PostVoteType | null
   Icon: LucideIcon
 }
 
