@@ -161,11 +161,7 @@ const createGroupFormSchema = z.object({
 })
 
 export const createGroup = async (formData: FormData) => {
-  console.log("Creating group")
-
   try {
-    console.log("Parsing data")
-
     const parsed = createGroupFormSchema.parse({
       group_name: formData.get("group_name"),
       group_avatar: formData.get("group_avatar"),
@@ -173,18 +169,18 @@ export const createGroup = async (formData: FormData) => {
 
     const supabase = createServerActionClient()
 
-    const { error } = await supabase.from("groups").insert({
-      name: parsed.group_name,
-      icon_url: parsed.group_avatar,
-    })
+    const { error } = await supabase
+      .from("groups")
+      .insert({
+        name: parsed.group_name,
+        icon_url: parsed.group_avatar,
+      })
 
     if (error) {
-      console.error(error)
-      return
+      throw new Error(error.message)
     }
 
     revalidatePath("/groups")
-    redirect("/groups")
   } catch (err) {
     if (err instanceof z.ZodError) {
       if (err.isEmpty) {

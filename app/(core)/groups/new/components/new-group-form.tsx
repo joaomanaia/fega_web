@@ -16,6 +16,8 @@ import BackButton from "./BackButton"
 import { SubmitButton } from "@/app/(core)/components/SubmitButton"
 import { createGroup } from "@/app/actions/groupActions"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { toast } from "sonner"
+import { redirect } from "next/navigation"
 
 interface NewGroupFormProps {}
 
@@ -38,7 +40,19 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
   return (
     <>
       <Form {...form}>
-        <form className="flex flex-col mt-8 space-y-6 w-full" action={createGroup}>
+        <form
+          className="flex flex-col mt-8 space-y-6 w-full"
+          action={async (formData: FormData) => {
+            const result = await createGroup(formData)
+
+            if (result?.errorMessage) {
+              toast.error(result.errorMessage)
+            } else {
+              toast.success("Group created")
+              return redirect("/groups")
+            }
+          }}
+        >
           <FormField
             control={form.control}
             name="group_name"
