@@ -455,6 +455,28 @@
     aria-hidden "^1.1.1"
     react-remove-scroll "2.5.5"
 
+"@radix-ui/react-popover@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-popover/-/react-popover-1.0.7.tgz#23eb7e3327330cb75ec7b4092d685398c1654e3c"
+  integrity sha512-shtvVnlsxT6faMnK/a7n0wptwBD23xc1Z5mdrtKLwVEfsEMXodS0r5s0/g5P0hX//EKYZS2sxUjqfzlg52ZSnQ==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.1"
+    "@radix-ui/react-compose-refs" "1.0.1"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-dismissable-layer" "1.0.5"
+    "@radix-ui/react-focus-guards" "1.0.1"
+    "@radix-ui/react-focus-scope" "1.0.4"
+    "@radix-ui/react-id" "1.0.1"
+    "@radix-ui/react-popper" "1.1.3"
+    "@radix-ui/react-portal" "1.0.4"
+    "@radix-ui/react-presence" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-slot" "1.0.2"
+    "@radix-ui/react-use-controllable-state" "1.0.1"
+    aria-hidden "^1.1.1"
+    react-remove-scroll "2.5.5"
+
 "@radix-ui/react-popper@1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-popper/-/react-popper-1.1.3.tgz#24c03f527e7ac348fabf18c89795d85d21b00b42"
@@ -1449,6 +1471,13 @@ electron-to-chromium@^1.4.601:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.633.tgz#df8831d2fef994fe9c013e61db6cfb98eeebf52d"
   integrity sha512-7BvxzXrHFliyQ1oZc6NRMjyEaKOO1Ma1NY98sFZofogWlm+klLWSgrDw7EhatiMgi4R4NV+iWxDdxuIKXtPbOw==
 
+emoji-picker-react@^4.7.18:
+  version "4.7.18"
+  resolved "https://registry.yarnpkg.com/emoji-picker-react/-/emoji-picker-react-4.7.18.tgz#199283e3b47378b2e4369181502a06e5e3dd64f1"
+  integrity sha512-ZYTUl9KdSFfrdmPmAhcVwSv6/fBuhIw6LxqOJ8jz5min8sezjEArGs25LGjf6VABNE4895HBsuJ5uVKIb0lJuw==
+  dependencies:
+    flairup "0.0.38"
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -1842,6 +1871,11 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+flairup@0.0.38:
+  version "0.0.38"
+  resolved "https://registry.yarnpkg.com/flairup/-/flairup-0.0.38.tgz#62216990a8317a1b07d1d816033624c5b2130f31"
+  integrity sha512-W9QA5TM7eYNlGoBYwfVn/o6v4yWBCxfq4+EJ5w774oFeyWvVWnYq6Dgt4CJltjG9y/lPwbOqz3jSSr8K66ToGg==
 
 flat-cache@^3.0.4:
   version "3.2.0"

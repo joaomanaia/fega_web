@@ -1,6 +1,7 @@
 "use client"
 
 import { Button, ButtonProps } from "@/components/ui/button"
+import { SendHorizontalIcon } from "lucide-react"
 import { useFormStatus } from "react-dom"
 
 interface SendMessageButtonProps extends ButtonProps {}
@@ -11,12 +12,12 @@ const SendMessageButton: React.FC<SendMessageButtonProps> = ({ ...props }) => {
   return (
     <Button
       disabled={pending}
-      className="rounded-2xl"
       variant="default"
+      size="icon"
       type="submit"
       {...props}
     >
-      {pending ? "Sending..." : "Send"}
+      <SendHorizontalIcon />
     </Button>
   )
 }
