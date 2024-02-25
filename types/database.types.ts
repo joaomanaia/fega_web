@@ -222,16 +222,19 @@ export type Database = {
       users: {
         Row: {
           avatar_url: string | null
+          created_at: string
           full_name: string | null
           id: string
         }
         Insert: {
           avatar_url?: string | null
+          created_at?: string
           full_name?: string | null
           id?: string
         }
         Update: {
           avatar_url?: string | null
+          created_at?: string
           full_name?: string | null
           id?: string
         }
@@ -287,10 +290,20 @@ export type Database = {
           icon_url: string | null
           id: string | null
           is_owner: boolean | null
+          last_message: string | null
+          last_message_at: string | null
+          last_message_by: string | null
           name: string | null
           participants_count: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "group_messages_uid_fkey"
+            columns: ["last_message_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "groups_created_by_fkey"
             columns: ["created_by"]

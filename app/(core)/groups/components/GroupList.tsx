@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { MainContainer } from "../../components/m3/main-container"
 import { ExtendedFAB } from "@/components/ui/floating-action-button"
 import Link from "next/link"
+import { getLocalUserUid } from "@/utils/user-utils"
 
 interface GroupListProps {
   className?: string
@@ -13,12 +14,18 @@ interface GroupListProps {
 const getGroups = async (): Promise<GroupViewType[]> => {
   const supabase = createServerComponentClient()
 
-  const { data: groups } = await supabase.from("group_view").select("*")
+  const { data: groups } = await supabase
+    .from("group_view")
+    .select("*")
+    .order("last_message_at", { ascending: false })
 
   return groups as GroupViewType[]
 }
 
 export default async function GroupList({ className }: GroupListProps) {
+  const localUid = await getLocalUserUid()
+  if (!localUid) return null
+
   const groups = await getGroups()
 
   return (
@@ -27,7 +34,7 @@ export default async function GroupList({ className }: GroupListProps) {
 
       <MainContainer className="h-auto w-auto flex flex-col">
         {groups.map((group) => (
-          <GroupItem key={group.id} group={group} />
+          <GroupItem key={group.id} group={group} localUid={localUid} />
         ))}
       </MainContainer>
     </div>

@@ -34,6 +34,10 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
 export default async function PostsContent({ uid }: { uid?: string }) {
   const posts = await getPosts(uid)
 
+  if (!posts.length) {
+    return <p>No posts yet</p>
+  }
+
   return (
     <>
       <PagingPosts uid={uid} initialPosts={posts} />

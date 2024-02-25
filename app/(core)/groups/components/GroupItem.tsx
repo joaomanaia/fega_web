@@ -9,10 +9,11 @@ import { GroupOptionsDropdown } from "./group-options-dropdown"
 
 type GroupItemType = {
   group: GroupViewType
+  localUid: string
   className?: string
 }
 
-export const GroupItem: React.FC<GroupItemType> = ({ group, className }) => {
+export const GroupItem: React.FC<GroupItemType> = ({ group, localUid, className }) => {
   const params = useParams()
   const selected = params.id === group.id
 
@@ -31,7 +32,13 @@ export const GroupItem: React.FC<GroupItemType> = ({ group, className }) => {
         <AvatarImage src={group.icon_url ?? undefined} />
         <AvatarFallback>{group.name}</AvatarFallback>
       </Avatar>
-      <p className="text-xl font-semibold truncate w-full">{group.name}</p>
+      <div className="flex flex-col grow">
+        <p className="text-xl font-semibold truncate">{group.name}</p>
+        <p>
+          {group.last_message_by === localUid ? "You: " : ""}
+          {group.last_message}
+        </p>
+      </div>
 
       {selected && (
         <GroupOptionsDropdown
