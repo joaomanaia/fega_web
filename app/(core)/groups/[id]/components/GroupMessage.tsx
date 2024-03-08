@@ -37,10 +37,13 @@ import { toast } from "sonner"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { TooltipTrigger } from "@radix-ui/react-tooltip"
 
 type GroupMessageProps = {
   messageId: string
   message: string
+  createdAt: Date
   groupId: string
   user: UserType
   byLocalUser: boolean
@@ -51,6 +54,7 @@ type GroupMessageProps = {
 export const GroupMessage: React.FC<GroupMessageProps> = ({
   messageId,
   message,
+  createdAt,
   groupId,
   user,
   byLocalUser,
@@ -112,16 +116,18 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
               <MoreVerticalIcon className="w-5 h-5 text-foreground" />
             </Button>
 
-            <p
-              className={cn(
-                "p-3 w-fit rounded-2xl",
-                byLocalUser ? "bg-primary text-primary-foreground" : "border border-border",
-                messageCorners(),
-                margins()
-              )}
-            >
-              {message}
-            </p>
+            <MessageDateTimeTooltip createdAt={createdAt}>
+              <p
+                className={cn(
+                  "p-3 w-fit rounded-2xl",
+                  byLocalUser ? "bg-primary text-primary-foreground" : "border border-border",
+                  messageCorners(),
+                  margins()
+                )}
+              >
+                {message}
+              </p>
+            </MessageDateTimeTooltip>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -136,6 +142,24 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  )
+}
+
+interface MessageDateTimeTooltipProps {
+  createdAt: Date
+  children: React.ReactNode
+}
+
+const MessageDateTimeTooltip: React.FC<MessageDateTimeTooltipProps> = ({ createdAt, children }) => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent className="bg-surface border-outline/10">
+          <p>{createdAt.toLocaleString()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 
@@ -166,7 +190,9 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <DropdownMenuItem disabled onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
+          <DropdownMenuItem disabled onSelect={(e) => e.preventDefault()}>
+            Edit
+          </DropdownMenuItem>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

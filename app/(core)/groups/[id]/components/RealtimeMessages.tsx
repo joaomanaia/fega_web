@@ -76,19 +76,49 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   return (
     <ScrollContainer className="w-full py-4 grow">
       {messages.map((message, index) => (
-        <GroupMessage
-          key={message.id}
-          messageId={message.id}
-          message={message.message}
-          groupId={message.group_id}
-          user={message.user}
-          byLocalUser={message.uid === localUserUid}
-          hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
-          hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
-        />
+        <>
+          {index < messages.length && (
+            <MessageTopTime
+              currentTime={new Date(message.created_at)}
+              // If the message is the first one, there is no message above
+              // so we pass null to the aboveTime prop to make the component render the date
+              aboveTime={index > 0 ? new Date(messages.at(index - 1)!.created_at) : null}
+            />
+          )}
+          <GroupMessage
+            key={message.id}
+            messageId={message.id}
+            message={message.message}
+            createdAt={new Date(message.created_at)}
+            groupId={message.group_id}
+            user={message.user}
+            byLocalUser={message.uid === localUserUid}
+            hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
+            hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
+          />
+        </>
       ))}
     </ScrollContainer>
   )
 }
 
 export default RealtimeMessages
+
+interface MessageTopTime {
+  currentTime: Date
+  aboveTime: Date | null
+}
+
+export const MessageTopTime: React.FC<MessageTopTime> = ({ currentTime, aboveTime }) => {
+  const currentDay = currentTime.getDate()
+
+  if (aboveTime?.getDate() === currentDay) {
+    return null
+  }
+
+  return (
+    <div className="flex justify-center items-center my-1">
+      <p className="text-xs text-foreground/50 mx-2">{currentTime.toLocaleDateString()}</p>
+    </div>
+  )
+}
