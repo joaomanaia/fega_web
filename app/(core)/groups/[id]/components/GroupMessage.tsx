@@ -31,24 +31,29 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import UserType from "@/types/UserType"
-import { MoreVerticalIcon } from "lucide-react"
+import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
 import { toast } from "sonner"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
+import { useState } from "react"
+import ReplyToType from "@/types/ReplyToType"
 
 type GroupMessageProps = {
   messageId: string
   message: string
   createdAt: Date
   groupId: string
-  user: UserType
+  userName: string
+  userAvatarUrl: string | null
   byLocalUser: boolean
   hasMessageAbove: boolean
   hasMessageBelow: boolean
+  replyMessage: string | null
+  replyToLocalUser: boolean
+  onReplyClick: (data: ReplyToType) => void
 }
 
 export const GroupMessage: React.FC<GroupMessageProps> = ({
@@ -56,10 +61,14 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   message,
   createdAt,
   groupId,
-  user,
+  userName,
+  userAvatarUrl,
   byLocalUser,
   hasMessageAbove,
   hasMessageBelow,
+  replyMessage,
+  replyToLocalUser,
+  onReplyClick,
 }) => {
   const messageCorners = (): string => {
     if (hasMessageAbove && hasMessageBelow) {
@@ -85,6 +94,102 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
     }
   }
 
+  const [moreOptionsOpen, setMoreOptionsOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col w-full group">
+      {!byLocalUser && !hasMessageAbove && (
+        <div className="flex items-center space-x-2">
+          <Avatar className="h-4 w-4">
+            <AvatarImage src={userAvatarUrl ?? undefined} />
+            <AvatarFallback>{userName}</AvatarFallback>
+          </Avatar>
+
+          <p className="my-0">{userName}</p>
+        </div>
+      )}
+
+      <div
+        className={cn(
+          "flex items-center justify-center gap-2",
+          byLocalUser ? "self-end" : "self-start flex-row-reverse"
+        )}
+      >
+        <>
+          <Button
+            onClick={() => onReplyClick({ messageId, replyToName: userName, message })}
+            variant="ghost"
+            size="icon"
+            className="hidden group-hover:inline-flex"
+          >
+            <ReplyIcon className="w-5 h-5 text-foreground" />
+          </Button>
+          <MessageOptionsDropdown
+            open={moreOptionsOpen}
+            onOpenChange={setMoreOptionsOpen}
+            messageId={messageId}
+            groupId={groupId}
+            message={message}
+            byLocalUser={byLocalUser}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn(moreOptionsOpen ? "inline-flex" : "hidden group-hover:inline-flex")}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setMoreOptionsOpen(!moreOptionsOpen)
+              }}
+            >
+              <MoreVerticalIcon className="w-5 h-5 text-foreground" />
+            </Button>
+          </MessageOptionsDropdown>
+        </>
+
+        <MessageDateTimeTooltip createdAt={createdAt}>
+          <div
+            className={cn(
+              "p-3 w-fit rounded-2xl",
+              byLocalUser ? "bg-primary text-primary-foreground" : "border border-border",
+              messageCorners(),
+              margins()
+            )}
+          >
+            {replyMessage && (
+              <ReplyMessage
+                message={replyMessage}
+                byLocalUser={byLocalUser}
+                toLocalUser={replyToLocalUser}
+              />
+            )}
+            <p>{message}</p>
+          </div>
+        </MessageDateTimeTooltip>
+      </div>
+    </div>
+  )
+}
+
+interface MessageOptionsDropdownProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  messageId: string
+  groupId: string
+  message: string
+  byLocalUser: boolean
+  children: React.ReactNode
+}
+
+const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
+  open,
+  onOpenChange,
+  messageId,
+  groupId,
+  message,
+  byLocalUser,
+  children,
+}) => {
   const copyMessage = () => {
     navigator.clipboard.writeText(message)
 
@@ -92,56 +197,39 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   }
 
   return (
-    <div className="flex flex-col w-full">
-      {!byLocalUser && !hasMessageAbove && (
-        <div className="flex items-center space-x-2">
-          <Avatar className="h-4 w-4">
-            <AvatarImage src={user?.avatar_url ?? undefined} />
-            <AvatarFallback>{user?.full_name}</AvatarFallback>
-          </Avatar>
+    <DropdownMenu open={open} onOpenChange={onOpenChange}>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={copyMessage}>Copy</DropdownMenuItem>
+        {byLocalUser && (
+          <>
+            <DropdownMenuSeparator />
+            <EditMessage messageId={messageId} groupId={groupId} currentMessage={message} />
+            <DeleteMessage messageId={messageId} />
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
-          <p className="my-0">{user?.full_name}</p>
-        </div>
+interface ReplyMessageProps {
+  message: string
+  byLocalUser: boolean
+  toLocalUser: boolean
+}
+
+const ReplyMessage: React.FC<ReplyMessageProps> = ({ message, byLocalUser, toLocalUser }) => {
+  return (
+    <p
+      className={cn(
+        "p-3 mb-2 w-full rounded-2xl",
+        toLocalUser ? "bg-primary text-primary-foreground" : "bg-surface text-surface-foreground",
+        byLocalUser && toLocalUser && "border border-surface"
       )}
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <div
-            className={cn(
-              "flex items-center justify-center gap-2 group",
-              byLocalUser ? "self-end" : "self-start flex-row-reverse"
-            )}
-          >
-            <Button variant="ghost" size="icon" className="hidden group-hover:inline-flex">
-              <MoreVerticalIcon className="w-5 h-5 text-foreground" />
-            </Button>
-
-            <MessageDateTimeTooltip createdAt={createdAt}>
-              <p
-                className={cn(
-                  "p-3 w-fit rounded-2xl",
-                  byLocalUser ? "bg-primary text-primary-foreground" : "border border-border",
-                  messageCorners(),
-                  margins()
-                )}
-              >
-                {message}
-              </p>
-            </MessageDateTimeTooltip>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={copyMessage}>Copy</DropdownMenuItem>
-          {byLocalUser && (
-            <>
-              <DropdownMenuSeparator />
-              <EditMessage messageId={messageId} groupId={groupId} currentMessage={message} />
-              <DeleteMessage messageId={messageId} />
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    >
+      {message}
+    </p>
   )
 }
 

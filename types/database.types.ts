@@ -39,6 +39,7 @@ export type Database = {
           group_id: string
           id: string
           message: string
+          reply_to: string | null
           uid: string
         }
         Insert: {
@@ -46,6 +47,7 @@ export type Database = {
           group_id: string
           id?: string
           message: string
+          reply_to?: string | null
           uid?: string
         }
         Update: {
@@ -53,6 +55,7 @@ export type Database = {
           group_id?: string
           id?: string
           message?: string
+          reply_to?: string | null
           uid?: string
         }
         Relationships: [
@@ -75,6 +78,20 @@ export type Database = {
             columns: ["uid"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_group_messages_reply_message_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "group_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_group_messages_reply_message_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "group_messages_view"
             referencedColumns: ["id"]
           }
         ]
@@ -250,6 +267,64 @@ export type Database = {
       }
     }
     Views: {
+      group_messages_view: {
+        Row: {
+          created_at: string | null
+          group_id: string | null
+          id: string | null
+          message: string | null
+          reply_message: string | null
+          reply_to: string | null
+          reply_to_uid: string | null
+          uid: string | null
+          user_avatar_url: string | null
+          user_full_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_messages_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_messages_uid_fkey"
+            columns: ["reply_to_uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_group_messages_reply_message_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "group_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_group_messages_reply_message_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "group_messages_view"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       group_participants_view: {
         Row: {
           avatar_url: string | null
