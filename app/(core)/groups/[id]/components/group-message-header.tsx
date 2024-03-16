@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { GroupViewType } from "@/types/group/GroupType"
 import { GroupOptionsDropdown } from "../../components/group-options-dropdown"
+import Link from "next/link"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType
@@ -19,12 +20,19 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({ group, c
     >
       <BackIconButton className="text-surfaceVariant-foreground mr-2" />
 
-      <Avatar>
-        <AvatarImage src={group.icon_url ?? undefined} alt={group.name ?? undefined} />
-        <AvatarFallback>{group.name?.at(0)?.toUpperCase()}</AvatarFallback>
-      </Avatar>
+      <Link href={`/groups/${group.id}/info`}>
+        <Avatar>
+          <AvatarImage src={group.icon_url ?? undefined} alt={group.name ?? undefined} />
+          <AvatarFallback>{group.name?.at(0)?.toUpperCase()}</AvatarFallback>
+        </Avatar>
+      </Link>
 
-      <span className="ml-2 grow truncate text-surfaceVariant-foreground">{group.name}</span>
+      <Link
+        href={`/groups/${group.id}/info`}
+        className="ml-2 grow truncate text-surfaceVariant-foreground"
+      >
+        <span>{group.name}</span>
+      </Link>
 
       <GroupOptionsDropdown
         group={group}
