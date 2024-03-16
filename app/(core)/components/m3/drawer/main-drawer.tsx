@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { CalendarDays, Camera, Home, LucideIcon, MessageCircle, Newspaper, Settings, Users } from "lucide-react"
 
 export interface MainDrawerProps {
+  usingSheet?: boolean
   className?: string
 }
 
@@ -83,7 +84,7 @@ const categories: NavDrawerItemGroup[] = [
   },
 ]
 
-export const MainDrawer: React.FC<MainDrawerProps> = ({ className }) => {
+export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className }) => {
   const layoutSegments = useSelectedLayoutSegments()
   const firstSegment = `/${layoutSegments.at(0) ?? ""}`
 
@@ -105,6 +106,7 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({ className }) => {
                 <DrawerItem
                   item={navDrawerItem}
                   selected={firstSegment == navDrawerItem.pathName}
+                  usingSheet={usingSheet}
                 />
               </li>
             ))}

@@ -44,7 +44,7 @@ export const MainAppBar: React.FC<HeaderProps> = ({ authUser }) => {
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <MainDrawer />
+              <MainDrawer usingSheet />
             </SheetHeader>
           </SheetContent>
         </Sheet>
