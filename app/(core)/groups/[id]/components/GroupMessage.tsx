@@ -40,12 +40,14 @@ import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/toolti
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { useState } from "react"
 import ReplyToType from "@/types/ReplyToType"
+import Link from "next/link"
 
 type GroupMessageProps = {
   messageId: string
   message: string
   createdAt: Date
   groupId: string
+  uid: string
   userName: string
   userAvatarUrl: string | null
   byLocalUser: boolean
@@ -60,6 +62,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   messageId,
   message,
   createdAt,
+  uid,
   groupId,
   userName,
   userAvatarUrl,
@@ -100,12 +103,16 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
     <div className="flex flex-col w-full group">
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Avatar className="h-4 w-4">
-            <AvatarImage src={userAvatarUrl ?? undefined} />
-            <AvatarFallback>{userName}</AvatarFallback>
-          </Avatar>
+          <Link href={uid}>
+            <Avatar className="h-4 w-4">
+              <AvatarImage src={userAvatarUrl ?? undefined} />
+              <AvatarFallback>{userName}</AvatarFallback>
+            </Avatar>
+          </Link>
 
-          <p className="my-0">{userName}</p>
+          <Link href={uid}>
+            <p className="my-0">{userName}</p>
+          </Link>
         </div>
       )}
 

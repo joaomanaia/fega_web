@@ -126,6 +126,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
             message={message.message!}
             createdAt={new Date(message.created_at!)}
             groupId={message.group_id!}
+            uid={message.uid!}
             userName={message.user_full_name!}
             userAvatarUrl={message.user_avatar_url!}
             byLocalUser={message.uid === localUserUid}
