@@ -103,6 +103,8 @@ export async function removeParticipant(uid: string, groupId: string) {
   return revalidatePath(`/group/${groupId}/info`)
 }
 
+const GROUP_PARTICIPANTS_LIMIT = 16
+
 export async function addParticipant(uid: string, groupId: string) {
   if (!groupId) {
     console.log("Group ID not found")
@@ -110,6 +112,24 @@ export async function addParticipant(uid: string, groupId: string) {
   }
 
   const supabase = createServerActionClient()
+
+  // Check if the group has reached the limit of participants
+  const { count, error: groupParticipantsError } = await supabase
+    .from("group_participants")
+    .select("uid", { count: "exact", head: true })
+    .eq("group_id", groupId)
+
+  if (groupParticipantsError) {
+    throw new Error(groupParticipantsError.message)
+  }
+
+  if (count === null) {
+    throw new Error("Failed to count group participants")
+  }
+
+  if (count >= GROUP_PARTICIPANTS_LIMIT) {
+    throw new Error("Group has reached the limit of participants")
+  }
 
   const { error } = await supabase.from("group_participants").upsert({
     uid: uid,

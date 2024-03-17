@@ -176,11 +176,15 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
         onClick={async () => {
           try {
             await addParticipantWithUid()
+            toast.success(`Invited ${user.full_name} to the group`)
           } catch (error) {
-            toast.error("Failed to invite user")
+            if (error instanceof Error) {
+              toast.error(error.message)
+            } else {
+              toast.error("Failed to invite user")
+            }
           } finally {
             onClose()
-            toast.success(`Invited ${user.full_name} to the group`)
           }
         }}
         variant="tonal"
