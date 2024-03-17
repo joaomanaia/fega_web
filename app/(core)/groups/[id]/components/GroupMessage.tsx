@@ -103,14 +103,14 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
     <div className="flex flex-col w-full group">
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Link href={uid}>
+          <Link href={`/${uid}`}>
             <Avatar className="h-4 w-4">
               <AvatarImage src={userAvatarUrl ?? undefined} />
               <AvatarFallback>{userName}</AvatarFallback>
             </Avatar>
           </Link>
 
-          <Link href={uid}>
+          <Link href={`/${uid}`}>
             <p className="my-0">{userName}</p>
           </Link>
         </div>
