@@ -11,10 +11,11 @@ const ITEMS_PER_PAGE = 7
 
 interface PagingPostsProps {
   uid?: string
+  localUid: string | null
   initialPosts: PostsWithData
 }
 
-export const PagingPosts: React.FC<PagingPostsProps> = ({ uid, initialPosts }) => {
+export const PagingPosts: React.FC<PagingPostsProps> = ({ uid, localUid, initialPosts }) => {
   const [posts, setPosts] = useState<PostsWithData>(initialPosts)
   const [page, setPage] = useState(1)
   const [endReached, setEndReached] = useState(false)
@@ -73,6 +74,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({ uid, initialPosts }) =
         <Post
           key={post.id}
           post={post}
+          localUid={localUid}
           postVotes={post.votes}
           authorName={post.full_name}
           authorAvatarUrl={post.avatar_url}

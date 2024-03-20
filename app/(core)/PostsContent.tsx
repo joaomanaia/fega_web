@@ -31,7 +31,13 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
   return posts || []
 }
 
-export default async function PostsContent({ uid }: { uid?: string }) {
+export default async function PostsContent({
+  uid,
+  localUid,
+}: {
+  uid?: string
+  localUid: string | null
+}) {
   const posts = await getPosts(uid)
 
   if (!posts.length) {
@@ -40,7 +46,7 @@ export default async function PostsContent({ uid }: { uid?: string }) {
 
   return (
     <>
-      <PagingPosts uid={uid} initialPosts={posts} />
+      <PagingPosts uid={uid} localUid={localUid} initialPosts={posts} />
     </>
   )
 }

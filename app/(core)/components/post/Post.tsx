@@ -8,6 +8,7 @@ import { VotePostAction } from "./actions/vote/VotePostAction"
 import { SharePostButtont } from "./actions/share-post-button"
 
 interface PostProps {
+  localUid: string | null
   post: PostType
   postVotes: number
   authorName: string
@@ -21,6 +22,7 @@ function getRelativeTime(createdAt: string) {
 }
 
 const Post: React.FC<PostProps> = ({
+  localUid,
   post,
   postVotes,
   authorName,
@@ -34,6 +36,8 @@ const Post: React.FC<PostProps> = ({
     <PostContainer hideContainer={hideContainer} className="flex flex-col space-y-4 pb-4">
       <PostUserHeader
         uid={post.uid}
+        postId={post.id}
+        localUid={localUid}
         postTimestamp={createdAt}
         userName={authorName}
         userProfileUrl={authorAvatarUrl}

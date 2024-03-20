@@ -23,7 +23,7 @@ export default async function UserPage({ params }: { params: { uid: string } }) 
         {isLocalUser && <CreatePost className="rounded-none rounded-b-[30px]" />}
       </div>
       <MainContainer className="flex flex-col space-y-4 md:space-y-6 h-full lg:w-full rounded-b-none md:rounded-[30px] lg:overflow-auto">
-        <PostsContent uid={params.uid} />
+        <PostsContent uid={params.uid} localUid={localUserUid} />
       </MainContainer>
     </main>
   )

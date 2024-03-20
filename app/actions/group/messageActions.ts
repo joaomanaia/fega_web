@@ -1,6 +1,5 @@
 "use server"
 
-import { revalidate } from "@/app/api/cameras/hoteloslo-coimbra/route"
 import { createServerActionClient } from "@/supabase"
 import { revalidatePath } from "next/cache"
 import * as z from "zod"
