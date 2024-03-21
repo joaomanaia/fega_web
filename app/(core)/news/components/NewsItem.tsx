@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 
 export type NewsItemType = {
   id: string
   title: string
-  description: string
+  description: string | null
   mainImage: string
 }
 
-export const NewsItem: React.FC<NewsItemType> = ({ title, description, mainImage }) => {
+export const NewsItem: React.FC<NewsItemType> = ({ id, title, description, mainImage }) => {
   return (
     <article
       itemScope
@@ -28,10 +29,12 @@ export const NewsItem: React.FC<NewsItemType> = ({ title, description, mainImage
         />
       </div>
 
-      <h4 className="font-normal text-3xl lg:text-4xl mt-2 mb-0">{title}</h4>
-      <p className="text-lg mt-2">{description}</p>
+      <h4 className="font-normal text-3xl lg:text-4xl mt-4 mb-0">{title}</h4>
+      <p className="text-lg mt-2 mb-2">{description}</p>
 
-      <Button disabled variant="default">Mais informações</Button>
+      <Button variant="tonal" className="mt-2" asChild>
+        <Link href={`/news/${id}`}>Mais informações</Link>
+      </Button>
     </article>
   )
 }
