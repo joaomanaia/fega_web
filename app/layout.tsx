@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { Toaster } from "@/components/ui/toaster"
 import { ModalProvider } from "@/components/providers/modal-provider"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 export const metadata = {
   title: "Fega",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ModalProvider />
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-0WZ017FHHK" />
     </html>
   )
 }
