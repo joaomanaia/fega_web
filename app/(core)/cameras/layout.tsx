@@ -2,22 +2,33 @@ import CameraType from "@/types/CameraType"
 import { Metadata } from "next"
 import { CameraItem } from "./components/CameraItem"
 import { MainContainer } from "../components/m3/main-container"
+import { createServerComponentClient } from "@/supabase"
+import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
 
 export const metadata: Metadata = {
   title: "Cameras",
 }
 
 const getAllCameras = async (): Promise<CameraType[]> => {
-  /*
-  const response = await fetchServer("/api/cameras")
+  const supabase = createServerComponentClient()
 
-  return response.json()
-  */
+  const { data, error } = await supabase.from("cameras").select("*")
 
-  const api = await import("@/app/api/cameras/route")
-  const res = await api.GET()
+  if (error) {
+    return []
+  }
 
-  return res.json()
+  const cameras = (data as CameraType[]) || []
+
+  const camerasFormatted: CameraType[] = cameras.map((camera) => {
+    if (camera.link.startsWith("/api/")) {
+      camera.link = formatUrlWithBasePath(camera.link)
+    }
+
+    return camera
+  })
+
+  return camerasFormatted
 }
 
 export const dynamic = "force-dynamic"

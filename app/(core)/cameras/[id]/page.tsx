@@ -5,14 +5,18 @@ import { Metadata } from "next"
 import { MainContainer } from "../../components/m3/main-container"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { createServerComponentClient } from "@/supabase"
 
 const getCameraById = async (id: string): Promise<CameraType | null> => {
-  const api = await import("@/app/api/cameras/route")
+  const supabase = createServerComponentClient()
 
-  return api
-    .GET()
-    .then((res) => res.json() as Promise<CameraType[]>)
-    .then((cameras) => cameras.find((camera) => camera.id === id) ?? null)
+  const { data, error } = await supabase.from("cameras").select("*").eq("id", id).single()
+
+  if (error) {
+    return null
+  }
+
+  return data as CameraType | null
 }
 
 type CameraPageProps = {
