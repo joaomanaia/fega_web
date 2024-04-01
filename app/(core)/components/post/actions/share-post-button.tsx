@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { sendGAEvent } from "@next/third-parties/google"
 import { Copy, Share } from "lucide-react"
 import { toast } from "sonner"
 
@@ -23,6 +24,12 @@ export const SharePostButtont: React.FC<SharePostButtonProps> = ({ postId }) => 
   const copyUrl = () => {
     const postUrl = `${location.origin}/post/${postId}`
     navigator.clipboard.writeText(postUrl)
+
+    sendGAEvent("event", "share", {
+      method: "copy",
+      content_type: "post",
+      item_id: postId,
+    })
 
     toast.success("Copied to clipboard!")
   }
