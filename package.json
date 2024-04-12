@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "sitemap": "next-sitemap",
     "start": "next start",
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@maptiler/leaflet-maptilersdk": "^2.0.0",
+    "@material/material-color-utilities": "^0.2.7",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.1.4",
@@ -35,6 +37,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "emoji-picker-react": "^4.9.2",
+    "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
     "lucide-react": "^0.364.0",
     "moment": "^2.30.1",
     "next": "^14.1.4",
@@ -43,6 +47,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
+    "react-leaflet": "^4.2.1",
     "react-player": "^2.15.1",
     "react-responsive": "^10.0.0",
     "react-scrollable-feed": "^2.0.1",
@@ -54,6 +59,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",
+    "@types/leaflet": "^1.9.9",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "autoprefixer": "^10.4.19",

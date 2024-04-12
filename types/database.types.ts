@@ -3,6 +3,50 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      calendar_events: {
+        Row: {
+          content: string
+          cover_image: string
+          description: string | null
+          end_date: string
+          id: number
+          location: number | null
+          other_data: Json
+          start_date: string
+          title: string
+        }
+        Insert: {
+          content?: string
+          cover_image: string
+          description?: string | null
+          end_date: string
+          id?: number
+          location?: number | null
+          other_data: Json
+          start_date: string
+          title?: string
+        }
+        Update: {
+          content?: string
+          cover_image?: string
+          description?: string | null
+          end_date?: string
+          id?: number
+          location?: number | null
+          other_data?: Json
+          start_date?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_calendar_events_location_fkey"
+            columns: ["location"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       cameras: {
         Row: {
           description: string
@@ -168,6 +212,27 @@ export type Database = {
           }
         ]
       }
+      locations: {
+        Row: {
+          address: string | null
+          id: number
+          name: string
+          point: unknown
+        }
+        Insert: {
+          address?: string | null
+          id?: number
+          name: string
+          point: unknown
+        }
+        Update: {
+          address?: string | null
+          id?: number
+          name?: string
+          point?: unknown
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           content: string
@@ -305,6 +370,24 @@ export type Database = {
       }
     }
     Views: {
+      calendar_events_view: {
+        Row: {
+          content: string | null
+          cover_image: string | null
+          description: string | null
+          end_date: string | null
+          id: number | null
+          location_address: string | null
+          location_lat: number | null
+          location_lng: number | null
+          location_name: string | null
+          other_data: Json | null
+          short_id: string | null
+          start_date: string | null
+          title: string | null
+        }
+        Relationships: []
+      }
       group_messages_view: {
         Row: {
           created_at: string | null
@@ -447,6 +530,12 @@ export type Database = {
           vote_type: Database["public"]["Enums"]["post_vote_type"]
           votes: number
         }[]
+      }
+      is_group_full: {
+        Args: {
+          group_id: string
+        }
+        Returns: boolean
       }
       is_group_participant: {
         Args: {
