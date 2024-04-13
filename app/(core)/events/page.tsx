@@ -8,9 +8,12 @@ import { createServerComponentClient } from "@/supabase"
 const getEvents = async (): Promise<CalendarEvent[]> => {
   const supabase = createServerComponentClient()
 
+  const now = new Date()
+
   const { data: events, error } = await supabase
     .from("calendar_events_view")
     .select("*")
+    .gte("end_date", now.toISOString())
     .order("start_date", { ascending: true })
 
   if (error) {
