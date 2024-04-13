@@ -7,6 +7,7 @@ import { MoreInfo } from "./components/more-info"
 import { Directions } from "./components/directions"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { createServerComponentClient } from "@/supabase"
+import { Metadata } from "next"
 
 interface EventIdPageProps {
   params: {
@@ -29,6 +30,28 @@ const getEventById = async (shortId: string): Promise<CalendarEvent | null> => {
   }
 
   return calendarEntityToModel(event)
+}
+
+export async function generateMetadata({ params }: EventIdPageProps): Promise<Metadata> {
+  const eventId = params.event_id
+
+  if (!eventId) {
+    throw new Error("No newsId provided")
+  }
+
+  const event = await getEventById(eventId)
+
+  const images = event?.coverImage ? [event.coverImage] : []
+
+  return {
+    title: event?.title,
+    description: event?.description,
+    openGraph: {
+      title: event?.title,
+      description: event?.description,
+      images: images,
+    }
+  }
 }
 
 export default async function EventIdPage({ params }: EventIdPageProps) {
