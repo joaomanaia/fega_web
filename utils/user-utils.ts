@@ -1,5 +1,5 @@
 import { createServerComponentClient } from "@/supabase"
-import { User } from "@supabase/supabase-js"
+import { Session, User } from "@supabase/supabase-js"
 
 export const getPairUid = (uid1: string, uid2: string): string => {
   return uid1 < uid2 ? uid1 + uid2 : uid2 + uid1
@@ -29,4 +29,17 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
   const user = await getLocalUser()
 
   return user !== null
+}
+
+export const getSession = async (): Promise<Session | null> => {
+  const supabase = createServerComponentClient()
+
+  const { data, error } = await supabase.auth.getSession()
+
+  if (error) {
+    console.log("Error getting session:", error.message)
+    return null
+  }
+
+  return data.session ?? null
 }

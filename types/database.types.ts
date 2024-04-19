@@ -339,6 +339,50 @@ export type Database = {
           }
         ]
       }
+      role_permissions: {
+        Row: {
+          id: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          id?: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          id?: number
+          permission?: Database["public"]["Enums"]["app_permission"]
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: number
+          role: Database["public"]["Enums"]["app_role"]
+          uid: string
+        }
+        Insert: {
+          id?: number
+          role: Database["public"]["Enums"]["app_role"]
+          uid: string
+        }
+        Update: {
+          id?: number
+          role?: Database["public"]["Enums"]["app_role"]
+          uid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       users: {
         Row: {
           avatar_url: string | null
@@ -511,6 +555,18 @@ export type Database = {
       }
     }
     Functions: {
+      authorize: {
+        Args: {
+          requested_permission: Database["public"]["Enums"]["app_permission"]
+        }
+        Returns: boolean
+      }
+      custom_access_token_hook: {
+        Args: {
+          event: Json
+        }
+        Returns: Json
+      }
       get_post_votes: {
         Args: {
           post_id: string
@@ -552,6 +608,8 @@ export type Database = {
       }
     }
     Enums: {
+      app_permission: "news.create" | "events.create"
+      app_role: "admin" | "moderator"
       post_vote_type: "up" | "down"
     }
     CompositeTypes: {
