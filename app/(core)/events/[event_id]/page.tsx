@@ -6,6 +6,7 @@ import { DateText } from "../components/date-text"
 import { MoreInfo } from "./components/more-info"
 import { Directions } from "./components/directions"
 import { MDXRemote } from "next-mdx-remote/rsc"
+import remarkGfm from "remark-gfm"
 import { createServerComponentClient } from "@/supabase"
 import { Metadata } from "next"
 
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: EventIdPageProps): Promise<Me
       title: event?.title,
       description: event?.description,
       images: images,
-    }
+    },
   }
 }
 
@@ -82,7 +83,14 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
         </div>
 
         <div className="prose dark:prose-invert mt-4">
-          <MDXRemote source={event.content} />
+          <MDXRemote
+            source={event.content}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+              },
+            }}
+          />
         </div>
 
         <Directions location={event.location} />

@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@/supabase"
 import { Tables } from "@/types/database.types"
 import { MDXRemote } from "next-mdx-remote/rsc"
+import remarkGfm from "remark-gfm"
 
 interface NewsIdPageProps {
   params: { newsId: string }
@@ -44,5 +45,14 @@ export default async function NewsIdPage({ params }: NewsIdPageProps) {
 
   const newsItem = await getNewsItem(newsId)
 
-  return <MDXRemote source={newsItem.content} />
+  return (
+    <MDXRemote
+      source={newsItem.content}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+        },
+      }}
+    />
+  )
 }
