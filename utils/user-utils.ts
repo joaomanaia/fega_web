@@ -13,10 +13,10 @@ export const getLocalUser = async (): Promise<User | null> => {
   const supabase = createServerComponentClient()
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
 
-  return user ?? null
+  return session?.user ?? null
 }
 
 export const getLocalUserUid = async (): Promise<string | null> => {
