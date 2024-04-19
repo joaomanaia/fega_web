@@ -45,7 +45,6 @@ const categories: NavDrawerItemGroup[] = [
         title: "Events",
         Icon: CalendarDays,
         pathName: "/events",
-        disabled: true,
       },
       {
         title: "Cameras",

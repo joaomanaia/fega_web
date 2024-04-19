@@ -10,6 +10,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "firebasestorage.googleapis.com",
       "www.notebookcheck.info",
+      "utfs.io"
     ],
   },
   experimental: {
