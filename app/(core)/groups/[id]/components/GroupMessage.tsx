@@ -285,7 +285,7 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <DropdownMenuItem disabled onSelect={(e) => e.preventDefault()}>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             Edit
           </DropdownMenuItem>
         </DialogTrigger>

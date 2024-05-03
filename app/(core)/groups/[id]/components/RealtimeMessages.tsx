@@ -1,14 +1,15 @@
 "use client"
 
-import React, { useState } from "react"
-import { Database } from "@/types/database.types"
-import GroupMessageType, { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
+import React, { useCallback, useMemo, useState } from "react"
+import type { Database } from "@/types/database.types"
+import type GroupMessageType from "@/types/group/GroupMessageType"
+import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect } from "react"
 import { GroupMessage } from "./GroupMessage"
 import ScrollContainer from "@/app/(core)/components/ScrollContainer"
 import { cn } from "@/lib/utils"
-import ReplyToType from "@/types/ReplyToType"
+import type ReplyToType from "@/types/ReplyToType"
 
 interface RealtimeMessagesProps {
   localUserUid: string
@@ -17,97 +18,174 @@ interface RealtimeMessagesProps {
   onReplyClick: (data: ReplyToType) => void
 }
 
+type MessageProfile = {
+  id: string
+  full_name: string
+  avatar_url: string
+}
+
 const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   localUserUid,
   groupId,
   serverMessages,
   onReplyClick,
 }) => {
-  const supabase = createClientComponentClient<Database>()
-
-  const getUserByUid = async (uid: string) => {
-    const { data: user } = await supabase.from("users").select("*").eq("id", uid).single()
-
-    return {
-      user_full_name: user?.full_name ?? "Unknown",
-      user_avatar_url: user?.avatar_url ?? "",
-    }
-  }
-
-  const getMessageById = async (messageId: string) => {
-    const { data: message } = await supabase
-      .from("group_messages")
-      .select("message, uid")
-      .eq("id", messageId)
-      .single()
-
-    if (!message) {
-      return null
-    }
-
-    return {
-      reply_message: message.message,
-      reply_to_uid: message.uid,
-    }
-  }
-
-  const handleInsert = async (newMessage: GroupMessageType) => {
-    if (!messages.find((message) => message.id === newMessage.id)) {
-      getUserByUid(newMessage.uid).then((user) => {
-        if (newMessage.reply_to) {
-          getMessageById(newMessage.reply_to).then((replyMessage) => {
-            const newMessageWithUserAndReply: GroupMessageWithUserType = {
-              ...newMessage,
-              ...user,
-              ...replyMessage,
-            }
-            setMessages((messages) => [...messages, newMessageWithUserAndReply])
-          })
-
-          return
-        }
-
-        const newMessageWithUser: GroupMessageWithUserType = { ...newMessage, ...user }
-        setMessages((messages) => [...messages, newMessageWithUser])
-      })
-    }
-  }
-
-  const handleDelete = (oldMessage: GroupMessageType) => {
-    setMessages((messages) => messages.filter((message) => message.id !== oldMessage.id))
-  }
+  const supabase = useMemo(() => createClientComponentClient<Database>(), [])
 
   const [messages, setMessages] = useState<GroupMessageWithUserType[]>(serverMessages)
 
+  const [cachedProfiles, setCachedProfiles] = useState<MessageProfile[]>(
+    serverMessages.map((message) => ({
+      id: message.uid,
+      full_name: message.user_full_name,
+      avatar_url: message.user_avatar_url,
+    }))
+  )
+
+  const fetchProfile = useCallback(
+    async (uid: string): Promise<MessageProfile> => {
+      // Check if the profile is already cached
+      const cachedProfile = cachedProfiles.find((p) => p.id === uid)
+      if (cachedProfile) {
+        return cachedProfile
+      }
+
+      const { error, data: user } = await supabase.from("users").select("*").eq("id", uid).single()
+
+      if (error || !user) {
+        throw new Error("Failed to fetch user profile")
+      }
+
+      const profile: MessageProfile = {
+        id: user.id,
+        full_name: user.full_name ?? "Unknown",
+        avatar_url: user.avatar_url ?? "",
+      }
+
+      setCachedProfiles((profiles) => [...profiles, profile])
+
+      return profile
+    },
+    [cachedProfiles, supabase]
+  )
+
+  const getReplyMessageById = useCallback(
+    async (messageId: string) => {
+      const { data: message } = await supabase
+        .from("group_messages")
+        .select("message, uid")
+        .eq("id", messageId)
+        .single()
+
+      if (!message) {
+        return null
+      }
+
+      return {
+        reply_message: message.message,
+        reply_to_uid: message.uid,
+      }
+    },
+    [supabase]
+  )
+
+  const handleInsert = useCallback(
+    async (newMessage: GroupMessageType) => {
+      // Check if the message is already in the list
+      if (messages.find((message) => message.id === newMessage.id)) {
+        return
+      }
+
+      const user = await fetchProfile(newMessage.uid)
+
+      if (newMessage.reply_to) {
+        const replyMessage = await getReplyMessageById(newMessage.reply_to)
+
+        if (replyMessage) {
+          const replyMessageUser = {
+            user_full_name: user.full_name,
+            user_avatar_url: user.avatar_url,
+          }
+
+          const newMessageWithUserAndReply: GroupMessageWithUserType = {
+            ...newMessage,
+            ...replyMessageUser,
+            ...replyMessage,
+          }
+          setMessages((messages) => [...messages, newMessageWithUserAndReply])
+        }
+      } else {
+        const newMessageWithUser: GroupMessageWithUserType = {
+          ...newMessage,
+          user_full_name: user.full_name,
+          user_avatar_url: user.avatar_url,
+        }
+
+        setMessages((messages) => [...messages, newMessageWithUser])
+      }
+    },
+    [fetchProfile, getReplyMessageById, messages]
+  )
+
+  const handleDelete = useCallback(async (deletedMessage: GroupMessageType) => {
+    setMessages((messages) => messages.filter((message) => message.id !== deletedMessage.id))
+  }, [])
+
+  const handleUpdate = useCallback(async (updatedMessage: GroupMessageType) => {
+    setMessages((messages) => {
+      const updatedIndex = messages.findIndex((message) => message.id === updatedMessage.id)
+      const oldMessage = messages[updatedIndex]
+
+      if (updatedIndex === -1) {
+        return messages
+      }
+
+      const newMessage: GroupMessageWithUserType = {
+        ...updatedMessage,
+        user_full_name: oldMessage.user_full_name,
+        user_avatar_url: oldMessage.user_avatar_url,
+        reply_message: oldMessage.reply_message,
+        reply_to_uid: oldMessage.reply_to_uid,
+        reply_to: oldMessage.reply_to,
+      }
+
+      messages[updatedIndex] = newMessage
+
+      return [...messages]
+    })
+  }, [])
+
   useEffect(() => {
     const channel = supabase
-      .channel("realtime group messages")
+      .channel(`realtime-group-messages-${groupId}`)
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "group_messages",
           filter: `group_id=eq.${groupId}`,
         },
-        (payload) => handleInsert(payload.new as GroupMessageType)
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "group_messages",
-          filter: `group_id=eq.${groupId}`,
-        },
-        (payload) => handleDelete(payload.old as GroupMessageType)
+        async (payload) => {
+          switch (payload.eventType) {
+            case "DELETE":
+              await handleDelete(payload.old as GroupMessageType)
+              break
+            case "INSERT":
+              await handleInsert(payload.new as GroupMessageType)
+              break
+            case "UPDATE":
+              await handleUpdate(payload.new as GroupMessageType)
+              break
+          }
+        }
       )
       .subscribe()
 
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [groupId, supabase])
+  }, [groupId, supabase, handleDelete, handleInsert, handleUpdate])
 
   return (
     <ScrollContainer className="w-full py-4 grow">
