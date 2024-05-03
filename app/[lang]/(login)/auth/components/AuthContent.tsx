@@ -1,11 +1,17 @@
 "use client"
 
+import { type Locale } from "@/i18n-config"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Auth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
 import { useTheme } from "next-themes"
+import * as pt from "./pt-auth-localization.json"
 
-export const AuthContent: React.FC = () => {
+interface AuthContentProps {
+  locale?: Locale
+}
+
+export const AuthContent: React.FC<AuthContentProps> = ({ locale }) => {
   const supabase = createClientComponentClient()
 
   const { theme } = useTheme()
@@ -15,6 +21,9 @@ export const AuthContent: React.FC = () => {
       supabaseClient={supabase}
       providers={["google", "github", "discord"]}
       redirectTo={`${location.origin}/auth/callback`}
+      localization={{
+        variables: locale === "pt" ? pt : undefined,
+      }}
       appearance={{
         theme: ThemeSupa,
         /*

@@ -2,6 +2,8 @@ import { LoginContainer } from "./components/LoginContainer"
 import { AuthContent } from "./components/AuthContent"
 import { redirect } from "next/navigation"
 import { getLocalUser } from "@/utils/user-utils"
+import { getDictionary } from "@/get-dictionary"
+import { type Locale } from "@/i18n-config"
 
 export const metadata = {
   title: "Login",
@@ -10,13 +12,21 @@ export const metadata = {
 
 export const dynamic = "force-dynamic"
 
-export default async function LoginPage() {
+interface LoginPageProps {
+  params: {
+    lang: Locale
+  }
+}
+
+export default async function LoginPage({ params: { lang } }: LoginPageProps) {
+  const dict = await getDictionary(lang)
+
   const localUser = await getLocalUser()
   if (localUser) return redirect("/")
 
   return (
-    <LoginContainer>
-      <AuthContent />
+    <LoginContainer authDictionary={dict.page.auth}>
+      <AuthContent locale={lang} />
     </LoginContainer>
   )
 }

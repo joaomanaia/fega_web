@@ -1,0 +1,9 @@
+{
+  "page": {
+    "auth": {
+      "header": "Welcome to Fega!",
+      "subheader": "Best social network in ega.",
+      "signin": "Sign in"
+    }
+  }
+}
