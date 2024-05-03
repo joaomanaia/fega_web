@@ -188,34 +188,37 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   }, [groupId, supabase, handleDelete, handleInsert, handleUpdate])
 
   return (
-    <ScrollContainer className="w-full py-4 grow">
-      {messages.map((message, index) => (
-        <React.Fragment key={message.id}>
-          {index < messages.length && (
-            <MessageTopTime
-              currentTime={new Date(message.created_at!)}
-              // If the message is the first one, there is no message above
-              // so we pass null to the aboveTime prop to make the component render the date
-              aboveTime={index > 0 ? new Date(messages.at(index - 1)!.created_at!) : null}
+    <ScrollContainer className="w-full">
+      <ul className="w-full py-4 grow">
+        {messages.map((message, index) => (
+          <React.Fragment key={message.id}>
+            {index < messages.length && (
+              <MessageTopTime
+                currentTime={new Date(message.created_at!)}
+                // If the message is the first one, there is no message above
+                // so we pass null to the aboveTime prop to make the component render the date
+                aboveTime={index > 0 ? new Date(messages.at(index - 1)!.created_at!) : null}
+              />
+            )}
+            <GroupMessage
+              messageId={message.id!}
+              message={message.message!}
+              createdAt={new Date(message.created_at!)}
+              groupId={message.group_id!}
+              uid={message.uid!}
+              userName={message.user_full_name!}
+              userAvatarUrl={message.user_avatar_url!}
+              byLocalUser={message.uid === localUserUid}
+              hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
+              hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
+              replyMessage={message.reply_message ?? null}
+              replyToMessageId={message.reply_to ?? null}
+              replyToLocalUser={message.reply_to_uid === localUserUid}
+              onReplyClick={onReplyClick}
             />
-          )}
-          <GroupMessage
-            messageId={message.id!}
-            message={message.message!}
-            createdAt={new Date(message.created_at!)}
-            groupId={message.group_id!}
-            uid={message.uid!}
-            userName={message.user_full_name!}
-            userAvatarUrl={message.user_avatar_url!}
-            byLocalUser={message.uid === localUserUid}
-            hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
-            hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
-            replyMessage={message.reply_message ?? null}
-            replyToLocalUser={message.reply_to_uid === localUserUid}
-            onReplyClick={onReplyClick}
-          />
-        </React.Fragment>
-      ))}
+          </React.Fragment>
+        ))}
+      </ul>
     </ScrollContainer>
   )
 }
@@ -253,8 +256,8 @@ export const MessageTopTime: React.FC<MessageTopTime> = ({ currentTime, aboveTim
   }
 
   return (
-    <div className="flex justify-center items-center my-1">
+    <li className="flex justify-center items-center my-1">
       <p className="text-xs text-foreground/50 mx-2">{currentTime.toLocaleDateString()}</p>
-    </div>
+    </li>
   )
 }

@@ -54,6 +54,7 @@ type GroupMessageProps = {
   hasMessageAbove: boolean
   hasMessageBelow: boolean
   replyMessage: string | null
+  replyToMessageId: string | null
   replyToLocalUser: boolean
   onReplyClick: (data: ReplyToType) => void
 }
@@ -70,6 +71,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   hasMessageAbove,
   hasMessageBelow,
   replyMessage,
+  replyToMessageId,
   replyToLocalUser,
   onReplyClick,
 }) => {
@@ -100,7 +102,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   const [moreOptionsOpen, setMoreOptionsOpen] = useState(false)
 
   return (
-    <div className="flex flex-col w-full group">
+    <li className="flex flex-col w-full group" id={messageId}>
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
           <Link href={`/${uid}`}>
@@ -165,6 +167,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
           >
             {replyMessage && (
               <ReplyMessage
+                replyToMessageId={replyToMessageId!}
                 message={replyMessage}
                 byLocalUser={byLocalUser}
                 toLocalUser={replyToLocalUser}
@@ -174,7 +177,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
           </div>
         </MessageDateTimeTooltip>
       </div>
-    </div>
+    </li>
   )
 }
 
@@ -221,19 +224,29 @@ const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
 }
 
 interface ReplyMessageProps {
+  replyToMessageId: string
   message: string
   byLocalUser: boolean
   toLocalUser: boolean
 }
 
-const ReplyMessage: React.FC<ReplyMessageProps> = ({ message, byLocalUser, toLocalUser }) => {
+const ReplyMessage: React.FC<ReplyMessageProps> = ({ replyToMessageId, message, byLocalUser, toLocalUser }) => {
+  const replyMessageToElement = document.getElementById(replyToMessageId)
+  
   return (
     <p
       className={cn(
         "p-3 mb-2 w-full rounded-2xl",
         toLocalUser ? "bg-primary text-primary-foreground" : "bg-surface text-surface-foreground",
-        byLocalUser && toLocalUser && "border border-surface"
+        byLocalUser && toLocalUser && "border border-surface",
+        replyMessageToElement && "cursor-pointer"
       )}
+      onClick={() => {
+        // Scroll to the message
+        if (replyMessageToElement) {
+          replyMessageToElement.scrollIntoView({ behavior: "smooth" })
+        }
+      }}
     >
       {message}
     </p>
@@ -285,9 +298,7 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            Edit
-          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
