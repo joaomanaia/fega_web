@@ -31,6 +31,7 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
     .select("*")
     .match({ group_id: groupId })
     .order("created_at")
+    .limit(100)
 
   return groupMessages as GroupMessageWithUserType[]
 }
