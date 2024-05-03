@@ -4,8 +4,13 @@ import BaseSettingsContainer from "./BaseSettingsContainer"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { type Dictionary } from "@/get-dictionary"
 
-const UserSettings: React.FC = () => {
+interface UserSettingsProps {
+  dictionary: Dictionary
+}
+
+const UserSettings: React.FC<UserSettingsProps> = ({ dictionary }) => {
   const supabase = createClientComponentClient()
   const router = useRouter()
 
@@ -16,9 +21,9 @@ const UserSettings: React.FC = () => {
   }
 
   return (
-    <BaseSettingsContainer header="User">
+    <BaseSettingsContainer header={dictionary.user}>
       <Button variant="destructive" onClick={signOut} className="w-40">
-        Sign out
+        {dictionary.signOut}
       </Button>
     </BaseSettingsContainer>
   )

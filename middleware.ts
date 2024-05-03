@@ -29,8 +29,8 @@ export async function middleware(req: NextRequest) {
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
 
-  // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
+  // Redirect if there is no locale, except for the auth callback
+  if (pathnameIsMissingLocale && !pathname.startsWith("/auth/callback")) {
     const locale = getLocale(req)
 
     // e.g. incoming request is /products

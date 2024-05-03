@@ -5,5 +5,7 @@
       "subheader": "A melhor rede social da ega.",
       "signin": "Login"
     }
-  }
+  },
+  "user": "Utilizador",
+  "signOut": "Terminar sessão"
 }

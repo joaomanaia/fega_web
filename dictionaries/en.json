@@ -5,5 +5,7 @@
       "subheader": "Best social network in ega.",
       "signin": "Sign in"
     }
-  }
+  },
+  "user": "User",
+  "signOut": "Sign out"
 }
