@@ -8,7 +8,7 @@ interface BaseSettingsContainerProps {
 const BaseSettingsContainer: React.FC<BaseSettingsContainerProps> = ({ header, children }) => {
   return (
     <MainContainer className="flex flex-col gap-2">
-      <p className="text-sm ml-2">{header}</p>
+      <p className="text-sm ml-2 mb-2">{header}</p>
       {children}
     </MainContainer>
   )

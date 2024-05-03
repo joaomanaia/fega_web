@@ -3,13 +3,15 @@
 import { useSelectedLayoutSegments } from "next/navigation"
 import Link from "next/link"
 import { DrawerItem } from "./drawer-item"
-import React from "react"
+import React, { useMemo } from "react"
 import { cn } from "@/lib/utils"
 import { CalendarDays, Camera, Home, LucideIcon, MessageCircle, Newspaper, Settings, Users } from "lucide-react"
+import { type Dictionary } from "@/get-dictionary"
 
 export interface MainDrawerProps {
   usingSheet?: boolean
   className?: string
+  dictionary: Dictionary
 }
 
 export interface NavDrawerItem {
@@ -26,45 +28,45 @@ interface NavDrawerItemGroup {
   children: NavDrawerItem[]
 }
 
-const categories: NavDrawerItemGroup[] = [
+const getCategories = (dictionary: Dictionary): NavDrawerItemGroup[] => [
   {
-    id: "Home",
+    id: dictionary.navdrawer.home,
     hideTitle: true,
     children: [
       {
-        title: "Home",
+        title: dictionary.navdrawer.home,
         Icon: Home,
         pathName: "/",
       },
       {
-        title: "News",
+        title: dictionary.navdrawer.news,
         Icon: Newspaper,
         pathName: "/news",
       },
       {
-        title: "Events",
+        title: dictionary.navdrawer.events,
         Icon: CalendarDays,
         pathName: "/events",
       },
       {
-        title: "Cameras",
+        title: dictionary.navdrawer.cameras,
         Icon: Camera,
         pathName: "/cameras",
       },
     ],
   },
   {
-    id: "Messages",
+    id: dictionary.navdrawer.messages,
     children: [
       {
-        title: "Private Messages",
+        title: dictionary.navdrawer.privateMessages,
         Icon: Users,
         pathName: "/messages",
         requireAuth: true,
         disabled: true,
       },
       {
-        title: "Groups",
+        title: dictionary.navdrawer.groups,
         Icon: MessageCircle,
         pathName: "/groups",
         requireAuth: true,
@@ -72,10 +74,10 @@ const categories: NavDrawerItemGroup[] = [
     ],
   },
   {
-    id: "Other",
+    id: dictionary.navdrawer.other,
     children: [
       {
-        title: "Settings",
+        title: dictionary.navdrawer.settings,
         Icon: Settings,
         pathName: "/settings",
       },
@@ -83,9 +85,11 @@ const categories: NavDrawerItemGroup[] = [
   },
 ]
 
-export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className }) => {
+export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className, dictionary }) => {
   const layoutSegments = useSelectedLayoutSegments()
   const firstSegment = `/${layoutSegments.at(0) ?? ""}`
+
+  const categories = useMemo(() => getCategories(dictionary), [dictionary])
 
   return (
     <nav className={cn("flex flex-col px-4 py-4 space-y-7 justify-start", className)}>

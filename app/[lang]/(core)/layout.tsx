@@ -1,6 +1,8 @@
 import { createServerComponentClient } from "@/supabase"
 import { MainDrawer } from "../../components/m3/drawer/main-drawer"
 import { MainAppBar } from "../../components/m3/main-app-bar"
+import { Locale } from "@/i18n-config"
+import { getDictionary } from "@/get-dictionary"
 
 export const metadata = {
   title: "Fega",
@@ -13,18 +15,26 @@ export const metadata = {
   ],
 }
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerComponentClient()
+interface LayoutProps {
+  children?: React.ReactNode
+  params: {
+    lang: Locale
+  }
+}
 
+export default async function Layout({ children, params }: LayoutProps) {
+  const supabase = createServerComponentClient()
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  const dictionary = await getDictionary(params.lang)
 
   return (
     <div className="flex h-screen min-h-screen overflow-hidden">
-      <MainDrawer className="hidden md:block w-72" />
+      <MainDrawer className="hidden md:block w-72" dictionary={dictionary} />
       <main className="w-full flex flex-col md:px-3">
-        <MainAppBar authUser={user} />
+        <MainAppBar authUser={session?.user ?? null} dictionary={dictionary} />
         {children}
       </main>
     </div>

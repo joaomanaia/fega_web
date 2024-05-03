@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
 import { MainDrawer } from "./drawer/main-drawer"
 import { MenuIcon } from "lucide-react"
+import { type Dictionary } from "@/get-dictionary"
 
 interface HeaderProps {
   authUser: User | null
+  dictionary: Dictionary
 }
 
 type AppBarUser = {
@@ -19,7 +21,7 @@ type AppBarUser = {
   actionLink: string
 }
 
-export const MainAppBar: React.FC<HeaderProps> = ({ authUser }) => {
+export const MainAppBar: React.FC<HeaderProps> = ({ authUser, dictionary }) => {
   const userData = useMemo<AppBarUser>(() => {
     return {
       name: authUser?.user_metadata.full_name ?? authUser?.email ?? null,
@@ -44,7 +46,7 @@ export const MainAppBar: React.FC<HeaderProps> = ({ authUser }) => {
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <MainDrawer usingSheet />
+              <MainDrawer dictionary={dictionary} usingSheet />
             </SheetHeader>
           </SheetContent>
         </Sheet>

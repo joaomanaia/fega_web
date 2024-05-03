@@ -7,5 +7,18 @@
     }
   },
   "user": "User",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "navdrawer": {
+    "home": "Home",
+    "news": "News",
+    "events": "Events",
+    "cameras": "Cameras",
+    "messages": "Messages",
+    "privateMessages": "Private messages",
+    "groups": "Groups",
+    "other": "Other",
+    "settings": "Settings"
+  },
+  "general": "General",
+  "chooseLanguage": "Choose language"
 }

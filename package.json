@@ -38,6 +38,7 @@
     "@uploadthing/react": "^6.4.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "emoji-picker-react": "^4.9.2",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",

@@ -1,7 +1,7 @@
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
-import "./styles/tokens.css"
-import "./styles/globals.css"
+import "../styles/tokens.css"
+import "../styles/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { Toaster } from "@/components/ui/toaster"
@@ -9,7 +9,8 @@ import { ModalProvider } from "@/components/providers/modal-provider"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
-import { ourFileRouter } from "./api/uploadthing/core"
+import { ourFileRouter } from "../api/uploadthing/core"
+import { Locale } from "@/i18n-config"
 
 export const metadata = {
   title: "Fega",
@@ -21,9 +22,16 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+interface RootLayoutProps {
+  children: React.ReactNode
+  params: {
+    lang: Locale
+  }
+}
+
+export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={params.lang} suppressHydrationWarning>
       <head />
       <body
         className={cn(
