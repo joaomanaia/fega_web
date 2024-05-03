@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { editGroup } from "@/app/actions/groupActions"
-import { SubmitButton } from "@/app/(core)/components/SubmitButton"
+import { SubmitButton } from "@/components/submit-button"
 import { toast } from "sonner"
 
 export const EditGroupModal: React.FC = () => {

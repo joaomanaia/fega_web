@@ -1,6 +1,6 @@
 "use client"
 
-import { SubmitButton } from "@/app/(core)/components/SubmitButton"
+import { SubmitButton } from "@/components/submit-button"
 import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"

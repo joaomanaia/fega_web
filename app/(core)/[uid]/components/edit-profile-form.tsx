@@ -17,7 +17,7 @@ import UserType from "@/types/UserType"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { SubmitButton } from "../../components/SubmitButton"
+import { SubmitButton } from "@/components/submit-button"
 
 interface EditProfileFormProps {
   user: UserType

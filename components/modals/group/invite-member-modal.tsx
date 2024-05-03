@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form"
 import { addParticipant } from "@/app/actions/groupActions"
 import { toast } from "sonner"
-import { SubmitButton } from "@/app/(core)/components/SubmitButton"
+import { SubmitButton } from "@/components/submit-button"
 
 export const InviteMemberModal: React.FC = () => {
   const { isOpen, onClose, type, data } = useModal()

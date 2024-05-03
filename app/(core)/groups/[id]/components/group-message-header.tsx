@@ -1,4 +1,4 @@
-import { BackIconButton } from "@/app/(core)/components/back-button"
+import { BackIconButton } from "@/components/back-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { GroupViewType } from "@/types/group/GroupType"
