@@ -3,9 +3,15 @@ import { NextResponse } from "next/server"
 import Negotiator from "negotiator"
 import { match as matchLocale } from "@formatjs/intl-localematcher"
 import type { NextRequest } from "next/server"
-import { i18n } from "./i18n-config"
+import { Locale, i18n } from "./i18n-config"
+import { cookies } from "next/headers"
 
-function getLocale(req: NextRequest): string | undefined {
+function getLocale(req: NextRequest): Locale | undefined {
+  // Check if locale is stored in cookie, if so use it
+  const cookieStore = cookies()
+  const cookieLocale = cookieStore.get("NEXT_LOCALE")
+  if (cookieLocale) return cookieLocale.value as Locale
+
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
   req.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
@@ -18,7 +24,7 @@ function getLocale(req: NextRequest): string | undefined {
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale)
 
-  return locale
+  return locale as Locale
 }
 
 export async function middleware(req: NextRequest) {
@@ -33,8 +39,12 @@ export async function middleware(req: NextRequest) {
   if (pathnameIsMissingLocale && !pathname.startsWith("/auth/callback")) {
     const locale = getLocale(req)
 
-    // e.g. incoming request is /products
-    // The new URL is now /en-US/products
+    if (locale === i18n.defaultLocale) {
+      return NextResponse.rewrite(
+        new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, req.url)
+      )
+    }
+
     return NextResponse.redirect(
       new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, req.url)
     )
