@@ -6,7 +6,7 @@ export const i18n: {
   defaultLocale: Locale
   locales: typeof locales
 } = {
-  defaultLocale: "en",
+  defaultLocale: "pt",
   locales: locales,
 } as const
 
