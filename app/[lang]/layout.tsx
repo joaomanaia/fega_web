@@ -10,7 +10,7 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
-import { Locale } from "@/i18n-config"
+import { Locale, i18n } from "@/i18n-config"
 
 export const metadata = {
   title: "Fega",
@@ -55,4 +55,8 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
       <GoogleAnalytics gaId="G-0WZ017FHHK" />
     </html>
   )
+}
+
+export async function generateSaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }))
 }

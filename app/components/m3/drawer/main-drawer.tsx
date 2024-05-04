@@ -5,13 +5,24 @@ import Link from "next/link"
 import { DrawerItem } from "./drawer-item"
 import React, { useMemo } from "react"
 import { cn } from "@/lib/utils"
-import { CalendarDays, Camera, Home, LucideIcon, MessageCircle, Newspaper, Settings, Users } from "lucide-react"
+import {
+  CalendarDays,
+  Camera,
+  Home,
+  LucideIcon,
+  MessageCircle,
+  Newspaper,
+  Settings,
+  Users,
+} from "lucide-react"
 import { type Dictionary } from "@/get-dictionary"
+import { type Locale } from "@/i18n-config"
 
 export interface MainDrawerProps {
   usingSheet?: boolean
   className?: string
   dictionary: Dictionary
+  lang: Locale
 }
 
 export interface NavDrawerItem {
@@ -85,7 +96,12 @@ const getCategories = (dictionary: Dictionary): NavDrawerItemGroup[] => [
   },
 ]
 
-export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className, dictionary }) => {
+export const MainDrawer: React.FC<MainDrawerProps> = ({
+  usingSheet,
+  className,
+  dictionary,
+  lang,
+}) => {
   const layoutSegments = useSelectedLayoutSegments()
   const firstSegment = `/${layoutSegments.at(0) ?? ""}`
 
@@ -110,6 +126,7 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className, d
                   item={navDrawerItem}
                   selected={firstSegment == navDrawerItem.pathName}
                   usingSheet={usingSheet}
+                  lang={lang}
                 />
               </li>
             ))}
