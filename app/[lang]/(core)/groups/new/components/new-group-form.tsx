@@ -18,8 +18,11 @@ import { createGroup } from "@/app/actions/groupActions"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
+import { type Dictionary } from "@/get-dictionary"
 
-interface NewGroupFormProps {}
+interface NewGroupFormProps {
+  dictionary: Dictionary
+}
 
 const formSchema = z.object({
   group_name: z
@@ -29,7 +32,7 @@ const formSchema = z.object({
   group_avatar: z.string().url().optional().or(z.literal("")),
 })
 
-export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
+export const NewGroupForm: React.FC<NewGroupFormProps> = ({ dictionary }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,13 +61,13 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
             name="group_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Group Name</FormLabel>
+                <FormLabel>{dictionary.createGroup.groupName}</FormLabel>
                 <FormControl>
                   <Input
                     autoFocus
                     required
                     className="w-full h-12"
-                    placeholder="Group Name"
+                    placeholder={dictionary.createGroup.groupNamePlaceholder}
                     {...field}
                   />
                 </FormControl>
@@ -78,7 +81,7 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
             name="group_avatar"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Group Avatar URL</FormLabel>
+                <FormLabel>{dictionary.createGroup.groupAvatarUrl}</FormLabel>
                 <div className="flex gap-4 items-center">
                   {field.value && (
                     <Avatar>
@@ -86,7 +89,11 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
                     </Avatar>
                   )}
                   <FormControl>
-                    <Input className="w-full h-12" placeholder="Group Avatar URL" {...field} />
+                    <Input
+                      className="w-full h-12"
+                      placeholder={dictionary.createGroup.groupAvatarUrlPlaceholder}
+                      {...field}
+                    />
                   </FormControl>
                 </div>
 
@@ -97,7 +104,9 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = () => {
 
           <div className="flex self-end space-x-4">
             <BackButton />
-            <SubmitButton>Create</SubmitButton>
+            <SubmitButton>
+              {form.formState.isSubmitting ? dictionary.creating : dictionary.create}
+            </SubmitButton>
           </div>
         </form>
       </Form>

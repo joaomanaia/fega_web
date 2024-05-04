@@ -8,6 +8,9 @@
   },
   "user": "User",
   "signOut": "Sign out",
+  "create": "Create",
+  "creating": "Creating...",
+  "cancel": "Cancel",
   "navdrawer": {
     "home": "Home",
     "news": "News",
@@ -42,5 +45,13 @@
     "header": "Share",
     "description": "Copy the link below and share it with your friends!",
     "copy": "Copy"
+  },
+  "createGroup": {
+    "button": "Create Group",
+    "header": "Create Group",
+    "groupName": "Group name",
+    "groupNamePlaceholder": "Enter group name",
+    "groupAvatarUrl": "Group avatar URL",
+    "groupAvatarUrlPlaceholder": "Enter group avatar URL"
   }
 }
