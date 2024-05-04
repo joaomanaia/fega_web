@@ -12,15 +12,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { type Dictionary } from "@/get-dictionary"
 import { sendGAEvent } from "@next/third-parties/google"
 import { Copy, Share } from "lucide-react"
 import { toast } from "sonner"
 
 interface SharePostButtonProps {
   postId: string
+  dictionary: Dictionary["sharePostButton"]
 }
 
-export const SharePostButtont: React.FC<SharePostButtonProps> = ({ postId }) => {
+export const SharePostButton: React.FC<SharePostButtonProps> = ({ postId, dictionary }) => {
   const copyUrl = () => {
     const postUrl = `${location.origin}/post/${postId}`
     navigator.clipboard.writeText(postUrl)
@@ -39,13 +41,13 @@ export const SharePostButtont: React.FC<SharePostButtonProps> = ({ postId }) => 
       <DialogTrigger asChild>
         <Button variant="surfaceVariant">
           <Share size={20} className="mr-2" />
-          Share
+          {dictionary.button}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>Copy the link below and share it with your friends!</DialogDescription>
+          <DialogTitle>{dictionary.header}</DialogTitle>
+          <DialogDescription>{dictionary.description}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
@@ -61,7 +63,7 @@ export const SharePostButtont: React.FC<SharePostButtonProps> = ({ postId }) => 
           </div>
           <DialogClose asChild>
             <Button type="submit" size="sm" className="px-3 rounded-sm" onClick={copyUrl}>
-              <span className="sr-only">Copy</span>
+              <span className="sr-only">{dictionary.copy}</span>
               <Copy className="h-4 w-4" />
             </Button>
           </DialogClose>

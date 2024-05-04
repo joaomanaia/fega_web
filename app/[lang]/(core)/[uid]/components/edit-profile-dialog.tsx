@@ -6,14 +6,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import UserType from "@/types/UserType"
+import type UserType from "@/types/UserType"
 import { EditProfileForm } from "./edit-profile-form"
+import { type Dictionary } from "@/get-dictionary"
 
 interface EditProfileDialogProps {
   user: UserType
+  dictionary: Dictionary
 }
 
-export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({ user }) => {
+export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({ user, dictionary }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,9 +25,9 @@ export const EditProfileDialog: React.FC<EditProfileDialogProps> = ({ user }) =>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>{dictionary.editProfile.header}</DialogTitle>
         </DialogHeader>
-        <EditProfileForm user={user} />
+        <EditProfileForm user={user} dictionary={dictionary} />
       </DialogContent>
     </Dialog>
   )

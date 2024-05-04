@@ -6,12 +6,14 @@ import { useRef } from "react"
 import { MainContainer } from "../m3/main-container"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import { type Dictionary } from "@/get-dictionary"
 
 type CreatePostTypes = {
   className?: string
+  dictionary: Dictionary
 }
 
-const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
+const CreatePost: React.FC<CreatePostTypes> = ({ className, dictionary }) => {
   const ref = useRef<HTMLFormElement>(null)
 
   return (
@@ -28,15 +30,17 @@ const CreatePost: React.FC<CreatePostTypes> = ({ className }) => {
           await createPost(description)
         }}
       >
-        <p className="text-2xl mt-4 mb-0">Create post</p>
+        <p className="text-2xl mt-4 mb-0">
+          {dictionary.createPost.header}
+        </p>
         <Input
           className="py-6 border-none"
-          placeholder="What's on your mind?"
+          placeholder={dictionary.createPost.placeholder}
           name="description"
           type="text"
           required
         />
-        <CreatePostButton />
+        <CreatePostButton dictionary={dictionary.createPost.button} />
       </form>
     </MainContainer>
   )

@@ -1,10 +1,11 @@
 import { createServerComponentClient } from "@/supabase"
-import UserType from "@/types/UserType"
+import type UserType from "@/types/UserType"
 import { defaultImgUrl } from "@/core/common"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { EditProfileDialog } from "./edit-profile-dialog"
+import { type Dictionary } from "@/get-dictionary"
 
 const getUserByUid = async (uid: string): Promise<UserType | null> => {
   const supabase = createServerComponentClient()
@@ -22,11 +23,13 @@ const getUserByUid = async (uid: string): Promise<UserType | null> => {
 interface UserProfileContentProps {
   uid: string
   isLocalUser?: boolean
+  dictionary: Dictionary
 }
 
 export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
   uid,
   isLocalUser,
+  dictionary,
 }) => {
   const user = await getUserByUid(uid)
 
@@ -41,7 +44,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
         </Avatar>
         <h1 className="text-xl font-bold">{user.full_name}</h1>
       </div>
-      {isLocalUser && <EditProfileDialog user={user} />}
+      {isLocalUser && <EditProfileDialog user={user} dictionary={dictionary} />}
     </>
   )
 }

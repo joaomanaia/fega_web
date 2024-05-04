@@ -20,5 +20,27 @@
     "settings": "Definições"
   },
   "general": "Geral",
-  "chooseLanguage": "Escolher Idioma"
+  "chooseLanguage": "Escolher Idioma",
+  "createPost": {
+    "header": "Criar publicação",
+    "placeholder": "No que estás a pensar?",
+    "button": {
+      "normal": "Criar",
+      "loading": "A criar..."
+    }
+  },
+  "editProfileButton": "Editar perfil",
+  "editProfile": {
+    "header": "Editar perfil",
+    "fullName": "Nome completo",
+    "fullNameDescription": "Este é o teu nome público."
+  },
+  "saveChanges": "Guardar alterações",
+  "share": "Partilhar",
+  "sharePostButton": {
+    "button": "Partilhar",
+    "header": "Partilhar",
+    "description": "Copia o link abaixo e partilha com os teus amigos!",
+    "copy": "Copiar"
+  }
 }

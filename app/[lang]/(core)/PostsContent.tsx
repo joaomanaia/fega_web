@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@/supabase"
-import { PostsWithData } from "@/types/PostType"
+import { type PostsWithData } from "@/types/PostType"
 import { PagingPosts } from "./paging-posts"
+import { type Dictionary } from "@/get-dictionary"
 
 const ITEMS_PER_PAGE = 7
 
@@ -31,13 +32,13 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
   return posts || []
 }
 
-export default async function PostsContent({
-  uid,
-  localUid,
-}: {
+interface PostsContentProps {
   uid?: string
   localUid: string | null
-}) {
+  dictionary: Dictionary
+}
+
+export default async function PostsContent({ uid, localUid, dictionary }: PostsContentProps) {
   const posts = await getPosts(uid)
 
   if (!posts.length) {
@@ -46,7 +47,7 @@ export default async function PostsContent({
 
   return (
     <>
-      <PagingPosts uid={uid} localUid={localUid} initialPosts={posts} />
+      <PagingPosts uid={uid} localUid={localUid} initialPosts={posts} dictionary={dictionary} />
     </>
   )
 }

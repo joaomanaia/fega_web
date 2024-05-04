@@ -1,11 +1,12 @@
 "use client"
 
-import { PostsWithData } from "@/types/PostType"
+import { type PostsWithData } from "@/types/PostType"
 import { useState } from "react"
 import Post from "../../components/post/Post"
 import { Button } from "@/components/ui/button"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/types/database.types"
+import { type Database } from "@/types/database.types"
+import { type Dictionary } from "@/get-dictionary"
 
 const ITEMS_PER_PAGE = 7
 
@@ -13,9 +14,15 @@ interface PagingPostsProps {
   uid?: string
   localUid: string | null
   initialPosts: PostsWithData
+  dictionary: Dictionary
 }
 
-export const PagingPosts: React.FC<PagingPostsProps> = ({ uid, localUid, initialPosts }) => {
+export const PagingPosts: React.FC<PagingPostsProps> = ({
+  uid,
+  localUid,
+  initialPosts,
+  dictionary,
+}) => {
   const [posts, setPosts] = useState<PostsWithData>(initialPosts)
   const [page, setPage] = useState(1)
   const [endReached, setEndReached] = useState(false)
@@ -79,6 +86,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({ uid, localUid, initial
           authorName={post.full_name}
           authorAvatarUrl={post.avatar_url}
           localUserVotedType={post.vote_type}
+          dictionary={dictionary}
         />
       ))}
 

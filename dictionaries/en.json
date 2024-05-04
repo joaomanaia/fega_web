@@ -20,5 +20,27 @@
     "settings": "Settings"
   },
   "general": "General",
-  "chooseLanguage": "Choose language"
+  "chooseLanguage": "Choose language",
+  "createPost": {
+    "header": "Create post",
+    "placeholder": "What's on your mind?",
+    "button": {
+      "normal": "Create",
+      "loading": "Creating..."
+    }
+  },
+  "editProfileButton": "Edit profile",
+  "editProfile": {
+    "header": "Edit profile",
+    "fullName": "Full name",
+    "fullNameDescription": "This is your public display name."
+  },
+  "saveChanges": "Save changes",
+  "share": "Share",
+  "sharePostButton": {
+    "button": "Share",
+    "header": "Share",
+    "description": "Copy the link below and share it with your friends!",
+    "copy": "Copy"
+  }
 }

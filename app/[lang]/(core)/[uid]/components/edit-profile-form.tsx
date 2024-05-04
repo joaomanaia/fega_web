@@ -13,14 +13,16 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
-import UserType from "@/types/UserType"
+import type UserType from "@/types/UserType"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { SubmitButton } from "@/components/submit-button"
+import { type Dictionary } from "@/get-dictionary"
 
 interface EditProfileFormProps {
   user: UserType
+  dictionary: Dictionary
 }
 
 const formSchema = z.object({
@@ -30,7 +32,7 @@ const formSchema = z.object({
     .max(255, "Full name must be at most 255 characters long"),
 })
 
-export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
+export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictionary }) => {
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,17 +87,21 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user }) => {
             name="full_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Full Name</FormLabel>
+                <FormLabel>{dictionary.editProfile.fullName}</FormLabel>
                 <FormControl>
-                  <Input className="border-none" placeholder="Full Name" {...field} />
+                  <Input
+                    className="border-none"
+                    placeholder={dictionary.editProfile.fullName}
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>This is your public display name.</FormDescription>
+                <FormDescription>{dictionary.editProfile.fullNameDescription}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <DialogFooter>
-            <SubmitButton>Save changes</SubmitButton>
+            <SubmitButton>{dictionary.saveChanges}</SubmitButton>
           </DialogFooter>
         </form>
       </Form>
