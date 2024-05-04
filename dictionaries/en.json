@@ -1,0 +1,57 @@
+{
+  "page": {
+    "auth": {
+      "header": "Welcome to Fega!",
+      "subheader": "Best social network in ega.",
+      "signin": "Sign in"
+    }
+  },
+  "user": "User",
+  "signOut": "Sign out",
+  "create": "Create",
+  "creating": "Creating...",
+  "cancel": "Cancel",
+  "navdrawer": {
+    "home": "Home",
+    "news": "News",
+    "events": "Events",
+    "cameras": "Cameras",
+    "messages": "Messages",
+    "privateMessages": "Private messages",
+    "groups": "Groups",
+    "other": "Other",
+    "settings": "Settings"
+  },
+  "general": "General",
+  "chooseLanguage": "Choose language",
+  "createPost": {
+    "header": "Create post",
+    "placeholder": "What's on your mind?",
+    "button": {
+      "normal": "Create",
+      "loading": "Creating..."
+    }
+  },
+  "editProfileButton": "Edit profile",
+  "editProfile": {
+    "header": "Edit profile",
+    "fullName": "Full name",
+    "fullNameDescription": "This is your public display name."
+  },
+  "saveChanges": "Save changes",
+  "share": "Share",
+  "sharePostButton": {
+    "button": "Share",
+    "header": "Share",
+    "description": "Copy the link below and share it with your friends!",
+    "copy": "Copy"
+  },
+  "createGroup": {
+    "button": "Create Group",
+    "header": "Create Group",
+    "groupName": "Group name",
+    "groupNamePlaceholder": "Enter group name",
+    "groupAvatarUrl": "Group avatar URL",
+    "groupAvatarUrlPlaceholder": "Enter group avatar URL"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "page": {
+    "auth": {
+      "header": "Bem vindo ao Fega!",
+      "subheader": "A melhor rede social da ega.",
+      "signin": "Login"
+    }
+  },
+  "user": "Utilizador",
+  "signOut": "Terminar sessão",
+  "create": "Criar",
+  "creating": "A criar...",
+  "cancel": "Cancelar",
+  "navdrawer": {
+    "home": "Início",
+    "news": "Notícias",
+    "events": "Eventos",
+    "cameras": "Câmeras",
+    "messages": "Mensagens",
+    "privateMessages": "Mensagens Privadas",
+    "groups": "Grupos",
+    "other": "Outros",
+    "settings": "Definições"
+  },
+  "general": "Geral",
+  "chooseLanguage": "Escolher Idioma",
+  "createPost": {
+    "header": "Criar publicação",
+    "placeholder": "No que estás a pensar?",
+    "button": {
+      "normal": "Criar",
+      "loading": "A criar..."
+    }
+  },
+  "editProfileButton": "Editar perfil",
+  "editProfile": {
+    "header": "Editar perfil",
+    "fullName": "Nome completo",
+    "fullNameDescription": "Este é o teu nome público."
+  },
+  "saveChanges": "Guardar alterações",
+  "share": "Partilhar",
+  "sharePostButton": {
+    "button": "Partilhar",
+    "header": "Partilhar",
+    "description": "Copia o link abaixo e partilha com os teus amigos!",
+    "copy": "Copiar"
+  },
+  "createGroup": {
+    "button": "Criar Grupo",
+    "header": "Criar Grupo",
+    "groupName": "Nome do Grupo",
+    "groupNamePlaceholder": "Insira o nome do grupo",
+    "groupAvatarUrl": "URL do avatar do Grupo",
+    "groupAvatarUrlPlaceholder": "Insira a URL do avatar do grupo"
+  }
+}
