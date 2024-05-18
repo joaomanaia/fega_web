@@ -53,7 +53,10 @@ export const LocaleSwitcher: React.FC<LocaleSwitcherProps> = ({ currentLocale, d
                   href={redirectedPathName(lang.locale)}
                   onClick={() => {
                     if (lang.locale === currentLocale) return
-                    Cookies.set("NEXT_LOCALE", lang.locale)
+                    Cookies.set("NEXT_LOCALE", lang.locale, {
+                      // Expires in 400 days
+                      expires: 400,
+                    })
                   }}
                 >
                   {lang.name}
