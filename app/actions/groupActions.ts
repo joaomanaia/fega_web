@@ -48,9 +48,7 @@ export async function editGroup(groupId: string, formData: FormData) {
   revalidatePath("/groups")
 }
 
-export async function exitGroup(formData: FormData) {
-  const groupId = formData.get("group_id")
-
+export async function exitGroup(groupId: string) {
   if (!groupId) {
     console.log("Group ID not found")
     throw new Error("Group ID not found")
@@ -59,18 +57,18 @@ export async function exitGroup(formData: FormData) {
   const supabase = createServerActionClient()
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
 
-  if (!user) {
-    console.log("User not found")
-    throw new Error("User not found")
+  if (!session) {
+    console.log("Session not found")
+    throw new Error("Session not found")
   }
 
   const { error } = await supabase
     .from("group_participants")
     .delete()
-    .eq("uid", user.id)
+    .eq("uid", session.user.id)
     .eq("group_id", groupId)
 
   if (error) {
@@ -78,7 +76,7 @@ export async function exitGroup(formData: FormData) {
     throw new Error(error.message)
   }
 
-  return redirect("/")
+  redirect("/")
 }
 
 export async function removeParticipant(uid: string, groupId: string) {
