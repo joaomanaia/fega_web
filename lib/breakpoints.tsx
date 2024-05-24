@@ -2,7 +2,7 @@
 
 import { useMediaQuery } from "react-responsive"
 import resolveConfig from "tailwindcss/resolveConfig"
-import tailwindConfig from "../tailwind.config"
+import tailwindConfig from "../basetailwindconfig"
 
 const fullConfig = resolveConfig(tailwindConfig)
 const breakpoints = fullConfig.theme.screens
