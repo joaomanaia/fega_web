@@ -188,7 +188,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   }, [groupId, supabase, handleDelete, handleInsert, handleUpdate])
 
   return (
-    <ScrollContainer className="w-full">
+    <ScrollContainer className="w-full grow">
       <ul className="w-full py-4 grow">
         {messages.map((message, index) => (
           <React.Fragment key={message.id}>
