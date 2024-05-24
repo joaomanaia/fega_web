@@ -10,11 +10,15 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
-import { Locale, i18n } from "@/i18n-config"
+import { type Locale, i18n } from "@/i18n-config"
+import { type Metadata } from "next"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Fega",
   description: "The best social network in ega!",
+  icons: {
+    icon: "/favicon.ico"
+  }
 }
 
 const fontSans = FontSans({

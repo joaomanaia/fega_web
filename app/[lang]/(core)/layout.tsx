@@ -7,12 +7,6 @@ import { getDictionary } from "@/get-dictionary"
 export const metadata = {
   title: "Fega",
   description: "The best social network in ega!",
-  icons: [
-    {
-      rel: "icon",
-      url: "/fega_round_1.ico",
-    },
-  ],
 }
 
 interface LayoutProps {
