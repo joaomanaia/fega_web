@@ -48,7 +48,10 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
             >
               Add Members
             </DropdownMenuItem>
-            <DropdownMenuItem disabled className="px-3 py-2 cursor-pointer text-error">
+            <DropdownMenuItem
+              onClick={() => onOpen("delete-group", { group })}
+              className="px-3 py-2 cursor-pointer text-error"
+            >
               Delete Group
             </DropdownMenuItem>
           </>

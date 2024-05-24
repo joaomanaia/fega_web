@@ -219,3 +219,19 @@ export const createGroup = async (formData: FormData) => {
     }
   }
 }
+
+export const deleteGroup = async (groupId: string) => {
+  if (!groupId) {
+    throw new Error("Group ID not found")
+  }
+
+  const supabase = createServerActionClient()
+
+  const { error } = await supabase.from("groups").delete().eq("id", groupId)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  redirect("/groups")
+}
