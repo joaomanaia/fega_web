@@ -3,9 +3,12 @@
 import { X } from "lucide-react"
 import { UploadDropzone } from "@/lib/uploadthing"
 import { cn } from "@/lib/utils"
+import { OurFileRouter } from "@/app/api/uploadthing/core"
+
+type TEndpoint = keyof OurFileRouter
 
 interface FileUploadProps {
-  endpoint: "newsImage"
+  endpoint: TEndpoint
   value: string
   onChange: (url?: string) => void
   className?: string

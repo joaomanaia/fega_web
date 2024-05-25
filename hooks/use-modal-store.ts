@@ -1,10 +1,16 @@
 import { GroupViewType } from "@/types/group/GroupType"
 import { create } from "zustand"
 
-export type ModalType = "group-invite" | "edit-group" | "delete-group" | "exit-group"
+export type ModalType =
+  | "group-invite"
+  | "edit-group"
+  | "delete-group"
+  | "exit-group"
+  | "create-location"
 
 interface ModalData {
   group?: GroupViewType
+  locationName?: string
 }
 
 interface ModalStore {

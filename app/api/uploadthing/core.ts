@@ -20,6 +20,9 @@ export const ourFileRouter = {
   newsImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => hadleAuth())
     .onUploadComplete(() => {}),
+  eventCoverImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
+    .middleware(() => hadleAuth())
+    .onUploadComplete(() => {}),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter
