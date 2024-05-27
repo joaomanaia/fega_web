@@ -103,10 +103,6 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
   }, 500)
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-
     try {
       await createEvent(values)
       toast.success("Event created successfully")

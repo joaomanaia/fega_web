@@ -21,8 +21,6 @@ const createEventFormSchema = z.object({
 })
 
 export async function createEvent(values: z.infer<typeof createEventFormSchema>) {
-    console.log(values)
-  /*
   const supabase = createServerActionClient()
 
   const otherDataParsed = JSON.stringify(values.otherData)
@@ -43,5 +41,4 @@ export async function createEvent(values: z.infer<typeof createEventFormSchema>)
   }
 
   redirect("/events")
-  */
 }
