@@ -23,8 +23,6 @@ const createEventFormSchema = z.object({
 export async function createEvent(values: z.infer<typeof createEventFormSchema>) {
   const supabase = createServerActionClient()
 
-  const otherDataParsed = JSON.stringify(values.otherData)
-
   const { error } = await supabase.from("calendar_events").insert({
     content: values.content,
     cover_image: values.coverImage,
@@ -32,7 +30,7 @@ export async function createEvent(values: z.infer<typeof createEventFormSchema>)
     start_date: values.fromDate.toISOString(),
     end_date: values.toDate.toISOString(),
     title: values.title,
-    other_data: otherDataParsed,
+    other_data: values.otherData,
     location: Number(values.locationId),
   })
 
