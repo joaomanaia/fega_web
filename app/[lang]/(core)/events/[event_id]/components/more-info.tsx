@@ -1,36 +1,66 @@
 import { Button } from "@/components/ui/button"
-import { CalendarEventOtherData } from "@/types/CalendarEvent"
-import { LinkIcon, LucideIcon, MailIcon, PhoneIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import type {
+  CalendarEventOtherDataType,
+  CalendarEventOtherData,
+  CalendarEventOtherDataItem,
+} from "@/types/CalendarEvent"
+import { DollarSignIcon, InfoIcon, LinkIcon, MailIcon, PhoneIcon } from "lucide-react"
 import Link from "next/link"
+import React from "react"
 
 interface MoreInfoProps {
   data: CalendarEventOtherData
+  itemPrefixContent?: (data: CalendarEventOtherDataItem) => React.ReactNode
+  className?: string
 }
 
-export const MoreInfo: React.FC<MoreInfoProps> = ({ data }) => {
+export const MoreInfo: React.FC<MoreInfoProps> = ({ data, itemPrefixContent, className }) => {
   return (
     <div className="w-full xl:w-3/4 2xl:w-1/2 flex flex-col space-y-2 mt-4">
       <h2 className="text-lg font-bold">More Info</h2>
       <li className="flex flex-col space-y-2">
-        {data.website && <MoreInfoItem label={data.website} Icon={LinkIcon} type="link" />}
-        {data.email && <MoreInfoItem label={data.email} Icon={MailIcon} type="email" />}
-        {data.phone && <MoreInfoItem label={data.phone} Icon={PhoneIcon} type="phone" />}
+        {data.map((item, index) => (
+          <MoreInfoItem
+            key={index}
+            type={item.type}
+            label={item.value}
+            itemPrefixContent={itemPrefixContent && itemPrefixContent(item)}
+            className={className}
+          />
+        ))}
       </li>
     </div>
   )
 }
 
-type MoreInfoItemType = "normal" | "link" | "email" | "phone"
-
 interface MoreInfoItemProps {
   label: string
-  Icon: LucideIcon
-  type?: MoreInfoItemType
+  type: CalendarEventOtherDataType
+  itemPrefixContent?: React.ReactNode
+  className?: string
 }
 
-const MoreInfoItem: React.FC<MoreInfoItemProps> = ({ label, Icon, type = "normal" }) => {
+const MoreInfoItem: React.FC<MoreInfoItemProps> = ({
+  label,
+  type,
+  itemPrefixContent,
+  className,
+}) => {
+  const Icon =
+    type === "website"
+      ? LinkIcon
+      : type === "email"
+      ? MailIcon
+      : type === "phone"
+      ? PhoneIcon
+      : type === "price"
+      ? DollarSignIcon
+      : InfoIcon
+
   return (
-    <ul className="flex items-center space-x-2">
+    <ul className={cn("flex items-center space-x-2", className)}>
+      {itemPrefixContent}
       <Button variant="link" className="gap-2 text-surface-foreground hover:bg-surfaceVariant/20">
         <Icon className="size-5" />
         <MoreInfoItemText label={label} type={type} />
@@ -41,12 +71,12 @@ const MoreInfoItem: React.FC<MoreInfoItemProps> = ({ label, Icon, type = "normal
 
 interface MoreInfoItemTextProps {
   label: string
-  type?: MoreInfoItemType
+  type: CalendarEventOtherDataType
   className?: string
 }
 
 const MoreInfoItemText: React.FC<MoreInfoItemTextProps> = ({ label, type, className }) => {
-  if (type === "link") {
+  if (type === "website") {
     return (
       <Link className={className} href={label}>
         {label}

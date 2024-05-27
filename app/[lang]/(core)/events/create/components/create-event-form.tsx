@@ -2,7 +2,7 @@
 
 import { FileUpload } from "@/components/file-upload"
 import { MdxEditor } from "@/components/mdx-editor"
-import { Select } from "@/components/select"
+import { AsyncCreatableSelect } from "@/components/select/select-creatable"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -16,12 +16,20 @@ import { Input } from "@/components/ui/input"
 import { TimePickerPopover } from "@/components/ui/time-picker/time-picker-popover"
 import { useModal } from "@/hooks/use-modal-store"
 import { cn } from "@/lib/utils"
+import type { CalendarEventOtherDataItem, CalendarEventOtherDataType } from "@/types/CalendarEvent"
+import type { Database } from "@/types/database.types"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { useDebounceCallback } from "usehooks-ts"
 import { z } from "zod"
+import { MoreInfo } from "../../[event_id]/components/more-info"
+import { Select } from "@/components/select/select"
+import { useState } from "react"
+import { createEvent } from "@/app/actions/calendarEventActions"
 
 interface CreateEventFormProps {
   className?: string
@@ -31,7 +39,7 @@ const formSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
   coverImage: z.string().url(),
-  content: z.string().min(1).max(10000),
+  content: z.string(),
   fromDate: z.date({
     required_error: "From date is required",
   }),
@@ -39,6 +47,7 @@ const formSchema = z.object({
     required_error: "To date is required",
   }),
   locationId: z.string().nullable().optional(),
+  otherData: z.custom<CalendarEventOtherDataItem>().array(),
 })
 
 type Option = {
@@ -46,13 +55,20 @@ type Option = {
   label: string
 }
 
-const locationsOptions: Option[] = [
-  { value: "1", label: "Location 1" },
-  { value: "2", label: "Location 2" },
+const otherDataOptions: Option[] = [
+  { value: "website", label: "Website" },
+  { value: "email", label: "Email" },
+  { value: "phone", label: "Phone" },
+  { value: "price", label: "Price" },
+  { value: "other", label: "Other" },
 ]
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) => {
   const { onOpen } = useModal()
+
+  const [selectedOtherDataOption, setSelectedOtherDataOption] = useState<string | null>(null)
+
+  const supabase = createClientComponentClient<Database>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,13 +77,46 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
       description: "",
       coverImage: "",
       content: "",
+      otherData: [],
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const loadLocations = useDebounceCallback(async (inputValue: string) => {
+    const { data, error } = await supabase
+      .from("locations")
+      .select("*")
+      .ilike("name", `%${inputValue}%`)
+      .limit(10)
+
+    if (error) {
+      toast.error("Something went wrong")
+      return []
+    }
+
+    const locations: Option[] =
+      data.map((location) => ({
+        value: String(location.id),
+        label: `${location.name} - ${location.address}`,
+      })) ?? []
+
+    return locations
+  }, 500)
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+
+    try {
+      await createEvent(values)
+      toast.success("Event created successfully")
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Something went wrong")
+      }
+    }
   }
 
   return (
@@ -180,14 +229,15 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
             <FormItem className="flex flex-col">
               <FormLabel className="text-left">Location</FormLabel>
               <FormControl>
-                <Select
-                  className="w-[280px]"
+                <AsyncCreatableSelect
+                  className="min-w-[280px] w-full"
                   placeholder="Select a location"
-                  options={locationsOptions}
+                  options={[]}
                   onCreate={(locationName) => onOpen("create-location", { locationName })}
                   value={field.value}
                   onChange={field.onChange}
                   disabled={field.disabled}
+                  promiseOptions={(inputValue) => loadLocations(inputValue) ?? Promise.resolve([])}
                 />
               </FormControl>
               <FormMessage />
@@ -225,6 +275,72 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                   maxLength={10000}
                   field={field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="otherData"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <>
+                  {field.value && (
+                    <MoreInfo
+                      data={field.value}
+                      className="group"
+                      itemPrefixContent={(dataItem) => (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            className="text-foreground"
+                            onClick={() => {
+                              field.onChange(field.value.filter((item) => item !== dataItem))
+                            }}
+                          >
+                            <TrashIcon />
+                          </Button>
+                          <span className="text-foreground/40">&bull;</span>
+                        </>
+                      )}
+                    />
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Select
+                      className="w-[280px]"
+                      placeholder="Other data type"
+                      options={otherDataOptions}
+                      value={selectedOtherDataOption}
+                      onChange={(option) => {
+                        if (option) {
+                          setSelectedOtherDataOption(option)
+                        }
+                      }}
+                    />
+                    <Input
+                      placeholder="Enter other information"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault()
+
+                          field.onChange([
+                            ...field.value,
+                            {
+                              type: selectedOtherDataOption ?? "other",
+                              value: e.currentTarget.value,
+                            },
+                          ])
+                          e.currentTarget.value = ""
+                        }
+                      }}
+                    />
+                  </div>
+                </>
               </FormControl>
               <FormMessage />
             </FormItem>

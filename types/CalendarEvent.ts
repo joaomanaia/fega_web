@@ -1,5 +1,5 @@
-import { Json, Tables } from "./database.types"
-import { Location } from "./location"
+import type { Json, Tables } from "./database.types"
+import type { Location } from "./location"
 
 export type CalendarEvent = {
   id: string
@@ -13,12 +13,14 @@ export type CalendarEvent = {
   otherData: CalendarEventOtherData
 }
 
-export type CalendarEventOtherData = {
-  website?: string
-  email?: string
-  phone?: string
-  price?: number
+export type CalendarEventOtherDataType = "website" | "email" | "phone" | "price" | "other"
+
+export type CalendarEventOtherDataItem = {
+  type: CalendarEventOtherDataType
+  value: string
 }
+
+export type CalendarEventOtherData = CalendarEventOtherDataItem[]
 
 type DbCalendarEvent = Tables<"calendar_events_view">
 
@@ -28,7 +30,15 @@ export const calendarEntityToModel = (dbEvent: DbCalendarEvent): CalendarEvent =
     throw new Error("Event ID is required")
   }
 
-  const otherData = dbEvent.other_data as { [key: string]: Json | undefined }
+  const otherData = dbEvent.other_data as {
+    type: string
+    value: Json | undefined
+  }[]
+
+  const otherDataFormatted: CalendarEventOtherData = otherData.map((data) => ({
+    type: data.type as CalendarEventOtherDataType,
+    value: (data.value as string) ?? "",
+  }))
 
   return {
     id: id,
@@ -44,13 +54,8 @@ export const calendarEntityToModel = (dbEvent: DbCalendarEvent): CalendarEvent =
       point: {
         lat: dbEvent.location_lat ?? 0,
         lng: dbEvent.location_lng ?? 0,
-      }
+      },
     },
-    otherData: {
-      website: otherData.website as string | undefined,
-      email: otherData.email as string | undefined,
-      phone: otherData.phone as string | undefined,
-      price: otherData.price as number | undefined,
-    },
+    otherData: otherDataFormatted,
   }
 }
