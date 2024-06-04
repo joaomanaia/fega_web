@@ -63,8 +63,8 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
   }
 
   return (
-    <MainContainer className="flex flex-col items-center h-full mb-3 overflow-y-auto">
-      <div className="relative w-full lg:w-2/3 aspect-video">
+    <MainContainer className="flex flex-col items-center h-full mb-3 overflow-y-auto overflow-x-hidden">
+      <div className="relative w-full aspect-video lg:w-2/3">
         <Image
           src={event.coverImage}
           alt="Next Event Cover"
@@ -74,12 +74,16 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
       </div>
 
       <div className="flex flex-col w-full lg:w-2/3 mt-4 lg:mt-6 xl:mt-8 items-start">
-        <div className="flex items-center space-x-2">
-          <CalendarIcon className="size-5" />
-          <DateText startDate={event.startDate} endDate={event.endDate} />
+        <div className="flex flex-wrap gap-2">
+          <div className="flex items-center justify-center gap-2">
+            <CalendarIcon className="size-5" />
+            <DateText startDate={event.startDate} endDate={event.endDate} />
+          </div>
           <span>&bull;</span>
-          <MapPinIcon className="size-5" />
-          <span>{event.location.name}</span>
+          <div className="flex items-center justify-center gap-2">
+            <MapPinIcon className="size-5" />
+            <span>{event.location.name}</span>
+          </div>
         </div>
 
         <div className="prose dark:prose-invert mt-4">

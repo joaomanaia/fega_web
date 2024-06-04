@@ -19,7 +19,7 @@ export const MoreInfo: React.FC<MoreInfoProps> = ({ data, itemPrefixContent, cla
   return (
     <div className="w-full xl:w-3/4 2xl:w-1/2 flex flex-col space-y-2 mt-4">
       <h2 className="text-lg font-bold">More Info</h2>
-      <li className="flex flex-col space-y-2">
+      <li className="flex flex-col space-y-2 w-full">
         {data.map((item, index) => (
           <MoreInfoItem
             key={index}
@@ -61,9 +61,9 @@ const MoreInfoItem: React.FC<MoreInfoItemProps> = ({
   return (
     <ul className={cn("flex items-center space-x-2", className)}>
       {itemPrefixContent}
-      <Button variant="link" className="gap-2 text-surface-foreground hover:bg-surfaceVariant/20">
+      <Button variant="link" className="w-full gap-2 text-surface-foreground hover:bg-surfaceVariant/20">
         <Icon className="size-5" />
-        <MoreInfoItemText label={label} type={type} />
+        <MoreInfoItemText label={label} type={type} className="truncate" />
       </Button>
     </ul>
   )

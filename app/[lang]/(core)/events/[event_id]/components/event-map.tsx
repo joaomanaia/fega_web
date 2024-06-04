@@ -21,7 +21,6 @@ export default function EventMap({ location, className }: EventMapProps) {
       className={cn("w-full h-full rounded-xl", className)}
       center={position}
       zoom={13}
-      scrollWheelZoom={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
