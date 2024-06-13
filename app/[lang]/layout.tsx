@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   title: "Fega",
   description: "The best social network in ega!",
   icons: {
-    icon: "/favicon.ico"
-  }
+    icon: "/favicon.ico",
+  },
 }
 
 const fontSans = FontSans({
@@ -36,7 +36,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
     <html lang={params.lang} suppressHydrationWarning>
-      <head />
+      <head>
+        <GoogleAnalytics gaId="G-0WZ017FHHK" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background text-foreground font-sans antialiased",
@@ -56,7 +58,6 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           <ModalProvider />
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-0WZ017FHHK" />
     </html>
   )
 }
