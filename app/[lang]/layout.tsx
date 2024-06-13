@@ -37,7 +37,10 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
     <html lang={params.lang} suppressHydrationWarning>
       <head>
-        <GoogleAnalytics gaId="G-0WZ017FHHK" />
+        <meta
+          name="google-site-verification"
+          content="vduNWIMxVDPQZoidzqpL-4nO41GAbOB_LOGrfAJAFms"
+        />
       </head>
       <body
         className={cn(
@@ -58,6 +61,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           <ModalProvider />
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-0WZ017FHHK" />
     </html>
   )
 }
