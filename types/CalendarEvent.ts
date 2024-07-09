@@ -18,6 +18,7 @@ export type CalendarEventOtherDataType = "website" | "email" | "phone" | "price"
 export type CalendarEventOtherDataItem = {
   type: CalendarEventOtherDataType
   value: string
+  [key: string]: any
 }
 
 export type CalendarEventOtherData = CalendarEventOtherDataItem[]

@@ -3,17 +3,25 @@ import { DateText } from "./date-text"
 import Image from "next/image"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
 import Link from "next/link"
+import { useMemo } from "react"
+import { createEventJsonLd } from "../utils/eventMetadataUtil"
 
 interface EventComponentProps {
   event: CalendarEvent
 }
 
 export const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
+  const jsonLd = useMemo(() => createEventJsonLd(event), [event])
+
   return (
     <Link
       href={`/events/${event.id}`}
       className="bg-surfaceVariant/30 hover:bg-surfaceVariant/50 p-0 rounded-2xl hover:rounded-3xl flex flex-col group cursor-pointer transition"
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="relative w-full aspect-video">
         <Image
           src={event.coverImage}

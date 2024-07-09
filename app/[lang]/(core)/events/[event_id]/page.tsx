@@ -9,6 +9,8 @@ import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { createServerComponentClient } from "@/supabase"
 import { Metadata } from "next"
+import { useMemo } from "react"
+import { createEventJsonLd } from "../utils/eventMetadataUtil"
 
 interface EventIdPageProps {
   params: {
@@ -62,8 +64,14 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
     return <h1>Event not found</h1>
   }
 
+  const jsonLd = createEventJsonLd(event)
+
   return (
     <MainContainer className="flex flex-col items-center h-full mb-3 overflow-y-auto overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="relative w-full aspect-video lg:w-2/3">
         <Image
           src={event.coverImage}
