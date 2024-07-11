@@ -1,4 +1,4 @@
-import { CalendarEvent, calendarEntityToModel } from "@/types/CalendarEvent"
+import { type CalendarEvent, calendarEntityToModel } from "@/types/CalendarEvent"
 import { MainContainer } from "@/app/components/m3/main-container"
 import Image from "next/image"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
@@ -8,8 +8,7 @@ import { Directions } from "./components/directions"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { createServerComponentClient } from "@/supabase"
-import { Metadata } from "next"
-import { useMemo } from "react"
+import { type Metadata } from "next"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
 
 interface EventIdPageProps {
@@ -105,7 +104,7 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
           />
         </div>
 
-        <Directions location={event.location} />
+        <Directions event={event} />
 
         {event.otherData && <MoreInfo data={event.otherData} />}
       </div>

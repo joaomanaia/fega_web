@@ -1,30 +1,30 @@
-import { cn } from "@/lib/utils"
-import { DirectionApp, Location, Point, getDirectionUrl } from "@/types/location"
+import { type CalendarEvent } from "@/types/CalendarEvent"
+import { type DirectionApp, type Point, getDirectionUrl } from "@/types/location"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
 interface DirectionsProps {
-  location: Location
+  event: CalendarEvent
   className?: string
 }
 
-const DynamicMap = dynamic(() => import("./event-map"), {
+const DynamicMap = dynamic(() => import("../../components/event-map"), {
   loading: () => <div>Loading map...</div>,
   ssr: false,
 })
 
-export const Directions: React.FC<DirectionsProps> = ({ location }) => {
+export const Directions: React.FC<DirectionsProps> = ({ event }) => {
   return (
     <div className="flex flex-col w-full xl:w-3/4 2xl:w-1/2 mt-4">
       <h2 className="text-lg font-bold">Directions</h2>
       <div className="flex items-center gap-2 mt-2">
-        <DirectionLink point={location.point} type="google" />
-        <DirectionLink point={location.point} type="apple" />
-        <DirectionLink point={location.point} type="waze" />
+        <DirectionLink point={event.location.point} type="google" />
+        <DirectionLink point={event.location.point} type="apple" />
+        <DirectionLink point={event.location.point} type="waze" />
       </div>
-      <DynamicMap location={location} className="w-full aspect-video mt-3" />
-      <p className="text-xl font-medium mt-3">{location.name}</p>
-      <p className="text-base text-surface-foreground/80 mt-1">{location.address}</p>
+      <DynamicMap events={[event]} className="w-full aspect-video mt-3" />
+      <p className="text-xl font-medium mt-3">{event.location.name}</p>
+      <p className="text-base text-surface-foreground/80 mt-1">{event.location.address}</p>
     </div>
   )
 }
