@@ -15,6 +15,7 @@ interface PagingPostsProps {
   localUid: string | null
   initialPosts: PostsWithData
   dictionary: Dictionary
+  schemaHasPart?: boolean
 }
 
 export const PagingPosts: React.FC<PagingPostsProps> = ({
@@ -22,6 +23,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
   localUid,
   initialPosts,
   dictionary,
+  schemaHasPart,
 }) => {
   const [posts, setPosts] = useState<PostsWithData>(initialPosts)
   const [page, setPage] = useState(1)
@@ -87,6 +89,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
           authorAvatarUrl={post.avatar_url}
           localUserVotedType={post.vote_type}
           dictionary={dictionary}
+          schemaHasPart={schemaHasPart}
         />
       ))}
 

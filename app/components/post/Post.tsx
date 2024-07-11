@@ -12,6 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { defaultImgUrl } from "@/core/common"
 import { PostMoreActions } from "./post-more-actions"
 
+/**
+ * @param schemaHasPart - if true, the post is part of a parent schema
+ */
 interface PostProps {
   localUid: string | null
   post: PostType
@@ -22,6 +25,7 @@ interface PostProps {
   hideContainer?: boolean
   dictionary: Dictionary
   className?: string
+  schemaHasPart?: boolean
 }
 
 function getRelativeTime(createdAt: string) {
@@ -38,6 +42,7 @@ const Post: React.FC<PostProps> = ({
   hideContainer,
   dictionary,
   className,
+  schemaHasPart,
 }) => {
   const relativeCreatedAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
 
@@ -46,6 +51,7 @@ const Post: React.FC<PostProps> = ({
       itemScope
       itemType="https://schema.org/SocialMediaPosting"
       itemID={post.id}
+      itemProp={schemaHasPart ? "hasPart" : undefined}
       className={cn(
         "rounded-3xl flex flex-col gap-4",
         !hideContainer && "p-4 bg-surfaceVariant/30 dark:bg-surfaceVariant/[0.28]",

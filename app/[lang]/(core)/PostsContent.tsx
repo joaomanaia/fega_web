@@ -36,9 +36,15 @@ interface PostsContentProps {
   uid?: string
   localUid: string | null
   dictionary: Dictionary
+  schemaHasPart?: boolean
 }
 
-export default async function PostsContent({ uid, localUid, dictionary }: PostsContentProps) {
+export default async function PostsContent({
+  uid,
+  localUid,
+  dictionary,
+  schemaHasPart,
+}: PostsContentProps) {
   const posts = await getPosts(uid)
 
   if (!posts.length) {
@@ -47,7 +53,13 @@ export default async function PostsContent({ uid, localUid, dictionary }: PostsC
 
   return (
     <>
-      <PagingPosts uid={uid} localUid={localUid} initialPosts={posts} dictionary={dictionary} />
+      <PagingPosts
+        uid={uid}
+        localUid={localUid}
+        initialPosts={posts}
+        dictionary={dictionary}
+        schemaHasPart={schemaHasPart}
+      />
     </>
   )
 }

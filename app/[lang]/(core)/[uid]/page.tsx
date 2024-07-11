@@ -62,7 +62,12 @@ export default async function UserPage({ params }: UserPageProps) {
         )}
       </div>
       <MainContainer className="flex flex-col space-y-4 md:space-y-6 h-full lg:w-full rounded-b-none md:rounded-[30px] lg:overflow-auto">
-        <PostsContent uid={params.uid} localUid={localUserUid} dictionary={dictionary} />
+        <PostsContent
+          schemaHasPart // Has part of the main entity
+          uid={params.uid}
+          localUid={localUserUid}
+          dictionary={dictionary}
+        />
       </MainContainer>
     </main>
   )
