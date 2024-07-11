@@ -32,6 +32,7 @@ export const DrawerItem: React.FC<DrawerItemProps> = ({
       className={cn(item.disabled && "cursor-default", className)}
       aria-disabled={item.disabled}
       lang={lang}
+      itemProp="url"
       passHref
     >
       <DrawerButton item={item} selected={selected} usingSheet={usingSheet} />

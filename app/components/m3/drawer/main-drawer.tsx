@@ -116,12 +116,16 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({
       >
         Fega
       </Link>
-      <ul className="flex flex-col ml-0 py-0 px-0">
+      <ul
+        itemScope
+        itemType="https://schema.org/SiteNavigationElement"
+        className="flex flex-col ml-0 py-0 px-0"
+      >
         {categories.map(({ id, children, hideTitle }) => (
           <React.Fragment key={id}>
             {!hideTitle && <p className="py-2 px-3 text-sm self-start">{id}</p>}
             {children.map((navDrawerItem) => (
-              <li key={navDrawerItem.title} className="list-none">
+              <li itemProp="name" key={navDrawerItem.title} className="list-none">
                 <DrawerItem
                   item={navDrawerItem}
                   selected={firstSegment == navDrawerItem.pathName}
