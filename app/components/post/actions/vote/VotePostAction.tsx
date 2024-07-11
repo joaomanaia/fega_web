@@ -55,6 +55,9 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
     >
       <div className="flex">
         <VotePostActionButton
+          itemScope
+          itemProp="interactionStatistic"
+          itemType="https://schema.org/InteractionCounter"
           voteType="up"
           votedType={optimisticVote.votedType}
           voteCount={optimisticVote.voteCount}

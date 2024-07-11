@@ -1,7 +1,5 @@
 import { defaultImgUrl } from "@/core/common"
-import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { EditProfileDialog } from "./edit-profile-dialog"
 import { type Dictionary } from "@/get-dictionary"
 import type UserType from "@/types/UserType"
@@ -30,15 +28,5 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
       </div>
       {isLocalUser && <EditProfileDialog user={user} dictionary={dictionary} />}
     </>
-  )
-}
-
-const EditProfileButton: React.FC = () => {
-  return (
-    <Link href="/edit-profile" className="next-link">
-      <Button variant="outline" className="w-full">
-        Edit Profile
-      </Button>
-    </Link>
   )
 }

@@ -25,17 +25,20 @@ export const VotePostActionButton = forwardRef<HTMLButtonElement, VotePostAction
         disabled={pending}
         variant={votedType === voteType ? "default" : "surfaceVariant"}
         className={cn(
-          "flex items-center space-x-2 rounded-none first:rounded-l-full last:rounded-r-full",
+          "flex items-center rounded-none first:rounded-l-full last:rounded-r-full",
           className
         )}
         {...props}
       >
+        {voteType === "up" && (
+          <meta itemProp="interactionType" content="https://schema.org/LikeAction" />
+        )}
         <ButtonIcon
           type={voteType}
           votedType={votedType}
           Icon={voteType === "up" ? ThumbsUp : ThumbsDown}
         />
-        {voteCount}
+        {voteCount !== undefined && <span itemProp="userInteractionCount">{voteCount}</span>}
       </Button>
     )
   }

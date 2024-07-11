@@ -16,7 +16,7 @@ const PostImages: React.FC<PostImagesProps> = ({ images }) => {
             images.length > 1 && "aspect-square xl:aspect-video"
           )}
         >
-          <Image src={image} fill alt="post" className="rounded-3xl" />
+          <Image itemProp="image" src={image} fill alt="post" className="rounded-3xl" />
         </div>
       ))}
     </div>

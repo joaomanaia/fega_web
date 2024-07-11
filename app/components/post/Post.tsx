@@ -1,13 +1,16 @@
 import type PostType from "@/types/PostType"
 import type { PostVoteType } from "@/types/PostType"
-import PostContainer from "./PostContainer"
-import PostUserHeader from "./PostUserHeader"
 import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
 import { VotePostAction } from "./actions/vote/VotePostAction"
 import { SharePostButton } from "./actions/share-post-button"
 import { type Dictionary } from "@/get-dictionary"
+import { cn } from "@/lib/utils"
+import { Link } from "@/components/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { defaultImgUrl } from "@/core/common"
+import { PostMoreActions } from "./post-more-actions"
 
 interface PostProps {
   localUid: string | null
@@ -18,6 +21,7 @@ interface PostProps {
   localUserVotedType: PostVoteType | null
   hideContainer?: boolean
   dictionary: Dictionary
+  className?: string
 }
 
 function getRelativeTime(createdAt: string) {
@@ -33,26 +37,84 @@ const Post: React.FC<PostProps> = ({
   localUserVotedType,
   hideContainer,
   dictionary,
+  className,
 }) => {
-  const createdAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
+  const relativeCreatedAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
 
   return (
-    <PostContainer hideContainer={hideContainer} className="flex flex-col space-y-4 pb-4">
+    <article
+      itemScope
+      itemType="https://schema.org/SocialMediaPosting"
+      itemID={post.id}
+      className={cn(
+        "rounded-3xl flex flex-col gap-4",
+        !hideContainer && "p-4 bg-surfaceVariant/30 dark:bg-surfaceVariant/[0.28]",
+        className
+      )}
+    >
+      <meta itemProp="datePublished" content={post.created_at} />
+      <meta itemProp="text" content={post.description} />
       <PostUserHeader
         uid={post.uid}
         postId={post.id}
         localUid={localUid}
-        postTimestamp={createdAt}
+        relativeCreatedAt={relativeCreatedAt}
         userName={authorName}
         userProfileUrl={authorAvatarUrl}
       />
-      <p className="text-lg">{post.description}</p>
+      <p itemProp="headline" className="text-lg">
+        {post.description}
+      </p>
       {post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex items-center space-x-4">
         <VotePostAction postId={post.id} voteCount={postVotes} votedType={localUserVotedType} />
         <SharePostButton postId={post.id} dictionary={dictionary.sharePostButton} />
       </div>
-    </PostContainer>
+    </article>
+  )
+}
+
+interface PostUserHeaderProps {
+  postId: string
+  localUid: string | null
+  relativeCreatedAt: string
+  uid: string
+  userName: string
+  userProfileUrl: string | null
+}
+
+const PostUserHeader: React.FC<PostUserHeaderProps> = ({
+  postId,
+  uid,
+  localUid,
+  relativeCreatedAt,
+  userName,
+  userProfileUrl,
+}) => {
+  const profileUrl = `/${uid}`
+
+  return (
+    <div
+      itemScope
+      itemProp="author"
+      itemType="https://schema.org/Person"
+      className="flex items-center w-full group"
+    >
+      <meta itemProp="identifier" content={uid} />
+      <Link href={profileUrl}>
+        <Avatar>
+          <AvatarImage itemProp="image" src={userProfileUrl ?? defaultImgUrl} />
+          <AvatarFallback>{userName.at(0)?.toUpperCase()}</AvatarFallback>
+        </Avatar>
+      </Link>
+      <div className="flex flex-col ml-3 space-y-1 justify-center">
+        <Link itemProp="url" href={profileUrl} className="font-semibold my-0 next-link">
+          <span itemProp="name">{userName}</span>
+        </Link>
+        <p className="text-xs text-inherit">{relativeCreatedAt}</p>
+      </div>
+      {uid === localUid && <PostMoreActions postId={postId} />}
+    </div>
   )
 }
 
