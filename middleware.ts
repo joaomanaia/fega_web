@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import Negotiator from "negotiator"
 import { match as matchLocale } from "@formatjs/intl-localematcher"
 import type { NextRequest } from "next/server"
-import { Locale, i18n } from "./i18n-config"
+import { type Locale, i18n } from "./i18n-config"
 import { cookies } from "next/headers"
 
 function getLocale(req: NextRequest): Locale | undefined {

@@ -3,8 +3,8 @@ const locales = ["en", "pt"] as const
 export type Locale = (typeof locales)[number]
 
 export const i18n: {
-  defaultLocale: Locale
-  locales: typeof locales
+  readonly defaultLocale: Locale
+  readonly locales: typeof locales
 } = {
   defaultLocale: "pt",
   locales: locales,
