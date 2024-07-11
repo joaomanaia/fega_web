@@ -1,5 +1,6 @@
 import { createServerComponentClient } from "@/supabase"
-import { Session, User } from "@supabase/supabase-js"
+import type UserType from "@/types/UserType"
+import { type Session, type User } from "@supabase/supabase-js"
 
 export const getPairUid = (uid1: string, uid2: string): string => {
   return uid1 < uid2 ? uid1 + uid2 : uid2 + uid1
@@ -42,4 +43,17 @@ export const getSession = async (): Promise<Session | null> => {
   }
 
   return data.session ?? null
+}
+
+export const getUserByUid = async (uid: string): Promise<UserType | null> => {
+  const supabase = createServerComponentClient()
+
+  const { data, error } = await supabase.from("users").select("*").eq("id", uid).single()
+
+  if (error) {
+    console.log(error)
+    return null
+  }
+
+  return data
 }

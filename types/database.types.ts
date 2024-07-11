@@ -389,18 +389,21 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
+          updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -608,7 +611,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_permission: "news.create" | "events.create"
+      app_permission: "news.create" | "events.create" | "locations.create"
       app_role: "admin" | "moderator"
       post_vote_type: "up" | "down"
     }
