@@ -1,0 +1,67 @@
+:root {
+  --map-tiles-filter: brightness(0.6) invert(1) contrast(3.5) hue-rotate(220deg) saturate(0.8)
+    brightness(0.7);
+
+  --bar-radius: 8px;
+}
+
+.map-tiles:is(.dark *) {
+  filter: var(--map-tiles-filter, none);
+}
+
+.leaflet-popup,
+.leaflet-popup-content-wrapper {
+  padding: 2px 0px;
+  border-radius: 1.5rem;
+  background-color: hsl(var(--surface));
+  color: hsl(var(--surface-foreground));
+}
+
+.leaflet-popup-tip {
+  background-color: hsl(var(--surface));
+}
+
+.leaflet-container a {
+  color: hsl(var(--primary));
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: hsl(var(--surface-foreground));
+  margin: 2px;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: hsl(var(--surface-foreground) / 0.3);
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 1px solid hsl(var(--surface-variant));
+  border-radius: var(--bar-radius);
+}
+
+.leaflet-touch .leaflet-bar a:first-child {
+  border-top-left-radius: var(--bar-radius);
+  border-top-right-radius: var(--bar-radius);
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+  border-bottom-left-radius: var(--bar-radius);
+  border-bottom-right-radius: var(--bar-radius);
+}
+
+.leaflet-bar a {
+  background-color: hsl(var(--surface));
+  color: hsl(var(--surface-foreground));
+  border-bottom: 1px solid hsl(var(--surface-variant));
+}
+
+.leaflet-bar a:hover {
+  background-color: hsl(var(--surface-variant));
+}
+
+.leaflet-container .leaflet-control-attribution {
+    background-color: hsl(var(--surface));
+    color: hsl(var(--surface-foreground));
+    border-top-left-radius: var(--bar-radius);
+}

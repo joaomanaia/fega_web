@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
+import "./event-map.styles.css"
 import { cn } from "@/lib/utils"
 import { useMemo } from "react"
 import { type CalendarEvent } from "@/types/CalendarEvent"
@@ -31,8 +32,13 @@ export default function EventMap({ events, className }: EventMapProps) {
   }, [events])
 
   return (
-    <MapContainer className={cn("w-full h-full rounded-xl", className)} center={center} zoom={13}>
+    <MapContainer
+      className={cn("w-full h-full rounded-xl z-0", className)}
+      center={center}
+      zoom={13}
+    >
       <TileLayer
+        className="map-tiles"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
@@ -49,7 +55,7 @@ export default function EventMap({ events, className }: EventMapProps) {
                   fill
                 />
               </div>
-              <Link className="text-base" href={`/events/${event.id}`}>
+              <Link className="text-base font-semibold" href={`/events/${event.id}`}>
                 {event.title}
               </Link>
               <div className="flex items-center gap-2">
