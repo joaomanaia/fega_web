@@ -2,8 +2,10 @@ import { CalendarEvent, calendarEntityToModel } from "@/types/CalendarEvent"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { EventComponent } from "./components/event-component"
 import { NextEventCover } from "./components/next-event-cover"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, MapIcon } from "lucide-react"
 import { createServerComponentClient } from "@/supabase"
+import { Button } from "@/components/ui/button"
+import { Link } from "@/components/link"
 
 const getEvents = async (): Promise<CalendarEvent[]> => {
   const supabase = createServerComponentClient()
@@ -38,7 +40,14 @@ export default async function EventsPage() {
       </MainContainer>
       {events.length > 1 && (
         <MainContainer className="flex flex-col space-y-4 my-3">
-          <h2 className="text-2xl font-bold">Other Events</h2>
+          <div className="flex justify-between">
+            <h2 className="text-2xl font-bold">Other Events</h2>
+            <Button variant="ghost" className="text-foreground" size="icon" asChild>
+              <Link href="/events/map">
+                <MapIcon />
+              </Link>
+            </Button>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
             {events.slice(1).map((event) => (
               <EventComponent key={event.id} event={event} />

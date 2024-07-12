@@ -39,14 +39,22 @@ export async function middleware(req: NextRequest) {
   if (pathnameIsMissingLocale && !pathname.startsWith("/auth/callback")) {
     const locale = getLocale(req)
 
+    const {
+      nextUrl: { search },
+    } = req
+    const urlSearchParams = new URLSearchParams(search)
+    const params = Object.fromEntries(urlSearchParams.entries())
+
+    const urlParams = "?" + new URLSearchParams(params)
+
     if (locale === i18n.defaultLocale) {
       return NextResponse.rewrite(
-        new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, req.url)
+        new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}${urlParams}`, req.url)
       )
     }
 
     return NextResponse.redirect(
-      new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, req.url)
+      new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}${urlParams}`, req.url)
     )
   }
 
