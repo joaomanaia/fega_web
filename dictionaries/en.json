@@ -53,5 +53,11 @@
     "groupNamePlaceholder": "Enter group name",
     "groupAvatarUrl": "Group avatar URL",
     "groupAvatarUrlPlaceholder": "Enter group avatar URL"
+  },
+  "events": {
+    "emptyEventsPage": "There are no upcoming events.",
+    "otherEvents": "Other events",
+    "eventsMap": "Events map",
+    "seeMoreInfo": "See more info"
   }
 }

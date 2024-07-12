@@ -1,20 +1,23 @@
-import { CalendarEvent } from "@/types/CalendarEvent"
+import { type CalendarEvent } from "@/types/CalendarEvent"
 import { DateText } from "./date-text"
 import Image from "next/image"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
-import Link from "next/link"
 import { useMemo } from "react"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
+import { Link } from "@/components/link"
+import { type Locale } from "@/i18n-config"
 
 interface EventComponentProps {
   event: CalendarEvent
+  lang: Locale
 }
 
-export const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
+export const EventComponent: React.FC<EventComponentProps> = ({ event, lang }) => {
   const jsonLd = useMemo(() => createEventJsonLd(event), [event])
 
   return (
     <Link
+      lang={lang}
       href={`/events/${event.id}`}
       className="bg-surfaceVariant/30 hover:bg-surfaceVariant/50 p-0 rounded-2xl hover:rounded-3xl flex flex-col group cursor-pointer transition"
     >

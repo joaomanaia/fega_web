@@ -6,12 +6,16 @@ import type { CalendarEvent } from "@/types/CalendarEvent"
 import Link from "next/link"
 import { useMemo } from "react"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
+import { type Dictionary } from "@/get-dictionary"
+import { type Locale } from "@/i18n-config"
 
 interface NextEventCoverProps {
   event: CalendarEvent
+  lang: Locale
+  dictionary: Dictionary
 }
 
-export const NextEventCover: React.FC<NextEventCoverProps> = ({ event }) => {
+export const NextEventCover: React.FC<NextEventCoverProps> = ({ event, lang, dictionary }) => {
   const jsonLd = useMemo(() => createEventJsonLd(event), [event])
 
   return (
@@ -34,7 +38,9 @@ export const NextEventCover: React.FC<NextEventCoverProps> = ({ event }) => {
         </p>
 
         <Button asChild>
-          <Link href={`/events/${event.id}`}>See More Info</Link>
+          <Link lang={lang} href={`/events/${event.id}`}>
+            {dictionary.events.seeMoreInfo}
+          </Link>
         </Button>
       </div>
       <div className="relative h-full w-full aspect-[2/1] lg:aspect-[3/2] xl:aspect-[2/1]">
