@@ -1,9 +1,9 @@
 # *
 User-agent: *
-Disallow: /
+Allow: /
 
 # Host
-Host: https://fega.vercel.app/en
+Host: https://fega.vercel.app
 
 # Sitemaps
-Sitemap: https://fega.vercel.app/en/sitemap.xml
+Sitemap: https://fega.vercel.app/sitemap.xml
