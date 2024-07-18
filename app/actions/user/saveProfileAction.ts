@@ -8,17 +8,17 @@ import * as z from "zod"
 const formSchema = z.object({
   full_name: z
     .string()
-    .min(3, "Full name must be at least 3 characters long")
-    .max(255, "Full name must be at most 255 characters long"),
+    .min(2, "Full name must be at least 2 characters long")
+    .max(30, "Full name must be at most 30 characters long"),
+  bio: z.string().max(160, "Bio must be at most 160 characters long"),
 })
 
 export default async function saveProfile(formData: FormData) {
   try {
     const parsed = formSchema.parse({
       full_name: formData.get("full_name"),
+      bio: formData.get("bio"),
     })
-
-    console.log(parsed)
 
     const supabase = createServerActionClient()
 
@@ -29,10 +29,14 @@ export default async function saveProfile(formData: FormData) {
     // Check if user is authenticated
     if (!user) return redirect("/")
 
+    // If the bio is empty, set it to null
+    const bio = parsed.bio ? parsed.bio : null
+
     const { error } = await supabase
       .from("users")
       .update({
         full_name: parsed.full_name,
+        bio: bio,
       })
       .eq("id", user.id)
 

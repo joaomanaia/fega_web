@@ -26,6 +26,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
           {user.full_name}
         </span>
       </div>
+      {user.bio && <p itemProp="description">{user.bio}</p>}
       {isLocalUser && <EditProfileDialog user={user} dictionary={dictionary} />}
     </>
   )

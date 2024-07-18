@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: UserPageProps): Promise<Metad
 
   return {
     title: user?.full_name || "User Profile",
+    description: user?.bio,
   }
 }
 

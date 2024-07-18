@@ -28,8 +28,9 @@ interface EditProfileFormProps {
 const formSchema = z.object({
   full_name: z
     .string()
-    .min(3, "Full name must be at least 3 characters long")
-    .max(255, "Full name must be at most 255 characters long"),
+    .min(2, "Full name must be at least 2 characters long")
+    .max(30, "Full name must be at most 30 characters long"),
+  bio: z.string().max(160, "Bio must be at most 160 characters long"),
 })
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictionary }) => {
@@ -39,6 +40,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
     resolver: zodResolver(formSchema),
     defaultValues: {
       full_name: user.full_name ?? "",
+      bio: user.bio ?? "",
     },
   })
 
@@ -48,7 +50,10 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
         <form
           action={async (formData: FormData) => {
             // Check if the changes are not the same as the current user
-            if (formData.get("full_name") === user.full_name) {
+            const hasFullNameChanged = formData.get("full_name") !== user.full_name
+            const hasBioChanged = formData.get("bio") !== user.bio
+
+            if (!hasFullNameChanged && !hasBioChanged) {
               return toast({
                 variant: "default",
                 title: "No changes detected.",
@@ -80,7 +85,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
 
             closeDialog()
           }}
-          className="space-y-8"
+          className="space-y-4"
         >
           <FormField
             control={form.control}
@@ -95,11 +100,29 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>{dictionary.editProfile.fullNameDescription}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                  <Input
+                    className="border-none"
+                    placeholder="Bio"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <DialogFooter>
             <SubmitButton>{dictionary.saveChanges}</SubmitButton>
           </DialogFooter>
