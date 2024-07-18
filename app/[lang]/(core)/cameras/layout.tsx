@@ -1,11 +1,12 @@
-import type CameraType from "@/types/CameraType"
 import { type Metadata } from "next"
 import { CameraItem } from "./components/CameraItem"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { createServerComponentClient } from "@/supabase"
 import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
 import { type Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary"
+import type { Tables } from "@/types/database.types"
+
+type CameraType = Tables<"cameras">
 
 export const metadata: Metadata = {
   title: "Cameras",

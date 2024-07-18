@@ -54,7 +54,8 @@ export type Database = {
           image_poster: string
           link: string
           name: string
-          original_camera: string | null
+          original_camera_name: string | null
+          original_camera_url: string | null
           video: boolean
         }
         Insert: {
@@ -63,7 +64,8 @@ export type Database = {
           image_poster: string
           link: string
           name: string
-          original_camera?: string | null
+          original_camera_name?: string | null
+          original_camera_url?: string | null
           video: boolean
         }
         Update: {
@@ -72,7 +74,8 @@ export type Database = {
           image_poster?: string
           link?: string
           name?: string
-          original_camera?: string | null
+          original_camera_name?: string | null
+          original_camera_url?: string | null
           video?: boolean
         }
         Relationships: []

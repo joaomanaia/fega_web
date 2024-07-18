@@ -1,8 +1,10 @@
 "use client"
 
 /* eslint-disable @next/next/no-img-element */
-import CameraType from "@/types/CameraType"
 import { useEffect, useState } from "react"
+import type { Tables } from "@/types/database.types"
+
+type CameraType = Tables<"cameras">
 
 interface ImageVideoComponentProps {
   camera: CameraType

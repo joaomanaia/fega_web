@@ -3,9 +3,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { type Locale } from "@/i18n-config"
 import { cn } from "@/lib/utils"
-import type CameraType from "@/types/CameraType"
+import type { Tables } from "@/types/database.types"
 import Link from "next/link"
 import { useParams } from "next/navigation"
+
+type CameraType = Tables<"cameras">
 
 interface CameraItemProps {
   camera: CameraType

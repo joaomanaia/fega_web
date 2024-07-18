@@ -1,11 +1,13 @@
-import CameraType from "@/types/CameraType"
-import { Metadata } from "next"
+import { type Metadata } from "next"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { createServerComponentClient } from "@/supabase"
 import VideoComponent from "./components/VideoComponent"
 import ImageVideoComponent from "./components/ImageVideoComponent"
+import { Tables } from "@/types/database.types"
+
+type CameraType = Tables<"cameras">
 
 const getCameraById = async (id: string): Promise<CameraType | null> => {
   const supabase = createServerComponentClient()
@@ -24,13 +26,13 @@ type CameraPageProps = {
 }
 
 export async function generateMetadata({ params }: CameraPageProps): Promise<Metadata> {
-  const id = params.id
+  const camera = await getCameraById(params.id)
 
-  const camera = await getCameraById(id)
+  if (!camera) return { title: "Camera not found" }
 
   return {
-    title: camera?.name ?? "Camera not found",
-    description: camera?.description ?? "",
+    title: camera.name,
+    description: camera.description,
   }
 }
 
@@ -45,11 +47,15 @@ export default async function CameraPage({ params }: CameraPageProps) {
 
   return (
     <MainContainer className="flex flex-col">
-      <h1 className="text-xl font-normal mb-2">{camera.name}</h1>
-      <p className="mb-4">{camera.description}</p>
+      <h1 className="text-xl font-normal mb-2" itemProp="name">
+        {camera.name}
+      </h1>
+      <p className="mb-4" itemProp="description">
+        {camera.description}
+      </p>
 
-      {camera.original_camera && (
-        <Link href={camera.original_camera}>
+      {camera.original_camera_url && (
+        <Link href={camera.original_camera_url}>
           <Button variant="outline" className="w-fit mb-4">
             Ver original
           </Button>

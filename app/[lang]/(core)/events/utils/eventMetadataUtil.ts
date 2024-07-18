@@ -1,4 +1,4 @@
-import { CalendarEvent } from "@/types/CalendarEvent"
+import type { CalendarEvent } from "@/types/CalendarEvent"
 import type { Event, WithContext } from "schema-dts"
 
 export const createEventJsonLd = (event: CalendarEvent): WithContext<Event> => {
