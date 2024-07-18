@@ -20,6 +20,10 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ url }) => {
   return (
     <>
       <DynamicReactPlayer
+        style={{
+          overflow: "hidden",
+          borderRadius: "1rem",
+        }}
         volume={0}
         muted={true}
         playing={videoPlaying}
