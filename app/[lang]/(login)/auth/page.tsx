@@ -8,6 +8,7 @@ import { type Locale } from "@/i18n-config"
 export const metadata = {
   title: "Login",
   description: "Login to use other features of the Fega app",
+  robots: "noindex, nofollow",
 }
 
 export const dynamic = "force-dynamic"

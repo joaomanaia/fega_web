@@ -7,6 +7,7 @@ import { GeneralSettings } from "./components/general-settings"
 
 export const metadata: Metadata = {
   title: "Settings",
+  robots: "noindex, nofollow",
 }
 
 interface SettingsPageProps {
