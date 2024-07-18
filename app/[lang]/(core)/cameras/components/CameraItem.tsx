@@ -18,6 +18,7 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera, lang }) => {
 
   return (
     <Link
+      itemProp="url"
       className={cn(
         "flex items-center h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
         selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -26,12 +27,16 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera, lang }) => {
       href={`/cameras/${camera.id}`}
     >
       <Avatar>
-        <AvatarImage src={camera.image_poster} />
+        <AvatarImage itemProp="image" src={camera.image_poster} />
         <AvatarFallback>{camera.name}</AvatarFallback>
       </Avatar>
       <div className="ml-4">
-        <h2 className="text-xl font-semibold">{camera.name}</h2>
-        <p className="text-sm text-inherit">{camera.description}</p>
+        <h2 className="text-xl font-semibold" itemProp="name">
+          {camera.name}
+        </h2>
+        <p className="text-sm text-inherit" itemProp="description">
+          {camera.description}
+        </p>
       </div>
     </Link>
   )

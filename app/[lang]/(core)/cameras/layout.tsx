@@ -48,10 +48,25 @@ export default async function Layout({ params, children }: CameraLayoutProps) {
   return (
     <main className="flex flex-col h-full md:pb-3 overflow-y-auto">
       {children}
-      <MainContainer className="flex flex-col h-full md:h-fit rounded-b-none last:mt-4 md:rounded-[30px] xl:grid xl:grid-cols-2 2xl:grid-cols-3 w-full">
-        {cameras.map((camera) => (
-          <CameraItem key={camera.id} camera={camera} lang={params.lang} />
-        ))}
+      <MainContainer className="rounded-b-none md:rounded-[30px] last:mt-4">
+        <ul
+          itemScope
+          itemType="https://schema.org/ItemList"
+          className="flex flex-col h-full md:h-fit xl:grid xl:grid-cols-2 2xl:grid-cols-3 w-full"
+        >
+          <meta itemProp="numberOfItems" content={String(cameras.length)} />
+          {cameras.map((camera, index) => (
+            <li
+              key={camera.id}
+              itemScope
+              itemProp="itemListElement"
+              itemType="https://schema.org/ListItem"
+            >
+              <meta itemProp="position" content={String(index + 1)} />
+              <CameraItem camera={camera} lang={params.lang} />
+            </li>
+          ))}
+        </ul>
       </MainContainer>
     </main>
   )
