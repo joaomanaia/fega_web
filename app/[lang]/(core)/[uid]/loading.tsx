@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 import { UserProfileSkeleton } from "../[uid]/components/UserProfileContent"
 import { PostSkeleton } from "@/app/components/post/Post"
 
-export default function Loading() {
+export default function UserLoading() {
   return (
     <main className="flex flex-col gap-4 md:pb-3 lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
       <div className="flex flex-col md:gap-4">

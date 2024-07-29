@@ -5,6 +5,7 @@ import { MainContainer } from "@/app/components/m3/main-container"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
+import { notFound } from "next/navigation"
 
 interface PostPageProps {
   params: {
@@ -28,7 +29,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = await getPostById(params.id)
   const dictionary = await getDictionary(params.lang)
 
-  if (!post) return <MainContainer className="mx-3 md:mx-0">Post not found</MainContainer>
+  if (!post) notFound()
 
   return (
     <MainContainer className="mx-3 md:mx-0">
