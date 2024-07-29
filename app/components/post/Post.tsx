@@ -11,6 +11,7 @@ import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { defaultImgUrl } from "@/core/common"
 import { PostMoreActions } from "./post-more-actions"
+import { Skeleton } from "@/components/ui/skeleton"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -125,3 +126,45 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
 }
 
 export default Post
+
+interface PostSkeletonProps {
+  hideContainer?: boolean
+  className?: string
+}
+
+export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, className }) => {
+  // Random height between 30 and 100
+  const randomHeight = Math.floor(Math.random() * (100 - 30 + 1) + 30)
+
+  return (
+    <div
+      className={cn(
+        "rounded-3xl flex flex-col gap-4",
+        !hideContainer && "p-4 bg-surfaceVariant/30 dark:bg-surfaceVariant/[0.28]",
+        className
+      )}
+    >
+      <PostHeaderSkeleton />
+      <Skeleton
+        className="w-full"
+        style={{
+          height: `${randomHeight}px`,
+        }}
+      />
+      <div className="flex items-center space-x-4">
+        <Skeleton className="w-12 h-6" />
+        <Skeleton className="w-12 h-6" />
+      </div>
+    </div>
+  )
+}
+
+const PostHeaderSkeleton: React.FC = () => (
+  <div className="flex items-center w-full group">
+    <Skeleton className="w-12 h-12 rounded-full" />
+    <div className="flex flex-col ml-3 space-y-1 justify-center">
+      <Skeleton className="w-36 h-6" />
+      <Skeleton className="w-24 h-4" />
+    </div>
+  </div>
+)

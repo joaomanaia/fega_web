@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { EditProfileDialog } from "./edit-profile-dialog"
 import { type Dictionary } from "@/get-dictionary"
 import type UserType from "@/types/UserType"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface UserProfileContentProps {
   user: UserType
@@ -10,7 +11,7 @@ interface UserProfileContentProps {
   dictionary: Dictionary
 }
 
-export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
+export const UserProfileContent: React.FC<UserProfileContentProps> = ({
   user,
   isLocalUser,
   dictionary,
@@ -31,3 +32,13 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = async ({
     </>
   )
 }
+
+export const UserProfileSkeleton = () => (
+  <>
+    <div className="flex items-center space-x-4">
+      <Skeleton className="w-12 h-12 rounded-full" />
+      <Skeleton className="w-36 h-6" />
+    </div>
+    <Skeleton className="w-full h-6 mt-2" />
+  </>
+)

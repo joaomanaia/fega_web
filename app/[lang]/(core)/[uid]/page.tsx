@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 import { type Metadata } from "next"
+import { notFound } from "next/navigation"
 
 interface UserPageProps {
   params: {
@@ -26,8 +27,9 @@ export async function generateMetadata({ params }: UserPageProps): Promise<Metad
 
 export default async function UserPage({ params }: UserPageProps) {
   const user = await getUserByUid(params.uid)
+
   if (!user) {
-    return <div>User not found</div>
+    notFound()
   }
 
   const localUserUid = await getLocalUserUid()
