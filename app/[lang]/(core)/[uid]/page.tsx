@@ -8,6 +8,7 @@ import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
+import { FileWarningIcon } from "lucide-react"
 
 interface UserPageProps {
   params: {
@@ -70,8 +71,23 @@ export default async function UserPage({ params }: UserPageProps) {
           uid={params.uid}
           localUid={localUserUid}
           dictionary={dictionary}
+          EmptyPostsContent={() => <UserEmptyPostsContent userName={user.full_name ?? "User"} />}
         />
       </MainContainer>
     </main>
   )
 }
+
+interface UserEmptyPostsContentProps {
+  userName: string
+}
+
+const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({ userName }) => (
+  <div className="flex flex-col items-center justify-center h-full mx-auto max-w-md text-center">
+    <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
+    <h2 className="text-xl font-semibold">No posts yet</h2>
+    <p className="text-secondary/50 mt-2">
+      {userName} hasn't shared anything yet. Be the first to say something!
+    </p>
+  </div>
+)

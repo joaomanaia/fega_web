@@ -2,6 +2,7 @@ import { createServerComponentClient } from "@/supabase"
 import { type PostsWithData } from "@/types/PostType"
 import { PagingPosts } from "./paging-posts"
 import { type Dictionary } from "@/get-dictionary"
+import { FileWarningIcon } from "lucide-react"
 
 const ITEMS_PER_PAGE = 7
 
@@ -37,6 +38,7 @@ interface PostsContentProps {
   localUid: string | null
   dictionary: Dictionary
   schemaHasPart?: boolean
+  EmptyPostsContent?: () => React.ReactNode
 }
 
 export default async function PostsContent({
@@ -44,11 +46,12 @@ export default async function PostsContent({
   localUid,
   dictionary,
   schemaHasPart,
+  EmptyPostsContent = DefaultEmptyPostsContent,
 }: PostsContentProps) {
   const posts = await getPosts(uid)
 
   if (!posts.length) {
-    return <p>No posts yet</p>
+    return <EmptyPostsContent />
   }
 
   return (
@@ -63,3 +66,11 @@ export default async function PostsContent({
     </>
   )
 }
+
+const DefaultEmptyPostsContent = () => (
+  <div className="flex flex-col items-center justify-center h-full">
+    <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
+    <h2 className="text-xl font-semibold">No posts yet</h2>
+    <p className="text-secondary/50 mt-2">Start by creating your first post or check back later</p>
+  </div>
+)
