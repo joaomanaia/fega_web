@@ -27,7 +27,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
 }) => {
   const [posts, setPosts] = useState<PostsWithData>(initialPosts)
   const [page, setPage] = useState(1)
-  const [endReached, setEndReached] = useState(false)
+  const [endReached, setEndReached] = useState(initialPosts.length < ITEMS_PER_PAGE)
 
   const loadMore = async () => {
     if (endReached) return
