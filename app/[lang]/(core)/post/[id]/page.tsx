@@ -41,6 +41,7 @@ export default async function PostPage({ params }: PostPageProps) {
         authorName={post.full_name}
         authorAvatarUrl={post.avatar_url}
         localUserVotedType={post.vote_type}
+        lang={params.lang}
         dictionary={dictionary}
       />
     </MainContainer>
