@@ -70,6 +70,7 @@ export default async function UserPage({ params }: UserPageProps) {
           schemaHasPart // Has part of the main entity
           uid={params.uid}
           localUid={localUserUid}
+          lang={params.lang}
           dictionary={dictionary}
           EmptyPostsContent={() => <UserEmptyPostsContent userName={user.full_name ?? "User"} />}
         />

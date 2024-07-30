@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { defaultImgUrl } from "@/core/common"
 import { PostMoreActions } from "./post-more-actions"
 import { Skeleton } from "@/components/ui/skeleton"
+import { type Locale } from "@/i18n-config"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -24,6 +25,7 @@ interface PostProps {
   authorAvatarUrl: string
   localUserVotedType: PostVoteType | null
   hideContainer?: boolean
+  lang: Locale
   dictionary: Dictionary
   className?: string
   schemaHasPart?: boolean
@@ -41,6 +43,7 @@ const Post: React.FC<PostProps> = ({
   authorAvatarUrl,
   localUserVotedType,
   hideContainer,
+  lang,
   dictionary,
   className,
   schemaHasPart,
@@ -68,6 +71,7 @@ const Post: React.FC<PostProps> = ({
         relativeCreatedAt={relativeCreatedAt}
         userName={authorName}
         userProfileUrl={authorAvatarUrl}
+        lang={lang}
       />
       <p itemProp="headline" className="text-lg">
         {post.description}
@@ -88,6 +92,7 @@ interface PostUserHeaderProps {
   uid: string
   userName: string
   userProfileUrl: string | null
+  lang: Locale
 }
 
 const PostUserHeader: React.FC<PostUserHeaderProps> = ({
@@ -97,6 +102,7 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
   relativeCreatedAt,
   userName,
   userProfileUrl,
+  lang,
 }) => {
   const profileUrl = `/${uid}`
 
@@ -108,14 +114,14 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       className="flex items-center w-full group"
     >
       <meta itemProp="identifier" content={uid} />
-      <Link href={profileUrl}>
+      <Link href={profileUrl} lang={lang}>
         <Avatar>
           <AvatarImage itemProp="image" src={userProfileUrl ?? defaultImgUrl} />
           <AvatarFallback>{userName.at(0)?.toUpperCase()}</AvatarFallback>
         </Avatar>
       </Link>
       <div className="flex flex-col ml-3 space-y-1 justify-center">
-        <Link itemProp="url" href={profileUrl} className="font-semibold my-0 next-link">
+        <Link itemProp="url" href={profileUrl} lang={lang} className="font-semibold my-0 next-link">
           <span itemProp="name">{userName}</span>
         </Link>
         <p className="text-xs text-inherit">{relativeCreatedAt}</p>

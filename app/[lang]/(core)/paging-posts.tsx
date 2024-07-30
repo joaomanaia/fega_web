@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { type Database } from "@/types/database.types"
 import { type Dictionary } from "@/get-dictionary"
+import { type Locale } from "@/i18n-config"
 
 const ITEMS_PER_PAGE = 7
 
@@ -14,6 +15,7 @@ interface PagingPostsProps {
   uid?: string
   localUid: string | null
   initialPosts: PostsWithData
+  lang: Locale
   dictionary: Dictionary
   schemaHasPart?: boolean
 }
@@ -22,6 +24,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
   uid,
   localUid,
   initialPosts,
+  lang,
   dictionary,
   schemaHasPart,
 }) => {
@@ -90,6 +93,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
           localUserVotedType={post.vote_type}
           dictionary={dictionary}
           schemaHasPart={schemaHasPart}
+          lang={lang}
         />
       ))}
 

@@ -3,6 +3,7 @@ import { type PostsWithData } from "@/types/PostType"
 import { PagingPosts } from "./paging-posts"
 import { type Dictionary } from "@/get-dictionary"
 import { FileWarningIcon } from "lucide-react"
+import { Locale } from "@/i18n-config"
 
 const ITEMS_PER_PAGE = 7
 
@@ -36,6 +37,7 @@ const getPosts = async (uid?: string): Promise<PostsWithData> => {
 interface PostsContentProps {
   uid?: string
   localUid: string | null
+  lang: Locale
   dictionary: Dictionary
   schemaHasPart?: boolean
   EmptyPostsContent?: () => React.ReactNode
@@ -44,6 +46,7 @@ interface PostsContentProps {
 export default async function PostsContent({
   uid,
   localUid,
+  lang,
   dictionary,
   schemaHasPart,
   EmptyPostsContent = DefaultEmptyPostsContent,
@@ -60,6 +63,7 @@ export default async function PostsContent({
         uid={uid}
         localUid={localUid}
         initialPosts={posts}
+        lang={lang}
         dictionary={dictionary}
         schemaHasPart={schemaHasPart}
       />
