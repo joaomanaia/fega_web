@@ -19,7 +19,7 @@ export const AuthContent: React.FC<AuthContentProps> = ({ locale }) => {
   return (
     <Auth
       supabaseClient={supabase}
-      providers={["google", "github", "discord"]}
+      providers={["google"]}
       redirectTo={`${location.origin}/auth/callback`}
       localization={{
         variables: locale === "pt" ? pt : undefined,
