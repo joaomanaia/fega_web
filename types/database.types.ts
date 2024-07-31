@@ -244,6 +244,7 @@ export type Database = {
           created_by: string
           description: string | null
           id: string
+          tags: string[] | null
           title: string
         }
         Insert: {
@@ -253,6 +254,7 @@ export type Database = {
           created_by?: string
           description?: string | null
           id?: string
+          tags?: string[] | null
           title: string
         }
         Update: {
@@ -262,6 +264,7 @@ export type Database = {
           created_by?: string
           description?: string | null
           id?: string
+          tags?: string[] | null
           title?: string
         }
         Relationships: [
@@ -555,6 +558,29 @@ export type Database = {
           },
           {
             foreignKeyName: "groups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      news_view: {
+        Row: {
+          author_avatar_url: string | null
+          author_full_name: string | null
+          content: string | null
+          cover_image: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string | null
+          tags: string[] | null
+          title: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_news_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "users"

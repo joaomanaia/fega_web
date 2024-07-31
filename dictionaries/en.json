@@ -59,5 +59,8 @@
     "otherEvents": "Other events",
     "eventsMap": "Events map",
     "seeMoreInfo": "See more info"
+  },
+  "news": {
+    "emptyNewsPage": "There are no news."
   }
 }
