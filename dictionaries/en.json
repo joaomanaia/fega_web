@@ -62,5 +62,9 @@
   },
   "news": {
     "emptyNewsPage": "There are no news."
+  },
+  "groups": {
+    "startMessagingTitle": "Group messages",
+    "startMessagingDescription": "Select a group or create a new one to start chatting with your friends"
   }
 }

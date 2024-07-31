@@ -21,7 +21,7 @@ export default async function GroupLayout({ children, params }: GroupLayoutProps
   const dictionary = await getDictionary(params.lang)
 
   return (
-    <div className="flex gap-3 xl:flex-row w-full h-full overflow-hidden">
+    <div className="w-full h-full flex gap-3 xl:flex-row overflow-hidden">
       {/* This is to make sure that the group list is only rendered when the breakpoint is xl */}
       <BaseGroupList isLayout>
         <GroupList className="hidden xl:block xl:w-2/6 flex-grow" dictionary={dictionary} />
