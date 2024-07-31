@@ -1,5 +1,5 @@
 import { type GroupViewType } from "@/types/group/GroupType"
-import { GroupItem } from "./GroupItem"
+import { GroupItem, GroupItemSkeleton } from "./GroupItem"
 import { createServerComponentClient } from "@/supabase"
 import { cn } from "@/lib/utils"
 import { MainContainer } from "../../../../components/m3/main-container"
@@ -7,6 +7,7 @@ import { ExtendedFAB } from "@/components/ui/floating-action-button"
 import Link from "next/link"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Dictionary } from "@/get-dictionary"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface GroupListProps {
   className?: string
@@ -53,5 +54,25 @@ const CreateGroupButton: React.FC<CreateGroupButtonProps> = ({ className, dictio
     <Link href="/groups/new" className={cn("next-link", className)}>
       <ExtendedFAB className="w-full">{dictionary.createGroup.button}</ExtendedFAB>
     </Link>
+  )
+}
+
+interface GroupListSkeletonProps {
+  className?: string
+}
+
+export const GroupListSkeleton: React.FC<GroupListSkeletonProps> = ({ className }) => {
+  return (
+    <div className={cn("flex flex-col space-y-3", className)}>
+      <Skeleton className="h-16 w-full rounded-[25px] bg-surfaceVariant/20" />
+
+      <MainContainer className="h-auto w-auto flex flex-col">
+        <GroupItemSkeleton />
+        <GroupItemSkeleton />
+        <GroupItemSkeleton />
+        <GroupItemSkeleton />
+        <GroupItemSkeleton />
+      </MainContainer>
+    </div>
   )
 }

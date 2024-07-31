@@ -1,9 +1,10 @@
 import { getLocalUser } from "@/utils/user-utils"
-import GroupList from "./components/GroupList"
+import GroupList, { GroupListSkeleton } from "./components/GroupList"
 import { redirect } from "next/navigation"
 import { BaseGroupList } from "./base-group-list"
 import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
+import { Suspense } from "react"
 
 type GroupLayoutProps = {
   children: React.ReactNode
@@ -24,7 +25,12 @@ export default async function GroupLayout({ children, params }: GroupLayoutProps
     <div className="w-full h-full flex gap-3 xl:flex-row overflow-hidden">
       {/* This is to make sure that the group list is only rendered when the breakpoint is xl */}
       <BaseGroupList isLayout>
-        <GroupList className="hidden xl:block xl:w-2/6 flex-grow" dictionary={dictionary} />
+        <Suspense fallback={<GroupListSkeleton className="w-full max-w-md" />}>
+          <GroupList
+            className="hidden xl:block flex-grow w-full max-w-md"
+            dictionary={dictionary}
+          />
+        </Suspense>
       </BaseGroupList>
       {children}
     </div>
