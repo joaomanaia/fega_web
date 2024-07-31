@@ -1,9 +1,9 @@
-import { Tables, Views } from "@/types/database.types.ext"
+import type { Tables } from "../database.types"
 
 type GroupType = Tables<"groups">
 
-export type GroupViewType = Views<"group_view">
+export type GroupViewType = Tables<"group_view">
 
-export type GroupParticipantsViewType = Views<"group_participants_view">
+export type GroupParticipantsViewType = Tables<"group_participants_view">
 
 export default GroupType

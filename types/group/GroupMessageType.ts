@@ -1,7 +1,6 @@
-import { Database } from "../database.types"
-import { Views } from "../database.types.ext"
+import type { Tables } from "../database.types"
 
-type GroupMessageType = Database["public"]["Tables"]["group_messages"]["Row"]
+type GroupMessageType = Tables<"group_messages">
 
 export default GroupMessageType
 
@@ -12,4 +11,4 @@ export type GroupMessageWithUserType = GroupMessageType & {
   reply_to_uid?: string
 }
 
-export type GroupMessageViewType = Views<"group_messages_view">
+export type GroupMessageViewType = Tables<"group_messages_view">
