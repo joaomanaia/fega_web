@@ -5,18 +5,15 @@ import Link from "next/link"
 import { createServerComponentClient } from "@/supabase"
 import VideoComponent from "./components/VideoComponent"
 import ImageVideoComponent from "./components/ImageVideoComponent"
-import { Tables } from "@/types/database.types"
+import { type Tables } from "@/types/database.types"
+import { notFound } from "next/navigation"
 
 type CameraType = Tables<"cameras">
 
 const getCameraById = async (id: string): Promise<CameraType | null> => {
   const supabase = createServerComponentClient()
 
-  const { data, error } = await supabase.from("cameras").select("*").eq("id", id).single()
-
-  if (error) {
-    return null
-  }
+  const { data } = await supabase.from("cameras").select("*").eq("id", id).single()
 
   return data as CameraType | null
 }
@@ -42,7 +39,7 @@ export default async function CameraPage({ params }: CameraPageProps) {
   const camera = await getCameraById(params.id)
 
   if (!camera) {
-    return <MainContainer>Camera not found</MainContainer>
+    notFound()
   }
 
   return (
