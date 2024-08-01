@@ -1,6 +1,7 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
 import { type Locale } from "@/i18n-config"
 import { cn } from "@/lib/utils"
 import type { Tables } from "@/types/database.types"
@@ -41,5 +42,17 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera, lang }) => {
         </p>
       </div>
     </Link>
+  )
+}
+
+export const CameraItemSkeleton: React.FC = () => {
+  return (
+    <div className="flex items-center h-fit px-4 py-4">
+      <Skeleton className="size-10 rounded-full" />
+      <div className="ml-4">
+        <Skeleton className="w-32 h-4 mb-2" />
+        <Skeleton className="w-64 h-4" />
+      </div>
+    </div>
   )
 }
