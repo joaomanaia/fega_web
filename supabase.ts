@@ -5,7 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { cache } from "react"
-import { Database } from "./types/database.types"
+import type { Database } from "./types/database.types"
 
 export const createServerComponentClient = cache(() => {
   const cookieStore = cookies()

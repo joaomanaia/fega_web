@@ -1,4 +1,4 @@
-import { GroupViewType } from "@/types/group/GroupType"
+import type { GroupViewType } from "@/types/group/GroupType"
 import { create } from "zustand"
 
 export type ModalType =
