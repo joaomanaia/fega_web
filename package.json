@@ -63,6 +63,7 @@
     "react-responsive": "^10.0.0",
     "react-scrollable-feed": "^2.0.2",
     "react-select": "^5.8.0",
+    "react-use": "^17.5.1",
     "remark-gfm": "^4.0.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",

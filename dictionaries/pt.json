@@ -11,6 +11,7 @@
   "create": "Criar",
   "creating": "A criar...",
   "cancel": "Cancelar",
+  "confirm": "Confirmar",
   "navdrawer": {
     "home": "Início",
     "news": "Notícias",
@@ -66,5 +67,13 @@
   "groups": {
     "startMessagingTitle": "Mensagens de grupo",
     "startMessagingDescription": "Seleciona um grupo ou crie um novo para começar a conversar com os seus amigos"
+  },
+  "post": {
+    "delete": {
+      "action": "Apagar",
+      "title": "Apagar publicação",
+      "description": "Tens a certeza que queres apagar esta publicação?",
+      "confirm": "Apagar"
+    }
   }
 }
