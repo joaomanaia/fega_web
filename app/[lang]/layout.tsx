@@ -12,6 +12,8 @@ import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
 import { type Locale, i18n } from "@/i18n-config"
 import { type Metadata } from "next"
+import DictionaryProvider from "@/hooks/use-get-dictionary"
+import { getDictionary } from "@/get-dictionary"
 
 export const metadata: Metadata = {
   title: "Fega",
@@ -20,6 +22,7 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   manifest: "/manifest.json",
+  applicationName: "Fega",
 }
 
 const fontSans = FontSans({
@@ -34,7 +37,9 @@ interface RootLayoutProps {
   }
 }
 
-export default function RootLayout({ children, params }: RootLayoutProps) {
+export default async function RootLayout({ children, params }: RootLayoutProps) {
+  const dictionary = await getDictionary(params.lang)
+
   return (
     <html lang={params.lang} suppressHydrationWarning>
       <head>
@@ -56,10 +61,12 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster />
-          <SonnerToaster />
-          <ModalProvider />
+          <DictionaryProvider dictionary={dictionary}>
+            {children}
+            <Toaster />
+            <SonnerToaster />
+            <ModalProvider />
+          </DictionaryProvider>
         </ThemeProvider>
       </body>
       <GoogleAnalytics gaId="G-0WZ017FHHK" />
