@@ -9,7 +9,7 @@ import { Button } from "../ui/button"
 import { Columns2Icon, PanelRightCloseIcon, PanelRightOpenIcon, RowsIcon } from "lucide-react"
 import { Hint } from "../hint"
 import { Textarea } from "../ui/textarea"
-import { ControllerRenderProps } from "react-hook-form"
+import { type ControllerRenderProps } from "react-hook-form"
 import remarkGfm from "remark-gfm"
 
 interface MdxEditorProps {

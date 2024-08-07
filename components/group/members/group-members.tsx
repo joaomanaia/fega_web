@@ -1,9 +1,7 @@
 import { createServerComponentClient } from "@/supabase"
-import { GroupParticipantsViewType, GroupViewType } from "@/types/group/GroupType"
+import type { GroupParticipantsViewType, GroupViewType } from "@/types/group/GroupType"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { GroupMember } from "./group-member"
-import { Button } from "@/components/ui/button"
-import { UserRoundPlusIcon } from "lucide-react"
 import { InviteMemberButton } from "./invite-member-button"
 
 const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]> => {
