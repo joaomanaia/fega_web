@@ -14,6 +14,7 @@ import { type Locale, i18n } from "@/i18n-config"
 import { type Metadata } from "next"
 import DictionaryProvider from "@/hooks/use-get-dictionary"
 import { getDictionary } from "@/get-dictionary"
+import { QueryProvider } from "@/src/providers/query-provider"
 
 export const metadata: Metadata = {
   title: "Fega",
@@ -61,12 +62,14 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           enableSystem
           disableTransitionOnChange
         >
-          <DictionaryProvider dictionary={dictionary}>
-            {children}
-            <Toaster />
-            <SonnerToaster />
-            <ModalProvider />
-          </DictionaryProvider>
+          <QueryProvider>
+            <DictionaryProvider dictionary={dictionary}>
+              {children}
+              <Toaster />
+              <SonnerToaster />
+              <ModalProvider />
+            </DictionaryProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
       <GoogleAnalytics gaId="G-0WZ017FHHK" />

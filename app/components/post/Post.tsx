@@ -8,11 +8,11 @@ import { SharePostButton } from "./actions/share-post-button"
 import { type Dictionary } from "@/get-dictionary"
 import { cn } from "@/lib/utils"
 import { Link } from "@/components/link"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { defaultImgUrl } from "@/core/common"
 import { PostMoreActions } from "./post-more-actions"
 import { Skeleton } from "@/components/ui/skeleton"
 import { type Locale } from "@/i18n-config"
+import { UserHoverCard } from "@/app/components/user/user-hover-card"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -114,16 +114,22 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       className="flex items-center w-full group"
     >
       <meta itemProp="identifier" content={uid} />
-      <Link href={profileUrl} lang={lang}>
-        <Avatar>
-          <AvatarImage itemProp="image" src={userProfileUrl ?? defaultImgUrl} />
-          <AvatarFallback>{userName.at(0)?.toUpperCase()}</AvatarFallback>
-        </Avatar>
-      </Link>
-      <div className="flex flex-col ml-3 space-y-1 justify-center">
-        <Link itemProp="url" href={profileUrl} lang={lang} className="font-semibold my-0 next-link">
-          <span itemProp="name">{userName}</span>
+      <UserHoverCard uid={uid}>
+        <Link href={profileUrl} lang={lang}>
+          <UserAvatar src={userProfileUrl} name={userName} />
         </Link>
+      </UserHoverCard>
+      <div className="flex flex-col ml-3 space-y-1 justify-center">
+        <UserHoverCard uid={uid}>
+          <Link
+            itemProp="url"
+            href={profileUrl}
+            lang={lang}
+            className="font-semibold my-0 next-link"
+          >
+            <span itemProp="name">{userName}</span>
+          </Link>
+        </UserHoverCard>
         <p className="text-xs text-inherit">{relativeCreatedAt}</p>
       </div>
       {uid === localUid && <PostMoreActions postId={postId} />}
