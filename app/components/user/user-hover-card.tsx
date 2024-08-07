@@ -1,10 +1,9 @@
 "use client"
 
-import { UserAvatar, UserAvatarSkeleton } from "@/app/components/user/user-avatar"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { Skeleton } from "@/components/ui/skeleton"
 import { useGetUser } from "@/features/user/use-get-user"
-import { CalendarDaysIcon } from "lucide-react"
+import { CalendarDaysIcon, Loader2 } from "lucide-react"
 import moment from "moment"
 
 interface UserHoverCardProps {
@@ -63,13 +62,8 @@ const UserHoverCardContent = ({ uid }: UserHoverCardContent) => {
 
 const UserHoverCardSkeleton = () => {
   return (
-    <div className="flex space-x-4">
-      <UserAvatarSkeleton />
-      <div className="flex flex-col gap-y-2 self-center">
-        <Skeleton className="w-20 h-4" />
-        <Skeleton className="w-40 h-4" />
-        <Skeleton className="w-20 h-4 opacity-70" />
-      </div>
+    <div className="flex w-full items-center justify-center">
+      <Loader2 className="size-8 text-surfaceVariant animate-spin" />
     </div>
   )
 }
