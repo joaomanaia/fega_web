@@ -3,7 +3,7 @@ import { type PostsWithData } from "@/types/PostType"
 import { PagingPosts } from "./paging-posts"
 import { type Dictionary } from "@/get-dictionary"
 import { FileWarningIcon } from "lucide-react"
-import { Locale } from "@/i18n-config"
+import { type Locale } from "@/i18n-config"
 
 const ITEMS_PER_PAGE = 7
 
@@ -16,20 +16,16 @@ const ITEMS_PER_PAGE = 7
 const getPosts = async (uid?: string): Promise<PostsWithData> => {
   const supabase = createServerComponentClient()
 
-  if (uid) {
-    const { data: posts } = await supabase
-      .rpc("get_posts_with_data")
-      .eq("uid", uid)
-      .order("created_at", { ascending: false })
-      .range(0, ITEMS_PER_PAGE - 1) // Get the first page
-
-    return posts || []
-  }
-
-  const { data: posts } = await supabase
+  let query = supabase
     .rpc("get_posts_with_data")
     .order("created_at", { ascending: false })
     .range(0, ITEMS_PER_PAGE - 1) // Get the first page
+
+  if (uid) {
+    query = query.eq("uid", uid)
+  }
+
+  const { data: posts } = await query
 
   return posts || []
 }
