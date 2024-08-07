@@ -19,7 +19,7 @@ export const TimePickerPopover: React.FC<TimePickerPopoverProps> = ({
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={value} onSelect={onChange} initialFocus />
+        <Calendar mode="single" selected={value} onSelect={onChange} />
         <div className="p-3 border-t border-border/30">
           <TimePicker setDate={onChange} date={value} />
         </div>
