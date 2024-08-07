@@ -1,9 +1,9 @@
 import { getLocalUserUid } from "@/utils/user-utils"
-import CreatePost from "../../components/create_post/CreatePost"
-import { MainContainer } from "../../components/m3/main-container"
 import PostsContent from "./PostsContent"
 import { getDictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
+import CreatePost from "@/app/components/create-post/create-post"
+import { MainContainer } from "@/app/components/m3/main-container"
 
 interface HomePageProps {
   params: {
@@ -16,9 +16,9 @@ export default async function HomePage({ params }: HomePageProps) {
   const dictionary = await getDictionary(params.lang)
 
   return (
-    <main className="flex flex-col md:pb-3 md:gap-4 lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden">
+    <main className="flex flex-col md:pb-3 md:gap-4 xl:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden">
       <CreatePost dictionary={dictionary} />
-      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] space-y-4 md:space-y-6 lg:w-full lg:overflow-auto">
+      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] space-y-4 md:space-y-6 xl:w-full xl:overflow-auto">
         <PostsContent localUid={localUid} lang={params.lang} dictionary={dictionary} />
       </MainContainer>
     </main>

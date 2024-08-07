@@ -1,4 +1,4 @@
-import { CreatePostSkeleton } from "@/app/components/create_post/CreatePost"
+import { CreatePostSkeleton } from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { PostSkeleton } from "@/app/components/post/Post"
 

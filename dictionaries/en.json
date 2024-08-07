@@ -25,14 +25,6 @@
   },
   "general": "General",
   "chooseLanguage": "Choose language",
-  "createPost": {
-    "header": "Create post",
-    "placeholder": "What's on your mind?",
-    "button": {
-      "normal": "Create",
-      "loading": "Creating..."
-    }
-  },
   "editProfileButton": "Edit profile",
   "editProfile": {
     "header": "Edit profile",
@@ -69,6 +61,16 @@
     "startMessagingDescription": "Select a group or create a new one to start chatting with your friends"
   },
   "post": {
+    "create": {
+      "header": "Create post",
+      "placeholder": "What's on your mind?",
+      "submitButton": {
+        "default": "Create",
+        "loading": "Creating..."
+      },
+      "success": "Post created successfully",
+      "error": "Error creating post"
+    },
     "delete": {
       "action": "Delete",
       "title": "Delete post",

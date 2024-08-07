@@ -25,14 +25,6 @@
   },
   "general": "Geral",
   "chooseLanguage": "Escolher Idioma",
-  "createPost": {
-    "header": "Criar publicação",
-    "placeholder": "No que estás a pensar?",
-    "button": {
-      "normal": "Criar",
-      "loading": "A criar..."
-    }
-  },
   "editProfileButton": "Editar perfil",
   "editProfile": {
     "header": "Editar perfil",
@@ -69,6 +61,16 @@
     "startMessagingDescription": "Seleciona um grupo ou crie um novo para começar a conversar com os seus amigos"
   },
   "post": {
+    "create": {
+      "header": "Criar publicação",
+      "placeholder": "No que estás a pensar?",
+      "submitButton": {
+        "default": "Criar",
+        "loading": "A criar..."
+      },
+      "success": "Publicação criada com sucesso",
+      "error": "Erro ao criar publicação"
+    },
     "delete": {
       "action": "Apagar",
       "title": "Apagar publicação",
