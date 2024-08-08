@@ -305,6 +305,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "post_votes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "post_votes_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
@@ -588,6 +595,28 @@ export type Database = {
           }
         ]
       }
+      posts_view: {
+        Row: {
+          author_avatar_url: string | null
+          author_full_name: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          images: string[] | null
+          uid: string | null
+          user_vote_type: Database["public"]["Enums"]["post_vote_type"] | null
+          votes: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Functions: {
       authorize: {
@@ -607,20 +636,6 @@ export type Database = {
           post_id: string
         }
         Returns: number
-      }
-      get_posts_with_data: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          id: string
-          uid: string
-          created_at: string
-          description: string
-          images: string[]
-          full_name: string
-          avatar_url: string
-          vote_type: Database["public"]["Enums"]["post_vote_type"]
-          votes: number
-        }[]
       }
       is_group_full: {
         Args: {

@@ -1,4 +1,3 @@
-import { type PostWithData } from "@/types/PostType"
 import Post from "@/app/components/post/Post"
 import { createServerComponentClient } from "@/supabase"
 import { MainContainer } from "@/app/components/m3/main-container"
@@ -6,6 +5,7 @@ import { getLocalUserUid } from "@/utils/user-utils"
 import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 import { notFound } from "next/navigation"
+import type { PostViewType } from "@/types/PostType"
 
 interface PostPageProps {
   params: {
@@ -14,10 +14,10 @@ interface PostPageProps {
   }
 }
 
-const getPostById = async (id: string): Promise<PostWithData | null> => {
+const getPostById = async (id: string): Promise<PostViewType | null> => {
   const supabase = createServerComponentClient()
 
-  const { data: post } = await supabase.rpc("get_posts_with_data").eq("id", id).single()
+  const { data: post } = await supabase.from("posts_view").select("*").eq("id", id).single()
 
   return post
 }
@@ -37,10 +37,6 @@ export default async function PostPage({ params }: PostPageProps) {
         hideContainer
         post={post}
         localUid={localUid}
-        postVotes={post.votes}
-        authorName={post.full_name}
-        authorAvatarUrl={post.avatar_url}
-        localUserVotedType={post.vote_type}
         lang={params.lang}
         dictionary={dictionary}
       />

@@ -1,6 +1,6 @@
 import { ITEMS_PER_PAGE } from "@/features/post/constants"
 import type { Database } from "@/types/database.types"
-import type { PostsWithData } from "@/types/PostType"
+import type { PostViewType } from "@/types/PostType"
 import { SupabaseClient } from "@supabase/supabase-js"
 
 /**
@@ -14,12 +14,13 @@ export const getPosts = async (
   client: SupabaseClient<Database>,
   uid?: string,
   page: number = 0
-): Promise<PostsWithData> => {
+): Promise<PostViewType[]> => {
   const from = page * ITEMS_PER_PAGE
   const to = from + ITEMS_PER_PAGE - 1
 
   let query = client
-    .rpc("get_posts_with_data")
+    .from("posts_view")
+    .select("*")
     .order("created_at", { ascending: false })
     .range(from, to)
 

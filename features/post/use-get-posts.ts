@@ -2,11 +2,11 @@
 
 import { ITEMS_PER_PAGE } from "@/features/post/constants"
 import { getPosts } from "@/features/post/get-posts"
-import type { PostsWithData } from "@/types/PostType"
+import type { PostViewType } from "@/types/PostType"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
-export const useGetInfinitePosts = (initialPosts: PostsWithData, uid?: string) => {
+export const useGetInfinitePosts = (initialPosts: PostViewType[], uid?: string) => {
   const client = createClientComponentClient()
 
   return useInfiniteQuery({

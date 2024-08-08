@@ -4,14 +4,14 @@ import Post from "@/app/components/post/Post"
 import { useGetInfinitePosts } from "@/features/post/use-get-posts"
 import type { Dictionary } from "@/get-dictionary"
 import type { Locale } from "@/i18n-config"
-import type { PostsWithData } from "@/types/PostType"
+import type { PostViewType } from "@/types/PostType"
 import { useEffect, useMemo } from "react"
 import { useInView } from "react-intersection-observer"
 
 interface PagingPostsProps {
   uid?: string
   localUid: string | null
-  initialPosts: PostsWithData
+  initialPosts: PostViewType[]
   lang: Locale
   dictionary: Dictionary
   schemaHasPart?: boolean
@@ -54,10 +54,6 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
             <Post
               post={post}
               localUid={localUid}
-              postVotes={post.votes}
-              authorName={post.full_name}
-              authorAvatarUrl={post.avatar_url}
-              localUserVotedType={post.vote_type}
               dictionary={dictionary}
               schemaHasPart={schemaHasPart}
               lang={lang}

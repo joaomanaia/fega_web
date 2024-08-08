@@ -1,5 +1,4 @@
-import type PostType from "@/types/PostType"
-import type { PostVoteType } from "@/types/PostType"
+import type { PostViewType, PostVoteType } from "@/types/PostType"
 import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
@@ -19,11 +18,7 @@ import { UserAvatar } from "@/app/components/user/user-avatar"
  */
 interface PostProps {
   localUid: string | null
-  post: PostType
-  postVotes: number
-  authorName: string
-  authorAvatarUrl: string
-  localUserVotedType: PostVoteType | null
+  post: PostViewType
   hideContainer?: boolean
   lang: Locale
   dictionary: Dictionary
@@ -38,23 +33,19 @@ function getRelativeTime(createdAt: string) {
 const Post: React.FC<PostProps> = ({
   localUid,
   post,
-  postVotes,
-  authorName,
-  authorAvatarUrl,
-  localUserVotedType,
   hideContainer,
   lang,
   dictionary,
   className,
   schemaHasPart,
 }) => {
-  const relativeCreatedAt = useMemo(() => getRelativeTime(post.created_at), [post.created_at])
+  const relativeCreatedAt = useMemo(() => getRelativeTime(post.created_at!), [post.created_at])
 
   return (
     <article
       itemScope
       itemType="https://schema.org/SocialMediaPosting"
-      itemID={post.id}
+      itemID={post.id!}
       itemProp={schemaHasPart ? "hasPart" : undefined}
       className={cn(
         "rounded-3xl flex flex-col gap-4",
@@ -62,24 +53,24 @@ const Post: React.FC<PostProps> = ({
         className
       )}
     >
-      <meta itemProp="datePublished" content={post.created_at} />
-      <meta itemProp="text" content={post.description} />
+      <meta itemProp="datePublished" content={post.created_at!} />
+      <meta itemProp="text" content={post.description!} />
       <PostUserHeader
-        uid={post.uid}
-        postId={post.id}
+        uid={post.uid!}
+        postId={post.id!}
         localUid={localUid}
         relativeCreatedAt={relativeCreatedAt}
-        userName={authorName}
-        userProfileUrl={authorAvatarUrl}
+        userName={post.author_full_name!}
+        userProfileUrl={post.author_avatar_url!}
         lang={lang}
       />
       <p itemProp="headline" className="text-lg">
         {post.description}
       </p>
-      {post.images.length > 0 && <PostImages images={post.images} />}
+      {post.images && post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex items-center space-x-4">
-        <VotePostAction postId={post.id} voteCount={postVotes} votedType={localUserVotedType} />
-        <SharePostButton postId={post.id} dictionary={dictionary.sharePostButton} />
+        <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
+        <SharePostButton postId={post.id!} dictionary={dictionary.sharePostButton} />
       </div>
     </article>
   )
