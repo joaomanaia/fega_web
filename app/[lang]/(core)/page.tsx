@@ -18,7 +18,7 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <main className="flex flex-col md:pb-3 md:gap-4 xl:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden">
       <CreatePost dictionary={dictionary} />
-      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] space-y-4 md:space-y-6 xl:w-full xl:overflow-auto">
+      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
         <PostsContent localUid={localUid} lang={params.lang} dictionary={dictionary} />
       </MainContainer>
     </main>

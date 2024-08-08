@@ -61,6 +61,14 @@
     "startMessagingDescription": "Select a group or create a new one to start chatting with your friends"
   },
   "post": {
+    "loading": "Loading...",
+    "emptyPosts": {
+      "header": "No posts yet",
+      "description": {
+        "default": "Start by creating your first post or check back later!",
+        "user": "hasn't shared anything yet, check back later!"
+      }
+    },
     "create": {
       "header": "Create post",
       "placeholder": "What's on your mind?",

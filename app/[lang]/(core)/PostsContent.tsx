@@ -20,7 +20,7 @@ export default async function PostsContent({
   lang,
   dictionary,
   schemaHasPart,
-  EmptyPostsContent = DefaultEmptyPostsContent,
+  EmptyPostsContent = () => <DefaultEmptyPostsContent dictionary={dictionary.post.emptyPosts} />,
 }: PostsContentProps) {
   const client = createServerComponentClient()
   const posts = await getPosts(client, uid)
@@ -43,10 +43,14 @@ export default async function PostsContent({
   )
 }
 
-const DefaultEmptyPostsContent = () => (
+interface DefaultEmptyPostsContentProps {
+  dictionary: Dictionary["post"]["emptyPosts"]
+}
+
+const DefaultEmptyPostsContent = ({ dictionary }: DefaultEmptyPostsContentProps) => (
   <div className="flex flex-col items-center justify-center h-full">
     <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
-    <h2 className="text-xl font-semibold">No posts yet</h2>
-    <p className="text-secondary/50 mt-2">Start by creating your first post or check back later</p>
+    <h2 className="text-xl font-semibold">{dictionary.header}</h2>
+    <p className="text-secondary/50 mt-2">{dictionary.description.default}</p>
   </div>
 )
