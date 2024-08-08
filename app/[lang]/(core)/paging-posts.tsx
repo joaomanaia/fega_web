@@ -1,15 +1,12 @@
 "use client"
 
-import { type PostsWithData } from "@/types/PostType"
-import { useState } from "react"
-import Post from "../../components/post/Post"
+import Post from "@/app/components/post/Post"
 import { Button } from "@/components/ui/button"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { type Database } from "@/types/database.types"
-import { type Dictionary } from "@/get-dictionary"
-import { type Locale } from "@/i18n-config"
-
-const ITEMS_PER_PAGE = 7
+import { useGetInfinitePosts } from "@/features/post/use-get-posts"
+import type { Dictionary } from "@/get-dictionary"
+import type { Locale } from "@/i18n-config"
+import type { PostsWithData } from "@/types/PostType"
+import { useMemo } from "react"
 
 interface PagingPostsProps {
   uid?: string
@@ -28,57 +25,11 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
   dictionary,
   schemaHasPart,
 }) => {
-  const [posts, setPosts] = useState<PostsWithData>(initialPosts)
-  const [page, setPage] = useState(1)
-  const [endReached, setEndReached] = useState(initialPosts.length < ITEMS_PER_PAGE)
+  const { data, fetchNextPage, hasNextPage } = useGetInfinitePosts(initialPosts, uid)
 
-  const loadMore = async () => {
-    if (endReached) return
-
-    let from = page * ITEMS_PER_PAGE
-    const to = from + ITEMS_PER_PAGE - 1
-
-    const supabase = createClientComponentClient<Database>()
-
-    var newPosts: PostsWithData = []
-
-    if (uid) {
-      const { data: newPosts_ } = await supabase
-        .rpc("get_posts_with_data")
-        .eq("uid", uid)
-        .order("created_at", { ascending: false })
-        .range(from, to)
-
-      console.log(newPosts_)
-
-      // If there are no new posts, we reached the end
-      if (!newPosts_) return
-
-      newPosts = newPosts_
-    } else {
-      const { data: newPosts_ } = await supabase
-        .rpc("get_posts_with_data")
-        .order("created_at", { ascending: false })
-        .range(from, to)
-
-      console.log(newPosts_)
-
-      // If there are no new posts, we reached the end
-      if (!newPosts_) return
-
-      newPosts = newPosts_
-    }
-
-    if (newPosts) {
-      setPosts((prevPosts) => [...prevPosts, ...newPosts])
-      setPage((prevPage) => prevPage + 1)
-
-      // If we have less than ITEMS_PER_PAGE posts, we reached the end
-      if (newPosts.length < ITEMS_PER_PAGE) {
-        setEndReached(true)
-      }
-    }
-  }
+  const posts = useMemo(() => {
+    return data.pages.flat()
+  }, [data.pages])
 
   return (
     <>
@@ -97,7 +48,7 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
         />
       ))}
 
-      {!endReached && <Button onClick={loadMore}>Load More</Button>}
+      {hasNextPage && <Button onClick={() => fetchNextPage()}>Load More</Button>}
     </>
   )
 }

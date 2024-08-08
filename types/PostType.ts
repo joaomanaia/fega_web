@@ -1,7 +1,7 @@
-import UserType from "./UserType"
-import { Database } from "./database.types"
+import type { Database, Enums, Tables } from "@/types/database.types"
+import type UserType from "@/types/UserType"
 
-type PostType = Database["public"]["Tables"]["posts"]["Row"]
+type PostType = Tables<"posts">
 
 export default PostType
 
@@ -9,6 +9,6 @@ export type PostWithUser = PostType & { author: UserType }
 
 export type PostsWithData = Database["public"]["Functions"]["get_posts_with_data"]["Returns"]
 
-export type PostWithData = PostsWithData[0]
+export type PostWithData = PostsWithData[number]
 
-export type PostVoteType = Database["public"]["Enums"]["post_vote_type"]
+export type PostVoteType = Enums<"post_vote_type">

@@ -1,34 +1,9 @@
-import { createServerComponentClient } from "@/supabase"
-import { type PostsWithData } from "@/types/PostType"
-import { PagingPosts } from "./paging-posts"
 import { type Dictionary } from "@/get-dictionary"
 import { FileWarningIcon } from "lucide-react"
 import { type Locale } from "@/i18n-config"
-
-const ITEMS_PER_PAGE = 7
-
-/**
- * Get posts from the database.
- *
- * @param uid an optional user id to filter posts by
- * @returns a list of posts
- */
-const getPosts = async (uid?: string): Promise<PostsWithData> => {
-  const supabase = createServerComponentClient()
-
-  let query = supabase
-    .rpc("get_posts_with_data")
-    .order("created_at", { ascending: false })
-    .range(0, ITEMS_PER_PAGE - 1) // Get the first page
-
-  if (uid) {
-    query = query.eq("uid", uid)
-  }
-
-  const { data: posts } = await query
-
-  return posts || []
-}
+import { getPosts } from "@/features/post/get-posts"
+import { createServerComponentClient } from "@/supabase"
+import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
 
 interface PostsContentProps {
   uid?: string
@@ -47,7 +22,8 @@ export default async function PostsContent({
   schemaHasPart,
   EmptyPostsContent = DefaultEmptyPostsContent,
 }: PostsContentProps) {
-  const posts = await getPosts(uid)
+  const client = createServerComponentClient()
+  const posts = await getPosts(client, uid)
 
   if (!posts.length) {
     return <EmptyPostsContent />
