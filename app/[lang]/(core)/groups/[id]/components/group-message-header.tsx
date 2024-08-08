@@ -1,16 +1,22 @@
 import { BackIconButton } from "@/components/back-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import { GroupViewType } from "@/types/group/GroupType"
+import type { GroupViewType } from "@/types/group/GroupType"
 import { GroupOptionsDropdown } from "../../components/group-options-dropdown"
 import Link from "next/link"
+import { type Locale } from "@/i18n-config"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType
   className?: string
+  lang: Locale
 }
 
-export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({ group, className }) => {
+export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({
+  group,
+  className,
+  lang,
+}) => {
   return (
     <div
       className={cn(
@@ -34,11 +40,7 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({ group, c
         <span>{group.name}</span>
       </Link>
 
-      <GroupOptionsDropdown
-        group={group}
-        groupHref={`/groups/${group.id}`}
-        isOwner={group.is_owner ?? false}
-      />
+      <GroupOptionsDropdown group={group} isOwner={group.is_owner ?? false} lang={lang} />
     </div>
   )
 }

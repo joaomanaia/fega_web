@@ -9,29 +9,34 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreVerticalIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { GroupViewType } from "@/types/group/GroupType"
-import Link from "next/link"
+import type { GroupViewType } from "@/types/group/GroupType"
 import { useModal } from "@/hooks/use-modal-store"
+import { Link } from "@/components/link"
+import { type Locale } from "@/i18n-config"
 
 interface GroupOptionsDropdownProps {
   group: GroupViewType
   isOwner: boolean
-  groupHref: string
+  lang: Locale
 }
 
-export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ group, isOwner }) => {
+export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({
+  group,
+  isOwner,
+  lang,
+}) => {
   const { onOpen } = useModal()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-inherit">
+        <Button variant="ghost" size="icon" className="text-inherit bg-transparent hover:bg-primary-foreground/5 transition">
           <MoreVerticalIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem className="px-3 py-2 cursor-pointer" asChild>
-          <Link href={`/groups/${group.id}/info`}>Group Info</Link>
+          <Link lang={lang} href={`/groups/${group.id}/info`}>Group Info</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {isOwner && (
@@ -59,7 +64,7 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
         {!isOwner && (
           <DropdownMenuItem
             onClick={() => onOpen("exit-group", { group })}
-            className="px-3 py-2 cursor-pointer text-error"
+            className="px-3 py-2 cursor-pointer text-error hover:text-error/90"
           >
             Leave Group
           </DropdownMenuItem>

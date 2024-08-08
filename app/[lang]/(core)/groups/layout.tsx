@@ -28,6 +28,7 @@ export default async function GroupLayout({ children, params }: GroupLayoutProps
         <Suspense fallback={<GroupListSkeleton className="w-full max-w-md" />}>
           <GroupList
             className="hidden xl:block flex-grow w-full max-w-md"
+            lang={params.lang}
             dictionary={dictionary}
           />
         </Suspense>

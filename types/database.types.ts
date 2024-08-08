@@ -117,6 +117,13 @@ export type Database = {
             foreignKeyName: "group_messages_group_id_fkey"
             columns: ["group_id"]
             isOneToOne: false
+            referencedRelation: "group_with_last_message_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
             referencedRelation: "groups"
             referencedColumns: ["id"]
           },
@@ -171,6 +178,13 @@ export type Database = {
             foreignKeyName: "group_participants_group_id_fkey"
             columns: ["group_id"]
             isOneToOne: false
+            referencedRelation: "group_with_last_message_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "group_participants_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
             referencedRelation: "groups"
             referencedColumns: ["id"]
           },
@@ -186,21 +200,21 @@ export type Database = {
       groups: {
         Row: {
           created_at: string
-          created_by: string
+          created_by: string | null
           icon_url: string | null
           id: string
           name: string
         }
         Insert: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           icon_url?: string | null
           id?: string
           name: string
         }
         Update: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           icon_url?: string | null
           id?: string
           name?: string
@@ -480,15 +494,22 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_with_last_message_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "group_messages_uid_fkey"
-            columns: ["uid"]
+            columns: ["reply_to_uid"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "group_messages_uid_fkey"
-            columns: ["reply_to_uid"]
+            columns: ["uid"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -533,6 +554,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "group_participants_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "group_with_last_message_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "group_participants_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
@@ -542,6 +570,27 @@ export type Database = {
         ]
       }
       group_view: {
+        Row: {
+          author_name: string | null
+          created_at: string | null
+          created_by: string | null
+          icon_url: string | null
+          id: string | null
+          is_owner: boolean | null
+          name: string | null
+          participants_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "groups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      group_with_last_message_view: {
         Row: {
           author_name: string | null
           created_at: string | null

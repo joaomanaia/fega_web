@@ -25,7 +25,11 @@ export default async function GroupPage({ params }: GroupPageProps) {
     <>
       <BaseGroupList>
         <Suspense fallback={<GroupListSkeleton className="w-full h-full" />}>
-          <GroupList className="xl:hidden w-full h-full" dictionary={dictionary} />
+          <GroupList
+            className="xl:hidden w-full h-full"
+            lang={params.lang}
+            dictionary={dictionary}
+          />
         </Suspense>
       </BaseGroupList>
       {/* This is only visible on desktop */}

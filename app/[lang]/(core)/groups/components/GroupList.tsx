@@ -1,35 +1,37 @@
-import { type GroupViewType } from "@/types/group/GroupType"
+import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 import { GroupItem, GroupItemSkeleton } from "./GroupItem"
 import { createServerComponentClient } from "@/supabase"
 import { cn } from "@/lib/utils"
-import { MainContainer } from "../../../../components/m3/main-container"
 import { ExtendedFAB } from "@/components/ui/floating-action-button"
 import Link from "next/link"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Dictionary } from "@/get-dictionary"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Locale } from "@/i18n-config"
+import { MainContainer } from "@/app/components/m3/main-container"
 
 interface GroupListProps {
   className?: string
   dictionary: Dictionary
+  lang: Locale
 }
 
-const getGroups = async (): Promise<GroupViewType[]> => {
+const getGroupsWithLastMessage = async (): Promise<GroupWithLastMessageViewType[]> => {
   const supabase = createServerComponentClient()
 
   const { data: groups } = await supabase
-    .from("group_view")
+    .from("group_with_last_message_view")
     .select("*")
     .order("last_message_at", { ascending: false })
 
-  return groups as GroupViewType[]
+  return groups || []
 }
 
-export default async function GroupList({ className, dictionary }: GroupListProps) {
+export default async function GroupList({ className, dictionary, lang }: GroupListProps) {
   const localUid = await getLocalUserUid()
   if (!localUid) return null
 
-  const groups = await getGroups()
+  const groups = await getGroupsWithLastMessage()
 
   return (
     <div className={cn("flex flex-col space-y-3", className)}>
@@ -37,7 +39,7 @@ export default async function GroupList({ className, dictionary }: GroupListProp
 
       <MainContainer className="h-auto w-auto flex flex-col">
         {groups.map((group) => (
-          <GroupItem key={group.id} group={group} localUid={localUid} />
+          <GroupItem key={group.id} group={group} localUid={localUid} lang={lang} />
         ))}
       </MainContainer>
     </div>

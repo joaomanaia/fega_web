@@ -1,18 +1,20 @@
 "use client"
 
 import { UserAvatar } from "@/app/components/user/user-avatar"
+import { Link } from "@/components/link"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { useGetUser } from "@/features/user/use-get-user"
+import { type Locale } from "@/i18n-config"
 import { CalendarDaysIcon, Loader2 } from "lucide-react"
 import moment from "moment"
+
+function getRelativeTime(createdAt: string | Date) {
+  return moment(createdAt).fromNow()
+}
 
 interface UserHoverCardProps {
   uid: string
   children: React.ReactNode
-}
-
-function getRelativeTime(createdAt: string | Date) {
-  return moment(createdAt).fromNow()
 }
 
 export const UserHoverCard: React.FC<UserHoverCardProps> = ({ uid, children }) => {
@@ -23,6 +25,22 @@ export const UserHoverCard: React.FC<UserHoverCardProps> = ({ uid, children }) =
         <UserHoverCardContent uid={uid} />
       </HoverCardContent>
     </HoverCard>
+  )
+}
+
+interface UserHoverCardWithLinkProps extends UserHoverCardProps {
+  lang: Locale
+}
+
+export const UserHoverCardWithLink: React.FC<UserHoverCardWithLinkProps> = ({
+  lang,
+  uid,
+  children,
+}) => {
+  return (
+    <Link lang={lang} href={`/${uid}`}>
+      <UserHoverCard uid={uid}>{children}</UserHoverCard>
+    </Link>
   )
 }
 

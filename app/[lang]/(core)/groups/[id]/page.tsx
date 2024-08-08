@@ -1,14 +1,16 @@
 import { createServerComponentClient } from "@/supabase"
-import { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
+import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import { redirect } from "next/navigation"
-import { GroupViewType } from "@/types/group/GroupType"
+import type { GroupViewType } from "@/types/group/GroupType"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { GroupMessageHeader } from "./components/group-message-header"
 import { MessagesWithForm } from "./components/messages-with-form"
+import { type Locale } from "@/i18n-config"
 
 interface GroupMessagePageProps {
   params: {
+    lang: Locale
     id: string
   }
 }
@@ -47,7 +49,7 @@ export default async function GroupMessagePage({ params }: GroupMessagePageProps
 
   return (
     <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center">
-      <GroupMessageHeader group={group} className="xl:hidden" />
+      <GroupMessageHeader group={group} lang={params.lang} className="xl:hidden" />
       <MessagesWithForm
         localUserUid={localUserUid}
         groupId={group.id}

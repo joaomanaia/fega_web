@@ -1,17 +1,33 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { defaultImgUrl } from "@/core/common"
+import { cn } from "@/lib/utils"
+import { cva, type VariantProps } from "class-variance-authority"
 
-interface UserAvatarProps {
+const avatarVariant = cva("", {
+  variants: {
+    variant: {
+      default: "size-10",
+      large: "size-20 text-2xl",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+})
+
+type AvatarVariant = VariantProps<typeof avatarVariant>
+
+interface UserAvatarProps extends AvatarVariant {
   src?: string | null
   name?: string | null
   alt?: string
+  className?: string
 }
 
-export const UserAvatar: React.FC<UserAvatarProps> = ({ src, name, alt }) => {
+export const UserAvatar: React.FC<UserAvatarProps> = ({ src, name, alt, variant, className }) => {
   return (
-    <Avatar>
-      <AvatarImage itemProp="image" src={src ?? defaultImgUrl} alt={alt} />
+    <Avatar className={cn(avatarVariant({ variant }), className)}>
+      <AvatarImage itemProp="image" src={src ?? undefined} alt={alt} />
       <AvatarFallback>{name?.at(0)?.toUpperCase() || "?"}</AvatarFallback>
     </Avatar>
   )

@@ -76,11 +76,11 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
 
             try {
               await editGroupWithId(formData)
+              toast.success("Group edited")
             } catch (error) {
               toast.error("Failed to edit group")
             } finally {
               onClose()
-              toast.success("Group edited")
             }
           }}
           className="flex flex-col w-full gap-4 py-4"

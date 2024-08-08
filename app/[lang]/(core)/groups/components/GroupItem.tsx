@@ -1,35 +1,36 @@
 "use client"
 
-import { type GroupViewType } from "@/types/group/GroupType"
-import Link from "next/link"
+import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 import { useParams } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { GroupOptionsDropdown } from "./group-options-dropdown"
 import { Skeleton } from "@/components/ui/skeleton"
+import { type Locale } from "@/i18n-config"
+import { Link } from "@/components/link"
 
 type GroupItemType = {
-  group: GroupViewType
+  group: GroupWithLastMessageViewType
   localUid: string
   className?: string
+  lang: Locale
 }
 
-export const GroupItem: React.FC<GroupItemType> = ({ group, localUid, className }) => {
+export const GroupItem: React.FC<GroupItemType> = ({ group, localUid, className, lang }) => {
   const params = useParams()
   const selected = params.id === group.id
-
-  const groupHref = `/groups/${group.id}`
 
   return (
     <Link
       className={cn(
-        "flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
+        "group flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
         selected && "bg-primary hover:bg-primary/90 text-primary-foreground",
         className
       )}
-      href={groupHref}
+      lang={lang}
+      href={`/groups/${group.id}`}
     >
-      <Avatar>
+      <Avatar className={cn(selected && "bg-transparent")}>
         <AvatarImage src={group.icon_url ?? undefined} />
         <AvatarFallback>{group.name}</AvatarFallback>
       </Avatar>
@@ -42,11 +43,7 @@ export const GroupItem: React.FC<GroupItemType> = ({ group, localUid, className 
       </div>
 
       {selected && (
-        <GroupOptionsDropdown
-          group={group}
-          groupHref={groupHref}
-          isOwner={group.is_owner ?? false}
-        />
+        <GroupOptionsDropdown group={group} isOwner={group.is_owner ?? false} lang={lang} />
       )}
     </Link>
   )
