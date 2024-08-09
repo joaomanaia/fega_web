@@ -12,14 +12,12 @@ import {
 import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useState } from "react"
 
-type ConfirmProps = [() => JSX.Element, () => Promise<boolean>]
-
 export const useConfirm = (
   title: string,
   message: string,
   confirmText?: string,
   cancelText?: string
-): ConfirmProps => {
+): [() => JSX.Element, () => Promise<boolean>] => {
   const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null)
   const dictionary = useDictionary()
 

@@ -58,7 +58,24 @@
   },
   "groups": {
     "startMessagingTitle": "Group messages",
-    "startMessagingDescription": "Select a group or create a new one to start chatting with your friends"
+    "startMessagingDescription": "Select a group or create a new one to start chatting with your friends",
+    "members": {
+      "optionsMenu": {
+        "title": "Options",
+        "viewProfile": "View profile",
+        "message": "Message",
+        "remove": {
+          "action": "Remove",
+          "dialog": {
+            "title": "Remove member",
+            "message": "Are you sure you want to remove {name} from the group?",
+            "confirm": "Remove"
+          },
+          "onSuccess": "Removed {name} from the group",
+          "onError": "Error removing {name} from the group"
+        }
+      }
+    }
   },
   "post": {
     "loading": "Loading...",

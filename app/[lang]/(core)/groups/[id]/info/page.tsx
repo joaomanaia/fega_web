@@ -46,7 +46,7 @@ export default async function EditGroupPage({ params }: EditGroupPageProps) {
       />
       <ScrollArea className="rounded-2xl p-4 bg-surfaceVariant/[0.28] w-full min-h-0">
         <Suspense fallback={<div>Loading members...</div>}>
-          <GroupMembers group={group} />
+          <GroupMembers group={group} lang={params.lang} />
         </Suspense>
       </ScrollArea>
     </MainContainer>

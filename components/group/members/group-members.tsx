@@ -3,6 +3,7 @@ import type { GroupParticipantsViewType, GroupViewType } from "@/types/group/Gro
 import { getLocalUserUid } from "@/utils/user-utils"
 import { GroupMember } from "./group-member"
 import { InviteMemberButton } from "./invite-member-button"
+import { type Locale } from "@/i18n-config"
 
 const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]> => {
   const supabase = createServerComponentClient()
@@ -23,9 +24,10 @@ const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]>
 
 interface GroupMembersProps {
   group: GroupViewType
+  lang: Locale
 }
 
-export async function GroupMembers({ group }: GroupMembersProps) {
+export async function GroupMembers({ group, lang }: GroupMembersProps) {
   if (!group.id) return null
 
   const localUid = await getLocalUserUid()
@@ -51,6 +53,7 @@ export async function GroupMembers({ group }: GroupMembersProps) {
             avatar_url={member.avatar_url ?? ""}
             localUid={localUid}
             isLocalAdmin={group.is_owner ?? false}
+            lang={lang}
           />
         ))}
       </ul>

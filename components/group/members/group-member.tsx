@@ -1,16 +1,7 @@
+import { MemberOptionsMenu } from "@/components/group/members/group-member-options"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { MoreVerticalIcon } from "lucide-react"
-import Link from "next/link"
-import { RemoveMemberButton } from "./remove-member-button"
+import { type Locale } from "@/i18n-config"
+
 
 interface GroupMemberProps {
   groupId: string
@@ -19,6 +10,7 @@ interface GroupMemberProps {
   avatar_url: string
   localUid: string
   isLocalAdmin: boolean
+  lang: Locale
 }
 
 export const GroupMember: React.FC<GroupMemberProps> = ({
@@ -28,6 +20,7 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
   avatar_url,
   localUid,
   isLocalAdmin,
+  lang,
 }) => {
   return (
     <li className="group flex w-full items-center py-4 first:pt-0 last:pb-0">
@@ -44,48 +37,10 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
         userName={full_name}
         localUid={localUid}
         isLocalAdmin={isLocalAdmin}
+        lang={lang}
       />
     </li>
   )
 }
 
-interface MemberOptionsMenuProps {
-  groupId: string
-  uid: string
-  userName: string
-  localUid: string
-  isLocalAdmin: boolean
-}
 
-const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
-  groupId,
-  uid,
-  userName,
-  localUid,
-  isLocalAdmin,
-}) => {
-  const isLocalUser = uid === localUid
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-inherit">
-          <MoreVerticalIcon />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem asChild>
-          <Link href={`/${uid}`}>View Profile</Link>
-        </DropdownMenuItem>
-        {!isLocalUser && <DropdownMenuItem disabled>Message</DropdownMenuItem>}
-        {isLocalAdmin && !isLocalUser && (
-          <>
-            <DropdownMenuSeparator />
-            <RemoveMemberButton uid={uid} userName={userName} groupId={groupId} />
-          </>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}

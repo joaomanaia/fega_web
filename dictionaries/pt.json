@@ -58,7 +58,24 @@
   },
   "groups": {
     "startMessagingTitle": "Mensagens de grupo",
-    "startMessagingDescription": "Seleciona um grupo ou crie um novo para começar a conversar com os seus amigos"
+    "startMessagingDescription": "Seleciona um grupo ou crie um novo para começar a conversar com os seus amigos",
+    "members": {
+      "optionsMenu": {
+        "title": "Opções",
+        "viewProfile": "Ver perfil",
+        "message": "Mensagem",
+        "remove": {
+          "action": "Remover",
+          "dialog": {
+            "title": "Remover membro",
+            "message": "Tens a certeza que queres remover o {name} do grupo?",
+            "confirm": "Remover"
+          },
+          "onSuccess": "{name} foi removido do grupo!",
+          "onError": "Erro ao remover {name} do grupo!"
+        }
+      }
+    }
   },
   "post": {
     "loading": "A carregar...",
