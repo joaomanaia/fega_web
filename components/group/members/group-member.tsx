@@ -23,7 +23,7 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
   lang,
 }) => {
   return (
-    <li className="group flex w-full items-center py-4 first:pt-0 last:pb-0">
+    <li className="group flex w-full items-center py-3 first:pt-0 last:pb-5">
       <Avatar>
         <AvatarImage src={avatar_url} />
         <AvatarFallback>{full_name}</AvatarFallback>

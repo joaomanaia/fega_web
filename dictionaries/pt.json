@@ -75,6 +75,11 @@
           "onError": "Erro ao remover {name} do grupo!"
         }
       }
+    },
+    "info": {
+      "createdBy": "Criado por {name} em {createdAt}.",
+      "createdByUnknown": "Criado por desconhecido em {createdAt}.",
+      "membersNumber": "Membros ({n})"
     }
   },
   "post": {

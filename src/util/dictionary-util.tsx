@@ -6,7 +6,12 @@ type ExtractPlaceholders<T extends string> = T extends `${infer _Start}{${infer 
   ? Key | ExtractPlaceholders<Rest>
   : never
 
-/**
+
+type FormattedStringReturnType<T> = Extract<T[keyof T], JSX.Element> extends never
+  ? string
+  : JSX.Element
+
+  /**
  * Formats a text string by replacing placeholders with corresponding values from a dictionary.
  * Placeholders are defined by curly braces, e.g. {key}.
  *
@@ -15,7 +20,24 @@ type ExtractPlaceholders<T extends string> = T extends `${infer _Start}{${infer 
  * @returns The formatted text with placeholders replaced by corresponding values.
  * @example formatString('Hello {name}, welcome to {city}!', { name: 'Alice', city: 'Wonderland' })
  */
-export function formatString<T extends string>(
+export function formatString<
+  T extends string,
+  R extends string | JSX.Element,
+  V extends Record<ExtractPlaceholders<T> & string, R>
+>(template: T, values?: V): FormattedStringReturnType<V> {
+  if (!values) return template as string as FormattedStringReturnType<V>
+
+  return template.split(/{(\w+)}/g).map((part, index) => {
+    if (index % 2 === 0) {
+      return part
+    }
+
+    const key = part as ExtractPlaceholders<T>
+    return key in values ? values[key] : `{${key}}`
+  }) as unknown as FormattedStringReturnType<V>
+}
+
+/* export function formatString<T extends string>(
   template: T,
   values?: Record<ExtractPlaceholders<T> & string, string>
 ): string {
@@ -25,4 +47,4 @@ export function formatString<T extends string>(
     // Assert key to be of type ExtractPlaceholders<T>
     return key in values ? values[key as ExtractPlaceholders<T>] : match
   })
-}
+} */

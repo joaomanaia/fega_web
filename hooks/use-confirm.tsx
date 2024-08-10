@@ -13,10 +13,10 @@ import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useState } from "react"
 
 export const useConfirm = (
-  title: string,
-  message: string,
-  confirmText?: string,
-  cancelText?: string
+  title: React.ReactNode,
+  message: React.ReactNode,
+  confirmText?: React.ReactNode,
+  cancelText?: React.ReactNode
 ): [() => JSX.Element, () => Promise<boolean>] => {
   const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null)
   const dictionary = useDictionary()

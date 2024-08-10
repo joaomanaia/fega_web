@@ -42,7 +42,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
 
   const [ConfirmRemoveDialog, confirmRemove] = useConfirm(
     dictionary.remove.dialog.title,
-    formatString(dictionary.remove.dialog.message, { name: userName }),
+    formatString(dictionary.remove.dialog.message, { name: <b>{userName}</b> }),
     dictionary.remove.dialog.confirm
   )
 
@@ -52,9 +52,9 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     if (confirmed) {
       try {
         await removeParticipantWithUid()
-        toast.success(formatString(dictionary.remove.onSuccess, { name: userName }))
+        toast.success(formatString(dictionary.remove.onSuccess, { name: <b>{userName}</b> }))
       } catch (error) {
-        toast.error(formatString(dictionary.remove.onError, { name: userName }))
+        toast.error(formatString(dictionary.remove.onError, { name: <b>{userName}</b> }))
       }
     }
   }
