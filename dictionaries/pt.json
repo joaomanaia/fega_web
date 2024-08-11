@@ -80,6 +80,17 @@
       "createdBy": "Criado por {name} em {createdAt}.",
       "createdByUnknown": "Criado por desconhecido em {createdAt}.",
       "membersNumber": "Membros ({n})"
+    },
+    "list": {
+      "lastMessageByLocal": "Tu: {message}",
+      "lastMessageByOther": "{message}",
+      "options": {
+        "groupInfo": "Informações do grupo",
+        "editGroup": "Editar grupo",
+        "addMembers": "Adicionar membros",
+        "leaveGroup": "Sair do grupo",
+        "deleteGroup": "Apagar grupo"
+      }
     }
   },
   "post": {

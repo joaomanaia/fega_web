@@ -1,5 +1,5 @@
 import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
-import { GroupItem, GroupItemSkeleton } from "./GroupItem"
+import { GroupListItem, GroupItemSkeleton } from "./group-list-item"
 import { createServerComponentClient } from "@/supabase"
 import { cn } from "@/lib/utils"
 import { ExtendedFAB } from "@/components/ui/floating-action-button"
@@ -39,7 +39,13 @@ export default async function GroupList({ className, dictionary, lang }: GroupLi
 
       <MainContainer className="h-auto w-auto flex flex-col">
         {groups.map((group) => (
-          <GroupItem key={group.id} group={group} localUid={localUid} lang={lang} />
+          <GroupListItem
+            key={group.id}
+            group={group}
+            localUid={localUid}
+            lang={lang}
+            dictionary={dictionary.groups.list}
+          />
         ))}
       </MainContainer>
     </div>

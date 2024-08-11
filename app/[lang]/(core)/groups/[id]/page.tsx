@@ -7,6 +7,7 @@ import { MainContainer } from "@/app/components/m3/main-container"
 import { GroupMessageHeader } from "./components/group-message-header"
 import { MessagesWithForm } from "./components/messages-with-form"
 import { type Locale } from "@/i18n-config"
+import { getDictionary } from "@/get-dictionary"
 
 interface GroupMessagePageProps {
   params: {
@@ -47,9 +48,16 @@ export default async function GroupMessagePage({ params }: GroupMessagePageProps
 
   const messages = await getMessages(params.id)
 
+  const dictionary = await getDictionary(params.lang)
+
   return (
     <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center">
-      <GroupMessageHeader group={group} lang={params.lang} className="xl:hidden" />
+      <GroupMessageHeader
+        group={group}
+        lang={params.lang}
+        className="xl:hidden"
+        dictionary={dictionary}
+      />
       <MessagesWithForm
         localUserUid={localUserUid}
         groupId={group.id}

@@ -5,17 +5,20 @@ import type { GroupViewType } from "@/types/group/GroupType"
 import { GroupOptionsDropdown } from "../../components/group-options-dropdown"
 import Link from "next/link"
 import { type Locale } from "@/i18n-config"
+import { type Dictionary } from "@/get-dictionary"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType
   className?: string
   lang: Locale
+  dictionary: Dictionary
 }
 
 export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({
   group,
   className,
   lang,
+  dictionary,
 }) => {
   return (
     <div
@@ -40,7 +43,12 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({
         <span>{group.name}</span>
       </Link>
 
-      <GroupOptionsDropdown group={group} isOwner={group.is_owner ?? false} lang={lang} />
+      <GroupOptionsDropdown
+        group={group}
+        isOwner={group.is_owner ?? false}
+        lang={lang}
+        dictionary={dictionary.groups.list.options}
+      />
     </div>
   )
 }
