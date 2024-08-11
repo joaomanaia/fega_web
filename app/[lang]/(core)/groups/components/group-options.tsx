@@ -1,5 +1,14 @@
 "use client"
 
+import { Link } from "@/components/link"
+import { Button } from "@/components/ui/button"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,20 +16,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreVerticalIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import type { GroupViewType } from "@/types/group/GroupType"
+import type { Dictionary } from "@/get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
-import { Link } from "@/components/link"
-import { type Locale } from "@/i18n-config"
-import { type Dictionary } from "@/get-dictionary"
+import type { Locale } from "@/i18n-config"
+import type { GroupViewType } from "@/types/group/GroupType"
+import { MoreVerticalIcon } from "lucide-react"
 
-interface GroupOptionsDropdownProps {
+type GroupOptionsDictionary = Dictionary["groups"]["list"]["options"]
+
+interface BaseGroupOptions {
   group: GroupViewType
   isOwner: boolean
   lang: Locale
-  dictionary: Dictionary["groups"]["list"]["options"]
+  dictionary: GroupOptionsDictionary
 }
+
+interface GroupOptionsDropdownProps extends BaseGroupOptions {}
 
 export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({
   group,
@@ -41,7 +52,7 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({
           <MoreVerticalIcon />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="min-w-56">
         <DropdownMenuItem className="px-3 py-2 cursor-pointer" asChild>
           <Link lang={lang} href={`/groups/${group.id}/info`}>
             {dictionary.groupInfo}
@@ -82,5 +93,51 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+interface GroupOptionsContextMenu extends BaseGroupOptions {
+  children: React.ReactNode
+}
+
+export const GroupOptionsContextMenu: React.FC<GroupOptionsContextMenu> = ({
+  children,
+  group,
+  isOwner,
+  lang,
+  dictionary,
+}) => {
+  const { onOpen } = useModal()
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
+      <ContextMenuContent className="min-w-56">
+        <ContextMenuItem asChild>
+          <Link lang={lang} href={`/groups/${group.id}/info`}>
+            {dictionary.groupInfo}
+          </Link>
+        </ContextMenuItem>
+        <ContextMenuSeparator />
+        {isOwner && (
+          <>
+            <ContextMenuItem onClick={() => onOpen("edit-group", { group })}>
+              {dictionary.editGroup}
+            </ContextMenuItem>
+            <ContextMenuItem onClick={() => onOpen("group-invite", { group })}>
+              {dictionary.addMembers}
+            </ContextMenuItem>
+            <ContextMenuItem variant="error" onClick={() => onOpen("delete-group", { group })}>
+              {dictionary.deleteGroup}
+            </ContextMenuItem>
+          </>
+        )}
+        {!isOwner && (
+          <ContextMenuItem variant="error" onClick={() => onOpen("exit-group", { group })}>
+            {dictionary.leaveGroup}
+          </ContextMenuItem>
+        )}
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }

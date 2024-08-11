@@ -2,10 +2,10 @@ import { BackIconButton } from "@/components/back-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import type { GroupViewType } from "@/types/group/GroupType"
-import { GroupOptionsDropdown } from "../../components/group-options-dropdown"
 import Link from "next/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary } from "@/get-dictionary"
+import { GroupOptionsDropdown } from "@/app/[lang]/(core)/groups/components/group-options"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType

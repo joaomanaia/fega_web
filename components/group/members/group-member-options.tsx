@@ -79,7 +79,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
           {isLocalAdmin && !isLocalUser && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleRemove} className="text-error">
+              <DropdownMenuItem variant="error" onClick={handleRemove}>
                 {dictionary.remove.action}
               </DropdownMenuItem>
             </>
