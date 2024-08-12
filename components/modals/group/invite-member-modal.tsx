@@ -25,15 +25,14 @@ import { toast } from "sonner"
 import { SubmitButton } from "@/components/submit-button"
 
 export const InviteMemberModal: React.FC = () => {
-  const { isOpen, onClose, type, data } = useModal()
+  const { isOpen, onClose, data } = useModal("group-invite")
 
-  const isModalOpen = isOpen && type === "group-invite"
   const { group } = data
 
   if (!group || !group.id) return null
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">Invite Member</DialogTitle>
@@ -163,7 +162,7 @@ interface InviteUserProps {
 export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
   const addParticipantWithUid = addParticipant.bind(null, user.id, groupId)
 
-  const { onClose } = useModal()
+  const { onClose } = useModal("group-invite")
 
   return (
     <>

@@ -20,15 +20,14 @@ import { SubmitButton } from "@/components/submit-button"
 import { toast } from "sonner"
 
 export const EditGroupModal: React.FC = () => {
-  const { isOpen, onClose, type, data } = useModal()
+  const { isOpen, onClose, data } = useModal("edit-group")
 
-  const isModalOpen = isOpen && type === "edit-group"
   const { group } = data
 
   if (!group || !group.id) return null
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">Edit Group</DialogTitle>
@@ -53,7 +52,7 @@ const formSchema = z.object({
 const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconUrl }) => {
   const editGroupWithId = editGroup.bind(null, groupId)
 
-  const { onClose } = useModal()
+  const { onClose } = useModal("edit-group")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

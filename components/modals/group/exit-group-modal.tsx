@@ -14,9 +14,8 @@ import { SubmitButton } from "@/components/submit-button"
 import { toast } from "sonner"
 
 export const ExitGroupModal: React.FC = () => {
-  const { isOpen, onClose, type, data } = useModal()
+  const { isOpen, onClose, data } = useModal("exit-group")
 
-  const isModalOpen = isOpen && type === "exit-group"
   const { group } = data
 
   if (!group || !group.id) return null
@@ -24,7 +23,7 @@ export const ExitGroupModal: React.FC = () => {
   const exitGroupWithId = exitGroup.bind(null, group.id)
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">Exit Group</DialogTitle>

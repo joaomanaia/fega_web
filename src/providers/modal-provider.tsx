@@ -1,6 +1,7 @@
 "use client"
 
 import { CreateLocationModal } from "@/components/modals/create-location-modal"
+import { CreateGroupModal } from "@/components/modals/group/create-group-modal"
 import { DeleteGroupModal } from "@/components/modals/group/delete-group-modal"
 import { EditGroupModal } from "@/components/modals/group/edit-group-modal"
 import { ExitGroupModal } from "@/components/modals/group/exit-group-modal"
@@ -15,6 +16,7 @@ export const ModalProvider: React.FC = () => {
     <>
       <InviteMemberModal />
       <EditGroupModal />
+      <CreateGroupModal />
       <DeleteGroupModal />
       <ExitGroupModal />
 

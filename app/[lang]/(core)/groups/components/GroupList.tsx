@@ -2,13 +2,12 @@ import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 import { GroupListItem, GroupItemSkeleton } from "./group-list-item"
 import { createServerComponentClient } from "@/supabase"
 import { cn } from "@/lib/utils"
-import { ExtendedFAB } from "@/components/ui/floating-action-button"
-import Link from "next/link"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Dictionary } from "@/get-dictionary"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Locale } from "@/i18n-config"
 import { MainContainer } from "@/app/components/m3/main-container"
+import { CreateGroupButton } from "@/app/[lang]/(core)/groups/components/create-group-button"
 
 interface GroupListProps {
   className?: string
@@ -49,19 +48,6 @@ export default async function GroupList({ className, dictionary, lang }: GroupLi
         ))}
       </MainContainer>
     </div>
-  )
-}
-
-interface CreateGroupButtonProps {
-  className?: string
-  dictionary: Dictionary
-}
-
-const CreateGroupButton: React.FC<CreateGroupButtonProps> = ({ className, dictionary }) => {
-  return (
-    <Link href="/groups/new" className={cn("next-link", className)}>
-      <ExtendedFAB className="w-full">{dictionary.createGroup.button}</ExtendedFAB>
-    </Link>
   )
 }
 

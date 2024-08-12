@@ -12,13 +12,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
-import BackButton from "./BackButton"
 import { SubmitButton } from "@/components/submit-button"
 import { createGroup } from "@/app/actions/groupActions"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { type Dictionary } from "@/get-dictionary"
+import { BackIconButton } from "@/components/back-button"
 
 interface NewGroupFormProps {
   dictionary: Dictionary
@@ -103,7 +103,7 @@ export const NewGroupForm: React.FC<NewGroupFormProps> = ({ dictionary }) => {
           />
 
           <div className="flex self-end space-x-4">
-            <BackButton />
+            <BackIconButton />
             <SubmitButton>
               {form.formState.isSubmitting ? dictionary.creating : dictionary.create}
             </SubmitButton>
