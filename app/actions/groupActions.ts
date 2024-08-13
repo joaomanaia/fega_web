@@ -1,5 +1,7 @@
 "use server"
 
+// TODO: Change the this actions to the new folder
+
 import { createServerActionClient } from "@/supabase"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -167,54 +169,6 @@ export async function searchNoParticipants(prevState: any, formData: FormData) {
 
   return {
     searchUsers: data ?? [],
-  }
-}
-
-const createGroupFormSchema = z.object({
-  group_name: z
-    .string()
-    .min(1, "Group name must be at least 1 characters long")
-    .max(255, "Group name must be at most 255 characters long"),
-  group_avatar: z.string().url().optional().or(z.literal("")),
-})
-
-export const createGroup = async (formData: FormData) => {
-  try {
-    const parsed = createGroupFormSchema.parse({
-      group_name: formData.get("group_name"),
-      group_avatar: formData.get("group_avatar"),
-    })
-
-    const supabase = createServerActionClient()
-
-    const { error } = await supabase
-      .from("groups")
-      .insert({
-        name: parsed.group_name,
-        icon_url: parsed.group_avatar,
-      })
-
-    if (error) {
-      throw new Error(error.message)
-    }
-
-    revalidatePath("/groups")
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      if (err.isEmpty) {
-        return {
-          errorMessage: "Something went wrong",
-        }
-      }
-    } else if (err instanceof Error) {
-      return {
-        errorMessage: err.message,
-      }
-    } else {
-      return {
-        errorMessage: "Something went wrong",
-      }
-    }
   }
 }
 

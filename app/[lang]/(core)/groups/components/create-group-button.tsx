@@ -14,8 +14,8 @@ export const CreateGroupButton: React.FC<CreateGroupButtonProps> = ({ className,
   const { onOpen } = useModal()
 
   return (
-    <ExtendedFAB onClick={() => onOpen("create-group")} className={cn("w-full", className)}>
-      {dictionary.createGroup.button}
+    <ExtendedFAB onClick={() => onOpen("create-group")} className={cn("", className)}>
+      {dictionary.groups.create.button}
     </ExtendedFAB>
   )
 }

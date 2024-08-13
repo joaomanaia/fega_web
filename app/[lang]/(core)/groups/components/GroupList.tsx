@@ -33,10 +33,10 @@ export default async function GroupList({ className, dictionary, lang }: GroupLi
   const groups = await getGroupsWithLastMessage()
 
   return (
-    <div className={cn("flex flex-col space-y-3", className)}>
-      <CreateGroupButton className="max-md:mx-3" dictionary={dictionary} />
+    <div className={cn("w-full flex flex-col space-y-3 md:pb-3", className)}>
+      <CreateGroupButton className="mx-3 md:mx-0 lg:w-full" dictionary={dictionary} />
 
-      <MainContainer className="h-auto w-auto flex flex-col">
+      <MainContainer className="h-full md:h-auto w-auto flex flex-col max-md:rounded-b-none">
         {groups.map((group) => (
           <GroupListItem
             key={group.id}

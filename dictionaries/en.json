@@ -39,14 +39,6 @@
     "description": "Copy the link below and share it with your friends!",
     "copy": "Copy"
   },
-  "createGroup": {
-    "button": "Create Group",
-    "header": "Create Group",
-    "groupName": "Group name",
-    "groupNamePlaceholder": "Enter group name",
-    "groupAvatarUrl": "Group avatar URL",
-    "groupAvatarUrlPlaceholder": "Enter group avatar URL"
-  },
   "events": {
     "emptyEventsPage": "There are no upcoming events.",
     "otherEvents": "Other events",
@@ -91,6 +83,20 @@
         "leaveGroup": "Leave group",
         "deleteGroup": "Delete group"
       }
+    },
+    "create": {
+      "button": "Create group",
+      "title": "Create Group",
+      "description": "Create a new group and invite your friends to join!",
+      "groupName": "Group name",
+      "groupNamePlaceholder": "Enter group name",
+      "groupAvatarUrl": "Group avatar URL",
+      "groupAvatarUrlPlaceholder": "Enter group avatar URL",
+      "submitButton": {
+        "default": "Create",
+        "loading": "Creating group..."
+      },
+      "success": "Group created successfully"
     }
   },
   "post": {
