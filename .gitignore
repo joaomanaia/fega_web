@@ -38,3 +38,5 @@ yarn-error.log*
 
 
 fega_firebase_admin.json
+
+*storybook.log
