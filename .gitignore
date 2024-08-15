@@ -40,3 +40,9 @@ yarn-error.log*
 fega_firebase_admin.json
 
 *storybook.log
+
+# Chromatic
+chromatic.log
+chromatic-build-*.xml
+chromatic-diagnostics*.json
+chromatic.config.json
