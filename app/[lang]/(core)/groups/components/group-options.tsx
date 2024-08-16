@@ -113,7 +113,8 @@ export const GroupOptionsContextMenu: React.FC<GroupOptionsContextMenu> = ({
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
       <ContextMenuContent className="min-w-56">
-        <ContextMenuItem asChild>
+        {/* TODO: Enable when fix the routing*/}
+        <ContextMenuItem disabled asChild>
           <Link lang={lang} href={`/groups/${group.id}/info`}>
             {dictionary.groupInfo}
           </Link>
