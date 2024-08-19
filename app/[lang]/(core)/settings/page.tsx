@@ -1,9 +1,9 @@
-import { Metadata } from "next"
-import UserSettings from "./components/UserSettings"
-import { isUserAuthenticated } from "@/utils/user-utils"
-import { Locale } from "@/i18n-config"
+import { type Metadata } from "next"
+import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 import { GeneralSettings } from "./components/general-settings"
+import { UserSettings } from "@/app/[lang]/(core)/settings/components/user-settings"
+import { createServerComponentClient } from "@/supabase"
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -18,12 +18,13 @@ interface SettingsPageProps {
 
 export default async function SettingsPage({ params }: SettingsPageProps) {
   const dictionary = await getDictionary(params.lang)
-  const userAuthenticated = await isUserAuthenticated()
+  const supabase = createServerComponentClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <main className="flex flex-col w-full space-y-4">
+    <main className=" mx-auto max-w-3xl flex flex-col w-full space-y-4 overflow-y-auto">
       <GeneralSettings dictionary={dictionary} currentLocale={params.lang} />
-      {userAuthenticated && <UserSettings dictionary={dictionary} />}
+      {user !== null && <UserSettings user={user} dictionary={dictionary.settings.user} />}
     </main>
   )
 }

@@ -124,5 +124,34 @@
       "description": "Tens a certeza que queres apagar esta publicação?",
       "confirm": "Apagar"
     }
+  },
+  "settings": {
+    "user": {
+      "header": "Definições de utilizador",
+      "signout": {
+        "title": "Terminar sessão",
+        "description": "Termina a tua sessão do Fega.",
+        "confirmButton": {
+          "title": "Terminar sessão",
+          "message": "Tens a certeza que queres terminar a tua sessão?"
+        }
+      },
+      "updateEmail": {
+        "title": "Alterar email",
+        "description": "Altera o email associado à tua conta.",
+        "dialogTitle": "Alterar email",
+        "dialogDescription": "O teu email atual é {currentEmail}.",
+        "dialogSubmitButton": {
+          "default": "Alterar",
+          "loading": "A alterar email..."
+        },
+        "newEmail": "Novo email",
+        "newEmailPlaceholder": "Insere o novo email",
+        "confirmEmail": "Confirmar email",
+        "confirmEmailPlaceholder": "Confirma o novo email",
+        "infoDialogTitle": "Atualização de email",
+        "infoDialogDescription": "Um email de confirmação foi enviado para o teu novo email e antigo, por favor verifica a tua caixa de entrada."
+      }
+    }
   }
 }

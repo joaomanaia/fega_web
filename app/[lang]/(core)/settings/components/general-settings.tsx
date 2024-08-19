@@ -1,9 +1,9 @@
 "use client"
 
-import BaseSettingsContainer from "./BaseSettingsContainer"
 import { type Dictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
-import { LocaleSwitcher } from "./locale-switcher"
+import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
+import { LocaleSwitcher } from "@/app/[lang]/(core)/settings/components/locale-switcher"
 
 interface GeneralSettingsProps {
   dictionary: Dictionary
