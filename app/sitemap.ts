@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     addPage("/events/q2", "never", 0.64),
     addPage("/events/mO", "never", 0.64),
     addPage("/events/oj", "never", 0.64),
+    addPage("/events/vm", "never", 0.64),
     addPage("/cameras/figueiradafoz-panoramica", "never", 0.64),
     addPage("/cameras/figueiradafoz-buarcos", "never", 0.64),
     addPage("/cameras/figueiradafoz-cabedelo", "never", 0.64),
