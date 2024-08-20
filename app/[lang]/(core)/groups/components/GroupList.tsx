@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Locale } from "@/i18n-config"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { CreateGroupButton } from "@/app/[lang]/(core)/groups/components/create-group-button"
+import { UsersIcon } from "lucide-react"
 
 interface GroupListProps {
   className?: string
@@ -37,16 +38,38 @@ export default async function GroupList({ className, dictionary, lang }: GroupLi
       <CreateGroupButton className="mx-3 md:mx-0 lg:w-full" dictionary={dictionary} />
 
       <MainContainer className="h-full md:h-auto w-auto flex flex-col max-md:rounded-b-none">
-        {groups.map((group) => (
-          <GroupListItem
-            key={group.id}
-            group={group}
-            localUid={localUid}
-            lang={lang}
-            dictionary={dictionary.groups.list}
-          />
-        ))}
+        {groups.length ? (
+          <>
+            {groups.map((group) => (
+              <GroupListItem
+                key={group.id}
+                group={group}
+                localUid={localUid}
+                lang={lang}
+                dictionary={dictionary.groups.list}
+              />
+            ))}
+          </>
+        ) : (
+          <NoGroups dictionary={dictionary} />
+        )}
       </MainContainer>
+    </div>
+  )
+}
+
+interface NoGroupsProps {
+  className?: string
+  dictionary: Dictionary
+}
+
+export const NoGroups: React.FC<NoGroupsProps> = ({ className, dictionary }) => {
+  return (
+    <div className={cn("flex flex-col w-full h-full my-4 items-center justify-center", className)}>
+      <UsersIcon className="w-16 h-16 text-secondary/50 mb-4" />
+      <p className="text-body text-center text-surface-foreground/50">
+        {dictionary.groups.emptyGroupsPage}
+      </p>
     </div>
   )
 }

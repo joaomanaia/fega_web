@@ -51,6 +51,7 @@
   "groups": {
     "startMessagingTitle": "Group messages",
     "startMessagingDescription": "Select a group or create a new one to start chatting with your friends",
+    "emptyGroupsPage": "You are not a member of any groups.",
     "members": {
       "optionsMenu": {
         "title": "Options",
