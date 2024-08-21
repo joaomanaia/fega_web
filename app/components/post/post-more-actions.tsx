@@ -21,11 +21,7 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
   const deletePostWithId = deletePost.bind(null, postId)
   const dictionary = useDictionary()["post"]
 
-  const [ConfirmRemoveDialog, confirmRemove] = useConfirm(
-    dictionary.delete.title,
-    dictionary.delete.description,
-    dictionary.delete.confirm
-  )
+  const [ConfirmRemoveDialog, confirmRemove] = useConfirm()
 
   const handleDeletePost = async () => {
     const ok = await confirmRemove()
@@ -46,7 +42,11 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
 
   return (
     <>
-      <ConfirmRemoveDialog />
+      <ConfirmRemoveDialog
+        title={dictionary.delete.title}
+        message={dictionary.delete.description}
+        confirmText={dictionary.delete.confirm}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="ml-auto text-surfaceVariant-foreground">

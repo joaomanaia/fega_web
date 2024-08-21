@@ -22,7 +22,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <main className=" mx-auto max-w-3xl flex flex-col w-full space-y-4 overflow-y-auto">
+    <main className=" mx-auto max-w-3xl flex flex-col w-full gap-y-4 overflow-y-auto">
       <GeneralSettings dictionary={dictionary} currentLocale={params.lang} />
       {user !== null && <UserSettings user={user} dictionary={dictionary.settings.user} />}
     </main>

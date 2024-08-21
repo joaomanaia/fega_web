@@ -40,11 +40,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
 
   const dictionary = useDictionary()["groups"]["members"]["optionsMenu"]
 
-  const [ConfirmRemoveDialog, confirmRemove] = useConfirm(
-    dictionary.remove.dialog.title,
-    formatString(dictionary.remove.dialog.message, { name: <b>{userName}</b> }),
-    dictionary.remove.dialog.confirm
-  )
+  const [ConfirmRemoveDialog, confirmRemove] = useConfirm()
 
   const handleRemove = async () => {
     const confirmed = await confirmRemove()
@@ -61,7 +57,13 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
 
   return (
     <>
-      {isLocalAdmin && !isLocalUser && <ConfirmRemoveDialog />}
+      {isLocalAdmin && !isLocalUser && (
+        <ConfirmRemoveDialog
+          title={dictionary.remove.dialog.title}
+          message={formatString(dictionary.remove.dialog.message, { name: <b>{userName}</b> })}
+          confirmText={dictionary.remove.dialog.confirm}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="text-inherit">

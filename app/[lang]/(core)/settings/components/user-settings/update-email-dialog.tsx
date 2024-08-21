@@ -40,10 +40,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
   dictionary,
   children,
 }) => {
-  const [InfoDialog, openInfoDialog] = useInfoDialog(
-    dictionary.infoDialogTitle,
-    dictionary.infoDialogDescription
-  )
+  const [InfoDialog, openInfoDialog] = useInfoDialog()
 
   const { isPending, execute } = useServerAction(updateUserEmail, {
     onError: ({ err }) => {
@@ -65,7 +62,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
 
   return (
     <>
-      <InfoDialog />
+      <InfoDialog title={dictionary.infoDialogTitle} message={dictionary.infoDialogDescription} />
       <Dialog>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>

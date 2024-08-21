@@ -7,6 +7,10 @@ import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/b
 import { useConfirm } from "@/hooks/use-confirm"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
 import { LargeButton, LargeButtonCollapsible } from "@/components/large-button"
+import { UserRoundXIcon } from "lucide-react"
+import { toast } from "sonner"
+import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
+import { useState } from "react"
 
 type UserSettingsDictionary = Dictionary["settings"]["user"]
 
@@ -22,10 +26,10 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
   const supabase = createClientComponentClient()
   const router = useRouter()
 
-  const [SignOutConfirmDialog, confirmSignOut] = useConfirm(
-    dictionary.signout.confirmButton.title,
-    dictionary.signout.confirmButton.message
-  )
+  const [SignOutConfirmDialog, confirmSignOut] = useConfirm()
+  const [DeleteAccountConfirmDialog, confirmDeleteAccount] = useConfirm()
+
+  const [deletingAccount, setDeletingAccount] = useState(false)
 
   const handleSignOut = async () => {
     const confirmed = await confirmSignOut()
@@ -36,9 +40,48 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
       router.refresh()
     }
   }
+
+  const handleDeleteAccount = async () => {
+    const confirmed = await confirmDeleteAccount()
+
+    if (confirmed) {
+      setDeletingAccount(true)
+
+      const { error } = await supabase.functions.invoke("delete-user")
+
+      setDeletingAccount(false)
+
+      if (error) {
+        toast.error(dictionary.deleteAccount.error)
+      } else {
+        await supabase.auth.signOut()
+        toast.success(dictionary.deleteAccount.success)
+        router.refresh()
+      }
+    }
+  }
+
+  if (deletingAccount) {
+    return (
+      <>
+        <DeletingAccountDialog dictionary={dictionary.deleteAccount} />
+      </>
+    )
+  }
+
   return (
     <>
-      <SignOutConfirmDialog />
+      <SignOutConfirmDialog
+        title={dictionary.signout.confirmButton.title}
+        message={dictionary.signout.confirmButton.message}
+      />
+      <DeleteAccountConfirmDialog
+        title={dictionary.deleteAccount.dialogTitle}
+        message={dictionary.deleteAccount.dialogDescription}
+        confirmText={dictionary.deleteAccount.dialogSubmitButton}
+        variant="error"
+        icon={UserRoundXIcon}
+      />
 
       <BaseSettingsContainer header={dictionary.header}>
         <div className="grid grid-cols-2 gap-2.5">
@@ -52,8 +95,8 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
 
           <LargeButtonCollapsible
             disabled
-            title="Change Password"
-            description="Update the password for your account."
+            title={dictionary.changePassword.title}
+            description={dictionary.changePassword.description}
             className="col-span-2"
           >
             <></>
@@ -67,11 +110,10 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
             className="text-center"
           />
           <LargeButton
-            disabled
             variant="error"
-            onClick={handleSignOut}
-            title="Delete Account"
-            description="Permanently delete your account and all associated data."
+            onClick={handleDeleteAccount}
+            title={dictionary.deleteAccount.title}
+            description={dictionary.deleteAccount.description}
             className="text-center"
           />
         </div>
@@ -79,22 +121,3 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
     </>
   )
 }
-
-/* export const UserSettings: React.FC<UserSettingsProps> = ({ dictionary }) => {
-    const supabase = createClientComponentClient()
-    const router = useRouter()
-  
-    const signOut = async () => {
-      await supabase.auth.signOut()
-  
-      router.refresh()
-    }
-  
-    return (
-      <BaseSettingsContainer header={dictionary.user}>
-        <Button variant="destructive" onClick={signOut} className="w-40">
-          {dictionary.signOut}
-        </Button>
-      </BaseSettingsContainer>
-    )
-  } */

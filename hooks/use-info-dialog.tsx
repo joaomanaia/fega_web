@@ -9,17 +9,19 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react"
 
-export const useInfoDialog = (
-  title: React.ReactNode,
-  message: React.ReactNode,
-): [() => JSX.Element, () => void] => {
+interface InfoDialogProps {
+  title: React.ReactNode
+  message: React.ReactNode
+}
+
+export const useInfoDialog = (): [React.FC<InfoDialogProps>, () => void] => {
   const [open, setOpen] = useState(false)
 
   const handleClose = () => setOpen(false)
 
   const openDialog = () => setOpen(true)
 
-  const InfoDialog = () => (
+  const InfoDialog = ({ title, message }: InfoDialogProps) => (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>

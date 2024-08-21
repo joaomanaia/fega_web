@@ -152,6 +152,21 @@
         "confirmEmailPlaceholder": "Confirma o novo email",
         "infoDialogTitle": "Atualização de email",
         "infoDialogDescription": "Um email de confirmação foi enviado para o teu novo email e antigo, por favor verifica a tua caixa de entrada."
+      },
+      "deleteAccount": {
+        "title": "Apagar conta",
+        "description": "Apaga permanentemente a tua conta do Fega e todos os dados associados.",
+        "dialogTitle": "Apagar conta",
+        "dialogDescription": "Tens a certeza que queres apagar a tua conta? Esta ação é irreversível.",
+        "dialogSubmitButton": "Apagar",
+        "deletingAccountTitle": "A apagar conta...",
+        "deletingAccountDescription": "A tua conta está a ser apagada. Isto pode demorar alguns momentos.",
+        "success": "Conta apagada com sucesso",
+        "error": "Erro ao apagar conta"
+      },
+      "changePassword": {
+        "title": "Alterar palavra-passe",
+        "description": "Altera a palavra-passe associada à tua conta."
       }
     }
   }

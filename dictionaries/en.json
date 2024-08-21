@@ -152,6 +152,21 @@
         "confirmEmailPlaceholder": "Confirm new email",
         "infoDialogTitle": "Email Update",
         "infoDialogDescription": "An email has been sent to your new and old email addresses, please follow the instructions to confirm the change."
+      },
+      "deleteAccount": {
+        "title": "Delete account",
+        "description": "Permanently delete your account and all associated data.",
+        "dialogTitle": "Delete account",
+        "dialogDescription": "Are you sure you want to delete your account? This action cannot be undone.",
+        "dialogSubmitButton": "Delete",
+        "deletingAccountTitle": "Deleting account...",
+        "deletingAccountDescription": "Your account is being deleted. This may take a few moments.",
+        "success": "Account deleted successfully",
+        "error": "Error deleting account"
+      },
+      "changePassword": {
+        "title": "Change password",
+        "description": "Change the password associated with your account."
       }
     }
   }

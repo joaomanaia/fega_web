@@ -10,14 +10,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useDictionary } from "@/hooks/use-get-dictionary"
+import { cn } from "@/lib/utils"
+import { type LucideIcon } from "lucide-react"
 import { useState } from "react"
 
-export const useConfirm = (
-  title: React.ReactNode,
-  message: React.ReactNode,
-  confirmText?: React.ReactNode,
+type DialogVariants = "default" | "error"
+
+interface ConfirmationDialogProps {
+  title: React.ReactNode
+  message: React.ReactNode
+  confirmText?: React.ReactNode
   cancelText?: React.ReactNode
-): [() => JSX.Element, () => Promise<boolean>] => {
+  hideCancel?: boolean
+  variant?: DialogVariants
+  className?: string
+  icon?: LucideIcon
+}
+
+export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<boolean>] => {
   const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null)
   const dictionary = useDictionary()
 
@@ -38,18 +48,35 @@ export const useConfirm = (
     handleClose()
   }
 
-  const ConfirmationDialog = () => (
+  const ConfirmationDialog = ({
+    title,
+    message,
+    confirmText,
+    cancelText,
+    variant,
+    hideCancel,
+    className,
+    icon: Icon,
+  }: ConfirmationDialogProps) => (
     <Dialog open={promise !== null} onOpenChange={handleCancel}>
-      <DialogContent>
+      <DialogContent
+        className={cn(
+          variant === "error" && "bg-error text-error-foreground border-none",
+          className
+        )}
+      >
         <DialogHeader>
+          {Icon && <Icon className="self-center size-10 mb-2" />}
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{message}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={handleCancel} variant="ghost">
-            {cancelText || dictionary.cancel}
-          </Button>
-          <Button onClick={handleConfirm} variant="ghost">
+          {!hideCancel && (
+            <Button onClick={handleCancel} variant={variant === "error" ? "destructive" : "ghost"}>
+              {cancelText || dictionary.cancel}
+            </Button>
+          )}
+          <Button onClick={handleConfirm} variant={variant === "error" ? "destructive" : "ghost"}>
             {confirmText || dictionary.confirm}
           </Button>
         </DialogFooter>
