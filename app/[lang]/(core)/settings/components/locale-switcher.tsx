@@ -37,7 +37,7 @@ export const LocaleSwitcher: React.FC<LocaleSwitcherProps> = ({ currentLocale, d
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="w-fit">
+          <Button variant="outline" className="w-fit rounded-2xl">
             <ChevronsUpDown size={16} className="mr-2" />
             {languages.find((lang) => lang.locale === currentLocale)?.name}
           </Button>

@@ -100,7 +100,7 @@ interface UserEmptyPostsContentProps {
 }
 
 const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({ userName, dictionary }) => (
-  <div className="flex flex-col items-center justify-center h-full mx-auto max-w-md text-center">
+  <div className="flex flex-col py-8 items-center justify-center h-full mx-auto max-w-md text-center">
     <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
     <h2 className="text-xl font-semibold">{dictionary.header}</h2>
     <p className="text-secondary/50 mt-2">

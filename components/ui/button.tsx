@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           "bg-error text-error-foreground hover:bg-error/90 disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] border-none",
         outline:
-          "border border-outline disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
+          "border border-surfaceVariant disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
         secondary:
           "bg-secondary text-secondary-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-secondary/80 border-none",
         tonal:
