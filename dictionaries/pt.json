@@ -29,7 +29,8 @@
   "editProfile": {
     "header": "Editar perfil",
     "fullName": "Nome completo",
-    "fullNameDescription": "Este é o teu nome público."
+    "fullNameDescription": "Este é o teu nome público.",
+    "success": "Perfil atualizado com sucesso"
   },
   "saveChanges": "Guardar alterações",
   "share": "Partilhar",

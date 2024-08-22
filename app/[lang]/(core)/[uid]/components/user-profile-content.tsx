@@ -1,9 +1,11 @@
-import { defaultImgUrl } from "@/core/common"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { EditProfileDialog } from "./edit-profile-dialog"
+"use client"
+
 import { type Dictionary } from "@/get-dictionary"
 import type UserType from "@/types/UserType"
 import { Skeleton } from "@/components/ui/skeleton"
+import { UserAvatar } from "@/app/components/user/user-avatar"
+import { Button } from "@/components/ui/button"
+import { useModal } from "@/hooks/use-modal-store"
 
 interface UserProfileContentProps {
   user: UserType
@@ -16,19 +18,26 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
   isLocalUser,
   dictionary,
 }) => {
+  const { onOpen } = useModal()
+
   return (
     <>
       <div className="flex items-center space-x-4">
-        <Avatar className="w-12 h-12">
-          <AvatarImage itemProp="image" src={user.avatar_url ?? defaultImgUrl} />
-          <AvatarFallback>{user.full_name}</AvatarFallback>
-        </Avatar>
-        <span itemProp="name" className="text-xl font-bold">
+        <UserAvatar src={user.avatar_url} name={user.full_name} className="size-12" />
+        <h2 itemProp="name" className="text-xl font-bold">
           {user.full_name}
-        </span>
+        </h2>
       </div>
       {user.bio && <p itemProp="description">{user.bio}</p>}
-      {isLocalUser && <EditProfileDialog user={user} dictionary={dictionary} />}
+      {isLocalUser && (
+        <Button
+          onClick={() => onOpen("edit-profile", { user })}
+          variant="outline"
+          className="w-full"
+        >
+          {dictionary.editProfileButton}
+        </Button>
+      )}
     </>
   )
 }

@@ -29,7 +29,8 @@
   "editProfile": {
     "header": "Edit profile",
     "fullName": "Full name",
-    "fullNameDescription": "This is your public display name."
+    "fullNameDescription": "This is your public display name.",
+    "success": "Profile updated successfully"
   },
   "saveChanges": "Save changes",
   "share": "Share",

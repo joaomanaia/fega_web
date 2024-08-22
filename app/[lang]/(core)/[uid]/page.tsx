@@ -1,6 +1,6 @@
 import { getLocalUserUid, getUserByUid } from "@/utils/user-utils"
 import CreatePost from "@/app/components/create-post/create-post"
-import { UserProfileContent } from "./components/UserProfileContent"
+import { UserProfileContent } from "./components/user-profile-content"
 import PostsContent from "../PostsContent"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { cn } from "@/lib/utils"

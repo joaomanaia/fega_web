@@ -1,6 +1,6 @@
 import { MainContainer } from "@/app/components/m3/main-container"
 import { cn } from "@/lib/utils"
-import { UserProfileSkeleton } from "../[uid]/components/UserProfileContent"
+import { UserProfileSkeleton } from "./components/user-profile-content"
 import { PostSkeleton } from "@/app/components/post/Post"
 
 export default function UserLoading() {

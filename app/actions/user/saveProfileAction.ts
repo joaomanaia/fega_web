@@ -13,6 +13,7 @@ const formSchema = z.object({
   bio: z.string().max(160, "Bio must be at most 160 characters long"),
 })
 
+// @deprecated
 export default async function saveProfile(formData: FormData) {
   try {
     const parsed = formSchema.parse({

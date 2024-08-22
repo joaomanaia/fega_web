@@ -16,3 +16,10 @@ export const updateEmailSchema = z
   })
 
 export type UpdateEmailSchemaValues = z.infer<typeof updateEmailSchema>
+
+export const updateProfileSchema = z.object({
+  full_name: z.string().min(2).max(30).trim(),
+  bio: z.string().max(160).trim().optional(),
+})
+
+export type UpdateProfileSchemaValues = z.infer<typeof updateProfileSchema>

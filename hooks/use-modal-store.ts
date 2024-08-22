@@ -1,6 +1,7 @@
 "use client"
 
 import type { GroupViewType } from "@/types/group/GroupType"
+import type UserType from "@/types/UserType"
 import { create } from "zustand"
 
 export type ModalType =
@@ -10,10 +11,12 @@ export type ModalType =
   | "exit-group"
   | "create-group"
   | "create-location"
+  | "edit-profile"
 
 interface ModalData {
   group?: GroupViewType
   locationName?: string
+  user?: UserType
 }
 
 interface Modal {
