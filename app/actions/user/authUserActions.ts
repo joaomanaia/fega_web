@@ -14,7 +14,7 @@ export const updateUserEmail = authenticatedProcedure
       throw new Error("Email is the same as the current email")
     }
 
-    /* const {
+    const {
       data: { user: newUser },
       error,
     } = await supabase.auth.updateUser(
@@ -32,5 +32,5 @@ export const updateUserEmail = authenticatedProcedure
       throw new Error("Failed to update email")
     }
 
-    return newUser */
+    return newUser
   })
