@@ -11,6 +11,17 @@ export const updateUserProfile = authenticatedProcedure
     const { supabase, user } = ctx
     const { full_name, bio } = input
 
+    const { error: authError } = await supabase.auth.updateUser({
+      data: {
+        full_name,
+        bio,
+      },
+    })
+
+    if (authError) {
+      throw new Error("Failed to update profile", { cause: authError })
+    }
+
     const { error } = await supabase
       .from("users")
       .update({
