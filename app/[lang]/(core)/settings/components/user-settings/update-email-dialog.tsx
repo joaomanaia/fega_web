@@ -1,6 +1,6 @@
 "use client"
 
-import { updateUserEmail } from "@/app/actions/user/authUserActions"
+import { updateUserEmail } from "@/app/actions/userActions"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,

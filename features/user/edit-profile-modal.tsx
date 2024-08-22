@@ -23,11 +23,11 @@ import { type Dictionary } from "@/get-dictionary"
 import { updateProfileSchema, UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
 import { Textarea } from "@/components/ui/textarea"
 import { useServerAction } from "zsa-react"
-import { updateUserProfile } from "@/app/actions/user/userActions"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
+import { updateUserProfile } from "@/app/actions/userActions"
 
 export const EditProfileModal: React.FC = () => {
   const {
