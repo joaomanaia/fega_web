@@ -81,6 +81,6 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   )
 }
 
-export async function generateSaticParams() {
+export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }))
 }
