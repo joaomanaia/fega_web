@@ -4,11 +4,6 @@ import { MainAppBar } from "../../components/m3/main-app-bar"
 import { Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 
-export const metadata = {
-  title: "Fega",
-  description: "The best social network in ega!",
-}
-
 interface LayoutProps {
   children?: React.ReactNode
   params: {

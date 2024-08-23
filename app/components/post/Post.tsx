@@ -64,9 +64,9 @@ const Post: React.FC<PostProps> = ({
         userProfileUrl={post.author_avatar_url!}
         lang={lang}
       />
-      <p itemProp="headline" className="text-lg">
+      <h3 itemProp="headline" className="text-lg">
         {post.description}
-      </p>
+      </h3>
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex items-center space-x-4">
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />

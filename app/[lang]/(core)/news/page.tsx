@@ -27,7 +27,7 @@ const getNews = async (): Promise<NewsItemType[]> => {
 
 export const metadata: Metadata = {
   title: "News",
-  description: "News page",
+  description: "Find out the latest news about the community of the app.",
 }
 
 interface NewsPageProps {
@@ -46,6 +46,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
 
   return (
     <MainContainer className="w-full h-full rounded-b-none md:rounded-b-3xl md:mb-3 overflow-y-scroll">
+      <h1 className="hidden">{dictionary.navdrawer.news}</h1>
       <ul className="w-full h-full items-start gap-2 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {news.map((item) => (
           <li key={item.id}>

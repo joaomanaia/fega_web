@@ -9,6 +9,11 @@ import { Link } from "@/components/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary, getDictionary } from "@/get-dictionary"
 import { Hint } from "@/components/hint"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Events"
+}
 
 const getEvents = async (): Promise<CalendarEvent[]> => {
   const supabase = createServerComponentClient()

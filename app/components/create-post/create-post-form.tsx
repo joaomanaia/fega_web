@@ -48,7 +48,7 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className, dicti
         className={cn("flex flex-col gap-4", className)}
         onSubmit={form.handleSubmit(handleSubmit)}
       >
-        <h2 className="text-2xl mt-4 mb-0">{dictionary.header}</h2>
+        <h3 className="text-2xl mt-4 mb-0">{dictionary.header}</h3>
         <FormField
           name="description"
           control={form.control}

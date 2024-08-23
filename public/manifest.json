@@ -8,8 +8,18 @@
   "description": "Best social network in ega!",
   "icons": [
     {
-      "src": "/fega_round-192x192.png",
+      "src": "/icon144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]

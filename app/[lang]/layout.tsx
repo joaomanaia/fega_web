@@ -17,12 +17,16 @@ import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
 
 export const metadata: Metadata = {
-  title: "Fega",
+  title: {
+    template: "%s - Fega",
+    default: "Fega",
+  },
   description: "The best social network in ega!",
   icons: {
     icon: "/favicon.ico",
   },
   manifest: "/manifest.json",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
   applicationName: "Fega",
 }
 
