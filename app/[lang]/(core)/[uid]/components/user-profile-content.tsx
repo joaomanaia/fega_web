@@ -24,9 +24,9 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
     <>
       <div className="flex items-center space-x-4">
         <UserAvatar src={user.avatar_url} name={user.full_name} className="size-12" />
-        <h2 itemProp="name" className="text-xl font-bold">
+        <h1 itemProp="name" className="text-xl font-bold">
           {user.full_name}
-        </h2>
+        </h1>
       </div>
       {user.bio && <p itemProp="description">{user.bio}</p>}
       {isLocalUser && (

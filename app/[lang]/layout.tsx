@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
   applicationName: "Fega",
+  openGraph: {
+    type: "website",
+    siteName: "Fega",
+    title: "Fega",
+    description: "The best social network in ega!",
+  }
 }
 
 const fontSans = FontSans({

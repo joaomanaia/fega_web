@@ -1,4 +1,4 @@
-import type { PostViewType, PostVoteType } from "@/types/PostType"
+import type { PostViewType } from "@/types/PostType"
 import PostImages from "./PostImages"
 import { useMemo } from "react"
 import moment from "moment"
@@ -68,7 +68,7 @@ const Post: React.FC<PostProps> = ({
         {post.description}
       </h3>
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-wrap items-center gap-4">
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
         <SharePostButton postId={post.id!} dictionary={dictionary.sharePostButton} />
       </div>

@@ -1,6 +1,8 @@
+import { uuidSchema, type UuidType } from "@/lib/schemas/primitive-schemas"
 import { createServerComponentClient } from "@/supabase"
 import type UserType from "@/types/UserType"
 import { type Session, type User } from "@supabase/supabase-js"
+import { cache } from "react"
 
 export const getPairUid = (uid1: string, uid2: string): string => {
   return uid1 < uid2 ? uid1 + uid2 : uid2 + uid1
@@ -45,7 +47,13 @@ export const getSession = async (): Promise<Session | null> => {
   return data.session ?? null
 }
 
-export const getUserByUid = async (uid: string): Promise<UserType | null> => {
+export const getUserByUid = cache(async (uid: UuidType): Promise<UserType | null> => {
+  // Validate the uid
+  const result = uuidSchema.safeParse(uid)
+  if (!result.success) {
+    return null
+  }
+
   const supabase = createServerComponentClient()
 
   const { data, error } = await supabase.from("users").select("*").eq("id", uid).single()
@@ -56,4 +64,4 @@ export const getUserByUid = async (uid: string): Promise<UserType | null> => {
   }
 
   return data
-}
+})

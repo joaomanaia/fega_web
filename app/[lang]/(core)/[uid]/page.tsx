@@ -20,18 +20,22 @@ interface UserPageProps {
 export async function generateMetadata({ params }: UserPageProps): Promise<Metadata> {
   const user = await getUserByUid(params.uid)
 
-  const title = user?.full_name || "User Profile"
+  if (!user) {
+    notFound()
+  }
+
+  const title = user.full_name || "User Profile"
 
   return {
     title: title,
-    description: user?.bio,
+    description: user.bio,
     openGraph: {
       type: "profile",
       title: title,
-      description: user?.bio ?? undefined,
+      description: user.bio ?? undefined,
       siteName: "Fega",
-      url: "https://fega.vercel.app/",
-      images: user?.avatar_url ?? undefined,
+      url: params.uid,
+      images: user.avatar_url ?? undefined,
     },
   }
 }
