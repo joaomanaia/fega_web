@@ -49,7 +49,7 @@ export async function PATCH(
       .from("post_votes")
       .upsert({ post_id: postId, vote_type: voteType })
       .eq("post_id", postId)
-      .eq("user_id", user.id)
+      .eq("uid", user.id)
       .select()
       .single()
 
