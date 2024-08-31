@@ -9,7 +9,6 @@ interface Data {
   text: string
   hideSocials?: boolean
   hideCopyUrl?: boolean
-  shareNativeIfAvailable?: boolean
 }
 
 interface ShareStore {

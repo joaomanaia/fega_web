@@ -22,7 +22,6 @@ export const SharePostButton: React.FC<SharePostButtonProps> = ({ postId, dictio
           dialogDescription: dictionary.sharePostDescription,
           url: `${process.env.NEXT_PUBLIC_APP_URL}/post/${postId}`,
           text: dictionary.sharePostQuote,
-          shareNativeIfAvailable: true,
         })
       }
     >
