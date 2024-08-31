@@ -15,6 +15,7 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.4",
     "@hookform/resolvers": "^3.9.0",
+    "@icons-pack/react-simple-icons": "^10.0.0",
     "@maptiler/leaflet-maptilersdk": "^2.0.0",
     "@material/material-color-utilities": "^0.3.0",
     "@mdx-js/loader": "^3.0.1",

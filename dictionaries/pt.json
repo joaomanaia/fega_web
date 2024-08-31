@@ -33,12 +33,14 @@
     "success": "Perfil atualizado com sucesso"
   },
   "saveChanges": "Guardar alterações",
-  "share": "Partilhar",
-  "sharePostButton": {
-    "button": "Partilhar",
-    "header": "Partilhar",
-    "description": "Copia o link abaixo e partilha com os teus amigos!",
-    "copy": "Copiar"
+  "share": {
+    "share": "Partilhar",
+    "copy": "Copiar",
+    "copiedToClipboard": "Copiado para a área de transferência!",
+    "failedToCopyToClipboard": "Falha ao copiar para a área de transferência",
+    "sharePostTitle": "Partilhar publicação",
+    "sharePostDescription": "Partilha esta publicação com os teus amigos",
+    "sharePostQuote": "Vê esta publicação no Fega!"
   },
   "events": {
     "emptyEventsPage": "Não há eventos futuros.",

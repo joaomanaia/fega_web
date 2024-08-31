@@ -70,7 +70,7 @@ const Post: React.FC<PostProps> = ({
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex flex-wrap items-center gap-4">
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
-        <SharePostButton postId={post.id!} dictionary={dictionary.sharePostButton} />
+        <SharePostButton postId={post.id!} dictionary={dictionary.share} />
       </div>
     </article>
   )

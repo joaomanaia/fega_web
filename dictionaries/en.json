@@ -33,12 +33,14 @@
     "success": "Profile updated successfully"
   },
   "saveChanges": "Save changes",
-  "share": "Share",
-  "sharePostButton": {
-    "button": "Share",
-    "header": "Share",
-    "description": "Copy the link below and share it with your friends!",
-    "copy": "Copy"
+  "share": {
+    "share": "Share",
+    "copy": "Copy",
+    "copiedToClipboard": "Copied to clipboard!",
+    "failedToCopyToClipboard": "Failed to copy to clipboard",
+    "sharePostTitle": "Share post",
+    "sharePostDescription": "Share this post with your friends",
+    "sharePostQuote": "Check out this post on Fega!"
   },
   "events": {
     "emptyEventsPage": "There are no upcoming events.",
