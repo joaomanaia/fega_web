@@ -1,20 +1,31 @@
+import type { Database } from "@/types/database.types"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import { MetadataRoute, type Route } from "next"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const client = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  const postsPages = await getPostsPages(client)
+
   return [
-    addPage("/", "weekly", 1),
-    addPage("/news", "monthly", 0.8),
-    addPage("/cameras", "yearly", 0.7),
-    addPage("/events", "monthly", 0.8),
-    addPage("/events/map", "never", 0.7),
-    addPage("/events/q2", "never", 0.64),
-    addPage("/events/mO", "never", 0.64),
-    addPage("/events/oj", "never", 0.64),
-    addPage("/events/vm", "never", 0.64),
-    addPage("/cameras/figueiradafoz-panoramica", "never", 0.64),
-    addPage("/cameras/figueiradafoz-buarcos", "never", 0.64),
-    addPage("/cameras/figueiradafoz-cabedelo", "never", 0.64),
-    addPage("/cameras/hoteloslo-coimbra", "never", 0.64),
+    addPage("/"),
+    addPage("/news"),
+    addPage("/cameras"),
+    addPage("/events"),
+    addPage("/events/map"),
+    addPage("/events/q2"),
+    addPage("/events/mO"),
+    addPage("/events/oj"),
+    addPage("/events/vm"),
+    addPage("/cameras/figueiradafoz-panoramica"),
+    addPage("/cameras/figueiradafoz-buarcos"),
+    addPage("/cameras/figueiradafoz-cabedelo"),
+    addPage("/cameras/hoteloslo-coimbra"),
+    addPage("/news/44ec1283-f21f-4de8-bac5-abe90a360112"),
+    ...postsPages,
   ]
 }
 
@@ -41,4 +52,11 @@ const addPage = (
       },
     },
   }
+}
+
+const getPostsPages = async (client: SupabaseClient) => {
+  const { data: posts, error: postsError } = await client.from("posts").select("id")
+  if (postsError) return []
+
+  return posts.map((post) => addPage(`/post/${post.id}`))
 }
