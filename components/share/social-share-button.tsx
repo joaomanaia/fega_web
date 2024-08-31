@@ -55,7 +55,7 @@ export const SocialShareButton: React.FC<SocialShareButtonProps> = ({
 
   return (
     <Hint label={social}>
-      <Button onClick={onClick} variant="outline" className="size-14 aspect-square" asChild>
+      <Button onClick={onClick} variant="outline" className="size-14 min-w-14 aspect-square" asChild>
         <Link target="_blank" rel="noreferrer" href={getShareUrl(social, url, text)}>
           {Icon}
         </Link>
