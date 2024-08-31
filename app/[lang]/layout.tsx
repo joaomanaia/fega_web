@@ -15,6 +15,7 @@ import DictionaryProvider from "@/hooks/use-get-dictionary"
 import { getDictionary } from "@/get-dictionary"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
+import { ShareDialogProvider } from "@/src/providers/share-dialog-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -78,6 +79,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
               <Toaster />
               <SonnerToaster />
               <ModalProvider />
+              <ShareDialogProvider />
             </DictionaryProvider>
           </QueryProvider>
         </ThemeProvider>

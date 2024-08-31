@@ -1,0 +1,61 @@
+import type { Meta, StoryObj } from "@storybook/react"
+
+import { ShareContent } from "../share/share-content"
+
+const meta = {
+  title: "Components/Share/ShareContent",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
+  argTypes: {
+    url: {
+      control: {
+        type: "text",
+      },
+    },
+    text: {
+      control: {
+        type: "text",
+      },
+    },
+    hideSocials: {
+      description: "Hide social media share buttons",
+      control: "boolean",
+    },
+  },
+  component: ShareContent,
+  render: (args, { loaded: { dictionary } }) => <ShareContent {...args} dictionary={dictionary} />,
+} satisfies Meta<typeof ShareContent>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
+  args: {
+    url: "https://example.com",
+    text: "Example text",
+    hideSocials: false,
+    hideCopyUrl: false,
+  },
+}
+
+export const OnlyCopyUrl: Story = {
+  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
+  args: {
+    url: "https://example.com",
+    text: "Example text",
+    hideSocials: true,
+  },
+}
+
+export const OnlySocials: Story = {
+  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
+  args: {
+    url: "https://example.com",
+    text: "Example text",
+    hideCopyUrl: true,
+  },
+}

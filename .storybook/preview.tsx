@@ -7,6 +7,8 @@ import { cn } from "../lib/utils"
 import { withThemeByClassName } from "@storybook/addon-themes"
 import { Toaster } from "sonner"
 import fegaTheme from "./themes"
+import { getDictionary } from "../get-dictionary"
+import DictionaryProvider from "../hooks/use-get-dictionary"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,12 +29,31 @@ const preview: Preview = {
   },
   globalTypes: {
     theme: { type: "string" },
+    locale: {
+      name: "Locale",
+      description: "Internationalization locale",
+      defaultValue: "en",
+      toolbar: {
+        icon: "globe",
+        items: [
+          { value: "en", right: "🇺🇸", title: "English" },
+          { value: "pt", right: "🇵🇹", title: "Português" },
+        ],
+      },
+    },
   },
+  loaders: [
+    async ({ globals }) => ({
+      dictionary: await getDictionary(globals.locale),
+    }),
+  ],
   decorators: [
-    (Story) => (
+    (Story, { loaded: { dictionary } }) => (
       <main className={cn("font-sans antialiased", fontSans.variable)}>
-        <Story />
-        <Toaster />
+        <DictionaryProvider dictionary={dictionary}>
+          <Story />
+          <Toaster />
+        </DictionaryProvider>
       </main>
     ),
     withThemeByClassName({
