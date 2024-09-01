@@ -10,6 +10,8 @@ import remarkGfm from "remark-gfm"
 import { createServerComponentClient } from "@/supabase"
 import { type Metadata } from "next"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
+import { cache } from "react"
+import { notFound } from "next/navigation"
 
 interface EventIdPageProps {
   params: {
@@ -17,7 +19,7 @@ interface EventIdPageProps {
   }
 }
 
-const getEventById = async (shortId: string): Promise<CalendarEvent | null> => {
+const getEventById = cache(async (shortId: string): Promise<CalendarEvent | null> => {
   const supabase = createServerComponentClient()
 
   const { data: event, error } = await supabase
@@ -27,23 +29,20 @@ const getEventById = async (shortId: string): Promise<CalendarEvent | null> => {
     .single()
 
   if (error) {
-    console.error(error)
     return null
   }
 
   return calendarEntityToModel(event)
-}
+})
 
 export async function generateMetadata({ params }: EventIdPageProps): Promise<Metadata> {
   const eventId = params.event_id
 
-  if (!eventId) {
-    throw new Error("No newsId provided")
-  }
-
   const event = await getEventById(eventId)
 
-  const images = event?.coverImage ? [event.coverImage] : []
+  if (!event) {
+    notFound()
+  }
 
   return {
     title: event?.title,
@@ -51,7 +50,8 @@ export async function generateMetadata({ params }: EventIdPageProps): Promise<Me
     openGraph: {
       title: event?.title,
       description: event?.description,
-      images: images,
+      images: event?.coverImage,
+      url: `/events/${event.id}`,
     },
   }
 }
@@ -60,7 +60,7 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
   const event = await getEventById(params.event_id)
 
   if (!event) {
-    return <h1>Event not found</h1>
+    notFound()
   }
 
   const jsonLd = createEventJsonLd(event)
@@ -111,5 +111,3 @@ export default async function EventIdPage({ params }: EventIdPageProps) {
     </MainContainer>
   )
 }
-
-// <h1 className="text-2xl lg:text-4xl xl:text-5xl w-full font-bold mt-4">{event.title}</h1>

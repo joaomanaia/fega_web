@@ -9,7 +9,7 @@ import { Link } from "@/components/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary, getDictionary } from "@/get-dictionary"
 import { Hint } from "@/components/hint"
-import { Metadata } from "next"
+import { type Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Events"
@@ -26,10 +26,7 @@ const getEvents = async (): Promise<CalendarEvent[]> => {
     .gte("end_date", now.toISOString())
     .order("start_date", { ascending: true })
 
-  if (error) {
-    console.error(error)
-    return []
-  }
+  if (error) return []
 
   return events.map(calendarEntityToModel)
 }

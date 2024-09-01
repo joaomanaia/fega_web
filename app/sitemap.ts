@@ -20,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     addPage("/events/mO"),
     addPage("/events/oj"),
     addPage("/events/vm"),
+    addPage("/events/wR"),
     addPage("/cameras/figueiradafoz-panoramica"),
     addPage("/cameras/figueiradafoz-buarcos"),
     addPage("/cameras/figueiradafoz-cabedelo"),
