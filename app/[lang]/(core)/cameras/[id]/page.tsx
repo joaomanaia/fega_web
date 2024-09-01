@@ -7,16 +7,18 @@ import VideoComponent from "./components/VideoComponent"
 import ImageVideoComponent from "./components/ImageVideoComponent"
 import { type Tables } from "@/types/database.types"
 import { notFound } from "next/navigation"
+import { cache } from "react"
 
 type CameraType = Tables<"cameras">
 
-const getCameraById = async (id: string): Promise<CameraType | null> => {
+const getCameraById = cache(async (id: string): Promise<CameraType | null> => {
   const supabase = createServerComponentClient()
 
-  const { data } = await supabase.from("cameras").select("*").eq("id", id).single()
+  const { data, error } = await supabase.from("cameras").select("*").eq("id", id).single()
 
-  return data as CameraType | null
-}
+  if (error) return null
+  return data
+})
 
 type CameraPageProps = {
   params: { id: string }
@@ -25,11 +27,17 @@ type CameraPageProps = {
 export async function generateMetadata({ params }: CameraPageProps): Promise<Metadata> {
   const camera = await getCameraById(params.id)
 
-  if (!camera) return { title: "Camera not found" }
+  if (!camera) notFound()
 
   return {
     title: camera.name,
     description: camera.description,
+    openGraph: {
+      title: camera.name,
+      description: camera.description,
+      images: camera.image_poster,
+      url: `/cameras/${camera.id}`,
+    },
   }
 }
 
@@ -52,11 +60,9 @@ export default async function CameraPage({ params }: CameraPageProps) {
       </p>
 
       {camera.original_camera_url && (
-        <Link href={camera.original_camera_url}>
-          <Button variant="outline" className="w-fit mb-4">
-            Ver original
-          </Button>
-        </Link>
+        <Button variant="outline" className="w-fit mb-4" asChild>
+          <Link href={camera.original_camera_url}>Ver original</Link>
+        </Button>
       )}
 
       {camera.video ? (

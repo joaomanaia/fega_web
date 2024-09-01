@@ -8,6 +8,8 @@ import { GroupMessageHeader } from "./components/group-message-header"
 import { MessagesWithForm } from "./components/messages-with-form"
 import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
+import { cache } from "react"
+import type { Metadata } from "next"
 
 interface GroupMessagePageProps {
   params: {
@@ -16,13 +18,13 @@ interface GroupMessagePageProps {
   }
 }
 
-const getGroup = async (groupId: string): Promise<GroupViewType | null> => {
+const getGroup = cache(async (groupId: string): Promise<GroupViewType | null> => {
   const supabase = createServerComponentClient()
 
   const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
 
   return group ?? null
-}
+})
 
 const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]> => {
   const supabase = createServerComponentClient()
@@ -38,6 +40,16 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
 }
 
 export const dynamic = "force-dynamic"
+
+export async function generateMetadata({ params }: GroupMessagePageProps): Promise<Metadata> {
+  const group = await getGroup(params.id)
+
+  if (!group) return redirect("/groups")
+
+  return {
+    title: group.name,
+  }
+}
 
 export default async function GroupMessagePage({ params }: GroupMessagePageProps) {
   const localUserUid = await getLocalUserUid()

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary } from "@/get-dictionary"
 import { GroupOptionsDropdown } from "@/app/[lang]/(core)/groups/components/group-options"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType
@@ -29,18 +30,16 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({
     >
       <BackIconButton className="text-surfaceVariant-foreground mr-2" />
 
-      <Link href={`/groups/${group.id}/info`}>
-        <Avatar>
-          <AvatarImage src={group.icon_url ?? undefined} alt={group.name ?? undefined} />
-          <AvatarFallback>{group.name?.at(0)?.toUpperCase()}</AvatarFallback>
-        </Avatar>
+      <Link lang={lang} href={`/groups/${group.id}/info`}>
+        <UserAvatar src={group.icon_url} name={group.name} />
       </Link>
 
       <Link
+        lang={lang}
         href={`/groups/${group.id}/info`}
         className="ml-2 grow truncate text-surfaceVariant-foreground"
       >
-        <span>{group.name}</span>
+        {group.name}
       </Link>
 
       <GroupOptionsDropdown

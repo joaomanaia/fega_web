@@ -1,4 +1,9 @@
 import { BaseNotFound } from "@/app/components/base-not-found"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Camera not found",
+}
 
 export default function CameraNotFound() {
   return (
