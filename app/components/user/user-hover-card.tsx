@@ -62,13 +62,14 @@ const UserHoverCardContent = ({ uid }: UserHoverCardContent) => {
   return (
     <div className="flex space-x-4">
       <UserAvatar src={user?.avatar_url} name={user.full_name} />
-      <div className="flex flex-col gap-y-2 self-center">
-        <h4 className="text-sm font-semibold">{user.full_name}</h4>
-        {user.bio && <p className="text-sm mb-1">{user.bio}</p>}
+      <div className="flex flex-col self-center">
+        <h4 className="text-base font-semibold">{user.full_name}</h4>
+        <span className="text-sm text-foreground/60 mb-2.5">{`@${user.username}`}</span>
+        {user.bio && <p className="text-sm mb-2.5">{user.bio}</p>}
         {user.created_at && (
           <div className="flex items-center">
-            <CalendarDaysIcon className="mr-2 h-4 w-4 opacity-70" />
-            <span className="text-xs text-muted-foreground">
+            <CalendarDaysIcon className="mr-2 h-4 w-4 text-foreground/80" />
+            <span className="text-xs text-foreground/80">
               Joined {getRelativeTime(user.created_at)}
             </span>
           </div>

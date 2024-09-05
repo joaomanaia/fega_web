@@ -10,6 +10,7 @@ import { MainDrawer } from "./drawer/main-drawer"
 import { MenuIcon } from "lucide-react"
 import { type Dictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 
 interface HeaderProps {
   authUser: User | null
@@ -59,10 +60,7 @@ export const MainAppBar: React.FC<HeaderProps> = ({ authUser, dictionary, lang }
           <Tooltip>
             <TooltipTrigger asChild>
               <Link href={userData.actionLink}>
-                <Avatar>
-                  <AvatarImage src={userData.avatar ?? undefined} />
-                  <AvatarFallback>{userData.name ?? "Make login"}</AvatarFallback>
-                </Avatar>
+                <UserAvatar src={userData.avatar} name={userData.name} />
               </Link>
             </TooltipTrigger>
             <TooltipContent>{userData.name ?? "Make login"}</TooltipContent>
