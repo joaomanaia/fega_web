@@ -1,5 +1,5 @@
-import { Database } from "./database.types"
+import type { Tables } from "./database.types"
 
-type UserType = Database["public"]["Tables"]["users"]["Row"]
+type UserType = Tables<"users">
 
 export default UserType
