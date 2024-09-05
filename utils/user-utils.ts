@@ -65,3 +65,27 @@ export const getUserByUid = cache(async (uid: UuidType): Promise<UserType | null
 
   return data
 })
+
+export const getUserByUidOrUsername = cache(
+  async (uidOrUsername: string): Promise<UserType | null> => {
+    const supabase = createServerComponentClient()
+
+    let query = supabase.from("users").select("*")
+
+    // Check if the input is a UUID or a username
+    if (uuidSchema.safeParse(uidOrUsername).success) {
+      query = query.eq("id", uidOrUsername)
+    } else {
+      query = query.eq("username", uidOrUsername)
+    }
+
+    const { data, error } = await query.single()
+
+    if (error) {
+      console.log(error)
+      return null
+    }
+
+    return data
+  }
+)
