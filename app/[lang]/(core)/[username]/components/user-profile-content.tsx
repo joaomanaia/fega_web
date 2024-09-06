@@ -28,7 +28,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
           <h1 itemProp="name" className="text-xl font-bold">
             {user.full_name}
           </h1>
-          <span className="text-foreground/50">{`@${user.username}`}</span>
+          <span itemProp="alternateName" className="text-foreground/50">{`@${user.username}`}</span>
         </div>
       </div>
       {user.bio && <p itemProp="description">{user.bio}</p>}

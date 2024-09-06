@@ -45,7 +45,6 @@ const Post: React.FC<PostProps> = ({
     <article
       itemScope
       itemType="https://schema.org/SocialMediaPosting"
-      itemID={post.id!}
       itemProp={schemaHasPart ? "hasPart" : undefined}
       className={cn(
         "rounded-3xl flex flex-col gap-4",
@@ -55,12 +54,16 @@ const Post: React.FC<PostProps> = ({
     >
       <meta itemProp="datePublished" content={post.created_at!} />
       <meta itemProp="text" content={post.description!} />
+      <meta itemProp="id" content={post.id!} />
+      <meta itemProp="url" content={`/post/${post.id}`} />
+
       <PostUserHeader
         uid={post.uid!}
         postId={post.id!}
         localUid={localUid}
         relativeCreatedAt={relativeCreatedAt}
-        userName={post.author_full_name!}
+        username={post.author_username!}
+        userFullname={post.author_full_name!}
         userProfileUrl={post.author_avatar_url!}
         lang={lang}
       />
@@ -81,7 +84,8 @@ interface PostUserHeaderProps {
   localUid: string | null
   relativeCreatedAt: string
   uid: string
-  userName: string
+  username: string
+  userFullname: string
   userProfileUrl: string | null
   lang: Locale
 }
@@ -91,12 +95,11 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
   uid,
   localUid,
   relativeCreatedAt,
-  userName,
+  username,
+  userFullname,
   userProfileUrl,
   lang,
 }) => {
-  const profileUrl = `/${uid}`
-
   return (
     <div
       itemScope
@@ -106,19 +109,19 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
     >
       <meta itemProp="identifier" content={uid} />
       <UserHoverCard uid={uid}>
-        <Link href={profileUrl} lang={lang}>
-          <UserAvatar src={userProfileUrl} name={userName} />
+        <Link href={`/${username}`} lang={lang}>
+          <UserAvatar src={userProfileUrl} name={userFullname} />
         </Link>
       </UserHoverCard>
       <div className="flex flex-col ml-3 space-y-1 justify-center">
         <UserHoverCard uid={uid}>
           <Link
             itemProp="url"
-            href={profileUrl}
+            href={`/${username}`}
             lang={lang}
             className="font-semibold my-0 next-link"
           >
-            <span itemProp="name">{userName}</span>
+            <span itemProp="name">{userFullname}</span>
           </Link>
         </UserHoverCard>
         <p className="text-xs text-inherit">{relativeCreatedAt}</p>

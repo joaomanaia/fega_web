@@ -29,16 +29,18 @@ export const UserHoverCard: React.FC<UserHoverCardProps> = ({ uid, children }) =
 }
 
 interface UserHoverCardWithLinkProps extends UserHoverCardProps {
+  username: string
   lang: Locale
 }
 
 export const UserHoverCardWithLink: React.FC<UserHoverCardWithLinkProps> = ({
   lang,
   uid,
+  username,
   children,
 }) => {
   return (
-    <Link lang={lang} href={`/${uid}`}>
+    <Link lang={lang} href={`/${username}`}>
       <UserHoverCard uid={uid}>{children}</UserHoverCard>
     </Link>
   )

@@ -651,6 +651,7 @@ export type Database = {
         Row: {
           author_avatar_url: string | null
           author_full_name: string | null
+          author_username: string | null
           created_at: string | null
           description: string | null
           id: string | null

@@ -1,4 +1,4 @@
-import { getLocalUserUid, getUserByUid, getUserByUidOrUsername } from "@/utils/user-utils"
+import { getLocalUserUid, getUserByUsername } from "@/utils/user-utils"
 import CreatePost from "@/app/components/create-post/create-post"
 import { UserProfileContent } from "./components/user-profile-content"
 import PostsContent from "../PostsContent"
@@ -13,18 +13,18 @@ import { FileWarningIcon } from "lucide-react"
 interface UserPageProps {
   params: {
     lang: Locale
-    uid: string // User ID or username
+    username: string
   }
 }
 
 export async function generateMetadata({ params }: UserPageProps): Promise<Metadata> {
-  const user = await getUserByUidOrUsername(params.uid)
+  const user = await getUserByUsername(params.username)
 
   if (!user) {
     notFound()
   }
 
-  const title = user.full_name || "User Profile"
+  const title = user.full_name ?? user.username
 
   return {
     title: title,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: UserPageProps): Promise<Metad
 }
 
 export default async function UserPage({ params }: UserPageProps) {
-  const user = await getUserByUidOrUsername(params.uid)
+  const user = await getUserByUsername(params.username)
 
   if (!user) {
     notFound()
@@ -89,7 +89,7 @@ export default async function UserPage({ params }: UserPageProps) {
           EmptyPostsContent={() => (
             <UserEmptyPostsContent
               userName={user.full_name ?? "User"}
-              dictionary={dictionary["post"]["emptyPosts"]}
+              dictionary={dictionary.post.emptyPosts}
             />
           )}
         />
