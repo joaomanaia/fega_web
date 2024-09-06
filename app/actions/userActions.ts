@@ -3,16 +3,36 @@
 import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
 import { updateEmailSchema, updateProfileSchema } from "@/lib/schemas/user-schemas"
 import { revalidatePath } from "next/cache"
+import { ZSAError } from "zsa"
 
 export const updateUserProfile = authenticatedProcedure
   .createServerAction()
   .input(updateProfileSchema)
   .handler(async ({ input, ctx }) => {
     const { supabase, user } = ctx
-    const { full_name, bio } = input
+    const { username, full_name, bio } = input
+
+    const { error } = await supabase
+      .from("users")
+      .update({
+        username,
+        full_name,
+        bio,
+      })
+      .eq("id", user.id)
+
+    if (error) {
+      // Unique constraint violation
+      if (error?.code === "23505") {
+        throw new ZSAError("CONFLICT", "Username is already taken")
+      }
+
+      throw new Error("Failed to update profile", { cause: error })
+    }
 
     const { error: authError } = await supabase.auth.updateUser({
       data: {
+        username,
         full_name,
         bio,
       },
@@ -20,18 +40,6 @@ export const updateUserProfile = authenticatedProcedure
 
     if (authError) {
       throw new Error("Failed to update profile", { cause: authError })
-    }
-
-    const { error } = await supabase
-      .from("users")
-      .update({
-        full_name,
-        bio,
-      })
-      .eq("id", user.id)
-
-    if (error) {
-      throw new Error("Failed to update profile", { cause: error })
     }
 
     revalidatePath(`/user/${user.id}`)

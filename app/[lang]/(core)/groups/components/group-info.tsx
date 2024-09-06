@@ -36,6 +36,7 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
         groupName={group.name ?? "Unknown"}
         iconUrl={group.icon_url ?? undefined}
         authorUid={group.created_by}
+        authorUsername={group.author_username}
         authorName={group.author_name}
         createdAt={groupCreatedAt}
         dictionary={dictionary}
@@ -51,6 +52,7 @@ interface GroupInfoHeaderProps {
   groupName: string
   iconUrl?: string
   authorUid: string | null
+  authorUsername: string | null
   authorName: string | null
   createdAt: string
   lang: Locale
@@ -61,6 +63,7 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
   groupName,
   iconUrl,
   authorUid,
+  authorUsername,
   authorName,
   createdAt,
   lang,
@@ -72,6 +75,7 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
       <CreatedBy
         authorUid={authorUid}
         authorName={authorName}
+        authorUsername={authorUsername}
         createdAt={createdAt}
         lang={lang}
         dictionary={dictionary}
@@ -82,6 +86,7 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
 
 interface CreatedByProps {
   authorUid: string | null
+  authorUsername: string | null
   authorName: string | null
   createdAt: string
   lang: Locale
@@ -90,12 +95,13 @@ interface CreatedByProps {
 
 const CreatedBy: React.FC<CreatedByProps> = ({
   authorUid,
+  authorUsername,
   authorName,
   createdAt,
   lang,
   dictionary,
 }) => {
-  if (!authorUid || !authorName) {
+  if (!authorUid || !authorName || !authorUsername) {
     return <p>{formatString(dictionary.createdByUnknown, { createdAt: createdAt })}</p>
   }
 
@@ -103,7 +109,7 @@ const CreatedBy: React.FC<CreatedByProps> = ({
     <p>
       {formatString(dictionary.createdBy, {
         name: (
-          <UserHoverCardWithLink lang={lang} uid={authorUid}>
+          <UserHoverCardWithLink lang={lang} uid={authorUid} username={authorUsername}>
             <b className="hover:underline">{authorName}</b>
           </UserHoverCardWithLink>
         ),

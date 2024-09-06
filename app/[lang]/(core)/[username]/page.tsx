@@ -1,4 +1,4 @@
-import { getLocalUserUid, getUserByUid } from "@/utils/user-utils"
+import { getLocalUserUid, getUserByUsername } from "@/utils/user-utils"
 import CreatePost from "@/app/components/create-post/create-post"
 import { UserProfileContent } from "./components/user-profile-content"
 import PostsContent from "../PostsContent"
@@ -13,18 +13,18 @@ import { FileWarningIcon } from "lucide-react"
 interface UserPageProps {
   params: {
     lang: Locale
-    uid: string
+    username: string
   }
 }
 
 export async function generateMetadata({ params }: UserPageProps): Promise<Metadata> {
-  const user = await getUserByUid(params.uid)
+  const user = await getUserByUsername(params.username)
 
   if (!user) {
     notFound()
   }
 
-  const title = user.full_name || "User Profile"
+  const title = user.full_name ?? user.username
 
   return {
     title: title,
@@ -34,21 +34,21 @@ export async function generateMetadata({ params }: UserPageProps): Promise<Metad
       title: title,
       description: user.bio ?? undefined,
       siteName: "Fega",
-      url: params.uid,
+      url: user.username,
       images: user.avatar_url ?? undefined,
     },
   }
 }
 
 export default async function UserPage({ params }: UserPageProps) {
-  const user = await getUserByUid(params.uid)
+  const user = await getUserByUsername(params.username)
 
   if (!user) {
     notFound()
   }
 
   const localUserUid = await getLocalUserUid()
-  const isLocalUser = localUserUid === params.uid
+  const isLocalUser = localUserUid === user.id
 
   const dictionary = await getDictionary(params.lang)
 
@@ -82,14 +82,14 @@ export default async function UserPage({ params }: UserPageProps) {
       <MainContainer className="flex flex-col gap-y-4 md:gap-y-6 h-full md:h-fit lg:w-full rounded-b-none md:rounded-[30px] lg:overflow-auto">
         <PostsContent
           schemaHasPart // Has part of the main entity
-          uid={params.uid}
+          uid={user.id}
           localUid={localUserUid}
           lang={params.lang}
           dictionary={dictionary}
           EmptyPostsContent={() => (
             <UserEmptyPostsContent
               userName={user.full_name ?? "User"}
-              dictionary={dictionary["post"]["emptyPosts"]}
+              dictionary={dictionary.post.emptyPosts}
             />
           )}
         />

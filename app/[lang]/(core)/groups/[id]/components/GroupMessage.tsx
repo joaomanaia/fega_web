@@ -48,7 +48,8 @@ type GroupMessageProps = {
   createdAt: Date
   groupId: string
   uid: string
-  userName: string
+  username: string
+  userFullname: string
   userAvatarUrl: string | null
   byLocalUser: boolean
   hasMessageAbove: boolean
@@ -65,7 +66,8 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   createdAt,
   uid,
   groupId,
-  userName,
+  username,
+  userFullname,
   userAvatarUrl,
   byLocalUser,
   hasMessageAbove,
@@ -105,15 +107,15 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
     <li className="flex flex-col w-full group" id={messageId}>
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
-          <Link href={`/${uid}`}>
+          <Link href={`/${username}`}>
             <Avatar className="h-4 w-4">
               <AvatarImage src={userAvatarUrl ?? undefined} />
-              <AvatarFallback>{userName}</AvatarFallback>
+              <AvatarFallback>{userFullname}</AvatarFallback>
             </Avatar>
           </Link>
 
-          <Link href={`/${uid}`}>
-            <p className="my-0">{userName}</p>
+          <Link href={`/${username}`}>
+            <p className="my-0">{userFullname}</p>
           </Link>
         </div>
       )}
@@ -126,7 +128,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
       >
         <>
           <Button
-            onClick={() => onReplyClick({ messageId, replyToName: userName, message })}
+            onClick={() => onReplyClick({ messageId, replyToName: userFullname, message })}
             variant="ghost"
             size="icon"
             className="hidden group-hover:inline-flex"

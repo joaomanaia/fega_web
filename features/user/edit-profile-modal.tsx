@@ -65,6 +65,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
   const form = useForm<UpdateProfileSchemaValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
+      username: user.username,
       full_name: user.full_name ?? "",
       bio: user.bio ?? "",
     },
@@ -72,7 +73,14 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
 
   const { isPending, execute } = useServerAction(updateUserProfile, {
     onError: ({ err }) => {
-      toast.error(err.message)
+      if (err.code === "CONFLICT") {
+        form.setError("username", {
+          type: "manual",
+          message: "Username is already taken",
+        })
+      } else {
+        toast.error(err.message)
+      }
     },
     onSuccess: () => {
       toast.success(dictionary.editProfile.success)
@@ -91,6 +99,24 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
             }
           })}
         >
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{dictionary.editProfile.username}</FormLabel>
+                <FormControl>
+                  <Input
+                    className="border-none"
+                    placeholder={dictionary.editProfile.username}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="full_name"

@@ -62,9 +62,10 @@ export async function GroupMembers({ group, lang, isDialog, dictionary }: GroupM
             <GroupMember
               key={member.uid}
               groupId={group.id!}
-              uid={member.uid ?? ""}
-              full_name={member.full_name ?? ""}
-              avatar_url={member.avatar_url ?? ""}
+              uid={member.uid!}
+              username={member.username!}
+              fullName={member.full_name}
+              avatarUrl={member.avatar_url}
               localUid={localUid}
               isLocalAdmin={group.is_owner ?? false}
               lang={lang}

@@ -28,6 +28,7 @@
   "editProfileButton": "Edit profile",
   "editProfile": {
     "header": "Edit profile",
+    "username": "Username",
     "fullName": "Full name",
     "fullNameDescription": "This is your public display name.",
     "success": "Profile updated successfully"

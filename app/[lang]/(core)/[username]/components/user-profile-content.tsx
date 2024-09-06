@@ -24,9 +24,12 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
     <>
       <div className="flex items-center space-x-4">
         <UserAvatar src={user.avatar_url} name={user.full_name} className="size-12" />
-        <h1 itemProp="name" className="text-xl font-bold">
-          {user.full_name}
-        </h1>
+        <div>
+          <h1 itemProp="name" className="text-xl font-bold">
+            {user.full_name}
+          </h1>
+          <span itemProp="alternateName" className="text-foreground/50">{`@${user.username}`}</span>
+        </div>
       </div>
       {user.bio && <p itemProp="description">{user.bio}</p>}
       {isLocalUser && (
