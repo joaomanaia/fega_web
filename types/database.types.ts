@@ -480,6 +480,7 @@ export type Database = {
           uid: string | null
           user_avatar_url: string | null
           user_full_name: string | null
+          user_username: string | null
         }
         Relationships: [
           {
@@ -540,6 +541,7 @@ export type Database = {
           full_name: string | null
           group_id: string | null
           uid: string | null
+          username: string | null
         }
         Relationships: [
           {
@@ -574,7 +576,9 @@ export type Database = {
       }
       group_view: {
         Row: {
+          author_avatar_url: string | null
           author_name: string | null
+          author_username: string | null
           created_at: string | null
           created_by: string | null
           icon_url: string | null
@@ -595,7 +599,9 @@ export type Database = {
       }
       group_with_last_message_view: {
         Row: {
+          author_avatar_url: string | null
           author_name: string | null
+          author_username: string | null
           created_at: string | null
           created_by: string | null
           icon_url: string | null

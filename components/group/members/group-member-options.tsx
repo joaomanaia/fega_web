@@ -21,7 +21,8 @@ import { type Locale } from "@/i18n-config"
 interface MemberOptionsMenuProps {
   groupId: string
   uid: string
-  userName: string
+  username: string
+  fullName: string | null
   localUid: string
   isLocalAdmin: boolean
   lang: Locale
@@ -30,7 +31,8 @@ interface MemberOptionsMenuProps {
 export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
   groupId,
   uid,
-  userName,
+  username,
+  fullName,
   localUid,
   isLocalAdmin,
   lang,
@@ -48,9 +50,9 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     if (confirmed) {
       try {
         await removeParticipantWithUid()
-        toast.success(formatString(dictionary.remove.onSuccess, { name: <b>{userName}</b> }))
+        toast.success(formatString(dictionary.remove.onSuccess, { name: <b>{fullName}</b> }))
       } catch (error) {
-        toast.error(formatString(dictionary.remove.onError, { name: <b>{userName}</b> }))
+        toast.error(formatString(dictionary.remove.onError, { name: <b>{fullName}</b> }))
       }
     }
   }
@@ -60,7 +62,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
       {isLocalAdmin && !isLocalUser && (
         <ConfirmRemoveDialog
           title={dictionary.remove.dialog.title}
-          message={formatString(dictionary.remove.dialog.message, { name: <b>{userName}</b> })}
+          message={formatString(dictionary.remove.dialog.message, { name: <b>{fullName}</b> })}
           confirmText={dictionary.remove.dialog.confirm}
         />
       )}
@@ -73,7 +75,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
         <DropdownMenuContent>
           <DropdownMenuLabel>{dictionary.title}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link lang={lang} href={`/${uid}`}>
+            <Link lang={lang} href={`/${username}`}>
               {dictionary.viewProfile}
             </Link>
           </DropdownMenuItem>

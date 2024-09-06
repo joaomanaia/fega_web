@@ -5,6 +5,7 @@ type GroupMessageType = Tables<"group_messages">
 export default GroupMessageType
 
 export type GroupMessageWithUserType = GroupMessageType & {
+  user_username: string
   user_full_name: string
   user_avatar_url: string
   reply_message?: string

@@ -20,6 +20,7 @@ interface RealtimeMessagesProps {
 
 type MessageProfile = {
   id: string
+  username: string
   full_name: string
   avatar_url: string
 }
@@ -37,6 +38,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   const [cachedProfiles, setCachedProfiles] = useState<MessageProfile[]>(
     serverMessages.map((message) => ({
       id: message.uid,
+      username: message.user_username,
       full_name: message.user_full_name,
       avatar_url: message.user_avatar_url,
     }))
@@ -58,6 +60,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
       const profile: MessageProfile = {
         id: user.id,
+        username: user.username,
         full_name: user.full_name ?? "Unknown",
         avatar_url: user.avatar_url ?? "",
       }
@@ -103,6 +106,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
         if (replyMessage) {
           const replyMessageUser = {
+            user_username: user.full_name,
             user_full_name: user.full_name,
             user_avatar_url: user.avatar_url,
           }
@@ -117,6 +121,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
       } else {
         const newMessageWithUser: GroupMessageWithUserType = {
           ...newMessage,
+          user_username: user.full_name,
           user_full_name: user.full_name,
           user_avatar_url: user.avatar_url,
         }
@@ -142,6 +147,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
       const newMessage: GroupMessageWithUserType = {
         ...updatedMessage,
+        user_username: oldMessage.user_username,
         user_full_name: oldMessage.user_full_name,
         user_avatar_url: oldMessage.user_avatar_url,
         reply_message: oldMessage.reply_message,
@@ -206,8 +212,9 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
               createdAt={new Date(message.created_at!)}
               groupId={message.group_id!}
               uid={message.uid!}
-              userName={message.user_full_name!}
-              userAvatarUrl={message.user_avatar_url!}
+              username={message.user_username}
+              userFullname={message.user_full_name}
+              userAvatarUrl={message.user_avatar_url}
               byLocalUser={message.uid === localUserUid}
               hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
               hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
