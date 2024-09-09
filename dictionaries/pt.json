@@ -23,6 +23,10 @@
     "other": "Outros",
     "settings": "Definições"
   },
+  "loading": "A carregar...",
+  "search": {
+    "usersNotFound": "Nenhum utilizador encontrado"
+  },
   "general": "Geral",
   "chooseLanguage": "Escolher Idioma",
   "editProfileButton": "Editar perfil",

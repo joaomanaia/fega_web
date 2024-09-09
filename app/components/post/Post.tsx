@@ -108,6 +108,7 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       className="flex items-center w-full group"
     >
       <meta itemProp="identifier" content={uid} />
+      <meta itemProp="alternateName" content={`@${username}`} />
       <UserHoverCard uid={uid}>
         <Link href={`/${username}`} lang={lang}>
           <UserAvatar src={userProfileUrl} name={userFullname} />

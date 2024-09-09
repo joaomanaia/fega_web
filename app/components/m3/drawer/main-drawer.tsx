@@ -111,6 +111,7 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({
     <nav className={cn("flex flex-col px-4 py-4 space-y-7 justify-start", className)}>
       <Link
         href="/"
+        lang={lang}
         className="next-link px-2 py-2 w-fit rounded-2xl hover:bg-accent/[0.38] transition-colors font-medium tracking-[0.5]"
         style={{ fontSize: 20 }}
       >

@@ -716,6 +716,34 @@ export type Database = {
         }
         Returns: boolean
       }
+      search_users_by_fullname: {
+        Args: {
+          search: string
+        }
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string
+        }[]
+      }
+      search_users_by_username: {
+        Args: {
+          search: string
+        }
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string
+        }[]
+      }
       user_can_post: {
         Args: {
           user_id: string

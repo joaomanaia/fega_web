@@ -23,6 +23,10 @@
     "other": "Other",
     "settings": "Settings"
   },
+  "loading": "Loading...",
+  "search": {
+    "usersNotFound": "No users found"
+  },
   "general": "General",
   "chooseLanguage": "Choose language",
   "editProfileButton": "Edit profile",
