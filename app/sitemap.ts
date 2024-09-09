@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
 
   const postsPages = await getPostsPages(client)
+  const usersPages = await getUsersPages(client)
 
   return [
     addPage("/"),
@@ -27,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     addPage("/cameras/hoteloslo-coimbra"),
     addPage("/news/44ec1283-f21f-4de8-bac5-abe90a360112"),
     ...postsPages,
+    ...usersPages,
   ]
 }
 
@@ -55,9 +57,16 @@ const addPage = (
   }
 }
 
-const getPostsPages = async (client: SupabaseClient) => {
+const getPostsPages = async (client: SupabaseClient<Database>) => {
   const { data: posts, error: postsError } = await client.from("posts").select("id")
   if (postsError) return []
 
   return posts.map((post) => addPage(`/post/${post.id}`))
+}
+
+const getUsersPages = async (client: SupabaseClient<Database>) => {
+  const { data: users, error: usersError } = await client.from("users").select("username")
+  if (usersError) return []
+
+  return users.map((user) => addPage(`/${user.username}`))
 }
