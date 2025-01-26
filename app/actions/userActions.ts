@@ -1,16 +1,18 @@
 "use server"
 
+import { deleteAvatarIfFromUploadthing } from "@/app/api/uploadthing/core"
 import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
 import { updateEmailSchema, updateProfileSchema } from "@/lib/schemas/user-schemas"
 import { revalidatePath } from "next/cache"
-import { ZSAError } from "zsa"
+import { z } from "zod"
+import { createServerAction, ZSAError } from "zsa"
 
-export const updateUserProfile = authenticatedProcedure
+export const updateProfileAction = authenticatedProcedure
   .createServerAction()
   .input(updateProfileSchema)
   .handler(async ({ input, ctx }) => {
     const { supabase, user } = ctx
-    const { username, full_name, bio } = input
+    const { username, full_name, bio, avatar } = input
 
     const { error } = await supabase
       .from("users")
@@ -18,6 +20,7 @@ export const updateUserProfile = authenticatedProcedure
         username,
         full_name,
         bio,
+        avatar_url: avatar,
       })
       .eq("id", user.id)
 
@@ -35,6 +38,7 @@ export const updateUserProfile = authenticatedProcedure
         username,
         full_name,
         bio,
+        avatar_url: avatar,
       },
     })
 
@@ -42,7 +46,63 @@ export const updateUserProfile = authenticatedProcedure
       throw new Error("Failed to update profile", { cause: authError })
     }
 
-    revalidatePath(`/user/${user.id}`)
+    await supabase.auth.refreshSession()
+    revalidatePath(username)
+    revalidatePath("/", "layout")
+  })
+
+export const removeUserAvatar = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { supabase, user } = ctx
+
+    const { error } = await supabase
+      .from("users")
+      .update({
+        avatar_url: null,
+      })
+      .eq("id", user.id)
+
+    if (error) {
+      throw new Error("Failed to remove avatar", { cause: error })
+    }
+
+    const avatarUrl = user.user_metadata.avatar_url
+    if (avatarUrl) {
+      const { error: authError } = await supabase.auth.updateUser({
+        data: {
+          avatar_url: null,
+        },
+      })
+
+      if (authError) {
+        throw new Error("Failed to remove avatar", { cause: authError })
+      }
+
+      await deleteAvatarIfFromUploadthing(avatarUrl)
+    }
+
+    await supabase.auth.refreshSession()
+    revalidatePath(user.user_metadata?.username)
+    revalidatePath("/", "layout")
+  })
+
+export const uploadAvatar = createServerAction()
+  .input(
+    z.object({
+      name: z.string().min(5),
+      file: z
+        .instanceof(File)
+        .refine((file) => file.size > 0 && file.size < 1024, "File size must be less than 1kb"),
+    })
+  )
+  .handler(async ({ input }) => {
+    // const { supabase, user } = ctx
+    const { name, file } = input
+
+    console.log("Uploading file", name, file)
+
+    return "File uploaded successfully!"
   })
 
 export const updateUserEmail = authenticatedProcedure

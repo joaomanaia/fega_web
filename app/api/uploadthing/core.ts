@@ -1,6 +1,6 @@
 import { createRouteHandlerClient } from "@/supabase"
 import { createUploadthing, type FileRouter } from "uploadthing/next"
-import { UploadThingError } from "uploadthing/server"
+import { UploadThingError, UTApi } from "uploadthing/server"
 
 const f = createUploadthing()
 
@@ -12,11 +12,35 @@ const hadleAuth = async () => {
     throw new UploadThingError("Unauthorized")
   }
 
-  return { userId: user.user.id }
+  return { user: user.user }
 }
 
-// FileRouter for your app, can contain multiple FileRoutes
+export const utapi = new UTApi()
+
+export const deleteAvatarIfFromUploadthing = async (url: string) => {
+  // Check if the user has an avatar old uploaded in uploadthing
+  if (url.includes(`/a/${process.env.UPLOADTHING_APP_ID}/`)) {
+    const key = url.split(`/a/${process.env.UPLOADTHING_APP_ID}/`)[1]
+
+    await utapi.deleteFiles(key)
+  }
+}
+
+// If need update the file size, update to in the constants.ts
 export const ourFileRouter = {
+  avatar: f({ image: { maxFileSize: "512KB", maxFileCount: 1 } })
+    .middleware(() => hadleAuth())
+    .onUploadComplete(async ({ metadata, file }) => {
+      const oldAvatarUrl = metadata.user.user_metadata.avatar_url
+
+      if (oldAvatarUrl) {
+        await deleteAvatarIfFromUploadthing(oldAvatarUrl)
+      }
+
+      const newAvatarUrl = file.url.replace("/f/", `/a/${process.env.UPLOADTHING_APP_ID}/`)
+
+      return { avatarUrl: newAvatarUrl }
+    }),
   newsImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => hadleAuth())
     .onUploadComplete(() => {}),

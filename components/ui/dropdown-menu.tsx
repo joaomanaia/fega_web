@@ -77,7 +77,7 @@ const dropdownMenuItemVariant = cva("", {
   variants: {
     variant: {
       default: "focus:bg-surface-foreground/[0.08] focus:text-surface-foreground",
-      error: "text-error/90 focus:text-error focus:bg-error/10"
+      error: "text-error/90 focus:text-error focus:bg-error/10 data-[disabled]:text-surface-foreground",
     },
   },
   defaultVariants: {

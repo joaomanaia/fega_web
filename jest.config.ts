@@ -17,6 +17,7 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
   },
+  setupFiles: ["jest-canvas-mock"],
 }
 
 export default createJestConfig(config)

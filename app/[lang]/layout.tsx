@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "Fega",
     title: "Fega",
     description: "The best social network in ega!",
-  }
+  },
 }
 
 const fontSans = FontSans({
@@ -77,7 +77,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
             <DictionaryProvider dictionary={dictionary}>
               {children}
               <Toaster />
-              <SonnerToaster />
+              <SonnerToaster richColors />
               <ModalProvider />
               <ShareDialogProvider />
             </DictionaryProvider>
