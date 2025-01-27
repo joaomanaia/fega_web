@@ -1,3 +1,4 @@
+import { MAX_IMAGE_SIZE_FOR_TYPE } from "@/features/post/constants"
 import blockedUsernames from "@/lib/constants/blockedUsernames"
 import { z } from "zod"
 
@@ -41,6 +42,7 @@ export const updateProfileSchema = z.object({
   username: usernameSchema,
   full_name: z.string().min(2).max(30).trim(),
   bio: z.string().max(160).trim().optional(),
+  avatar: z.string().trim().url().nullable(),
 })
 
 export type UpdateProfileSchemaValues = z.infer<typeof updateProfileSchema>

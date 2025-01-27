@@ -22,12 +22,16 @@ import { useForm } from "react-hook-form"
 import { type Dictionary } from "@/get-dictionary"
 import { updateProfileSchema, UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
 import { Textarea } from "@/components/ui/textarea"
-import { useServerAction } from "zsa-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
-import { updateUserProfile } from "@/app/actions/userActions"
+import { UserEditableAvatar } from "@/app/components/user/user-editable-avatar"
+import { useUpdateProfileMutation } from "@/features/user/useUpdateProfileMutation"
+import { ZSAError } from "zsa"
+import { useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+import { removeUserAvatar } from "@/app/actions/userActions"
 
 export const EditProfileModal: React.FC = () => {
   const {
@@ -36,19 +40,27 @@ export const EditProfileModal: React.FC = () => {
     data: { user },
   } = useModal("edit-profile")
 
+  // When the profile is updating, we don't want the user to close the modal
+  const [canClose, setCanClose] = useState(true)
+
   if (!user) return null
 
   const dictionary = useDictionary()
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={() => canClose && onClose()}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             {dictionary.editProfile.header}
           </DialogTitle>
         </DialogHeader>
-        <EditProfileForm user={user} dictionary={dictionary} />
+        <EditProfileForm
+          user={user}
+          dictionary={dictionary}
+          onClose={onClose}
+          changeCanClose={setCanClose}
+        />
       </DialogContent>
     </Dialog>
   )
@@ -57,36 +69,43 @@ export const EditProfileModal: React.FC = () => {
 interface EditProfileFormProps {
   user: UserType
   dictionary: Dictionary
+  onClose: () => void
+  changeCanClose: (canClose: boolean) => void
 }
 
-export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictionary }) => {
-  const { onClose } = useModal("edit-profile")
-
+export const EditProfileForm: React.FC<EditProfileFormProps> = ({
+  user,
+  dictionary,
+  onClose,
+  changeCanClose,
+}) => {
   const form = useForm<UpdateProfileSchemaValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       username: user.username,
       full_name: user.full_name ?? "",
       bio: user.bio ?? "",
+      avatar: user.avatar_url,
     },
   })
 
-  const { isPending, execute } = useServerAction(updateUserProfile, {
-    onError: ({ err }) => {
-      if (err.code === "CONFLICT") {
-        form.setError("username", {
-          type: "manual",
-          message: "Username is already taken",
-        })
-      } else {
-        toast.error(err.message)
-      }
-    },
-    onSuccess: () => {
-      toast.success(dictionary.editProfile.success)
-      onClose()
-    },
-  })
+  const { mutate, isPending } = useUpdateProfileMutation(user.id)
+  const queryClient = useQueryClient()
+
+  const handleRemoveAvatar = async () => {
+    toast.loading("Removing avatar...", { id: "remove-avatar" })
+    changeCanClose(false)
+
+    const [_, error] = await removeUserAvatar()
+    changeCanClose(true)
+
+    if (error) {
+      toast.error("Failed to remove avatar", { id: "remove-avatar" })
+    } else {
+      toast.success("Avatar removed", { id: "remove-avatar" })
+      queryClient.invalidateQueries({ queryKey: ["posts", user.id] })
+    }
+  }
 
   return (
     <>
@@ -95,10 +114,61 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
           className="flex flex-col mt-4 gap-y-4 w-full"
           onSubmit={form.handleSubmit((values) => {
             if (form.formState.isDirty) {
-              execute(values)
+              toast.loading("Saving changes...", { id: "edit-profile" })
+              changeCanClose(false)
+
+              mutate(
+                { values },
+                {
+                  onSuccess: () => {
+                    toast.success(dictionary.editProfile.success, { id: "edit-profile" })
+                    queryClient.invalidateQueries({ queryKey: ["posts", user.id] })
+                    changeCanClose(true)
+                    onClose()
+                  },
+                  onError: (err) => {
+                    const zsaError = err as ZSAError | undefined
+                    if (zsaError !== undefined) {
+                      if (zsaError.code === "CONFLICT") {
+                        form.setError("username", {
+                          type: "manual",
+                          message: "Username is already taken",
+                        })
+                      }
+                    }
+
+                    console.error(err)
+
+                    toast.error(err.message, { id: "edit-profile" })
+                    changeCanClose(true)
+                  },
+                }
+              )
             }
           })}
         >
+          <FormField
+            control={form.control}
+            name="avatar"
+            render={({ field }) => (
+              <FormItem className="self-center flex flex-col items-center">
+                <FormControl>
+                  <UserEditableAvatar
+                    avatar={field.value}
+                    onAvatarChange={(blob) =>
+                      field.onChange(blob ? URL.createObjectURL(blob) : null)
+                    }
+                    onRemoveAvatarRequest={handleRemoveAvatar}
+                    currentAvatar={user.avatar_url}
+                    name={user.full_name}
+                    className="self-center"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="username"
@@ -109,6 +179,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, dictiona
                   <Input
                     className="border-none"
                     placeholder={dictionary.editProfile.username}
+                    startAdornment={<span>@</span>}
                     {...field}
                   />
                 </FormControl>
