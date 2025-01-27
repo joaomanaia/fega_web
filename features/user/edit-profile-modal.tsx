@@ -137,6 +137,8 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
                       }
                     }
 
+                    console.error(err)
+
                     toast.error(err.message, { id: "edit-profile" })
                     changeCanClose(true)
                   },

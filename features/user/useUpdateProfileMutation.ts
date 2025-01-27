@@ -2,7 +2,6 @@ import { updateProfileAction } from "@/app/actions/userActions"
 import { useServerActionMutation } from "@/lib/hooks/server-action-hooks"
 import type { UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
 import { useUploadThing } from "@/lib/uploadthing"
-import { wait } from "@/lib/utils"
 import { useMutation } from "@tanstack/react-query"
 
 export function useUpdateProfileMutation(uid: string) {
@@ -23,11 +22,10 @@ export function useUpdateProfileMutation(uid: string) {
         return { ...values, avatar }
       }
 
-      await wait(2000)
-
       return values
     },
     onSuccess: async (values: UpdateProfileSchemaValues) => {
+      console.log("values", values)
       await editProfileMutation.mutateAsync(values)
     },
   })

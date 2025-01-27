@@ -17,10 +17,12 @@ const hadleAuth = async () => {
 
 export const utapi = new UTApi()
 
+const uploadthingAppBaseUrl = `https://${process.env.UPLOADTHING_APP_ID}.ufs.sh/f/`
+
 export const deleteAvatarIfFromUploadthing = async (url: string) => {
   // Check if the user has an avatar old uploaded in uploadthing
-  if (url.includes(`/a/${process.env.UPLOADTHING_APP_ID}/`)) {
-    const key = url.split(`/a/${process.env.UPLOADTHING_APP_ID}/`)[1]
+  if (url.startsWith(uploadthingAppBaseUrl)) {
+    const key = url.replace(uploadthingAppBaseUrl, "")
 
     await utapi.deleteFiles(key)
   }
@@ -37,7 +39,7 @@ export const ourFileRouter = {
         await deleteAvatarIfFromUploadthing(oldAvatarUrl)
       }
 
-      const newAvatarUrl = file.url.replace("/f/", `/a/${process.env.UPLOADTHING_APP_ID}/`)
+      const newAvatarUrl = `${uploadthingAppBaseUrl}${file.key}`
 
       return { avatarUrl: newAvatarUrl }
     }),
