@@ -25,7 +25,6 @@ export function useUpdateProfileMutation(uid: string) {
       return values
     },
     onSuccess: async (values: UpdateProfileSchemaValues) => {
-      console.log("values", values)
       await editProfileMutation.mutateAsync(values)
     },
   })

@@ -87,24 +87,6 @@ export const removeUserAvatar = authenticatedProcedure
     revalidatePath("/", "layout")
   })
 
-export const uploadAvatar = createServerAction()
-  .input(
-    z.object({
-      name: z.string().min(5),
-      file: z
-        .instanceof(File)
-        .refine((file) => file.size > 0 && file.size < 1024, "File size must be less than 1kb"),
-    })
-  )
-  .handler(async ({ input }) => {
-    // const { supabase, user } = ctx
-    const { name, file } = input
-
-    console.log("Uploading file", name, file)
-
-    return "File uploaded successfully!"
-  })
-
 export const updateUserEmail = authenticatedProcedure
   .createServerAction()
   .input(updateEmailSchema)
