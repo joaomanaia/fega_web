@@ -11,7 +11,7 @@ export const createPost = async (description: string) => {
   // Check if user is authenticated
   const userAuthenticated = await isUserAuthenticated()
   if (!userAuthenticated) {
-    redirect("/auth")
+    redirect("/login")
   }
 
   await supabase.from("posts").insert({ description })

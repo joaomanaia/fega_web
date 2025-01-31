@@ -15,7 +15,7 @@ export const handleVote = async (postId: string, formData: FormData) => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return redirect("/auth")
+    return redirect("/login")
   }
 
   const { data: currentPostVote } = await supabase

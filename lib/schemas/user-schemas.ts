@@ -1,4 +1,3 @@
-import { MAX_IMAGE_SIZE_FOR_TYPE } from "@/features/post/constants"
 import blockedUsernames from "@/lib/constants/blockedUsernames"
 import { z } from "zod"
 

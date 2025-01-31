@@ -41,7 +41,6 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/supabase-js": "^2.48.1",
     "@tanstack/react-query": "^5.55.4",
     "@types/mdx": "^2.0.13",

@@ -3,7 +3,21 @@
     "auth": {
       "header": "Welcome to Fega!",
       "subheader": "Best social network in ega.",
-      "signin": "Sign in"
+      "loginTitle": "Login",
+      "loginButton": "Login",
+      "registerTitle": "Register",
+      "registerButton": "Register",
+      "email": "Email",
+      "emailPlaceholder": "fega@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "username": "Username",
+      "usernamePlaceholder": "johndoe",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "John Doe",
+      "forgotPassword": "Forgot password?",
+      "dontHaveAccount": "Don't have an account?",
+      "alreadyHaveAccount": "Already have an account?"
     }
   },
   "user": "User",

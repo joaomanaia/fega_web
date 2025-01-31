@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic"
 
 export default async function GroupLayout({ children, modal, params }: GroupLayoutProps) {
   const localUser = await getLocalUser()
-  if (!localUser) return redirect("/auth")
+  if (!localUser) return redirect("/login")
 
   const dictionary = await getDictionary(params.lang)
 

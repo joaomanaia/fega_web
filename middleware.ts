@@ -37,7 +37,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL("/auth", req.url))
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
   return res

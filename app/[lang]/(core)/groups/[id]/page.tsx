@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: GroupMessagePageProps): Promi
 
 export default async function GroupMessagePage({ params }: GroupMessagePageProps) {
   const localUserUid = await getLocalUserUid()
-  if (!localUserUid) return redirect("/auth")
+  if (!localUserUid) return redirect("/login")
 
   const group = await getGroup(params.id)
   if (!group || !group.id || !group.name) return redirect("/groups")

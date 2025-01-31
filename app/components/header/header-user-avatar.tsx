@@ -19,7 +19,7 @@ export const HeaderUserAvatar: React.FC<HeaderUserAvatar> = async ({ lang }) => 
   const userData = {
     name: authUser?.user_metadata.full_name ?? authUser?.email ?? null,
     avatar: authUser?.user_metadata.avatar_url ?? null,
-    actionLink: authUser ? `/${authUser.user_metadata.username}` : "/auth",
+    actionLink: authUser ? `/${authUser.user_metadata.username}` : "/login",
   }
 
   return (
