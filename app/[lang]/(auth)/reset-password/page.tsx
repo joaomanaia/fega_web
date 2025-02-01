@@ -1,7 +1,6 @@
 import ResetPasswordForm from "@/components/user/reset-password-form"
 import { getDictionary } from "@/get-dictionary"
 import type { Locale } from "@/i18n-config"
-import { createClient } from "@/lib/supabase/client"
 
 interface ResetPasswordPageProps {
   params: {
@@ -11,10 +10,6 @@ interface ResetPasswordPageProps {
 
 export default async function ResetPasswordPage({ params }: ResetPasswordPageProps) {
   const authDictionary = (await getDictionary(params.lang)).page.auth
-
-  const client = createClient()
-  const { data } = await client.auth.getUser()
-  console.log(data)
 
   return (
     <>

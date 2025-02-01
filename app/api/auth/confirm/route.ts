@@ -10,8 +10,6 @@ export async function GET(request: NextRequest) {
   const redirectTo = request.nextUrl.clone()
   redirectTo.pathname = next
 
-  console.log({ token_hash, type, next })
-
   if (token_hash && type) {
     const supabase = await createClient()
 
@@ -19,7 +17,6 @@ export async function GET(request: NextRequest) {
       type,
       token_hash,
     })
-    console.log("VERIFY OTP", { data, error })
     if (!error) {
       // redirect user to specified redirect URL or root of app
 
