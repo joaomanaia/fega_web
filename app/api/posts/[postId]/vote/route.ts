@@ -1,4 +1,4 @@
-import { createRouteHandlerClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
 /**
@@ -6,10 +6,7 @@ import { NextResponse } from "next/server"
  *
  * @returns the vote object
  */
-export async function PATCH(
-  req: Request,
-  { params }: { params: { postId: string } }
-) {
+export async function PATCH(req: Request, { params }: { params: { postId: string } }) {
   try {
     const { searchParams } = new URL(req.url)
 
@@ -20,7 +17,7 @@ export async function PATCH(
       return new NextResponse("Post ID is required", { status: 400 })
     }
 
-    const supabase = createRouteHandlerClient()
+    const supabase = await createClient()
 
     // Check if user is authenticated
     const {

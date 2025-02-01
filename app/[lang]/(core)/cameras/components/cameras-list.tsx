@@ -1,13 +1,13 @@
 import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
-import { createServerComponentClient } from "@/supabase"
 import { type Tables } from "@/types/database.types"
 import { CameraItem, CameraItemSkeleton } from "./CameraItem"
 import { type Locale } from "@/i18n-config"
+import { createClient } from "@/lib/supabase/server"
 
 type CameraType = Tables<"cameras">
 
 const getAllCameras = async (): Promise<CameraType[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.from("cameras").select("*")
 

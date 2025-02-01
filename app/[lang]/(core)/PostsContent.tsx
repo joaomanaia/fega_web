@@ -2,8 +2,8 @@ import { type Dictionary } from "@/get-dictionary"
 import { FileWarningIcon } from "lucide-react"
 import { type Locale } from "@/i18n-config"
 import { getPosts } from "@/features/post/get-posts"
-import { createServerComponentClient } from "@/supabase"
 import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
+import { createClient } from "@/lib/supabase/server"
 
 interface PostsContentProps {
   uid?: string
@@ -22,7 +22,7 @@ export default async function PostsContent({
   schemaHasPart,
   EmptyPostsContent = () => <DefaultEmptyPostsContent dictionary={dictionary.post.emptyPosts} />,
 }: PostsContentProps) {
-  const client = createServerComponentClient()
+  const client = await createClient()
   const posts = await getPosts(client, uid)
 
   if (!posts.length) {

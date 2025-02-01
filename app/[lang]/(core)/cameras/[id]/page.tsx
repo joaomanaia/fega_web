@@ -2,17 +2,17 @@ import { type Metadata } from "next"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { createServerComponentClient } from "@/supabase"
 import VideoComponent from "./components/VideoComponent"
 import ImageVideoComponent from "./components/ImageVideoComponent"
 import { type Tables } from "@/types/database.types"
 import { notFound } from "next/navigation"
 import { cache } from "react"
+import { createClient } from "@/lib/supabase/server"
 
 type CameraType = Tables<"cameras">
 
 const getCameraById = cache(async (id: string): Promise<CameraType | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.from("cameras").select("*").eq("id", id).single()
 

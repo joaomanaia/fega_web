@@ -2,14 +2,14 @@ import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Hint } from "@/components/hint"
 import { Link } from "@/components/link"
 import type { Locale } from "@/i18n-config"
-import { createServerComponentClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 
 interface HeaderUserAvatar {
   lang: Locale
 }
 
 export const HeaderUserAvatar: React.FC<HeaderUserAvatar> = async ({ lang }) => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
   const {
     data: { session },
   } = await supabase.auth.getSession()

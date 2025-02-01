@@ -1,6 +1,5 @@
 import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 import { GroupListItem, GroupItemSkeleton } from "./group-list-item"
-import { createServerComponentClient } from "@/supabase"
 import { cn } from "@/lib/utils"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Dictionary } from "@/get-dictionary"
@@ -9,6 +8,7 @@ import { Locale } from "@/i18n-config"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { CreateGroupButton } from "@/app/[lang]/(core)/groups/components/create-group-button"
 import { UsersIcon } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
 
 interface GroupListProps {
   className?: string
@@ -17,7 +17,7 @@ interface GroupListProps {
 }
 
 const getGroupsWithLastMessage = async (): Promise<GroupWithLastMessageViewType[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: groups } = await supabase
     .from("group_with_last_message_view")

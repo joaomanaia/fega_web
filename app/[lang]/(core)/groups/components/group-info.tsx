@@ -4,8 +4,8 @@ import { GroupMembers } from "@/components/group/members/group-members"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getDictionary, type Dictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
+import { createClient } from "@/lib/supabase/server"
 import { formatString } from "@/src/util/dictionary-util"
-import { createServerComponentClient } from "@/supabase"
 import { redirect } from "next/navigation"
 
 type GroupInfoDictionary = Dictionary["groups"]["info"]
@@ -17,7 +17,7 @@ interface GroupInfoProps {
 }
 
 export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDialog }) => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
   if (!group) return redirect("/groups")

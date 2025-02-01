@@ -2,15 +2,15 @@ import { type Metadata } from "next"
 import { NewsItem } from "./components/news-item"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { type Tables } from "@/types/database.types"
-import { createServerComponentClient } from "@/supabase"
 import { getDictionary, type Dictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
 import { NewspaperIcon } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
 
 type NewsItemType = Tables<"news_view">
 
 const getNews = async (): Promise<NewsItemType[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from("news_view")

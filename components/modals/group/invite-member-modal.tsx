@@ -7,8 +7,6 @@ import React, { useState } from "react"
 import UserType from "@/types/UserType"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "@/types/database.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -23,6 +21,7 @@ import {
 import { addParticipant } from "@/app/actions/groupActions"
 import { toast } from "sonner"
 import { SubmitButton } from "@/components/submit-button"
+import { createClient } from "@/lib/supabase/client"
 
 export const InviteMemberModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("group-invite")
@@ -69,7 +68,7 @@ export const SearchMemberForm: React.FC<SearchMemberFormProps> = ({ groupId, gro
     try {
       const parsed = formSchema.parse(values)
 
-      const supabase = createClientComponentClient<Database>()
+      const supabase = createClient()
 
       const { data: currentParticipants, error: currentParticipantsError } = await supabase
         .from("group_participants")

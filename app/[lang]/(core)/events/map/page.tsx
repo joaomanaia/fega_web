@@ -1,11 +1,11 @@
 import { MainContainer } from "@/app/components/m3/main-container"
 import { type Locale } from "@/i18n-config"
-import { createServerComponentClient } from "@/supabase"
 import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
 import { type Metadata } from "next"
 import dynamic from "next/dynamic"
 import { EventsDateRangePicker } from "./components/events-daterange-picker"
 import { type DateRange } from "react-day-picker"
+import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
   title: "Events Map",
@@ -27,7 +27,7 @@ const DynamicMap = dynamic(() => import("../components/event-map"), {
 })
 
 const getAllEvents = async (from?: Date, to?: Date): Promise<CalendarEvent[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from("calendar_events_view")

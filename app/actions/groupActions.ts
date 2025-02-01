@@ -1,8 +1,8 @@
 "use server"
 
+import { createClient } from "@/lib/supabase/server"
 // TODO: Change the this actions to the new folder
 
-import { createServerActionClient } from "@/supabase"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
@@ -23,7 +23,7 @@ export async function editGroup(groupId: string, formData: FormData) {
     iconUrl: formData.get("iconUrl"),
   })
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const {
     data: { user },
@@ -56,7 +56,7 @@ export async function exitGroup(groupId: string) {
     throw new Error("Group ID not found")
   }
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const {
     data: { session },
@@ -87,7 +87,7 @@ export async function removeParticipant(uid: string, groupId: string) {
     throw new Error("Group ID not found")
   }
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from("group_participants")
@@ -111,7 +111,7 @@ export async function addParticipant(uid: string, groupId: string) {
     throw new Error("Group ID not found")
   }
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   // Check if the group has reached the limit of participants
   const { count, error: groupParticipantsError } = await supabase
@@ -154,7 +154,7 @@ export async function searchNoParticipants(prevState: any, formData: FormData) {
 
   const search = formData.get("search") as string
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from("users")
@@ -177,7 +177,7 @@ export const deleteGroup = async (groupId: string) => {
     throw new Error("Group ID not found")
   }
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from("groups").delete().eq("id", groupId)
 

@@ -1,4 +1,3 @@
-import { createServerComponentClient } from "@/supabase"
 import type { GroupParticipantsViewType, GroupViewType } from "@/types/group/GroupType"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { GroupMember } from "./group-member"
@@ -8,11 +7,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { type Dictionary } from "@/get-dictionary"
 import { formatString } from "@/src/util/dictionary-util"
+import { createClient } from "@/lib/supabase/server"
 
 type GroupInfoDictionary = Dictionary["groups"]["info"]
 
 const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: members, error } = await supabase
     .from("group_participants_view")

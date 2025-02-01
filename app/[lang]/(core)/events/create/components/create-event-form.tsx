@@ -16,10 +16,8 @@ import { Input } from "@/components/ui/input"
 import { TimePickerPopover } from "@/components/ui/time-picker/time-picker-popover"
 import { useModal } from "@/hooks/use-modal-store"
 import { cn } from "@/lib/utils"
-import type { CalendarEventOtherDataItem, CalendarEventOtherDataType } from "@/types/CalendarEvent"
-import type { Database } from "@/types/database.types"
+import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { format } from "date-fns"
 import { CalendarIcon, TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -30,6 +28,7 @@ import { MoreInfo } from "../../[event_id]/components/more-info"
 import { Select } from "@/components/select/select"
 import { useState } from "react"
 import { createEvent } from "@/app/actions/calendarEventActions"
+import { createClient } from "@/lib/supabase/client"
 
 interface CreateEventFormProps {
   className?: string
@@ -68,7 +67,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
 
   const [selectedOtherDataOption, setSelectedOtherDataOption] = useState<string | null>(null)
 
-  const supabase = createClientComponentClient<Database>()
+  const supabase = createClient()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

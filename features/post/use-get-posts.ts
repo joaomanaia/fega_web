@@ -2,12 +2,12 @@
 
 import { ITEMS_PER_PAGE } from "@/features/post/constants"
 import { getPosts } from "@/features/post/get-posts"
+import { createClient } from "@/lib/supabase/client"
 import type { PostViewType } from "@/types/PostType"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
 export const useGetInfinitePosts = (initialPosts: PostViewType[], uid?: string) => {
-  const client = createClientComponentClient()
+  const client = createClient()
 
   return useInfiniteQuery({
     queryKey: ["posts", uid],

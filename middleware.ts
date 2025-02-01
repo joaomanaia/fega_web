@@ -1,46 +1,14 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
 import { NextResponse } from "next/server"
 import Negotiator from "negotiator"
 import { match as matchLocale } from "@formatjs/intl-localematcher"
 import type { NextRequest } from "next/server"
 import { type Locale, i18n } from "./i18n-config"
 import { cookies } from "next/headers"
-import { type Route } from "next"
+import { updateSession } from "@/lib/supabase/middleware"
 
-// Define the routes that require authentication
-const protectedRoutes: Route[] = ["/groups"]
-
-export async function middleware(req: NextRequest) {
-  const fullPathname = req.nextUrl.pathname
-  const pathnameWithoutLocale = removeLocaleFromPath(fullPathname)
-  const isProtectedRoute = checkIfProtectedRoute(pathnameWithoutLocale)
-
-  // Check if there is any supported locale in the pathname
-  // Redirect if there is no locale, except for the auth callback
-  if (isPathnameMissingLocale(fullPathname) && !fullPathname.startsWith("/auth/callback")) {
-    return handleMissingLocale(req, fullPathname)
-  }
-
-  const res = NextResponse.next()
-
-  // Create a Supabase client configured to use cookies
-  const supabase = createMiddlewareClient({ req, res })
-
-  // Refresh session if expired - required for Server Components
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession()
-
-  if (error) {
-    return NextResponse.error()
-  }
-
-  if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL("/login", req.url))
-  }
-
-  return res
+export async function middleware(request: NextRequest) {
+  const response = await handleI18nRouting(request)
+  return await updateSession(request, response)
 }
 
 export const config = {
@@ -61,20 +29,22 @@ export const config = {
   ],
 }
 
-function removeLocaleFromPath(path: string): string {
-  return path.replace(/\/[a-z]{2}(-[A-Z]{2})?/, "")
-}
-
-function checkIfProtectedRoute(path: string): boolean {
-  return protectedRoutes.some((route) => path.startsWith(route))
-}
-
 function isPathnameMissingLocale(path: string): boolean {
   return i18n.locales.every((locale) => !path.startsWith(`/${locale}/`) && path !== `/${locale}`)
 }
 
-function handleMissingLocale(req: NextRequest, fullPathname: string) {
-  const locale = getLocale(req)
+async function handleI18nRouting(request: NextRequest) {
+  const fullPathname = request.nextUrl.pathname
+
+  if (isPathnameMissingLocale(fullPathname) && !fullPathname.startsWith("/auth/callback")) {
+    return await handleMissingLocale(request, fullPathname)
+  }
+
+  return NextResponse.next({ request })
+}
+
+async function handleMissingLocale(req: NextRequest, fullPathname: string) {
+  const locale = await getLocale(req)
   const urlParams = getUrlParams(req)
 
   const newUrl = new URL(
@@ -83,9 +53,8 @@ function handleMissingLocale(req: NextRequest, fullPathname: string) {
   )
 
   if (locale === i18n.defaultLocale) {
-    return NextResponse.rewrite(newUrl)
+    return NextResponse.rewrite(newUrl, { request: req })
   }
-
   return NextResponse.redirect(newUrl)
 }
 
@@ -96,23 +65,21 @@ function getUrlParams(req: NextRequest): string {
   return "?" + new URLSearchParams(params)
 }
 
-function getLocale(req: NextRequest): Locale | undefined {
+async function getLocale(request: NextRequest): Promise<Locale | undefined> {
   // Check if locale is stored in cookie, if so use it
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const cookieLocale = cookieStore.get("NEXT_LOCALE")
   if (cookieLocale) return cookieLocale.value as Locale
 
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
-  req.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
+  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
   // @ts-ignore locales are readonly
-  const locales: string[] = i18n.locales
+  const locales: Locale[] = i18n.locales
 
   // Use negotiator and intl-localematcher to get best locale
-  let languages = new Negotiator({ headers: negotiatorHeaders }).languages(locales)
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(locales)
 
-  const locale = matchLocale(languages, locales, i18n.defaultLocale)
-
-  return locale as Locale
+  return matchLocale(languages, locales, i18n.defaultLocale) as Locale
 }

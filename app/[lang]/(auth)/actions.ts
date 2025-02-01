@@ -3,7 +3,7 @@
 import { BASE_URL } from "@/core/common"
 import { forgotPasswordSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
 import { resetPasswordSchema } from "@/lib/schemas/user-schemas"
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createServerAction, ZSAError } from "zsa"
@@ -11,7 +11,7 @@ import { createServerAction, ZSAError } from "zsa"
 export const signInAction = createServerAction()
   .input(signInSchema)
   .handler(async ({ input }) => {
-    const supabase = await createServerActionClient()
+    const supabase = await createClient()
 
     const { error } = await supabase.auth.signInWithPassword({
       email: input.email,
@@ -29,7 +29,7 @@ export const signInAction = createServerAction()
 export const signUpAction = createServerAction()
   .input(signUpSchema)
   .handler(async ({ input }) => {
-    const supabase = await createServerActionClient()
+    const supabase = await createClient()
 
     // Check if username is available
     const { data: usernameExists } = await supabase
@@ -64,7 +64,7 @@ export const signUpAction = createServerAction()
 export const forgotPasswordAction = createServerAction()
   .input(forgotPasswordSchema)
   .handler(async ({ input }) => {
-    const supabase = await createServerActionClient()
+    const supabase = await createClient()
 
     const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
       redirectTo: `${BASE_URL}/reset-password`,
@@ -78,7 +78,7 @@ export const forgotPasswordAction = createServerAction()
 export const resetPasswordAction = createServerAction()
   .input(resetPasswordSchema)
   .handler(async ({ input }) => {
-    const supabase = await createServerActionClient()
+    const supabase = await createClient()
 
     const { error } = await supabase.auth.updateUser({
       password: input.password,

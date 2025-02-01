@@ -1,15 +1,14 @@
 "use client"
 
 import React, { useCallback, useMemo, useState } from "react"
-import type { Database } from "@/types/database.types"
 import type GroupMessageType from "@/types/group/GroupMessageType"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useEffect } from "react"
 import { GroupMessage } from "./GroupMessage"
 import { cn } from "@/lib/utils"
 import type ReplyToType from "@/types/ReplyToType"
 import ScrollContainer from "../../../../../components/ScrollContainer"
+import { createClient } from "@/lib/supabase/client"
 
 interface RealtimeMessagesProps {
   localUserUid: string
@@ -31,7 +30,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   serverMessages,
   onReplyClick,
 }) => {
-  const supabase = useMemo(() => createClientComponentClient<Database>(), [])
+  const supabase = useMemo(() => createClient(), [])
 
   const [messages, setMessages] = useState<GroupMessageWithUserType[]>(serverMessages)
 

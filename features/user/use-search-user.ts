@@ -1,7 +1,8 @@
 "use client"
 
-import { Database } from "@/types/database.types"
-import { createClientComponentClient, SupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/client"
+import type { Database } from "@/types/database.types"
+import { SupabaseClient } from "@supabase/supabase-js"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 
 /**
@@ -17,7 +18,7 @@ export const useSearchUser = (search: string) => {
     queryFn: async () => {
       if (!search || search == "@") return []
 
-      const supabase = createClientComponentClient<Database>()
+      const supabase = createClient()
 
       const { data, error } = await getSearchQuery(supabase, search).limit(10)
 
