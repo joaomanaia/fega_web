@@ -20,6 +20,8 @@ export const usernameSchema = z
     message: "Username is reserved",
   })
 
+export const passwordSchema = z.string().min(6)
+
 export const updateEmailSchema = z
   .object({
     email: z.string().email(),
@@ -45,3 +47,19 @@ export const updateProfileSchema = z.object({
 })
 
 export type UpdateProfileSchemaValues = z.infer<typeof updateProfileSchema>
+
+export const resetPasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords must match",
+      })
+    }
+  })
+
+export type ResetPasswordSchemaValues = z.infer<typeof resetPasswordSchema>

@@ -1,10 +1,11 @@
 "use server"
 
-import { signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
+import { BASE_URL } from "@/core/common"
+import { forgotPasswordSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
+import { resetPasswordSchema } from "@/lib/schemas/user-schemas"
 import { createServerActionClient } from "@/supabase"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { z } from "zod"
 import { createServerAction, ZSAError } from "zsa"
 
 export const signInAction = createServerAction()
@@ -24,8 +25,6 @@ export const signInAction = createServerAction()
     revalidatePath("/", "layout")
     redirect("/")
   })
-
-export type SignInActionValues = z.infer<typeof signInSchema>
 
 export const signUpAction = createServerAction()
   .input(signUpSchema)
@@ -62,4 +61,32 @@ export const signUpAction = createServerAction()
     redirect("/")
   })
 
-export type SignUpActionValues = z.infer<typeof signUpSchema>
+export const forgotPasswordAction = createServerAction()
+  .input(forgotPasswordSchema)
+  .handler(async ({ input }) => {
+    const supabase = await createServerActionClient()
+
+    const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
+      redirectTo: `${BASE_URL}/reset-password`,
+    })
+
+    if (error) {
+      throw error.message
+    }
+  })
+
+export const resetPasswordAction = createServerAction()
+  .input(resetPasswordSchema)
+  .handler(async ({ input }) => {
+    const supabase = await createServerActionClient()
+
+    const { error } = await supabase.auth.updateUser({
+      password: input.password,
+    })
+
+    if (error) {
+      throw error.message
+    }
+
+    redirect("/")
+  })
