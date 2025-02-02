@@ -36,7 +36,7 @@ export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormP
   return (
     <Form {...form}>
       <form
-        className="space-y-6 w-full px-6 md:max-w-xl"
+        className="space-y-6 w-full"
         onSubmit={form.handleSubmit(async (values) => {
           const [_, err] = await execute(values)
 

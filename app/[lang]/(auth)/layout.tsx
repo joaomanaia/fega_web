@@ -22,8 +22,10 @@ export default async function AuthLayout({
         <p className="text-lg lg:text-xl mt-0">{authDictionary.subheader}</p>
       </div>
 
-      <main className="h-5/6 lg:h-full w-full lg:w-1/2 bg-background text-foreground rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl flex flex-col items-center justify-center gap-4">
-        {children}
+      <main className="h-5/6 lg:h-full w-full lg:w-1/2 bg-background text-foreground rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl flex items-center justify-center">
+        <div className="size-full px-6 md:max-w-xl flex flex-col items-center justify-center gap-6">
+          {children}
+        </div>
       </main>
     </div>
   )

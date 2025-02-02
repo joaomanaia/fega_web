@@ -59,7 +59,7 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
             toast.error(err.message)
           }
         })}
-        className="space-y-6 w-full px-6 md:max-w-xl"
+        className="space-y-6 w-full"
       >
         <FormField
           control={form.control}

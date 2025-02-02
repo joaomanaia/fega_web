@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/components/user/reset-password-form"
+import AuthPage from "@/app/[lang]/(auth)/_components/auth-page"
 import { getDictionary } from "@/get-dictionary"
 import type { Locale } from "@/i18n-config"
 
@@ -11,12 +11,5 @@ interface ResetPasswordPageProps {
 export default async function ResetPasswordPage({ params }: ResetPasswordPageProps) {
   const authDictionary = (await getDictionary(params.lang)).page.auth
 
-  return (
-    <>
-      <h2 className="text-3xl lg:text-4xl xl:text-5xl w-full px-6 md:max-w-xl text-center">
-        {authDictionary.resetPassword}
-      </h2>
-      <ResetPasswordForm authDictionary={authDictionary} />
-    </>
-  )
+  return <AuthPage type="reset-password" lang={params.lang} authDictionary={authDictionary} />
 }

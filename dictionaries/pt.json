@@ -24,7 +24,9 @@
       "forgotPasswordTitle": "Esqueceste-te da palavra-passe?",
       "forgotPasswordDescription": "Insere o teu email e nós enviaremos-te um link para redefinir a tua palavra-passe.",
       "forgotPasswordButton": "Enviar link para o email",
-      "forgotPasswordSuccess": "Foi enviado um email para o teu email com instruções para redefinir a tua palavra-passe."
+      "forgotPasswordSuccess": "Foi enviado um email para o teu email com instruções para redefinir a tua palavra-passe.",
+      "orContinueWith": "Ou continuar com",
+      "loginWithGoogle": "Entrar com o Google"
     }
   },
   "user": "Utilizador",

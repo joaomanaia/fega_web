@@ -19,6 +19,7 @@ import { signInAction } from "@/app/[lang]/(auth)/actions"
 import { Link } from "@/components/link"
 import type { Locale } from "@/i18n-config"
 import type { Dictionary } from "@/get-dictionary"
+import GoogleLoginButton from "@/app/[lang]/(auth)/_components/google-login-button"
 
 interface LoginFormProps {
   lang: Locale
@@ -46,7 +47,7 @@ export function LoginForm({ lang, authDictionary }: LoginFormProps) {
             toast.error(err.message)
           }
         })}
-        className="space-y-6 w-full px-6 md:max-w-xl"
+        className="space-y-6 w-full"
       >
         <FormField
           control={form.control}

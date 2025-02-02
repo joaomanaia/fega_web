@@ -1,4 +1,4 @@
-import { SignUpForm } from "@/app/[lang]/(auth)/signup/_components/signup-form"
+import AuthPage from "@/app/[lang]/(auth)/_components/auth-page"
 import { getDictionary } from "@/get-dictionary"
 import type { Locale } from "@/i18n-config"
 import { isUserAuthenticated } from "@/utils/user-utils"
@@ -17,10 +17,5 @@ export default async function SignupPage({ params }: SignupPageProps) {
 
   const authDictionary = (await getDictionary(params.lang)).page.auth
 
-  return (
-    <>
-      <h2 className="text-3xl lg:text-4xl xl:text-5xl">{authDictionary.registerTitle}</h2>
-      <SignUpForm lang={params.lang} authDictionary={authDictionary} />
-    </>
-  )
+  return <AuthPage type="signup" lang={params.lang} authDictionary={authDictionary} />
 }
