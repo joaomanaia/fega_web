@@ -56,7 +56,7 @@ export default async function UserPage({ params }: UserPageProps) {
     <main
       itemScope
       itemType="https://schema.org/ProfilePage"
-      className="flex flex-col gap-4 md:pb-3 lg:flex-row-reverse w-full h-full overflow-auto lg:overflow-hidden"
+      className="flex flex-col gap-4 md:pb-3 lg:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden"
     >
       <meta itemProp="dateCreated" content={user.created_at} />
       <meta itemProp="dateModified" content={user.updated_at ?? undefined} />
@@ -79,7 +79,7 @@ export default async function UserPage({ params }: UserPageProps) {
           <CreatePost className="rounded-none rounded-b-[30px]" dictionary={dictionary} />
         )}
       </div>
-      <MainContainer className="flex flex-col gap-y-4 md:gap-y-6 h-full md:h-fit lg:w-full rounded-b-none md:rounded-[30px] lg:overflow-auto">
+      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
         <PostsContent
           schemaHasPart // Has part of the main entity
           uid={user.id}
