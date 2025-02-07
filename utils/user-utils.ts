@@ -1,5 +1,5 @@
 import { uuidSchema, type UuidType } from "@/lib/schemas/primitive-schemas"
-import { createServerComponentClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import type UserType from "@/types/UserType"
 import { type Session, type User } from "@supabase/supabase-js"
 import { cache } from "react"
@@ -13,7 +13,7 @@ export const getPairUids = (uids: string[]): string => {
 }
 
 export const getLocalUser = async (): Promise<User | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const {
     data: { session },
@@ -35,7 +35,7 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
 }
 
 export const getSession = async (): Promise<Session | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.getSession()
 
@@ -54,7 +54,7 @@ export const getUserByUid = cache(async (uid: UuidType): Promise<UserType | null
     return null
   }
 
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.from("users").select("*").eq("id", uid).single()
 
@@ -67,7 +67,7 @@ export const getUserByUid = cache(async (uid: UuidType): Promise<UserType | null
 })
 
 export const getUserByUsername = cache(async (username: string): Promise<UserType | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.from("users").select("*").eq("username", username).single()
 

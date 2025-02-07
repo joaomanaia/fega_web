@@ -1,4 +1,4 @@
-import { createServerComponentClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { type Tables } from "@/types/database.types"
 import { type Metadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -13,7 +13,7 @@ interface NewsIdPageProps {
 type NewsItemType = Tables<"news_view">
 
 const getNewsItem = cache(async (newsId: string): Promise<NewsItemType> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data } = await supabase.from("news_view").select("*").eq("id", newsId).single()
   if (!data) notFound()

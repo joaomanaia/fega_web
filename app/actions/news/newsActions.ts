@@ -1,6 +1,6 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/client"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
@@ -19,7 +19,7 @@ export async function createNews(formData: FormData) {
     content: formData.get("content"),
   })
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from("news")

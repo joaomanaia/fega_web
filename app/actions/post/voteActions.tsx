@@ -1,13 +1,13 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { PostVoteType } from "@/types/PostType"
 import { redirect } from "next/navigation"
 
 export const handleVote = async (postId: string, formData: FormData) => {
   const buttonVoteType = formData.get("vote_button") as PostVoteType
 
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   // Check if user is authenticated
   const {
@@ -15,7 +15,7 @@ export const handleVote = async (postId: string, formData: FormData) => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return redirect("/auth")
+    return redirect("/login")
   }
 
   const { data: currentPostVote } = await supabase

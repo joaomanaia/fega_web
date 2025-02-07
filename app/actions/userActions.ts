@@ -4,8 +4,7 @@ import { deleteAvatarIfFromUploadthing } from "@/app/api/uploadthing/core"
 import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
 import { updateEmailSchema, updateProfileSchema } from "@/lib/schemas/user-schemas"
 import { revalidatePath } from "next/cache"
-import { z } from "zod"
-import { createServerAction, ZSAError } from "zsa"
+import { ZSAError } from "zsa"
 
 export const updateProfileAction = authenticatedProcedure
   .createServerAction()

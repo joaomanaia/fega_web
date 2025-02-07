@@ -1,11 +1,11 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import * as z from "zod"
 
 export async function deleteMessage(messageId: string) {
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from("group_messages").delete().eq("id", messageId)
 
@@ -27,7 +27,7 @@ export async function editMessage(messageId: string, groupId: string, formData: 
       message: formData.get("message"),
     })
 
-    const supabase = createServerActionClient()
+    const supabase = await createClient()
 
     const { error } = await supabase
       .from("group_messages")

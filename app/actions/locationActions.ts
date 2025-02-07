@@ -1,9 +1,9 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 
 export const createLocation = async (locationName: string, address: string, point: string) => {
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from("locations").insert({
     name: locationName,

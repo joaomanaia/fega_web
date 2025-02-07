@@ -1,8 +1,8 @@
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { createServerActionProcedure, ZSAError } from "zsa"
 
 export const authenticatedProcedure = createServerActionProcedure().handler(async () => {
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const {
     data: { user },

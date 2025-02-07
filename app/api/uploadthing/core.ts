@@ -1,11 +1,11 @@
-import { createRouteHandlerClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import { createUploadthing, type FileRouter } from "uploadthing/next"
 import { UploadThingError, UTApi } from "uploadthing/server"
 
 const f = createUploadthing()
 
 const hadleAuth = async () => {
-  const supabase = createRouteHandlerClient()
+  const supabase = await createClient()
   const { data: user } = await supabase.auth.getUser()
 
   if (!user || !user.user) {

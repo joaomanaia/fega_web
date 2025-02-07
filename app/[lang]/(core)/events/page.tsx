@@ -3,20 +3,20 @@ import { MainContainer } from "@/app/components/m3/main-container"
 import { EventComponent } from "./components/event-component"
 import { NextEventCover } from "./components/next-event-cover"
 import { CalendarIcon, MapIcon } from "lucide-react"
-import { createServerComponentClient } from "@/supabase"
 import { Button } from "@/components/ui/button"
 import { Link } from "@/components/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary, getDictionary } from "@/get-dictionary"
 import { Hint } from "@/components/hint"
 import { type Metadata } from "next"
+import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
-  title: "Events"
+  title: "Events",
 }
 
 const getEvents = async (): Promise<CalendarEvent[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const now = new Date()
 

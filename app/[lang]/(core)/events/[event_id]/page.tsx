@@ -7,11 +7,11 @@ import { MoreInfo } from "./components/more-info"
 import { Directions } from "./components/directions"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
-import { createServerComponentClient } from "@/supabase"
 import { type Metadata } from "next"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
 import { cache } from "react"
 import { notFound } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
 
 interface EventIdPageProps {
   params: {
@@ -20,7 +20,7 @@ interface EventIdPageProps {
 }
 
 const getEventById = cache(async (shortId: string): Promise<CalendarEvent | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: event, error } = await supabase
     .from("calendar_events_view")

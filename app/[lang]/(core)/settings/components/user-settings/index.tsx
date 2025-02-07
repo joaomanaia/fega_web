@@ -1,6 +1,5 @@
 "use client"
 
-import { createClientComponentClient, type User } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
 import { type Dictionary } from "@/get-dictionary"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
@@ -11,6 +10,8 @@ import { UserRoundXIcon } from "lucide-react"
 import { toast } from "sonner"
 import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
 import { useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import type { User } from "@supabase/supabase-js"
 
 type UserSettingsDictionary = Dictionary["settings"]["user"]
 
@@ -23,7 +24,7 @@ interface UserSettingsProps {
 // https://supabase.com/docs/reference/javascript/auth-reauthentication
 
 export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) => {
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
   const router = useRouter()
 
   const [SignOutConfirmDialog, confirmSignOut] = useConfirm()

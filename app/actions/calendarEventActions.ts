@@ -1,6 +1,6 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
 import { redirect } from "next/navigation"
 import { z } from "zod"
@@ -21,7 +21,7 @@ const createEventFormSchema = z.object({
 })
 
 export async function createEvent(values: z.infer<typeof createEventFormSchema>) {
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.from("calendar_events").insert({
     content: values.content,

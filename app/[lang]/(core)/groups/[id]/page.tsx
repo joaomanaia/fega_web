@@ -1,4 +1,3 @@
-import { createServerComponentClient } from "@/supabase"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import { redirect } from "next/navigation"
 import type { GroupViewType } from "@/types/group/GroupType"
@@ -10,6 +9,7 @@ import { type Locale } from "@/i18n-config"
 import { getDictionary } from "@/get-dictionary"
 import { cache } from "react"
 import type { Metadata } from "next"
+import { createClient } from "@/lib/supabase/server"
 
 interface GroupMessagePageProps {
   params: {
@@ -19,7 +19,7 @@ interface GroupMessagePageProps {
 }
 
 const getGroup = cache(async (groupId: string): Promise<GroupViewType | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
 
@@ -27,7 +27,7 @@ const getGroup = cache(async (groupId: string): Promise<GroupViewType | null> =>
 })
 
 const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: groupMessages } = await supabase
     .from("group_messages_view")
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: GroupMessagePageProps): Promi
 
 export default async function GroupMessagePage({ params }: GroupMessagePageProps) {
   const localUserUid = await getLocalUserUid()
-  if (!localUserUid) return redirect("/auth")
+  if (!localUserUid) return redirect("/login")
 
   const group = await getGroup(params.id)
   if (!group || !group.id || !group.name) return redirect("/groups")

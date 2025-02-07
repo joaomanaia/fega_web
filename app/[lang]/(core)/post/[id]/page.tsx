@@ -1,5 +1,4 @@
 import Post from "@/app/components/post/Post"
-import { createServerComponentClient } from "@/supabase"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { type Locale } from "@/i18n-config"
@@ -8,6 +7,7 @@ import { notFound } from "next/navigation"
 import type { PostViewType } from "@/types/PostType"
 import { cache } from "react"
 import type { Metadata } from "next"
+import { createClient } from "@/lib/supabase/server"
 
 interface PostPageProps {
   params: {
@@ -17,7 +17,7 @@ interface PostPageProps {
 }
 
 const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
-  const supabase = createServerComponentClient()
+  const supabase = await createClient()
 
   const { data: post, error } = await supabase.from("posts_view").select("*").eq("id", id).single()
 

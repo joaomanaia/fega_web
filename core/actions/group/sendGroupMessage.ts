@@ -1,9 +1,9 @@
 "use server"
 
-import { createServerActionClient } from "@/supabase"
+import { createClient } from "@/lib/supabase/server"
 
 const sendGroupMessage = async (groupId: string, message: string, replyToId?: string) => {
-  const supabase = createServerActionClient()
+  const supabase = await createClient()
 
   await supabase.from("group_messages").insert({
     group_id: groupId,

@@ -1,15 +1,14 @@
 "use client"
 
 import { uuidSchema } from "@/lib/schemas/primitive-schemas"
-import type { Database } from "@/types/database.types"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/client"
 import { useQuery } from "@tanstack/react-query"
 
 export const useGetUser = (id: string) => {
   return useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
-      const supabase = createClientComponentClient<Database>()
+      const supabase = createClient()
 
       let query = supabase.from("users").select("*")
 
