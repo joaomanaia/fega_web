@@ -13,8 +13,6 @@ const PROTECTED_ROUTES: Route[] = ["/groups"]
 const rotectedRouteMatcher = createRouteMatcher(PROTECTED_ROUTES) */
 
 export const updateSession = async (request: NextRequest, response: NextResponse) => {
-  let supabaseResponse = response
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -24,12 +22,9 @@ export const updateSession = async (request: NextRequest, response: NextResponse
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            response.cookies.set(name, value, options)
           )
         },
       },
@@ -52,7 +47,7 @@ export const updateSession = async (request: NextRequest, response: NextResponse
     return NextResponse.redirect(url)
   }
 
-  return supabaseResponse
+  return response
 }
 
 function removeLocaleFromPath(path: string): string {
