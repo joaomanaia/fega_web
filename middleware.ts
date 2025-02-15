@@ -40,7 +40,7 @@ async function handleI18nRouting(request: NextRequest) {
     return await handleMissingLocale(request, fullPathname)
   }
 
-  return NextResponse.next({ request })
+  return NextResponse.next()
 }
 
 async function handleMissingLocale(req: NextRequest, fullPathname: string) {
@@ -53,7 +53,7 @@ async function handleMissingLocale(req: NextRequest, fullPathname: string) {
   )
 
   if (locale === i18n.defaultLocale) {
-    return NextResponse.rewrite(newUrl, { request: req })
+    return NextResponse.rewrite(newUrl)
   }
   return NextResponse.redirect(newUrl)
 }
