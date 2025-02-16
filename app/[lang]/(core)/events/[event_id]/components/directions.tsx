@@ -10,7 +10,7 @@ interface DirectionsProps {
 
 const DynamicMap = dynamic(() => import("../../components/event-map"), {
   loading: () => <div>Loading map...</div>,
-  ssr: false,
+  ssr: !!false,
 })
 
 export const Directions: React.FC<DirectionsProps> = ({ event }) => {

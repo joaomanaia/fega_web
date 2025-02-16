@@ -232,9 +232,14 @@ interface ReplyMessageProps {
   toLocalUser: boolean
 }
 
-const ReplyMessage: React.FC<ReplyMessageProps> = ({ replyToMessageId, message, byLocalUser, toLocalUser }) => {
+const ReplyMessage: React.FC<ReplyMessageProps> = ({
+  replyToMessageId,
+  message,
+  byLocalUser,
+  toLocalUser,
+}) => {
   const replyMessageToElement = document.getElementById(replyToMessageId)
-  
+
   return (
     <p
       className={cn(
@@ -312,12 +317,14 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
               action={async (formData: FormData) => {
                 // Check if the message is the same as the current message
                 if (formData.get("message") === currentMessage) {
-                  return toast.error("Message is the same as the current message")
+                  toast.error("Message is the same as the current message")
+                  return
                 }
 
                 const result = await editMessageWithId(formData)
                 if (result?.errorMessage) {
-                  return toast.error(result.errorMessage)
+                  toast.error(result.errorMessage)
+                  return
                 }
 
                 toast.success("Message edited")

@@ -23,7 +23,7 @@ interface EventsMapPageProps {
 
 const DynamicMap = dynamic(() => import("../components/event-map"), {
   loading: () => <div>Loading map...</div>,
-  ssr: false,
+  ssr: !!false,
 })
 
 const getAllEvents = async (from?: Date, to?: Date): Promise<CalendarEvent[]> => {
