@@ -31,12 +31,13 @@ export const metadata: Metadata = {
 }
 
 interface NewsPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function NewsPage({ params }: NewsPageProps) {
+export default async function NewsPage(props: NewsPageProps) {
+  const params = await props.params
   const dictionary = await getDictionary(params.lang)
   const news = await getNews()
 

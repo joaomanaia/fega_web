@@ -21,10 +21,11 @@ const getCameraById = cache(async (id: string): Promise<CameraType | null> => {
 })
 
 type CameraPageProps = {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
-export async function generateMetadata({ params }: CameraPageProps): Promise<Metadata> {
+export async function generateMetadata(props: CameraPageProps): Promise<Metadata> {
+  const params = await props.params
   const camera = await getCameraById(params.id)
 
   if (!camera) notFound()
@@ -43,7 +44,8 @@ export async function generateMetadata({ params }: CameraPageProps): Promise<Met
 
 export const dynamic = "force-dynamic"
 
-export default async function CameraPage({ params }: CameraPageProps) {
+export default async function CameraPage(props: CameraPageProps) {
+  const params = await props.params
   const camera = await getCameraById(params.id)
 
   if (!camera) {

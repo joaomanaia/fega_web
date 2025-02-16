@@ -44,16 +44,17 @@ const fontSans = FontSans({
 
 interface RootLayoutProps {
   children: React.ReactNode
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {
-  const dictionary = await getDictionary(params.lang)
+  const { lang } = await params
+  const dictionary = await getDictionary(lang)
 
   return (
-    <html lang={params.lang} suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <meta
           name="google-site-verification"

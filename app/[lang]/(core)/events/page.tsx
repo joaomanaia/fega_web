@@ -32,12 +32,13 @@ const getEvents = async (): Promise<CalendarEvent[]> => {
 }
 
 interface EventsPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function EventsPage({ params }: EventsPageProps) {
+export default async function EventsPage(props: EventsPageProps) {
+  const params = await props.params
   const dictionary = await getDictionary(params.lang)
   const events = await getEvents()
 

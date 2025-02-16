@@ -11,13 +11,14 @@ import { notFound } from "next/navigation"
 import { FileWarningIcon } from "lucide-react"
 
 interface UserPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
     username: string
-  }
+  }>
 }
 
-export async function generateMetadata({ params }: UserPageProps): Promise<Metadata> {
+export async function generateMetadata(props: UserPageProps): Promise<Metadata> {
+  const params = await props.params
   const user = await getUserByUsername(params.username)
 
   if (!user) {
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: UserPageProps): Promise<Metad
   }
 }
 
-export default async function UserPage({ params }: UserPageProps) {
+export default async function UserPage(props: UserPageProps) {
+  const params = await props.params
   const user = await getUserByUsername(params.username)
 
   if (!user) {

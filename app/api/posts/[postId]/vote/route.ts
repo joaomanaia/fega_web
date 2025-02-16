@@ -6,7 +6,8 @@ import { NextResponse } from "next/server"
  *
  * @returns the vote object
  */
-export async function PATCH(req: Request, { params }: { params: { postId: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ postId: string }> }) {
+  const params = await props.params
   try {
     const { searchParams } = new URL(req.url)
 

@@ -5,12 +5,13 @@ import { isUserAuthenticated } from "@/utils/user-utils"
 import { redirect } from "next/navigation"
 
 interface SignupPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function SignupPage({ params }: SignupPageProps) {
+export default async function SignupPage(props: SignupPageProps) {
+  const params = await props.params
   if (await isUserAuthenticated()) {
     redirect("/")
   }

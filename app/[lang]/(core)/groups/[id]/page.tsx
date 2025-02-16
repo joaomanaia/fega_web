@@ -12,10 +12,10 @@ import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
 
 interface GroupMessagePageProps {
-  params: {
+  params: Promise<{
     lang: Locale
     id: string
-  }
+  }>
 }
 
 const getGroup = cache(async (groupId: string): Promise<GroupViewType | null> => {
@@ -41,7 +41,8 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
 
 export const dynamic = "force-dynamic"
 
-export async function generateMetadata({ params }: GroupMessagePageProps): Promise<Metadata> {
+export async function generateMetadata(props: GroupMessagePageProps): Promise<Metadata> {
+  const params = await props.params
   const group = await getGroup(params.id)
 
   if (!group) return redirect("/groups")
@@ -51,7 +52,8 @@ export async function generateMetadata({ params }: GroupMessagePageProps): Promi
   }
 }
 
-export default async function GroupMessagePage({ params }: GroupMessagePageProps) {
+export default async function GroupMessagePage(props: GroupMessagePageProps) {
+  const params = await props.params
   const localUserUid = await getLocalUserUid()
   if (!localUserUid) return redirect("/login")
 

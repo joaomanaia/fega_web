@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 }
 
 interface EventsMapPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     fromDate: string | undefined
     toDate: string | undefined
-  }
+  }>
 }
 
 const DynamicMap = dynamic(() => import("../components/event-map"), {
@@ -59,7 +59,8 @@ const getDateRangeFromQuery = (from?: string, to?: string): DateRange | undefine
   }
 }
 
-export default async function EventsMapPage({ params, searchParams }: EventsMapPageProps) {
+export default async function EventsMapPage(props: EventsMapPageProps) {
+  const searchParams = await props.searchParams
   const dateRange =
     getDateRangeFromQuery(searchParams.fromDate, searchParams.toDate) || defaultDateRange
 
