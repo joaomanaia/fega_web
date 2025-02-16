@@ -10,10 +10,10 @@ import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     id: string
     lang: Locale
-  }
+  }>
 }
 
 const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
@@ -30,7 +30,8 @@ const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
 
 export const dynamic = "force-dynamic"
 
-export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+export async function generateMetadata(props: PostPageProps): Promise<Metadata> {
+  const params = await props.params
   const post = await getPostById(params.id)
 
   if (!post) {
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   }
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage(props: PostPageProps) {
+  const params = await props.params
   const post = await getPostById(params.id)
   if (!post) {
     notFound()

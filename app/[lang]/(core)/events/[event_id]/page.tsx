@@ -14,9 +14,9 @@ import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 
 interface EventIdPageProps {
-  params: {
+  params: Promise<{
     event_id: string
-  }
+  }>
 }
 
 const getEventById = cache(async (shortId: string): Promise<CalendarEvent | null> => {
@@ -35,7 +35,8 @@ const getEventById = cache(async (shortId: string): Promise<CalendarEvent | null
   return calendarEntityToModel(event)
 })
 
-export async function generateMetadata({ params }: EventIdPageProps): Promise<Metadata> {
+export async function generateMetadata(props: EventIdPageProps): Promise<Metadata> {
+  const params = await props.params
   const eventId = params.event_id
 
   const event = await getEventById(eventId)
@@ -56,7 +57,8 @@ export async function generateMetadata({ params }: EventIdPageProps): Promise<Me
   }
 }
 
-export default async function EventIdPage({ params }: EventIdPageProps) {
+export default async function EventIdPage(props: EventIdPageProps) {
+  const params = await props.params
   const event = await getEventById(params.event_id)
 
   if (!event) {

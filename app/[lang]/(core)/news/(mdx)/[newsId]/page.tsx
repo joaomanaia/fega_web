@@ -7,7 +7,7 @@ import { cache } from "react"
 import remarkGfm from "remark-gfm"
 
 interface NewsIdPageProps {
-  params: { newsId: string }
+  params: Promise<{ newsId: string }>
 }
 
 type NewsItemType = Tables<"news_view">
@@ -21,7 +21,8 @@ const getNewsItem = cache(async (newsId: string): Promise<NewsItemType> => {
   return data
 })
 
-export async function generateMetadata({ params }: NewsIdPageProps): Promise<Metadata> {
+export async function generateMetadata(props: NewsIdPageProps): Promise<Metadata> {
+  const params = await props.params
   const newsId = params.newsId
 
   const newsItem = await getNewsItem(params.newsId)
@@ -50,7 +51,8 @@ export async function generateMetadata({ params }: NewsIdPageProps): Promise<Met
   }
 }
 
-export default async function NewsIdPage({ params }: NewsIdPageProps) {
+export default async function NewsIdPage(props: NewsIdPageProps) {
+  const params = await props.params
   const newsItem = await getNewsItem(params.newsId)
 
   if (!newsItem.content) {

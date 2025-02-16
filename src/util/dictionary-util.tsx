@@ -6,12 +6,10 @@ type ExtractPlaceholders<T extends string> = T extends `${infer _Start}{${infer 
   ? Key | ExtractPlaceholders<Rest>
   : never
 
+type FormattedStringReturnType<T> =
+  Extract<T[keyof T], React.JSX.Element> extends never ? string : React.JSX.Element
 
-type FormattedStringReturnType<T> = Extract<T[keyof T], JSX.Element> extends never
-  ? string
-  : JSX.Element
-
-  /**
+/**
  * Formats a text string by replacing placeholders with corresponding values from a dictionary.
  * Placeholders are defined by curly braces, e.g. {key}.
  *
@@ -22,8 +20,8 @@ type FormattedStringReturnType<T> = Extract<T[keyof T], JSX.Element> extends nev
  */
 export function formatString<
   T extends string,
-  R extends string | JSX.Element,
-  V extends Record<ExtractPlaceholders<T> & string, R>
+  R extends string | React.JSX.Element,
+  V extends Record<ExtractPlaceholders<T> & string, R>,
 >(template: T, values?: V): FormattedStringReturnType<V> {
   if (!values) return template as string as FormattedStringReturnType<V>
 

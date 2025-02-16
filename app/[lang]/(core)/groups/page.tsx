@@ -13,12 +13,13 @@ export const metadata: Metadata = {
 }
 
 interface GroupPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function GroupPage({ params }: GroupPageProps) {
+export default async function GroupPage(props: GroupPageProps) {
+  const params = await props.params
   const dictionary = await getDictionary(params.lang)
 
   return (

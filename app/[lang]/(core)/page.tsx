@@ -6,12 +6,13 @@ import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
 
 interface HomePageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function HomePage({ params }: HomePageProps) {
+export default async function HomePage(props: HomePageProps) {
+  const params = await props.params;
   const localUid = await getLocalUserUid()
   const dictionary = await getDictionary(params.lang)
 

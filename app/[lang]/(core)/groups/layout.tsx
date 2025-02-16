@@ -9,18 +9,20 @@ import { Suspense } from "react"
 type GroupLayoutProps = Readonly<{
   children: React.ReactNode
   modal: React.ReactNode
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }>
 
 export const dynamic = "force-dynamic"
 
 export default async function GroupLayout({ children, modal, params }: GroupLayoutProps) {
+  const { lang } = await params
+
   const localUser = await getLocalUser()
   if (!localUser) return redirect("/login")
 
-  const dictionary = await getDictionary(params.lang)
+  const dictionary = await getDictionary(lang)
 
   return (
     <>
@@ -31,7 +33,7 @@ export default async function GroupLayout({ children, modal, params }: GroupLayo
           <Suspense fallback={<GroupListSkeleton className="w-full max-w-md" />}>
             <GroupList
               className="hidden xl:block flex-grow w-full max-w-md"
-              lang={params.lang}
+              lang={lang}
               dictionary={dictionary}
             />
           </Suspense>

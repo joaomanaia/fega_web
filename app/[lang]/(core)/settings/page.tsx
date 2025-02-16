@@ -11,12 +11,13 @@ export const metadata: Metadata = {
 }
 
 interface SettingsPageProps {
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function SettingsPage({ params }: SettingsPageProps) {
+export default async function SettingsPage(props: SettingsPageProps) {
+  const params = await props.params
   const dictionary = await getDictionary(params.lang)
   const supabase = await createClient()
   const {

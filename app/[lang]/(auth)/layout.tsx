@@ -3,15 +3,13 @@ import type { Locale } from "@/i18n-config"
 
 interface AuthLayoutProps {
   children: React.ReactNode
-  params: {
+  params: Promise<{
     lang: Locale
-  }
+  }>
 }
 
-export default async function AuthLayout({
-  children,
-  params: { lang },
-}: Readonly<AuthLayoutProps>) {
+export default async function AuthLayout({ children, params }: Readonly<AuthLayoutProps>) {
+  const { lang } = await params
   const authDictionary = (await getDictionary(lang)).page.auth
 
   return (
