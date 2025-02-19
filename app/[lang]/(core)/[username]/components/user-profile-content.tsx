@@ -6,17 +6,21 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Button } from "@/components/ui/button"
 import { useModal } from "@/hooks/use-modal-store"
+import Linkify from "@/components/linkify"
+import type { Locale } from "@/i18n-config"
 
 interface UserProfileContentProps {
   user: UserType
   isLocalUser?: boolean
   dictionary: Dictionary
+  lang: Locale
 }
 
 export const UserProfileContent: React.FC<UserProfileContentProps> = ({
   user,
   isLocalUser,
   dictionary,
+  lang,
 }) => {
   const { onOpen } = useModal()
 
@@ -31,7 +35,11 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
           <span itemProp="alternateName" className="text-foreground/50">{`@${user.username}`}</span>
         </div>
       </div>
-      {user.bio && <p itemProp="description">{user.bio}</p>}
+      {user.bio && (
+        <Linkify lang={lang}>
+          <div itemProp="description">{user.bio}</div>
+        </Linkify>
+      )}
       {isLocalUser && (
         <Button
           onClick={() => onOpen("edit-profile", { user })}

@@ -11506,6 +11506,11 @@ react-leaflet@^4.2.1:
   dependencies:
     "@react-leaflet/core" "^2.1.0"
 
+react-linkify-it@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-linkify-it/-/react-linkify-it-1.0.8.tgz#6ab17ff06c0ca4129b7badece870dbb3d0471f9b"
+  integrity sha512-QjwhIaCXmJ2CiFIl4mIOYN+Z+OhwRLHNMKmWG9SSAzKgpltOnOQjzvj8ruhnvOhgKRc6yqjW0vH0J6LEbTm50Q==
+
 react-markdown@^9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-9.0.1.tgz#c05ddbff67fd3b3f839f8c648e6fb35d022397d1"

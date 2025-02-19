@@ -75,7 +75,12 @@ export default async function UserPage(props: UserPageProps) {
             isLocalUser && "rounded-b-none md:rounded-[30px]"
           )}
         >
-          <UserProfileContent user={user} isLocalUser={isLocalUser} dictionary={dictionary} />
+          <UserProfileContent
+            user={user}
+            isLocalUser={isLocalUser}
+            dictionary={dictionary}
+            lang={params.lang}
+          />
         </MainContainer>
         {isLocalUser && (
           <CreatePost className="rounded-none rounded-b-[30px]" dictionary={dictionary} />

@@ -1,6 +1,10 @@
 import blockedUsernames from "@/lib/constants/blockedUsernames"
 import { z } from "zod"
 
+export const USERNAME_REGEX = /^(?=[a-z0-9._]{3,20}$)(?!.*[_.]{2})[^_.0-9].*[^_.]$/
+export const USERNAME_WITH_AT_REGEX =
+  /@(?=[a-z0-9._]{3,20})(?!.*[_.]{2})[^_.0-9].*?[^_.](?![a-z0-9._])/
+
 export const usernameSchema = z
   .string()
   .trim()
@@ -12,7 +16,7 @@ export const usernameSchema = z
   // 4. Username cannot end with a period or underscore
   // 5. Username cannot contain consecutive periods or underscores
   // 6. Username cannot be in the list of blocked usernames
-  .regex(/^(?=[a-z0-9._]{3,20}$)(?!.*[_.]{2})[^_.0-9].*[^_.]$/, {
+  .regex(USERNAME_REGEX, {
     message:
       "Username must be between 3 and 20 characters and can only contain lowercase letters, numbers, periods, and underscore characters",
   })

@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { type Locale } from "@/i18n-config"
 import { UserHoverCard } from "@/app/components/user/user-hover-card"
 import { UserAvatar } from "@/app/components/user/user-avatar"
+import Linkify from "@/components/linkify"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -67,9 +68,11 @@ const Post: React.FC<PostProps> = ({
         userProfileUrl={post.author_avatar_url!}
         lang={lang}
       />
-      <h3 itemProp="headline" className="text-lg">
-        {post.description}
-      </h3>
+      <Linkify lang={lang}>
+        <h3 itemProp="headline" className="text-lg">
+          {post.description}
+        </h3>
+      </Linkify>
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex flex-wrap items-center gap-4">
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
@@ -109,13 +112,13 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
     >
       <meta itemProp="identifier" content={uid} />
       <meta itemProp="alternateName" content={`@${username}`} />
-      <UserHoverCard uid={uid}>
+      <UserHoverCard id={uid}>
         <Link href={`/${username}`} lang={lang}>
           <UserAvatar src={userProfileUrl} name={userFullname} />
         </Link>
       </UserHoverCard>
       <div className="flex flex-col ml-3 space-y-1 justify-center">
-        <UserHoverCard uid={uid}>
+        <UserHoverCard id={uid}>
           <Link
             itemProp="url"
             href={`/${username}`}

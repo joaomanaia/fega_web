@@ -4,9 +4,15 @@ import { uuidSchema } from "@/lib/schemas/primitive-schemas"
 import { createClient } from "@/lib/supabase/client"
 import { useQuery } from "@tanstack/react-query"
 
+/**
+ * Get a user by their ID or username
+ *
+ * @param id - The user's ID or username
+ */
 export const useGetUser = (id: string) => {
   return useQuery({
     queryKey: ["user", id],
+    retry: 1,
     queryFn: async () => {
       const supabase = createClient()
 

@@ -13,24 +13,27 @@ function getRelativeTime(createdAt: string | Date) {
 }
 
 interface UserHoverCardProps {
-  uid: string
+  id: string
   children: React.ReactNode
 }
 
-export const UserHoverCard: React.FC<UserHoverCardProps> = ({ uid, children }) => {
+export const UserHoverCard: React.FC<UserHoverCardProps> = ({ id, children }) => {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className="w-80">
-        <UserHoverCardContent uid={uid} />
+        <UserHoverCardContent id={id} />
       </HoverCardContent>
     </HoverCard>
   )
 }
 
-interface UserHoverCardWithLinkProps extends UserHoverCardProps {
+interface UserHoverCardWithLinkProps {
+  uid?: string
   username: string
   lang: Locale
+  children: React.ReactNode
+  className?: string
 }
 
 export const UserHoverCardWithLink: React.FC<UserHoverCardWithLinkProps> = ({
@@ -38,26 +41,27 @@ export const UserHoverCardWithLink: React.FC<UserHoverCardWithLinkProps> = ({
   uid,
   username,
   children,
+  className,
 }) => {
   return (
-    <Link lang={lang} href={`/${username}`}>
-      <UserHoverCard uid={uid}>{children}</UserHoverCard>
+    <Link lang={lang} href={`/${username}`} className={className}>
+      <UserHoverCard id={uid ?? username}>{children}</UserHoverCard>
     </Link>
   )
 }
 
 interface UserHoverCardContent {
-  uid: string
+  id: string
 }
 
-const UserHoverCardContent = ({ uid }: UserHoverCardContent) => {
-  const { data: user, isLoading } = useGetUser(uid)
+const UserHoverCardContent = ({ id }: UserHoverCardContent) => {
+  const { data: user, isLoading, isError } = useGetUser(id)
 
   if (isLoading) {
     return <UserHoverCardSkeleton />
   }
 
-  if (!user) {
+  if (!user || isError) {
     return <div>User not found</div>
   }
 
