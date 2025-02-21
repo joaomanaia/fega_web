@@ -1,3 +1,5 @@
+import React from "react"
+
 /**
  * Extracts all placeholders from a text string.
  * @example ExtractPlaceholders<'Hello {name}, welcome to {city}!'> // 'name' | 'city'
@@ -27,11 +29,11 @@ export function formatString<
 
   return template.split(/{(\w+)}/g).map((part, index) => {
     if (index % 2 === 0) {
-      return part
+      return <React.Fragment key={index}>{part}</React.Fragment>
     }
 
     const key = part as ExtractPlaceholders<T>
-    return key in values ? values[key] : `{${key}}`
+    return <React.Fragment key={index}>{key in values ? values[key] : `{${key}}`}</React.Fragment>
   }) as unknown as FormattedStringReturnType<V>
 }
 
