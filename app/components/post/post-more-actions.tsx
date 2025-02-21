@@ -10,16 +10,28 @@ import {
 import { deletePost } from "@/core/actions/postActions"
 import { useConfirm } from "@/hooks/use-confirm"
 import { useDictionary } from "@/hooks/use-get-dictionary"
+import { useQueryClient } from "@tanstack/react-query"
 import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
+import { useServerAction } from "zsa-react"
 
 interface PostMoreActionsProps {
   postId: string
 }
 
 export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
-  const deletePostWithId = deletePost.bind(null, postId)
-  const dictionary = useDictionary()["post"]
+  const queryClient = useQueryClient()
+  const dictionary = useDictionary().post
+
+  const { execute } = useServerAction(deletePost, {
+    onSuccess: () => {
+      toast.success("Post deleted successfully", { id: "delete-post" })
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
+    },
+    onError: () => {
+      toast.error("Failed to delete post", { id: "delete-post" })
+    },
+  })
 
   const [ConfirmRemoveDialog, confirmRemove] = useConfirm()
 
@@ -27,16 +39,8 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
     const ok = await confirmRemove()
 
     if (ok) {
-      try {
-        await deletePostWithId()
-        toast.success("Post deleted successfully")
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error("Failed to delete post")
-        }
-      }
+      toast.loading("Deleting post...", { id: "delete-post" })
+      await execute({ id: postId })
     }
   }
 

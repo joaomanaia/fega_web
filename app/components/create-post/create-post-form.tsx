@@ -1,45 +1,53 @@
 "use client"
 
-import { CreatePostButton } from "@/app/components/create-post/create-post-button"
+import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createPost } from "@/core/actions/postActions"
 import { type Dictionary } from "@/get-dictionary"
+import { createPostSchema, type CreatePostSchemaValues } from "@/lib/schemas/post-schemas"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
+import { useServerAction } from "zsa-react"
 
 interface CreatePostFormProps {
   className?: string
   dictionary: Dictionary["post"]["create"]
 }
 
-const formSchema = z.object({
-  description: z.string().min(1).max(500),
-})
-
-type FormValues = z.infer<typeof formSchema>
-
 export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className, dictionary }) => {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  const { execute, isPending } = useServerAction(createPost, {
+    onSuccess: () => {
+      toast.success(dictionary.success, { id: "create-post" })
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
+    },
+    onError: ({ err }) => {
+      toast.error(dictionary.error, { id: "create-post" })
+
+      if (err.code === "NOT_AUTHORIZED") {
+        router.push("/login")
+      }
+    },
+  })
+
+  const form = useForm<CreatePostSchemaValues>({
+    resolver: zodResolver(createPostSchema),
     defaultValues: {
       description: "",
     },
   })
 
-  const handleSubmit = async (values: FormValues) => {
-    try {
-      await createPost(values.description)
-
-      toast.success(dictionary.success)
-    } catch (error) {
-      toast.error(dictionary.error)
-    } finally {
-      form.reset()
-    }
+  const handleSubmit = async (values: CreatePostSchemaValues) => {
+    form.reset()
+    toast.loading(dictionary.submitButton.loading, { id: "create-post" })
+    await execute(values)
   }
 
   return (
@@ -65,10 +73,15 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className, dicti
             </FormItem>
           )}
         />
-        <CreatePostButton
-          disabled={form.formState.isSubmitting || !form.formState.isValid}
-          dictionary={dictionary.submitButton}
-        />
+        <Button
+          disabled={isPending || !form.formState.isValid}
+          variant="default"
+          color="primary"
+          type="submit"
+          className="w-full"
+        >
+          {isPending ? dictionary.submitButton.loading : dictionary.submitButton.default}
+        </Button>
       </form>
     </Form>
   )

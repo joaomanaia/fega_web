@@ -1,31 +1,38 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
-import { isUserAuthenticated } from "@/utils/user-utils"
+import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
+import { createPostSchema } from "@/lib/schemas/post-schemas"
 import { revalidatePath, revalidateTag } from "next/cache"
-import { redirect } from "next/navigation"
+import { z } from "zod"
 
-export const createPost = async (description: string) => {
-  const supabase = await createClient()
+export const createPost = authenticatedProcedure
+  .createServerAction()
+  .input(createPostSchema)
+  .handler(async ({ input, ctx }) => {
+    const { description } = input
 
-  // Check if user is authenticated
-  const userAuthenticated = await isUserAuthenticated()
-  if (!userAuthenticated) {
-    redirect("/login")
-  }
+    const { error } = await ctx.supabase.from("posts").insert({ description })
 
-  await supabase.from("posts").insert({ description })
+    if (error) {
+      throw Error("Failed to create post")
+    }
 
-  revalidateTag("posts")
-  revalidatePath("/")
-}
+    revalidateTag("posts")
+    revalidatePath("/")
+    revalidatePath(`/${ctx.user.user_metadata?.username}`)
+  })
 
-export const deletePost = async (id: string) => {
-  const supabase = await createClient()
+export const deletePost = authenticatedProcedure
+  .createServerAction()
+  .input(z.object({ id: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    const { error } = await ctx.supabase.from("posts").delete().eq("id", input.id)
 
-  const { error } = await supabase.from("posts").delete().eq("id", id)
+    if (error) {
+      throw Error("Failed to delete post")
+    }
 
-  if (error) {
-    throw Error("Failed to delete post")
-  }
-}
+    revalidateTag("posts")
+    revalidatePath("/")
+    revalidatePath(`/${ctx.user.user_metadata?.username}`)
+  })
