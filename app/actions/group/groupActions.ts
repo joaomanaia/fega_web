@@ -2,6 +2,7 @@
 
 import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
 import { createGroupSchema } from "@/lib/schemas/group-schemas"
+import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
 export const createGroup = authenticatedProcedure
@@ -28,6 +29,9 @@ export const createGroup = authenticatedProcedure
     if (!data) {
       throw new Error("Failed to create group")
     }
+
+    revalidatePath("/groups")
+    revalidatePath("/groups", "layout")
 
     return data.id
   })

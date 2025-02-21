@@ -6,7 +6,7 @@ import Link from "next/link"
 import { type Locale } from "@/i18n-config"
 import { type Dictionary } from "@/get-dictionary"
 import { GroupOptionsDropdown } from "@/app/[lang]/(core)/groups/components/group-options"
-import { UserAvatar } from "@/app/components/user/user-avatar"
+import { UserAvatar, UserAvatarSkeleton } from "@/app/components/user/user-avatar"
 
 interface GroupMessageHeaderProps {
   group: GroupViewType
@@ -48,6 +48,19 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({
         lang={lang}
         dictionary={dictionary.groups.list.options}
       />
+    </div>
+  )
+}
+
+export const GroupMessageHeaderSkeleton: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <div
+      className={cn(
+        "flex items-center w-full p-3 mb-1 rounded-[20px] bg-surfaceVariant",
+        className
+      )}
+    >
+      <UserAvatarSkeleton />
     </div>
   )
 }

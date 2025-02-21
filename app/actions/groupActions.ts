@@ -185,5 +185,7 @@ export const deleteGroup = async (groupId: string) => {
     throw new Error(error.message)
   }
 
+  revalidatePath("/groups")
+  revalidatePath("/groups", "layout")
   redirect("/groups")
 }
