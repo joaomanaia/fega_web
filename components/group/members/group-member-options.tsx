@@ -63,7 +63,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
         <ConfirmRemoveDialog
           title={dictionary.remove.dialog.title}
           message={formatString(dictionary.remove.dialog.message, { name: <b>{fullName}</b> })}
-          confirmText={dictionary.remove.dialog.confirm}
+          confirmButtonContent={dictionary.remove.dialog.confirm}
         />
       )}
       <DropdownMenu>

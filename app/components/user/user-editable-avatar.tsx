@@ -55,7 +55,7 @@ export const UserEditableAvatar: React.FC<UserEditableAvatarProps> = ({
       <ConfirmRemoveAvatarDialog
         title="Remove avatar"
         message="Are you sure you want to remove your avatar?"
-        confirmText="Remove"
+        confirmButtonContent="Remove"
       />
 
       <CropImageDialog

@@ -12,7 +12,9 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] hover:bg-primary/90 border-none shadow-shadow",
         destructive:
-          "bg-error text-error-foreground hover:bg-error/90 disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] border-none",
+          "bg-error text-error-foreground hover:bg-error/90 disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38] border-none ring-error outline-error",
+        destructiveContainer:
+          "bg-errorContainer text-errorContainer-foreground border-none hover:bg-errorContainer/90 disabled:bg-surface-foreground/[0.12] disabled:text-surface-foreground/[0.38]",
         outline:
           "border border-surfaceVariant disabled:border-foreground/[0.12] bg-inherit text-primary disabled:text-foreground/[0.38] hover:bg-primary/[0.08]",
         secondary:
@@ -49,11 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
     )
   }
 )

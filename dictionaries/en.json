@@ -35,6 +35,7 @@
   "creating": "Creating...",
   "cancel": "Cancel",
   "confirm": "Confirm",
+  "confirmDialogInputLabel": "If you sure, type {inputTextToConfirm} to confirm.",
   "navdrawer": {
     "home": "Home",
     "news": "News",
@@ -193,7 +194,8 @@
         "deletingAccountTitle": "Deleting account...",
         "deletingAccountDescription": "Your account is being deleted. This may take a few moments.",
         "success": "Account deleted successfully",
-        "error": "Error deleting account"
+        "error": "Error deleting account",
+        "inputConfirmText": "DELETE"
       },
       "changePassword": {
         "title": "Change password",

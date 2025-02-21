@@ -9,19 +9,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useDictionary } from "@/hooks/use-get-dictionary"
 import { cn } from "@/lib/utils"
+import { formatString } from "@/src/util/dictionary-util"
+import clsx from "clsx"
 import { type LucideIcon } from "lucide-react"
 import { useState } from "react"
 
 type DialogVariants = "default" | "error"
 
+/**
+ * @param hasInputTextConfirm - If true, an input field will be shown to confirm the action.
+ */
 interface ConfirmationDialogProps {
   title: React.ReactNode
   message: React.ReactNode
-  confirmText?: React.ReactNode
-  cancelText?: React.ReactNode
-  hideCancel?: boolean
+  inputTextToConfirm?: string
+  confirmButtonContent?: React.ReactNode
+  cancelButtonContent?: React.ReactNode
+  hideCancelButton?: boolean
   variant?: DialogVariants
   className?: string
   icon?: LucideIcon
@@ -29,7 +37,6 @@ interface ConfirmationDialogProps {
 
 export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<boolean>] => {
   const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null)
-  const dictionary = useDictionary()
 
   const confirm = (): Promise<boolean> =>
     new Promise((resolve) => {
@@ -51,38 +58,82 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
   const ConfirmationDialog = ({
     title,
     message,
-    confirmText,
-    cancelText,
+    inputTextToConfirm,
+    confirmButtonContent,
+    cancelButtonContent,
     variant,
-    hideCancel,
+    hideCancelButton,
     className,
     icon: Icon,
-  }: ConfirmationDialogProps) => (
-    <Dialog open={promise !== null} onOpenChange={handleCancel}>
-      <DialogContent
-        className={cn(
-          variant === "error" && "bg-error text-error-foreground border-none",
-          className
-        )}
-      >
-        <DialogHeader>
-          {Icon && <Icon className="self-center size-10 mb-2" />}
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{message}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          {!hideCancel && (
-            <Button onClick={handleCancel} variant={variant === "error" ? "destructive" : "ghost"}>
-              {cancelText || dictionary.cancel}
-            </Button>
+  }: ConfirmationDialogProps) => {
+    const [inputValue, setInputValue] = useState("")
+    const dictionary = useDictionary()
+
+    return (
+      <Dialog open={promise !== null} onOpenChange={handleCancel}>
+        <DialogContent
+          className={cn(
+            variant === "error" && "bg-error text-error-foreground border-none",
+            className
           )}
-          <Button onClick={handleConfirm} variant={variant === "error" ? "destructive" : "ghost"}>
-            {confirmText || dictionary.confirm}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+        >
+          <DialogHeader>
+            {Icon && <Icon className="self-center size-10 mb-2" />}
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{message}</DialogDescription>
+          </DialogHeader>
+          {inputTextToConfirm && (
+            <>
+              <Label htmlFor="confirm-input">
+                {formatString(dictionary.confirmDialogInputLabel, {
+                  inputTextToConfirm: (
+                    <strong key="inputTextToConfirm" className="select-none">
+                      {inputTextToConfirm}
+                    </strong>
+                  ),
+                })}
+              </Label>
+              <Input
+                id="confirm-input"
+                type="text"
+                placeholder="Type here"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                className={clsx(
+                  "border-transparent",
+                  variant === "error" &&
+                    "bg-errorContainer/30 text-surface !placeholder-errorContainer-foreground"
+                )}
+              />
+            </>
+          )}
+          <DialogFooter>
+            {!hideCancelButton && (
+              <Button
+                onClick={handleCancel}
+                variant={variant === "error" ? "destructive" : "ghost"}
+                className={variant === "error" ? "hover:bg-errorContainer/10" : ""}
+              >
+                {cancelButtonContent || dictionary.cancel}
+              </Button>
+            )}
+            <Button
+              disabled={!!inputTextToConfirm && inputValue !== inputTextToConfirm}
+              onClick={handleConfirm}
+              variant={variant === "error" ? "destructiveContainer" : "ghost"}
+              className={
+                variant === "error"
+                  ? "disabled:bg-transparent disabled:!text-error-foreground/40"
+                  : ""
+              }
+            >
+              {confirmButtonContent || dictionary.confirm}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 
   return [ConfirmationDialog, confirm]
 }

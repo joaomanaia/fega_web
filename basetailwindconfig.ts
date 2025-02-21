@@ -13,6 +13,7 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "./core/theme/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./hooks/**/*.tsx",
   ],
   prefix: "",
   theme: {

@@ -49,7 +49,7 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
       <ConfirmRemoveDialog
         title={dictionary.delete.title}
         message={dictionary.delete.description}
-        confirmText={dictionary.delete.confirm}
+        confirmButtonContent={dictionary.delete.confirm}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

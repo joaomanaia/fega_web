@@ -35,6 +35,7 @@
   "creating": "A criar...",
   "cancel": "Cancelar",
   "confirm": "Confirmar",
+  "confirmDialogInputLabel": "Se tiveres a certeza, escreve {inputTextToConfirm} para confirmar.",
   "navdrawer": {
     "home": "Início",
     "news": "Notícias",
@@ -193,7 +194,8 @@
         "deletingAccountTitle": "A apagar conta...",
         "deletingAccountDescription": "A tua conta está a ser apagada. Isto pode demorar alguns momentos.",
         "success": "Conta apagada com sucesso",
-        "error": "Erro ao apagar conta"
+        "error": "Erro ao apagar conta",
+        "inputConfirmText": "APAGAR"
       },
       "changePassword": {
         "title": "Alterar palavra-passe",

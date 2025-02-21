@@ -79,9 +79,10 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
       <DeleteAccountConfirmDialog
         title={dictionary.deleteAccount.dialogTitle}
         message={dictionary.deleteAccount.dialogDescription}
-        confirmText={dictionary.deleteAccount.dialogSubmitButton}
+        confirmButtonContent={dictionary.deleteAccount.dialogSubmitButton}
         variant="error"
         icon={UserRoundXIcon}
+        inputTextToConfirm={dictionary.deleteAccount.inputConfirmText}
       />
 
       <BaseSettingsContainer header={dictionary.header}>
