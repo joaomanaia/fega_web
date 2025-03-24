@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic"
 export const revalidate = 2
 
 export async function GET() {
-  const cameraBaseUrl = "http://hoteloslo-coimbra.dnsalias.com:50000/SnapshotJPEG"
+  const cameraBaseUrl = "https://rooftop.tryfail.net:50000/image.jpeg"
   const cameraUrl = `${cameraBaseUrl}?date=${Date.now()}`
 
   const res = await fetch(cameraUrl, {
