@@ -258,7 +258,8 @@ inspector_port = 8083
 # static_files = [ "./functions/MY_FUNCTION_NAME/*.html" ]
 
 [analytics]
-enabled = true
+# FIXME: Not working
+enabled = false
 port = 54327
 # Configure one of the supported backends: `postgres`, `bigquery`.
 backend = "postgres"
