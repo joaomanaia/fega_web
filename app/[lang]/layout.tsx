@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils"
 import "../styles/tokens.css"
 import "../styles/globals.css"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
-import { Toaster } from "@/components/ui/toaster"
 import { ModalProvider } from "@/src/providers/modal-provider"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
@@ -15,7 +14,6 @@ import DictionaryProvider from "@/hooks/use-get-dictionary"
 import { getDictionary } from "@/get-dictionary"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
-import { ShareDialogProvider } from "@/src/providers/share-dialog-provider"
 import { env } from "@/env"
 
 export const metadata: Metadata = {
@@ -78,15 +76,13 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           <QueryProvider>
             <DictionaryProvider dictionary={dictionary}>
               {children}
-              <Toaster />
               <SonnerToaster richColors />
               <ModalProvider />
-              <ShareDialogProvider />
             </DictionaryProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>
-      <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
+      {!env.ANALYTICS_DISABLED && <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />}
     </html>
   )
 }

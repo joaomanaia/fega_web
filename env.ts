@@ -4,6 +4,9 @@ import { z } from "zod/v4-mini"
 
 export const env = createEnv({
   extends: [vercel()],
+  server: {
+    ANALYTICS_DISABLED: z.optional(z.transform((s) => s !== "false" && s !== "0")),
+  },
   client: {
     NEXT_PUBLIC_APP_URL: z.url(),
     NEXT_PUBLIC_GTM_ID: z.string(),
