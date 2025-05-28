@@ -5,7 +5,7 @@ import "../styles/globals.css"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { Toaster } from "@/components/ui/toaster"
 import { ModalProvider } from "@/src/providers/modal-provider"
-import { GoogleAnalytics } from "@next/third-parties/google"
+import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
@@ -16,6 +16,7 @@ import { getDictionary } from "@/get-dictionary"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
 import { ShareDialogProvider } from "@/src/providers/share-dialog-provider"
+import { env } from "@/env"
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   manifest: "/manifest.json",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   applicationName: "Fega",
   openGraph: {
     type: "website",
@@ -85,7 +86,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           </QueryProvider>
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-0WZ017FHHK" />
+      <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
     </html>
   )
 }

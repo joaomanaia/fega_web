@@ -58,7 +58,7 @@ export default async function UserPage(props: UserPageProps) {
     <main
       itemScope
       itemType="https://schema.org/ProfilePage"
-      className="flex flex-col gap-4 md:pb-3 lg:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden"
+      className="flex flex-col md:pb-3 md:gap-4 xl:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden"
     >
       <meta itemProp="dateCreated" content={user.created_at} />
       <meta itemProp="dateModified" content={user.updated_at ?? undefined} />
