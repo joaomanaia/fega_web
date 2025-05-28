@@ -1,9 +1,8 @@
-const withMDX = require("@next/mdx")()
+import type { NextConfig } from "next"
+import createMDX from "@next/mdx"
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
     domains: [
@@ -25,4 +24,6 @@ const nextConfig = {
   },
 }
 
-module.exports = withMDX(nextConfig)
+const withMDX = createMDX({})
+
+export default withMDX(nextConfig)
