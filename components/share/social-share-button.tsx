@@ -2,6 +2,7 @@ import { Hint } from "@/components/hint"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { SiFacebook, SiLinkedin, SiReddit, SiWhatsapp, SiX } from "@icons-pack/react-simple-icons"
+import { sendGTMEvent } from "@next/third-parties/google"
 import { MailIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -31,7 +32,13 @@ export const SocialShareRow: React.FC<SocialShareRowProps> = ({
           social={social}
           url={url}
           text={text}
-          onClick={() => onShare?.(social)}
+          onClick={() => {
+            sendGTMEvent({
+              event: "share",
+              method: social,
+            })
+            onShare?.(social)
+          }}
         />
       ))}
     </div>
@@ -55,7 +62,12 @@ export const SocialShareButton: React.FC<SocialShareButtonProps> = ({
 
   return (
     <Hint label={social}>
-      <Button onClick={onClick} variant="outline" className="size-14 min-w-14 aspect-square" asChild>
+      <Button
+        onClick={onClick}
+        variant="outline"
+        className="size-14 min-w-14 aspect-square"
+        asChild
+      >
         <Link target="_blank" rel="noreferrer" href={getShareUrl(social, url, text)}>
           {Icon}
         </Link>

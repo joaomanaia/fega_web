@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useServerAction } from "zsa-react"
 import { toast } from "sonner"
 import { signUpAction } from "@/app/[lang]/(auth)/actions"
 import { type SignUpActionValues, signUpSchema } from "@/lib/schemas/auth-schemas"
@@ -20,6 +19,8 @@ import type { Locale } from "@/i18n-config"
 import { Link } from "@/components/link"
 import { ZSAError } from "zsa"
 import type { Dictionary } from "@/get-dictionary"
+import { useAction } from "next-safe-action/hooks"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface SignUpFormProps {
   lang: Locale
@@ -27,7 +28,15 @@ interface SignUpFormProps {
 }
 
 export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
-  const { isPending, execute } = useServerAction(signUpAction)
+  const { isPending, execute } = useAction(signUpAction, {
+    onSuccess: () => {
+      toast.success("Account created successfully!")
+      sendGTMEvent({ event: "sign_up", method: "email" })
+    },
+    onError: ({ error }) => {
+      toast.error(error.serverError ?? "An error occurred while processing your request.")
+    },
+  })
 
   const form = useForm<SignUpActionValues>({
     resolver: zodResolver(signUpSchema),
@@ -41,26 +50,7 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(async (values) => {
-          const [_, err] = await execute(values)
-
-          if (err) {
-            const zsaError = err as ZSAError | undefined
-            if (zsaError !== undefined) {
-              if (zsaError.code === "CONFLICT") {
-                form.setError("username", {
-                  type: "manual",
-                  message: "Username is already taken",
-                })
-              }
-            }
-
-            toast.error(err.message)
-          }
-        })}
-        className="space-y-6 w-full"
-      >
+      <form onSubmit={form.handleSubmit(execute)} className="space-y-6 w-full">
         <FormField
           control={form.control}
           name="username"

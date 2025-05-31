@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import type { Dictionary } from "@/get-dictionary"
 import { createClient } from "@/lib/supabase/client"
+import { sendGTMEvent } from "@next/third-parties/google"
 import { toast } from "sonner"
 
 export default function GoogleLoginButton({
@@ -15,7 +16,7 @@ export default function GoogleLoginButton({
   const client = createClient()
 
   const handleGoogleLogin = async () => {
-    const { error } = await client.auth.signInWithOAuth({
+    const { data, error } = await client.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
@@ -24,7 +25,10 @@ export default function GoogleLoginButton({
 
     if (error) {
       toast.error(error.message)
+      return
     }
+
+    sendGTMEvent({ event: "login", method: data.provider })
   }
 
   return (

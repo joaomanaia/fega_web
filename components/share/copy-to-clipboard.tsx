@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { Dictionary } from "@/get-dictionary"
 import { cn } from "@/lib/utils"
+import { sendGTMEvent } from "@next/third-parties/google"
 import { CopyIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -26,6 +27,10 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
     try {
       navigator.clipboard.writeText(text)
       toast.success(dictionary.copiedToClipboard)
+      sendGTMEvent({
+        event: "share",
+        method: "copy",
+      })
       onCopied?.()
     } catch (error) {
       toast.error(dictionary.failedToCopyToClipboard)

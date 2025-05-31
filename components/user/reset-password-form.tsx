@@ -14,16 +14,23 @@ import { Input } from "@/components/ui/input"
 import type { Dictionary } from "@/get-dictionary"
 import { resetPasswordSchema, type ResetPasswordSchemaValues } from "@/lib/schemas/user-schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { useServerAction } from "zsa-react"
 
 interface ResetPasswordFormProps {
   authDictionary: Dictionary["page"]["auth"]
 }
 
 export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormProps) {
-  const { isPending, execute } = useServerAction(resetPasswordAction)
+  const { isPending, execute } = useAction(resetPasswordAction, {
+    onSuccess: () => {
+      toast.success("Password reset successfully. ")
+    },
+    onError: ({ error }) => {
+      toast.error(error.serverError ?? "An error occurred while processing your request.")
+    },
+  })
 
   const form = useForm<ResetPasswordSchemaValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -35,16 +42,7 @@ export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormP
 
   return (
     <Form {...form}>
-      <form
-        className="space-y-6 w-full"
-        onSubmit={form.handleSubmit(async (values) => {
-          const [_, err] = await execute(values)
-
-          if (err) {
-            toast.error(err.message)
-          }
-        })}
-      >
+      <form className="space-y-6 w-full" onSubmit={form.handleSubmit(execute)}>
         <FormField
           control={form.control}
           name="password"

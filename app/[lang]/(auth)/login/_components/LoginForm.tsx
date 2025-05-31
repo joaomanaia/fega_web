@@ -13,13 +13,13 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type SignInActionValues, signInSchema } from "@/lib/schemas/auth-schemas"
-import { useServerAction } from "zsa-react"
+import { useAction } from "next-safe-action/hooks"
 import { toast } from "sonner"
 import { signInAction } from "@/app/[lang]/(auth)/actions"
 import { Link } from "@/components/link"
 import type { Locale } from "@/i18n-config"
 import type { Dictionary } from "@/get-dictionary"
-import GoogleLoginButton from "@/app/[lang]/(auth)/_components/google-login-button"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface LoginFormProps {
   lang: Locale
@@ -27,7 +27,15 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ lang, authDictionary }: LoginFormProps) {
-  const { isPending, execute } = useServerAction(signInAction)
+  const { isPending, execute } = useAction(signInAction, {
+    onSuccess: () => {
+      toast.success("Login successful!")
+      sendGTMEvent({ event: "login", method: "email" })
+    },
+    onError: () => {
+      toast.error("Login failed")
+    },
+  })
 
   const form = useForm<SignInActionValues>({
     resolver: zodResolver(signInSchema),
@@ -39,16 +47,7 @@ export function LoginForm({ lang, authDictionary }: LoginFormProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(async (values) => {
-          const [_, err] = await execute(values)
-
-          if (err) {
-            toast.error(err.message)
-          }
-        })}
-        className="space-y-6 w-full"
-      >
+      <form onSubmit={form.handleSubmit(execute)} className="space-y-6 w-full">
         <FormField
           control={form.control}
           name="email"

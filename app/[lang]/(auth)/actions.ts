@@ -1,72 +1,68 @@
 "use server"
 
 import { BASE_URL } from "@/core/common"
+import { actionClient } from "@/lib/safe-action"
 import { forgotPasswordSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
 import { resetPasswordSchema } from "@/lib/schemas/user-schemas"
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { createServerAction, ZSAError } from "zsa"
 
-export const signInAction = createServerAction()
-  .input(signInSchema)
-  .handler(async ({ input }) => {
-    const supabase = await createClient()
+export const signInAction = actionClient.schema(signInSchema).action(async ({ parsedInput }) => {
+  const supabase = await createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: input.email,
-      password: input.password,
-    })
-
-    if (error) {
-      throw error.message
-    }
-
-    revalidatePath("/", "layout")
-    redirect("/")
+  const { error } = await supabase.auth.signInWithPassword({
+    email: parsedInput.email,
+    password: parsedInput.password,
   })
 
-export const signUpAction = createServerAction()
-  .input(signUpSchema)
-  .handler(async ({ input }) => {
-    const supabase = await createClient()
+  if (error) {
+    throw error.message
+  }
 
-    // Check if username is available
-    const { data: usernameExists } = await supabase
-      .from("users")
-      .select("id")
-      .eq("username", input.username)
-      .single()
+  revalidatePath("/", "layout")
+  redirect("/")
+})
 
-    if (usernameExists) {
-      throw new ZSAError("CONFLICT", "Username already exists")
-    }
+export const signUpAction = actionClient.schema(signUpSchema).action(async ({ parsedInput }) => {
+  const supabase = await createClient()
 
-    const { error } = await supabase.auth.signUp({
-      email: input.email,
-      password: input.password,
-      options: {
-        data: {
-          username: input.username,
-          full_name: input.fullname,
-        },
+  // Check if username is available
+  const { data: usernameExists } = await supabase
+    .from("users")
+    .select("id")
+    .eq("username", parsedInput.username)
+    .single()
+
+  if (usernameExists) {
+    throw new Error("Username already exists")
+  }
+
+  const { error } = await supabase.auth.signUp({
+    email: parsedInput.email,
+    password: parsedInput.password,
+    options: {
+      data: {
+        username: parsedInput.username,
+        full_name: parsedInput.fullname,
       },
-    })
-
-    if (error) {
-      throw error.message
-    }
-
-    revalidatePath("/", "layout")
-    redirect("/")
+    },
   })
 
-export const forgotPasswordAction = createServerAction()
-  .input(forgotPasswordSchema)
-  .handler(async ({ input }) => {
+  if (error) {
+    throw error.message
+  }
+
+  revalidatePath("/", "layout")
+  redirect("/")
+})
+
+export const forgotPasswordAction = actionClient
+  .schema(forgotPasswordSchema)
+  .action(async ({ parsedInput }) => {
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(parsedInput.email, {
       redirectTo: `${BASE_URL}/reset-password`,
     })
 
@@ -75,13 +71,13 @@ export const forgotPasswordAction = createServerAction()
     }
   })
 
-export const resetPasswordAction = createServerAction()
-  .input(resetPasswordSchema)
-  .handler(async ({ input }) => {
+export const resetPasswordAction = actionClient
+  .schema(resetPasswordSchema)
+  .action(async ({ parsedInput }) => {
     const supabase = await createClient()
 
     const { error } = await supabase.auth.updateUser({
-      password: input.password,
+      password: parsedInput.password,
     })
 
     if (error) {
