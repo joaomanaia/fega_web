@@ -1,7 +1,7 @@
 import { getLocalUserUid, getUserByUsername } from "@/utils/user-utils"
 import CreatePost from "@/app/components/create-post/create-post"
 import { UserProfileContent } from "./components/user-profile-content"
-import PostsContent from "../PostsContent"
+import PostsContent, { PostsSkeleton } from "../PostsContent"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { cn } from "@/lib/utils"
 import { type Locale } from "@/i18n-config"
@@ -9,6 +9,7 @@ import { type Dictionary, getDictionary } from "@/get-dictionary"
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 import { FileWarningIcon } from "lucide-react"
+import { Suspense } from "react"
 
 interface UserPageProps {
   params: Promise<{
@@ -87,19 +88,21 @@ export default async function UserPage(props: UserPageProps) {
         )}
       </div>
       <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
-        <PostsContent
-          schemaHasPart // Has part of the main entity
-          uid={user.id}
-          localUid={localUserUid}
-          lang={params.lang}
-          dictionary={dictionary}
-          EmptyPostsContent={() => (
-            <UserEmptyPostsContent
-              userName={user.full_name ?? "User"}
-              dictionary={dictionary.post.emptyPosts}
-            />
-          )}
-        />
+        <Suspense fallback={<PostsSkeleton />}>
+          <PostsContent
+            schemaHasPart // Has part of the main entity
+            uid={user.id}
+            localUid={localUserUid}
+            lang={params.lang}
+            dictionary={dictionary}
+            EmptyPostsContent={() => (
+              <UserEmptyPostsContent
+                userName={user.full_name ?? "User"}
+                dictionary={dictionary.post.emptyPosts}
+              />
+            )}
+          />
+        </Suspense>
       </MainContainer>
     </main>
   )

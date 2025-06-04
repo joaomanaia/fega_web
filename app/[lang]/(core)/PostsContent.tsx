@@ -4,6 +4,7 @@ import { type Locale } from "@/i18n-config"
 import { getPosts } from "@/features/post/get-posts"
 import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
 import { createClient } from "@/lib/supabase/server"
+import { PostSkeleton } from "@/app/components/post/Post"
 
 interface PostsContentProps {
   uid?: string
@@ -54,3 +55,13 @@ const DefaultEmptyPostsContent = ({ dictionary }: DefaultEmptyPostsContentProps)
     <p className="text-secondary/50 mt-2">{dictionary.description.default}</p>
   </div>
 )
+
+export function PostsSkeleton() {
+  return (
+    <>
+      <PostSkeleton />
+      <PostSkeleton />
+      <PostSkeleton />
+    </>
+  )
+}

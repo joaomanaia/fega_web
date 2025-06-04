@@ -143,9 +143,6 @@ interface PostSkeletonProps {
 }
 
 export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, className }) => {
-  // Random height between 30 and 100
-  const randomHeight = Math.floor(Math.random() * (100 - 30 + 1) + 30)
-
   return (
     <div
       className={cn(
@@ -155,12 +152,7 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, class
       )}
     >
       <PostHeaderSkeleton />
-      <Skeleton
-        className="w-full"
-        style={{
-          height: `${randomHeight}px`,
-        }}
-      />
+      <Skeleton className="w-full h-20" />
       <div className="flex items-center space-x-4">
         <Skeleton className="w-12 h-6" />
         <Skeleton className="w-12 h-6" />

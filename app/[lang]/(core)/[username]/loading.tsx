@@ -15,8 +15,6 @@ export default function UserLoading() {
         <PostSkeleton />
         <PostSkeleton />
         <PostSkeleton />
-        <PostSkeleton />
-        <PostSkeleton />
       </MainContainer>
     </main>
   )

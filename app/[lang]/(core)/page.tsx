@@ -1,9 +1,10 @@
 import { getLocalUserUid } from "@/utils/user-utils"
-import PostsContent from "./PostsContent"
-import { getDictionary } from "@/get-dictionary"
+import PostsContent, { PostsSkeleton } from "./PostsContent"
+import { type Dictionary, getDictionary } from "@/get-dictionary"
 import { type Locale } from "@/i18n-config"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
+import { Suspense } from "react"
 
 interface HomePageProps {
   params: Promise<{
@@ -12,8 +13,7 @@ interface HomePageProps {
 }
 
 export default async function HomePage(props: HomePageProps) {
-  const params = await props.params;
-  const localUid = await getLocalUserUid()
+  const params = await props.params
   const dictionary = await getDictionary(params.lang)
 
   return (
@@ -21,8 +21,22 @@ export default async function HomePage(props: HomePageProps) {
       <h1 className="hidden">{dictionary.navdrawer.home}</h1>
       <CreatePost dictionary={dictionary} />
       <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
-        <PostsContent localUid={localUid} lang={params.lang} dictionary={dictionary} />
+        <Suspense fallback={<PostsSkeleton />}>
+          <HomePagePostsContent lang={params.lang} dictionary={dictionary} />
+        </Suspense>
       </MainContainer>
     </main>
   )
+}
+
+async function HomePagePostsContent({
+  lang,
+  dictionary,
+}: {
+  lang: Locale
+  dictionary: Dictionary
+}) {
+  const localUid = await getLocalUserUid()
+
+  return <PostsContent localUid={localUid} lang={lang} dictionary={dictionary} />
 }
