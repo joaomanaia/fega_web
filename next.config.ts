@@ -1,5 +1,6 @@
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
+import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -25,5 +26,10 @@ const nextConfig: NextConfig = {
 }
 
 const withMDX = createMDX({})
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    createMessagesDeclaration: "./messages/en.json",
+  },
+})
 
-export default withMDX(nextConfig)
+export default withNextIntl(withMDX(nextConfig))

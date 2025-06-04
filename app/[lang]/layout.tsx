@@ -8,32 +8,45 @@ import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
-import { type Locale, i18n } from "@/i18n-config"
 import { type Metadata } from "next"
 import DictionaryProvider from "@/hooks/use-get-dictionary"
 import { getDictionary } from "@/get-dictionary"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
 import { env } from "@/env"
+import { hasLocale, type Locale, NextIntlClientProvider } from "next-intl"
+import { routing } from "@/src/i18n/routing"
+import { notFound } from "next/navigation"
+import { getTranslations, setRequestLocale } from "next-intl/server"
+import { appName } from "@/core/common"
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s - Fega",
-    default: "Fega",
-  },
-  description: "The best social network in ega!",
-  icons: {
-    icon: "/favicon.ico",
-  },
-  manifest: "/manifest.json",
-  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  applicationName: "Fega",
-  openGraph: {
-    type: "website",
-    siteName: "Fega",
-    title: "Fega",
-    description: "The best social network in ega!",
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  const t = await getTranslations({ locale: lang, namespace: "RootMetadata" })
+
+  return {
+    title: {
+      template: `%s - ${appName}`,
+      default: appName,
+    },
+    description: t("description"),
+    icons: {
+      icon: "/favicon.ico",
+    },
+    manifest: "/manifest.json",
+    metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+    applicationName: appName,
+    openGraph: {
+      type: "website",
+      siteName: appName,
+      title: appName,
+      description: t("description"),
+    },
+  }
 }
 
 const fontSans = FontSans({
@@ -41,15 +54,22 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
-interface RootLayoutProps {
+export default async function RootLayout({
+  children,
+  params,
+}: {
   children: React.ReactNode
-  params: Promise<{
-    lang: Locale
-  }>
-}
-
-export default async function RootLayout({ children, params }: RootLayoutProps) {
+  params: Promise<{ lang: string }>
+}) {
+  // Ensure that the incoming `lang` is valid
   const { lang } = await params
+  if (!hasLocale(routing.locales, lang)) {
+    notFound()
+  }
+
+  // Enable static rendering
+  setRequestLocale(lang)
+
   const dictionary = await getDictionary(lang)
 
   return (
@@ -74,11 +94,13 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           disableTransitionOnChange
         >
           <QueryProvider>
-            <DictionaryProvider dictionary={dictionary}>
-              {children}
-              <SonnerToaster richColors />
-              <ModalProvider />
-            </DictionaryProvider>
+            <NextIntlClientProvider>
+              <DictionaryProvider dictionary={dictionary}>
+                {children}
+                <SonnerToaster richColors />
+                <ModalProvider />
+              </DictionaryProvider>
+            </NextIntlClientProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>
@@ -88,5 +110,5 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 }
 
 export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ lang: locale }))
+  return routing.locales.map((locale) => ({ lang: locale }))
 }

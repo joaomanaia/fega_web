@@ -46,3 +46,6 @@ chromatic.log
 chromatic-build-*.xml
 chromatic-diagnostics*.json
 chromatic.config.json
+
+# Next Intl
+messages/*.d.json.ts

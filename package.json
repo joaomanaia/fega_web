@@ -12,7 +12,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "check-i18n": "i18n-check --source en --locales messages"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.4",
@@ -58,6 +59,7 @@
     "moment": "^2.30.1",
     "negotiator": "^0.6.3",
     "next": "^15.3.2",
+    "next-intl": "^4.1.0",
     "next-mdx-remote": "^5.0.0",
     "next-safe-action": "^7.10.8",
     "next-themes": "^0.3.0",
@@ -92,6 +94,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",
+    "@lingual/i18n-check": "^0.8.4",
     "@storybook/addon-a11y": "^8.2.9",
     "@storybook/addon-essentials": "^8.2.9",
     "@storybook/addon-interactions": "^8.2.9",
