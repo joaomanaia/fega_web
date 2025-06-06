@@ -4,50 +4,42 @@ import ForgotPasswordForm from "@/app/[lang]/(auth)/forgot-password/_components/
 import { LoginForm } from "@/app/[lang]/(auth)/login/_components/LoginForm"
 import { SignUpForm } from "@/app/[lang]/(auth)/signup/_components/signup-form"
 import ResetPasswordForm from "@/components/user/reset-password-form"
-import type { Dictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
+import { getTranslations } from "next-intl/server"
 
 type AuthType = "login" | "signup" | "forgot-password" | "reset-password"
-
-type AuthDictionary = Dictionary["page"]["auth"]
-
 interface AuthPageProps {
   type: AuthType
-  lang: Locale
-  authDictionary: AuthDictionary
 }
 
-export default function AuthPage({ type, lang, authDictionary }: AuthPageProps) {
+export default async function AuthPage({ type }: AuthPageProps) {
+  const t = await getTranslations("AuthPage")
+
   return (
     <>
-      <h2 className="text-3xl lg:text-4xl xl:text-5xl text-center">
-        {getTitleForType(type, authDictionary)}
-      </h2>
+      <h2 className="text-3xl lg:text-4xl xl:text-5xl text-center">{t(getTitleForType(type))}</h2>
       {(type === "login" || type === "signup") && (
         <>
-          <GoogleLoginButton className="w-full" authDicionary={authDictionary} />
-          <SocialAuthSeparator separatorText={authDictionary.orContinueWith} />
+          <GoogleLoginButton className="w-full" />
+          <SocialAuthSeparator separatorText={t("orContinueWith")} />
         </>
       )}
-      {type === "login" && <LoginForm lang={lang} authDictionary={authDictionary} />}
-      {type === "signup" && <SignUpForm lang={lang} authDictionary={authDictionary} />}
-      {type === "forgot-password" && (
-        <ForgotPasswordForm lang={lang} authDictionary={authDictionary} />
-      )}
-      {type === "reset-password" && <ResetPasswordForm authDictionary={authDictionary} />}
+      {type === "login" && <LoginForm />}
+      {type === "signup" && <SignUpForm />}
+      {type === "forgot-password" && <ForgotPasswordForm />}
+      {type === "reset-password" && <ResetPasswordForm />}
     </>
   )
 }
 
-const getTitleForType = (type: AuthType, authDictionary: AuthDictionary) => {
+const getTitleForType = (type: AuthType) => {
   switch (type) {
     case "login":
-      return authDictionary.loginTitle
+      return "loginTitle"
     case "signup":
-      return authDictionary.registerTitle
+      return "registerTitle"
     case "forgot-password":
-      return authDictionary.forgotPasswordTitle
+      return "forgotPasswordTitle"
     case "reset-password":
-      return authDictionary.resetPassword
+      return "resetPassword"
   }
 }

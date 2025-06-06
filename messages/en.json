@@ -41,6 +41,34 @@
       "success": "Profile updated successfully"
     }
   },
+  "AuthPage": {
+    "header": "Welcome to Fega!",
+    "subheader": "Best social network in ega.",
+    "loginTitle": "Login",
+    "loginButton": "Login",
+    "registerTitle": "Register",
+    "registerButton": "Register",
+    "email": "Email",
+    "emailPlaceholder": "fega@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordConfirmation": "Confirm password",
+    "passwordConfirmationPlaceholder": "Confirm password",
+    "resetPassword": "Reset password",
+    "username": "Username",
+    "usernamePlaceholder": "johndoe",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "John Doe",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "forgotPasswordTitle": "Forgot password?",
+    "forgotPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
+    "forgotPasswordButton": "Send reset link",
+    "forgotPasswordSuccess": "An email has been sent to your email address with instructions to reset your password.",
+    "orContinueWith": "Or continue with",
+    "loginWithGoogle": "Login with Google"
+  },
   "User": {
     "joinedDate": "Joined {joinDate}"
   },

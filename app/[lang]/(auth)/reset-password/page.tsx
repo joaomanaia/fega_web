@@ -1,6 +1,6 @@
 import AuthPage from "@/app/[lang]/(auth)/_components/auth-page"
-import { getDictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
+import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 
 interface ResetPasswordPageProps {
   params: Promise<{
@@ -10,7 +10,8 @@ interface ResetPasswordPageProps {
 
 export default async function ResetPasswordPage(props: ResetPasswordPageProps) {
   const params = await props.params
-  const authDictionary = (await getDictionary(params.lang)).page.auth
+  // Enable static rendering
+  setRequestLocale(params.lang)
 
-  return <AuthPage type="reset-password" lang={params.lang} authDictionary={authDictionary} />
+  return <AuthPage type="reset-password" />
 }

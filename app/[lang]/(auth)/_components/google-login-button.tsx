@@ -1,19 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import type { Dictionary } from "@/get-dictionary"
 import { createClient } from "@/lib/supabase/client"
 import { sendGTMEvent } from "@next/third-parties/google"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
-export default function GoogleLoginButton({
-  className,
-  authDicionary,
-}: {
-  className?: string
-  authDicionary: Dictionary["page"]["auth"]
-}) {
+export default function GoogleLoginButton({ className }: { className?: string }) {
   const client = createClient()
+  const t = useTranslations("AuthPage")
 
   const handleGoogleLogin = async () => {
     const { data, error } = await client.auth.signInWithOAuth({
@@ -39,7 +34,7 @@ export default function GoogleLoginButton({
           fill="currentColor"
         />
       </svg>
-      {authDicionary.loginWithGoogle}
+      {t("loginWithGoogle")}
     </Button>
   )
 }

@@ -1,7 +1,6 @@
 "use client"
 
 import { forgotPasswordAction } from "@/app/[lang]/(auth)/actions"
-import { Link } from "@/components/link"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,23 +12,20 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import type { Dictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
 import { type ForgotPasswordActionValues, forgotPasswordSchema } from "@/lib/schemas/auth-schemas"
+import { Link } from "@/src/i18n/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-interface ForgotPasswordFormProps {
-  lang: Locale
-  authDictionary: Dictionary["page"]["auth"]
-}
+export default function ForgotPasswordForm() {
+  const t = useTranslations("AuthPage")
 
-export default function ForgotPasswordForm({ lang, authDictionary }: ForgotPasswordFormProps) {
   const { isPending, execute } = useAction(forgotPasswordAction, {
     onSuccess: () => {
-      toast.success(authDictionary.forgotPasswordSuccess)
+      toast.success(t("forgotPasswordSuccess"))
     },
     onError: ({ error }) => {
       toast.error(error.serverError ?? "An error occurred while processing your request.")
@@ -51,26 +47,22 @@ export default function ForgotPasswordForm({ lang, authDictionary }: ForgotPassw
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.email}</FormLabel>
+              <FormLabel>{t("email")}</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none"
-                  placeholder={authDictionary.emailPlaceholder}
-                  {...field}
-                />
+                <Input className="border-none" placeholder={t("emailPlaceholder")} {...field} />
               </FormControl>
-              <FormDescription>{authDictionary.forgotPasswordDescription}</FormDescription>
+              <FormDescription>{t("forgotPasswordDescription")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" className="w-full" disabled={isPending}>
-          {authDictionary.forgotPasswordButton}
+          {t("forgotPasswordButton")}
         </Button>
         <div className="text-center text-sm">
-          {authDictionary.alreadyHaveAccount}{" "}
-          <Link href="/login" lang={lang} className="underline underline-offset-4">
-            {authDictionary.loginButton}
+          {t("alreadyHaveAccount")}{" "}
+          <Link href="/login" className="underline underline-offset-4">
+            {t("loginButton")}
           </Link>
         </div>
       </form>

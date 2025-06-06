@@ -1,7 +1,7 @@
 import AuthPage from "@/app/[lang]/(auth)/_components/auth-page"
-import { getDictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
 import { isUserAuthenticated } from "@/utils/user-utils"
+import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 import { redirect } from "next/navigation"
 
 interface LoginPageProps {
@@ -11,12 +11,13 @@ interface LoginPageProps {
 }
 
 export default async function LoginPage(props: LoginPageProps) {
-  const params = await props.params
   if (await isUserAuthenticated()) {
     redirect("/")
   }
 
-  const authDictionary = (await getDictionary(params.lang)).page.auth
+  const params = await props.params
+  // Enable static rendering
+  setRequestLocale(params.lang)
 
-  return <AuthPage type="forgot-password" lang={params.lang} authDictionary={authDictionary} />
+  return <AuthPage type="forgot-password" />
 }

@@ -11,18 +11,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import type { Dictionary } from "@/get-dictionary"
 import { resetPasswordSchema, type ResetPasswordSchemaValues } from "@/lib/schemas/user-schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-interface ResetPasswordFormProps {
-  authDictionary: Dictionary["page"]["auth"]
-}
+export default function ResetPasswordForm() {
+  const t = useTranslations("AuthPage")
 
-export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormProps) {
   const { isPending, execute } = useAction(resetPasswordAction, {
     onSuccess: () => {
       toast.success("Password reset successfully. ")
@@ -48,13 +46,9 @@ export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormP
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.password}</FormLabel>
+              <FormLabel>{t("password")}</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder={authDictionary.passwordPlaceholder}
-                  {...field}
-                />
+                <Input type="password" placeholder={t("passwordPlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,11 +60,11 @@ export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormP
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.passwordConfirmation}</FormLabel>
+              <FormLabel>{t("passwordConfirmation")}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder={authDictionary.passwordConfirmationPlaceholder}
+                  placeholder={t("passwordConfirmationPlaceholder")}
                   {...field}
                 />
               </FormControl>
@@ -80,7 +74,7 @@ export default function ResetPasswordForm({ authDictionary }: ResetPasswordFormP
         />
 
         <Button type="submit" className="w-full" disabled={isPending}>
-          {authDictionary.resetPassword}
+          {t("resetPassword")}
         </Button>
       </form>
     </Form>

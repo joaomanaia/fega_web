@@ -15,19 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { signUpAction } from "@/app/[lang]/(auth)/actions"
 import { type SignUpActionValues, signUpSchema } from "@/lib/schemas/auth-schemas"
-import type { Locale } from "@/i18n-config"
-import { Link } from "@/components/link"
-import { ZSAError } from "zsa"
-import type { Dictionary } from "@/get-dictionary"
 import { useAction } from "next-safe-action/hooks"
 import { sendGTMEvent } from "@next/third-parties/google"
+import { useTranslations } from "next-intl"
+import { Link } from "@/src/i18n/navigation"
 
-interface SignUpFormProps {
-  lang: Locale
-  authDictionary: Dictionary["page"]["auth"]
-}
+export function SignUpForm() {
+  const t = useTranslations("AuthPage")
 
-export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
   const { isPending, execute } = useAction(signUpAction, {
     onSuccess: () => {
       toast.success("Account created successfully!")
@@ -56,11 +51,11 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.username}</FormLabel>
+              <FormLabel>{t("username")}</FormLabel>
               <FormControl>
                 <Input
                   className="border-none"
-                  placeholder={authDictionary.usernamePlaceholder}
+                  placeholder={t("usernamePlaceholder")}
                   startAdornment={<span>@</span>}
                   {...field}
                 />
@@ -75,13 +70,9 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
           name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.fullName}</FormLabel>
+              <FormLabel>{t("fullName")}</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none"
-                  placeholder={authDictionary.fullNamePlaceholder}
-                  {...field}
-                />
+                <Input className="border-none" placeholder={t("fullNamePlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,13 +83,9 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.email}</FormLabel>
+              <FormLabel>{t("email")}</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none"
-                  placeholder={authDictionary.emailPlaceholder}
-                  {...field}
-                />
+                <Input className="border-none" placeholder={t("emailPlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,12 +96,12 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.password}</FormLabel>
+              <FormLabel>{t("password")}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   className="border-none"
-                  placeholder={authDictionary.passwordPlaceholder}
+                  placeholder={t("passwordPlaceholder")}
                   {...field}
                 />
               </FormControl>
@@ -123,12 +110,12 @@ export function SignUpForm({ lang, authDictionary }: SignUpFormProps) {
           )}
         />
         <Button type="submit" className="w-full" disabled={isPending}>
-          {authDictionary.registerButton}
+          {t("registerButton")}
         </Button>
         <div className="text-center text-sm">
-          {authDictionary.alreadyHaveAccount}{" "}
-          <Link href="/login" lang={lang} className="underline underline-offset-4">
-            {authDictionary.loginButton}
+          {t("alreadyHaveAccount")}{" "}
+          <Link href="/login" className="underline underline-offset-4">
+            {t("loginButton")}
           </Link>
         </div>
       </form>

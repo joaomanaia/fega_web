@@ -16,17 +16,13 @@ import { type SignInActionValues, signInSchema } from "@/lib/schemas/auth-schema
 import { useAction } from "next-safe-action/hooks"
 import { toast } from "sonner"
 import { signInAction } from "@/app/[lang]/(auth)/actions"
-import { Link } from "@/components/link"
-import type { Locale } from "@/i18n-config"
-import type { Dictionary } from "@/get-dictionary"
 import { sendGTMEvent } from "@next/third-parties/google"
+import { useTranslations } from "next-intl"
+import { Link } from "@/src/i18n/navigation"
 
-interface LoginFormProps {
-  lang: Locale
-  authDictionary: Dictionary["page"]["auth"]
-}
+export function LoginForm() {
+  const t = useTranslations("AuthPage")
 
-export function LoginForm({ lang, authDictionary }: LoginFormProps) {
   const { isPending, execute } = useAction(signInAction, {
     onSuccess: () => {
       toast.success("Login successful!")
@@ -53,13 +49,9 @@ export function LoginForm({ lang, authDictionary }: LoginFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{authDictionary.email}</FormLabel>
+              <FormLabel>{t("email")}</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none"
-                  placeholder={authDictionary.emailPlaceholder}
-                  {...field}
-                />
+                <Input className="border-none" placeholder={t("emailPlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,20 +63,19 @@ export function LoginForm({ lang, authDictionary }: LoginFormProps) {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between">
-                <FormLabel>{authDictionary.password}</FormLabel>
+                <FormLabel>{t("password")}</FormLabel>
                 <Link
                   href="/forgot-password"
-                  lang={lang}
                   className="text-sm hover:underline underline-offset-4"
                 >
-                  {authDictionary.forgotPassword}
+                  {t("forgotPassword")}
                 </Link>
               </div>
               <FormControl>
                 <Input
                   type="password"
                   className="border-none"
-                  placeholder={authDictionary.passwordPlaceholder}
+                  placeholder={t("passwordPlaceholder")}
                   {...field}
                 />
               </FormControl>
@@ -93,12 +84,12 @@ export function LoginForm({ lang, authDictionary }: LoginFormProps) {
           )}
         />
         <Button type="submit" className="w-full" disabled={isPending}>
-          {authDictionary.loginButton}
+          {t("loginButton")}
         </Button>
         <div className="text-center text-sm">
-          {authDictionary.dontHaveAccount}{" "}
-          <Link href="/signup" lang={lang} className="underline underline-offset-4">
-            {authDictionary.registerButton}
+          {t("dontHaveAccount")}{" "}
+          <Link href="/signup" className="underline underline-offset-4">
+            {t("registerButton")}
           </Link>
         </div>
       </form>
