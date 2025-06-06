@@ -2,9 +2,8 @@
 
 import Post from "@/app/components/post/Post"
 import { useGetInfinitePosts } from "@/features/post/use-get-posts"
-import type { Dictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
 import type { PostViewType } from "@/types/PostType"
+import { useTranslations } from "next-intl"
 import { useEffect, useMemo } from "react"
 import { useInView } from "react-intersection-observer"
 
@@ -12,8 +11,6 @@ interface PagingPostsProps {
   uid?: string
   localUid: string | null
   initialPosts: PostViewType[]
-  lang: Locale
-  dictionary: Dictionary
   schemaHasPart?: boolean
 }
 
@@ -21,10 +18,10 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
   uid,
   localUid,
   initialPosts,
-  lang,
-  dictionary,
   schemaHasPart,
 }) => {
+  const t = useTranslations("Post")
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useGetInfinitePosts(
     initialPosts,
     uid
@@ -51,18 +48,12 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
       <li className="flex flex-col gap-y-4 md:gap-y-6">
         {posts?.map((post) => (
           <ul key={post.id}>
-            <Post
-              post={post}
-              localUid={localUid}
-              dictionary={dictionary}
-              schemaHasPart={schemaHasPart}
-              lang={lang}
-            />
+            <Post post={post} localUid={localUid} schemaHasPart={schemaHasPart} />
           </ul>
         ))}
       </li>
 
-      {isFetchingNextPage && <p>{dictionary.post.loading}</p>}
+      {isFetchingNextPage && <p>{t("loading")}</p>}
 
       <div ref={ref} className="-my-2" />
     </>

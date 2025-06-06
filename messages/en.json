@@ -4,5 +4,56 @@
   },
   "HomePage": {
     "title": "Home"
+  },
+  "Post": {
+    "loading": "Loading...",
+    "emptyPosts": {
+      "header": "No posts yet",
+      "description": {
+        "default": "Start by creating your first post or check back later!",
+        "user": "<b>{username}</b> hasn't shared anything yet, check back later!"
+      }
+    },
+    "create": {
+      "header": "Create post",
+      "placeholder": "What's on your mind?",
+      "submitButton": {
+        "default": "Create",
+        "loading": "Creating..."
+      },
+      "success": "Post created successfully",
+      "error": "Error creating post"
+    },
+    "delete": {
+      "action": "Delete",
+      "title": "Delete post",
+      "description": "Are you sure you want to delete this post? This action cannot be undone.",
+      "confirm": "Delete"
+    }
+  },
+  "ProfilePage": {
+    "editProfile": {
+      "openDialogButton": "Edit profile",
+      "header": "Edit profile",
+      "username": "Username",
+      "fullName": "Full name",
+      "fullNameDescription": "This is your public display name.",
+      "success": "Profile updated successfully"
+    }
+  },
+  "User": {
+    "joinedDate": "Joined {joinDate}"
+  },
+  "Share": {
+    "share": "Share",
+    "copy": "Copy",
+    "copiedToClipboard": "Copied to clipboard!",
+    "failedToCopyToClipboard": "Failed to copy to clipboard",
+    "post": {
+      "title": "Share post",
+      "description": "Share this post with your friends",
+      "quote": "Check out this post on Fega!",
+      "shareButton": "Share"
+    }
   }
 }

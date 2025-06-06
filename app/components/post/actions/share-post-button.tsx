@@ -1,32 +1,32 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { type Dictionary } from "@/get-dictionary"
 import { useShare } from "@/hooks/use-share"
 import { Share } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface SharePostButtonProps {
   postId: string
-  dictionary: Dictionary["share"]
 }
 
-export const SharePostButton: React.FC<SharePostButtonProps> = ({ postId, dictionary }) => {
+export const SharePostButton: React.FC<SharePostButtonProps> = ({ postId }) => {
   const { onShare } = useShare()
+  const t = useTranslations("Share.post")
 
   return (
     <Button
       variant="surfaceVariant"
       onClick={() =>
         onShare({
-          dialogTitle: dictionary.sharePostTitle,
-          dialogDescription: dictionary.sharePostDescription,
+          dialogTitle: t("title"),
+          dialogDescription: t("description"),
           url: `${process.env.NEXT_PUBLIC_APP_URL}/post/${postId}`,
-          text: dictionary.sharePostQuote,
+          text: t("quote"),
         })
       }
     >
       <Share size={20} className="mr-2" />
-      {dictionary.share}
+      {t("shareButton")}
     </Button>
   )
 }

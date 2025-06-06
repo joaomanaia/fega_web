@@ -51,7 +51,7 @@ export default async function NewsPage(props: NewsPageProps) {
       <ul className="w-full h-full items-start gap-2 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {news.map((item) => (
           <li key={item.id}>
-            <NewsItem news={item} lang={params.lang} />
+            <NewsItem news={item} />
           </li>
         ))}
       </ul>

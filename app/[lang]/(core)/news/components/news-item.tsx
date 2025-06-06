@@ -1,26 +1,22 @@
-import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
 import { type Tables } from "@/types/database.types"
-import moment from "moment"
+import { useFormatter } from "next-intl"
+import { useNow } from "next-intl"
 import Image from "next/image"
 
 type NewsItemType = Tables<"news_view">
 
 interface NewsItemProps {
   news: NewsItemType
-  lang: Locale
 }
 
-function getRelativeTime(createdAt: string) {
-  return moment(createdAt).fromNow()
-}
-
-export const NewsItem: React.FC<NewsItemProps> = ({ news, lang }) => {
-  const relativeCreatedAt = getRelativeTime(news.created_at as string)
+export const NewsItem: React.FC<NewsItemProps> = ({ news }) => {
+  const now = useNow()
+  const format = useFormatter()
 
   return (
-    <Link href={`/news/${news.id}`} lang={lang}>
+    <Link href={`/news/${news.id}`}>
       <article
         itemScope
         itemType="https://schema.org/NewsArticle"
@@ -45,8 +41,14 @@ export const NewsItem: React.FC<NewsItemProps> = ({ news, lang }) => {
             <AvatarFallback className="text-xs">{news.author_full_name?.at(0)}</AvatarFallback>
           </Avatar>
           <span className="truncate">{news.author_full_name}</span>
-          <span>&bull;</span>
-          <span className="truncate">{relativeCreatedAt}</span>
+          {news.created_at && (
+            <>
+              <span>&bull;</span>
+              <span className="truncate">
+                {format.relativeTime(new Date(news.created_at), now)}
+              </span>
+            </>
+          )}
         </div>
         <h2 className="text-2xl font-bold">{news.title}</h2>
         <p className="text-base text-secondary/80">{news.description}</p>

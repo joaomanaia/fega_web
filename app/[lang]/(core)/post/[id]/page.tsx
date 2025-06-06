@@ -1,13 +1,13 @@
 import Post from "@/app/components/post/Post"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { getLocalUserUid } from "@/utils/user-utils"
-import { type Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary"
 import { notFound } from "next/navigation"
 import type { PostViewType } from "@/types/PostType"
 import { cache } from "react"
 import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
+import { setRequestLocale } from "next-intl/server"
+import type { Locale } from "next-intl"
 
 interface PostPageProps {
   params: Promise<{
@@ -27,8 +27,6 @@ const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
 
   return post
 })
-
-export const dynamic = "force-dynamic"
 
 export async function generateMetadata(props: PostPageProps): Promise<Metadata> {
   const params = await props.params
@@ -56,24 +54,19 @@ export async function generateMetadata(props: PostPageProps): Promise<Metadata> 
 
 export default async function PostPage(props: PostPageProps) {
   const params = await props.params
+  // Enable static rendering
+  setRequestLocale(params.lang)
+
   const post = await getPostById(params.id)
   if (!post) {
     notFound()
   }
 
   const localUid = await getLocalUserUid()
-  const dictionary = await getDictionary(params.lang)
 
   return (
     <MainContainer className="lg:container mx-3 lg:mx-auto">
-      <Post
-        hideContainer
-        post={post}
-        localUid={localUid}
-        lang={params.lang}
-        dictionary={dictionary}
-        className="p-2"
-      />
+      <Post hideContainer post={post} localUid={localUid} className="p-2" />
     </MainContainer>
   )
 }

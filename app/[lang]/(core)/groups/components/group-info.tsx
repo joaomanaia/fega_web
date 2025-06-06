@@ -32,7 +32,6 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
     <>
       <h2 className="mt-2 text-2xl font-bold truncate w-full text-center">{group.name}</h2>
       <GroupInfoHeader
-        lang={lang}
         groupName={group.name ?? "Unknown"}
         iconUrl={group.icon_url ?? undefined}
         authorUid={group.created_by}
@@ -55,7 +54,6 @@ interface GroupInfoHeaderProps {
   authorUsername: string | null
   authorName: string | null
   createdAt: string
-  lang: Locale
   dictionary: GroupInfoDictionary
 }
 
@@ -66,7 +64,6 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
   authorUsername,
   authorName,
   createdAt,
-  lang,
   dictionary,
 }) => {
   return (
@@ -77,7 +74,6 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
         authorName={authorName}
         authorUsername={authorUsername}
         createdAt={createdAt}
-        lang={lang}
         dictionary={dictionary}
       />
     </div>
@@ -89,7 +85,6 @@ interface CreatedByProps {
   authorUsername: string | null
   authorName: string | null
   createdAt: string
-  lang: Locale
   dictionary: GroupInfoDictionary
 }
 
@@ -98,7 +93,6 @@ const CreatedBy: React.FC<CreatedByProps> = ({
   authorUsername,
   authorName,
   createdAt,
-  lang,
   dictionary,
 }) => {
   if (!authorUid || !authorName || !authorUsername) {
@@ -109,7 +103,7 @@ const CreatedBy: React.FC<CreatedByProps> = ({
     <p>
       {formatString(dictionary.createdBy, {
         name: (
-          <UserHoverCardWithLink lang={lang} uid={authorUid} username={authorUsername}>
+          <UserHoverCardWithLink uid={authorUid} username={authorUsername}>
             <b className="hover:underline">{authorName}</b>
           </UserHoverCardWithLink>
         ),

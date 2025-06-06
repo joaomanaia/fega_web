@@ -1,27 +1,20 @@
 "use client"
 
-import { type Dictionary } from "@/get-dictionary"
 import type UserType from "@/types/UserType"
 import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Button } from "@/components/ui/button"
 import { useModal } from "@/hooks/use-modal-store"
 import Linkify from "@/components/linkify"
-import type { Locale } from "@/i18n-config"
+import { useTranslations } from "next-intl"
 
 interface UserProfileContentProps {
   user: UserType
   isLocalUser?: boolean
-  dictionary: Dictionary
-  lang: Locale
 }
 
-export const UserProfileContent: React.FC<UserProfileContentProps> = ({
-  user,
-  isLocalUser,
-  dictionary,
-  lang,
-}) => {
+export const UserProfileContent: React.FC<UserProfileContentProps> = ({ user, isLocalUser }) => {
+  const t = useTranslations("ProfilePage.editProfile")
   const { onOpen } = useModal()
 
   return (
@@ -36,7 +29,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
         </div>
       </div>
       {user.bio && (
-        <Linkify lang={lang}>
+        <Linkify>
           <div itemProp="description">{user.bio}</div>
         </Linkify>
       )}
@@ -46,7 +39,7 @@ export const UserProfileContent: React.FC<UserProfileContentProps> = ({
           variant="outline"
           className="w-full"
         >
-          {dictionary.editProfileButton}
+          {t("openDialogButton")}
         </Button>
       )}
     </>

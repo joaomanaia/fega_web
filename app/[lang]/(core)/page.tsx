@@ -1,6 +1,5 @@
 import { getLocalUserUid } from "@/utils/user-utils"
 import PostsContent, { PostsSkeleton } from "./PostsContent"
-import { type Dictionary, getDictionary } from "@/get-dictionary"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Suspense } from "react"
@@ -15,8 +14,6 @@ interface HomePageProps {
 
 export default async function HomePage(props: HomePageProps) {
   const { lang } = await props.params
-  const dictionary = await getDictionary(lang)
-
   // Enable static rendering
   setRequestLocale(lang)
 
@@ -25,24 +22,18 @@ export default async function HomePage(props: HomePageProps) {
   return (
     <main className="flex flex-col md:pb-3 md:gap-4 xl:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden">
       <h1 className="hidden">{t("title")}</h1>
-      <CreatePost dictionary={dictionary} />
+      <CreatePost />
       <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
         <Suspense fallback={<PostsSkeleton />}>
-          <HomePagePostsContent lang={lang} dictionary={dictionary} />
+          <HomePagePostsContent />
         </Suspense>
       </MainContainer>
     </main>
   )
 }
 
-async function HomePagePostsContent({
-  lang,
-  dictionary,
-}: {
-  lang: Locale
-  dictionary: Dictionary
-}) {
+async function HomePagePostsContent() {
   const localUid = await getLocalUserUid()
 
-  return <PostsContent localUid={localUid} lang={lang} dictionary={dictionary} />
+  return <PostsContent localUid={localUid} />
 }

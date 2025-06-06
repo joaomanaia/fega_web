@@ -1,18 +1,14 @@
 import type { PostViewType } from "@/types/PostType"
 import PostImages from "./PostImages"
-import { useMemo } from "react"
-import moment from "moment"
 import { VotePostAction } from "./actions/vote/VotePostAction"
 import { SharePostButton } from "./actions/share-post-button"
-import { type Dictionary } from "@/get-dictionary"
 import { cn } from "@/lib/utils"
-import { Link } from "@/components/link"
 import { PostMoreActions } from "./post-more-actions"
 import { Skeleton } from "@/components/ui/skeleton"
-import { type Locale } from "@/i18n-config"
-import { UserHoverCard } from "@/app/components/user/user-hover-card"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import Linkify from "@/components/linkify"
+import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
+import { useFormatter, useNow } from "next-intl"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -21,27 +17,11 @@ interface PostProps {
   localUid: string | null
   post: PostViewType
   hideContainer?: boolean
-  lang: Locale
-  dictionary: Dictionary
   className?: string
   schemaHasPart?: boolean
 }
 
-function getRelativeTime(createdAt: string) {
-  return moment(createdAt).fromNow()
-}
-
-const Post: React.FC<PostProps> = ({
-  localUid,
-  post,
-  hideContainer,
-  lang,
-  dictionary,
-  className,
-  schemaHasPart,
-}) => {
-  const relativeCreatedAt = useMemo(() => getRelativeTime(post.created_at!), [post.created_at])
-
+const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, schemaHasPart }) => {
   return (
     <article
       itemScope
@@ -62,13 +42,12 @@ const Post: React.FC<PostProps> = ({
         uid={post.uid!}
         postId={post.id!}
         localUid={localUid}
-        relativeCreatedAt={relativeCreatedAt}
+        createdAt={new Date(post.created_at!)}
         username={post.author_username!}
         userFullname={post.author_full_name!}
         userProfileUrl={post.author_avatar_url!}
-        lang={lang}
       />
-      <Linkify lang={lang}>
+      <Linkify>
         <h3 itemProp="headline" className="text-lg">
           {post.description}
         </h3>
@@ -76,7 +55,7 @@ const Post: React.FC<PostProps> = ({
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
       <div className="flex flex-wrap items-center gap-4">
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
-        <SharePostButton postId={post.id!} dictionary={dictionary.share} />
+        <SharePostButton postId={post.id!} />
       </div>
     </article>
   )
@@ -85,24 +64,25 @@ const Post: React.FC<PostProps> = ({
 interface PostUserHeaderProps {
   postId: string
   localUid: string | null
-  relativeCreatedAt: string
+  createdAt: Date
   uid: string
   username: string
   userFullname: string
   userProfileUrl: string | null
-  lang: Locale
 }
 
 const PostUserHeader: React.FC<PostUserHeaderProps> = ({
   postId,
   uid,
   localUid,
-  relativeCreatedAt,
+  createdAt,
   username,
   userFullname,
   userProfileUrl,
-  lang,
 }) => {
+  const now = useNow()
+  const format = useFormatter()
+
   return (
     <div
       itemScope
@@ -112,23 +92,20 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
     >
       <meta itemProp="identifier" content={uid} />
       <meta itemProp="alternateName" content={`@${username}`} />
-      <UserHoverCard id={uid}>
-        <Link href={`/${username}`} lang={lang}>
-          <UserAvatar src={userProfileUrl} name={userFullname} />
-        </Link>
-      </UserHoverCard>
+      <UserHoverCardWithLink uid={uid} username={username}>
+        <UserAvatar src={userProfileUrl} name={userFullname} />
+      </UserHoverCardWithLink>
       <div className="flex flex-col ml-3 space-y-1 justify-center">
-        <UserHoverCard id={uid}>
-          <Link
-            itemProp="url"
-            href={`/${username}`}
-            lang={lang}
-            className="font-semibold my-0 next-link"
-          >
-            <span itemProp="name">{userFullname}</span>
-          </Link>
-        </UserHoverCard>
-        <p className="text-xs text-inherit">{relativeCreatedAt}</p>
+        <UserHoverCardWithLink
+          uid={uid}
+          username={username}
+          className="font-semibold my-0 next-link"
+        >
+          <span itemProp="name">{userFullname}</span>
+        </UserHoverCardWithLink>
+        <p className="text-xs text-inherit" suppressHydrationWarning>
+          {format.relativeTime(createdAt, now)}
+        </p>
       </div>
       {uid === localUid && <PostMoreActions postId={postId} />}
     </div>
