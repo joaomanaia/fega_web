@@ -2,14 +2,10 @@ import type { GroupParticipantsViewType, GroupViewType } from "@/types/group/Gro
 import { getLocalUserUid } from "@/utils/user-utils"
 import { GroupMember } from "./group-member"
 import { InviteMemberButton } from "./invite-member-button"
-import { type Locale } from "@/i18n-config"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
-import { type Dictionary } from "@/get-dictionary"
-import { formatString } from "@/src/util/dictionary-util"
 import { createClient } from "@/lib/supabase/server"
-
-type GroupInfoDictionary = Dictionary["groups"]["info"]
+import { getTranslations } from "next-intl/server"
 
 const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]> => {
   const supabase = await createClient()
@@ -30,12 +26,10 @@ const getMembers = async (groupId: string): Promise<GroupParticipantsViewType[]>
 
 interface GroupMembersProps {
   group: GroupViewType
-  lang: Locale
   isDialog?: boolean
-  dictionary: GroupInfoDictionary
 }
 
-export async function GroupMembers({ group, lang, isDialog, dictionary }: GroupMembersProps) {
+export async function GroupMembers({ group, isDialog }: GroupMembersProps) {
   if (!group.id) return null
 
   const localUid = await getLocalUserUid()
@@ -43,10 +37,12 @@ export async function GroupMembers({ group, lang, isDialog, dictionary }: GroupM
 
   const members = await getMembers(group.id)
 
+  const t = await getTranslations("GroupsPage.info")
+
   return (
     <>
       <div className="flex items-center w-full p-5 pb-0">
-        <h3 className="text-xl">{formatString(dictionary.membersNumber, { n: members.length })}</h3>
+        <h3 className="text-xl">{t("membersNumber", { n: members.length })}</h3>
 
         {group.is_owner && <InviteMemberButton group={group} />}
       </div>
@@ -68,7 +64,6 @@ export async function GroupMembers({ group, lang, isDialog, dictionary }: GroupM
               avatarUrl={member.avatar_url}
               localUid={localUid}
               isLocalAdmin={group.is_owner ?? false}
-              lang={lang}
             />
           ))}
         </ul>

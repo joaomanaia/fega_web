@@ -1,7 +1,5 @@
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { MemberOptionsMenu } from "@/components/group/members/group-member-options"
-import { type Locale } from "@/i18n-config"
-
 
 interface GroupMemberProps {
   groupId: string
@@ -11,7 +9,6 @@ interface GroupMemberProps {
   avatarUrl: string | null
   localUid: string
   isLocalAdmin: boolean
-  lang: Locale
 }
 
 export const GroupMember: React.FC<GroupMemberProps> = ({
@@ -22,7 +19,6 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
   avatarUrl,
   localUid,
   isLocalAdmin,
-  lang,
 }) => {
   return (
     <li className="group flex w-full items-center py-3 first:pt-0 last:pb-5">
@@ -37,10 +33,7 @@ export const GroupMember: React.FC<GroupMemberProps> = ({
         fullName={fullName}
         localUid={localUid}
         isLocalAdmin={isLocalAdmin}
-        lang={lang}
       />
     </li>
   )
 }
-
-

@@ -19,6 +19,7 @@ type FormattedStringReturnType<T> =
  * @param values - An optional dictionary of key-value pairs to replace placeholders.
  * @returns The formatted text with placeholders replaced by corresponding values.
  * @example formatString('Hello {name}, welcome to {city}!', { name: 'Alice', city: 'Wonderland' })
+ * @deprecated Use `next intl` instead.
  */
 export function formatString<
   T extends string,

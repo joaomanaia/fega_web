@@ -20,10 +20,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
 import { createGroupSchema, type CreateGroupSchemaValues } from "@/lib/schemas/group-schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -33,14 +33,14 @@ export const CreateGroupModal: React.FC = () => {
   const { isOpen, onClose } = useModal("create-group")
   const router = useRouter()
 
-  const dictionary = useDictionary().groups.create
+  const t = useTranslations("GroupsPage.create")
 
   const { isPending, execute } = useServerAction(createGroup, {
     onError: ({ err }) => {
       toast.error(err.message)
     },
     onSuccess: ({ data: id }) => {
-      toast.success(dictionary.success)
+      toast.success(t("success"))
       onClose()
       router.push(`/groups/${id}`)
     },
@@ -58,9 +58,9 @@ export const CreateGroupModal: React.FC = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">{dictionary.title}</DialogTitle>
+          <DialogTitle className="text-2xl text-center font-bold">{t("title")}</DialogTitle>
         </DialogHeader>
-        <DialogDescription>{dictionary.description}</DialogDescription>
+        <DialogDescription>{t("description")}</DialogDescription>
         <Form {...form}>
           <form
             className="flex flex-col mt-4 gap-y-4 w-full"
@@ -71,9 +71,9 @@ export const CreateGroupModal: React.FC = () => {
               name="group_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{dictionary.groupName}</FormLabel>
+                  <FormLabel>{t("groupName")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={dictionary.groupNamePlaceholder} {...field} />
+                    <Input placeholder={t("groupNamePlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,11 +85,11 @@ export const CreateGroupModal: React.FC = () => {
               name="group_avatar"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{dictionary.groupAvatarUrl}</FormLabel>
+                  <FormLabel>{t("groupAvatarUrl")}</FormLabel>
                   <div className="flex gap-4 items-center">
                     <UserAvatar src={field.value} name={form.getValues("group_name")} />
                     <FormControl>
-                      <Input placeholder={dictionary.groupAvatarUrlPlaceholder} {...field} />
+                      <Input placeholder={t("groupAvatarUrlPlaceholder")} {...field} />
                     </FormControl>
                   </div>
 
@@ -104,7 +104,7 @@ export const CreateGroupModal: React.FC = () => {
                 className="mt-4 min-w-28"
                 disabled={isPending || !form.formState.isValid}
               >
-                {isPending ? dictionary.submitButton.loading : dictionary.submitButton.default}
+                {t(isPending ? "submitButton.loading" : "submitButton.default")}
               </Button>
             </DialogFooter>
           </form>

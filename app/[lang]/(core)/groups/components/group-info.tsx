@@ -2,13 +2,10 @@ import { UserAvatar } from "@/app/components/user/user-avatar"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
 import { GroupMembers } from "@/components/group/members/group-members"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getDictionary, type Dictionary } from "@/get-dictionary"
-import { type Locale } from "@/i18n-config"
 import { createClient } from "@/lib/supabase/server"
-import { formatString } from "@/src/util/dictionary-util"
-import { redirect } from "next/navigation"
-
-type GroupInfoDictionary = Dictionary["groups"]["info"]
+import { redirect } from "@/src/i18n/navigation"
+import { type Locale } from "next-intl"
+import { useTranslations } from "next-intl"
 
 interface GroupInfoProps {
   groupId: string
@@ -20,13 +17,7 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
   const supabase = await createClient()
 
   const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
-  if (!group) return redirect("/groups")
-
-  const dictionary = (await getDictionary(lang)).groups.info
-
-  const groupCreatedAt = group.created_at
-    ? new Date(group.created_at).toLocaleDateString()
-    : "Unknown"
+  if (!group) return redirect({ href: "/groups", locale: lang })
 
   return (
     <>
@@ -37,11 +28,10 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
         authorUid={group.created_by}
         authorUsername={group.author_username}
         authorName={group.author_name}
-        createdAt={groupCreatedAt}
-        dictionary={dictionary}
+        createdAt={group.created_at}
       />
       <div className="rounded-2xl bg-surfaceVariant/[0.28] w-full min-h-0 overflow-y-hidden">
-        <GroupMembers group={group} lang={lang} isDialog={isDialog} dictionary={dictionary} />
+        <GroupMembers group={group} isDialog={isDialog} />
       </div>
     </>
   )
@@ -54,7 +44,6 @@ interface GroupInfoHeaderProps {
   authorUsername: string | null
   authorName: string | null
   createdAt: string
-  dictionary: GroupInfoDictionary
 }
 
 const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
@@ -64,7 +53,6 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
   authorUsername,
   authorName,
   createdAt,
-  dictionary,
 }) => {
   return (
     <div className="flex flex-col w-full gap-4 py-4">
@@ -74,7 +62,6 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
         authorName={authorName}
         authorUsername={authorUsername}
         createdAt={createdAt}
-        dictionary={dictionary}
       />
     </div>
   )
@@ -85,7 +72,6 @@ interface CreatedByProps {
   authorUsername: string | null
   authorName: string | null
   createdAt: string
-  dictionary: GroupInfoDictionary
 }
 
 const CreatedBy: React.FC<CreatedByProps> = ({
@@ -93,21 +79,23 @@ const CreatedBy: React.FC<CreatedByProps> = ({
   authorUsername,
   authorName,
   createdAt,
-  dictionary,
 }) => {
+  const t = useTranslations("GroupsPage.info")
+
   if (!authorUid || !authorName || !authorUsername) {
-    return <p>{formatString(dictionary.createdByUnknown, { createdAt: createdAt })}</p>
+    return <p>{t("createdByUnknown", { createdAt: new Date(createdAt) })}</p>
   }
 
   return (
     <p>
-      {formatString(dictionary.createdBy, {
-        name: (
+      {t.rich("createdBy", {
+        name: authorName,
+        createdAt: new Date(createdAt),
+        hoverCard: (chunks) => (
           <UserHoverCardWithLink uid={authorUid} username={authorUsername}>
-            <b className="hover:underline">{authorName}</b>
+            <b className="hover:underline">{chunks}</b>
           </UserHoverCardWithLink>
         ),
-        createdAt: createdAt,
       })}
     </p>
   )

@@ -19,12 +19,10 @@ import { Input } from "@/components/ui/input"
 import type UserType from "@/types/UserType"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { type Dictionary } from "@/get-dictionary"
 import { updateProfileSchema, UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
 import { UserEditableAvatar } from "@/app/components/user/user-editable-avatar"
 import { useUpdateProfileMutation } from "@/features/user/useUpdateProfileMutation"
@@ -32,6 +30,7 @@ import { ZSAError } from "zsa"
 import { useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { removeUserAvatar } from "@/app/actions/userActions"
+import { useTranslations } from "next-intl"
 
 export const EditProfileModal: React.FC = () => {
   const {
@@ -45,22 +44,15 @@ export const EditProfileModal: React.FC = () => {
 
   if (!user) return null
 
-  const dictionary = useDictionary()
+  const t = useTranslations("User.editProfile")
 
   return (
     <Dialog open={isOpen} onOpenChange={() => canClose && onClose()}>
       <DialogContent>
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">
-            {dictionary.editProfile.header}
-          </DialogTitle>
+          <DialogTitle className="text-2xl text-center font-bold">{t("header")}</DialogTitle>
         </DialogHeader>
-        <EditProfileForm
-          user={user}
-          dictionary={dictionary}
-          onClose={onClose}
-          changeCanClose={setCanClose}
-        />
+        <EditProfileForm user={user} onClose={onClose} changeCanClose={setCanClose} />
       </DialogContent>
     </Dialog>
   )
@@ -68,17 +60,17 @@ export const EditProfileModal: React.FC = () => {
 
 interface EditProfileFormProps {
   user: UserType
-  dictionary: Dictionary
   onClose: () => void
   changeCanClose: (canClose: boolean) => void
 }
 
 export const EditProfileForm: React.FC<EditProfileFormProps> = ({
   user,
-  dictionary,
   onClose,
   changeCanClose,
 }) => {
+  const t = useTranslations("User.editProfile")
+
   const form = useForm<UpdateProfileSchemaValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
@@ -121,7 +113,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
                 { values },
                 {
                   onSuccess: () => {
-                    toast.success(dictionary.editProfile.success, { id: "edit-profile" })
+                    toast.success(t("success"), { id: "edit-profile" })
                     queryClient.invalidateQueries({ queryKey: ["posts", user.id] })
                     changeCanClose(true)
                     onClose()
@@ -174,11 +166,11 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{dictionary.editProfile.username}</FormLabel>
+                <FormLabel>{t("username")}</FormLabel>
                 <FormControl>
                   <Input
                     className="border-none"
-                    placeholder={dictionary.editProfile.username}
+                    placeholder={t("username")}
                     startAdornment={<span>@</span>}
                     {...field}
                   />
@@ -193,13 +185,9 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
             name="full_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{dictionary.editProfile.fullName}</FormLabel>
+                <FormLabel>{t("fullName")}</FormLabel>
                 <FormControl>
-                  <Input
-                    className="border-none"
-                    placeholder={dictionary.editProfile.fullName}
-                    {...field}
-                  />
+                  <Input className="border-none" placeholder={t("fullName")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -222,9 +210,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
 
           <DialogFooter>
             {/* Disabled when pending or form is not changed */}
-            <Button disabled={isPending || !form.formState.isDirty}>
-              {dictionary.saveChanges}
-            </Button>
+            <Button disabled={isPending || !form.formState.isDirty}>{t("save")}</Button>
           </DialogFooter>
         </form>
       </Form>

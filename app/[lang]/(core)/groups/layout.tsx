@@ -1,24 +1,13 @@
 import GroupList, { GroupListSkeleton } from "./components/GroupList"
 import { BaseGroupList } from "./base-group-list"
-import { type Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary"
 import { Suspense } from "react"
 
 type GroupLayoutProps = Readonly<{
   children: React.ReactNode
   modal: React.ReactNode
-  params: Promise<{
-    lang: Locale
-  }>
 }>
 
-export const dynamic = "force-dynamic"
-
-export default async function GroupLayout({ children, modal, params }: GroupLayoutProps) {
-  const { lang } = await params
-
-  const dictionary = await getDictionary(lang)
-
+export default async function GroupLayout({ children, modal }: GroupLayoutProps) {
   return (
     <>
       {modal}
@@ -27,11 +16,7 @@ export default async function GroupLayout({ children, modal, params }: GroupLayo
         <div className="hidden xl:block flex-grow w-full max-w-md">
           <BaseGroupList isLayout>
             <Suspense fallback={<GroupListSkeleton className="w-full max-w-md" />}>
-              <GroupList
-                className="hidden xl:block flex-grow w-full max-w-md"
-                lang={lang}
-                dictionary={dictionary}
-              />
+              <GroupList className="hidden xl:block flex-grow w-full max-w-md" />
             </Suspense>
           </BaseGroupList>
         </div>

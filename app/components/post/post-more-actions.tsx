@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { deletePost } from "@/core/actions/postActions"
 import { useConfirm } from "@/hooks/use-confirm"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useQueryClient } from "@tanstack/react-query"
 import { MoreHorizontalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 import { useServerAction } from "zsa-react"
 
@@ -21,7 +21,7 @@ interface PostMoreActionsProps {
 
 export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
   const queryClient = useQueryClient()
-  const dictionary = useDictionary().post
+  const t = useTranslations("Post.delete")
 
   const { execute } = useServerAction(deletePost, {
     onSuccess: () => {
@@ -47,9 +47,9 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
   return (
     <>
       <ConfirmRemoveDialog
-        title={dictionary.delete.title}
-        message={dictionary.delete.description}
-        confirmButtonContent={dictionary.delete.confirm}
+        title={t("title")}
+        message={t("description")}
+        confirmButtonContent={t("confirm")}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -58,7 +58,7 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={handleDeletePost}>{dictionary.delete.action}</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDeletePost}>{t("action")}</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

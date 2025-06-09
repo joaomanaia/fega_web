@@ -9,8 +9,6 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server"
 import { ourFileRouter } from "../api/uploadthing/core"
 import { type Metadata } from "next"
-import DictionaryProvider from "@/hooks/use-get-dictionary"
-import { getDictionary } from "@/get-dictionary"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
 import { env } from "@/env"
@@ -70,8 +68,6 @@ export default async function RootLayout({
   // Enable static rendering
   setRequestLocale(lang)
 
-  const dictionary = await getDictionary(lang)
-
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
@@ -95,11 +91,9 @@ export default async function RootLayout({
         >
           <QueryProvider>
             <NextIntlClientProvider>
-              <DictionaryProvider dictionary={dictionary}>
-                {children}
-                <SonnerToaster richColors />
-                <ModalProvider />
-              </DictionaryProvider>
+              {children}
+              <SonnerToaster richColors />
+              <ModalProvider />
             </NextIntlClientProvider>
           </QueryProvider>
         </ThemeProvider>

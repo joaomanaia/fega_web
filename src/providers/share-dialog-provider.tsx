@@ -8,12 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useShare } from "@/hooks/use-share"
 
 export const ShareDialogProvider: React.FC = () => {
   const { data, onCancel } = useShare()
-  const dictionary = useDictionary()
 
   return (
     <Dialog open={data !== null} onOpenChange={onCancel}>
@@ -29,7 +27,6 @@ export const ShareDialogProvider: React.FC = () => {
           text={data?.text ?? ""}
           hideSocials={data?.hideSocials}
           hideCopyUrl={data?.hideCopyUrl}
-          dictionary={dictionary}
         />
       </DialogContent>
     </Dialog>

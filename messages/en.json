@@ -10,6 +10,7 @@
     "goBack": "Go back",
     "ok": "OK",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "yes": "Yes",
     "no": "No",
     "close": "Close",
@@ -23,7 +24,8 @@
       "placeholder": "Search...",
       "noResults": "No results found"
     },
-    "navdrawerTitle": "{title, select, home {Home} news {News} events {Events} cameras {Cameras} messages {Messages} privateMessages {Private messages} groups {Groups} otherItems {Other} settings {Settings} other {Unknown}}"
+    "navdrawerTitle": "{title, select, home {Home} news {News} events {Events} cameras {Cameras} messages {Messages} privateMessages {Private messages} groups {Groups} otherItems {Other} settings {Settings} other {Unknown}}",
+    "confirmDialogInputLabel": "If you sure, type <b>{inputTextToConfirm}</b> to confirm."
   },
   "HomePage": {
     "title": "Home"
@@ -156,7 +158,15 @@
     }
   },
   "User": {
-    "joinedDate": "Joined {joinDate}"
+    "joinedDate": "Joined {joinDate}",
+    "editProfile": {
+      "header": "Edit profile",
+      "username": "Username",
+      "fullName": "Full name",
+      "fullNameDescription": "This is your public display name.",
+      "success": "Profile updated successfully",
+      "save": "Save changes"
+    }
   },
   "Share": {
     "share": "Share",
@@ -168,6 +178,58 @@
       "description": "Share this post with your friends",
       "quote": "Check out this post on Fega!",
       "shareButton": "Share"
+    }
+  },
+  "GroupsPage": {
+    "startMessagingTitle": "Group messages",
+    "startMessagingDescription": "Select a group or create a new one to start chatting with your friends",
+    "emptyGroupsPage": "You are not a member of any groups.",
+    "members": {
+      "optionsMenu": {
+        "title": "Options",
+        "viewProfile": "View profile",
+        "message": "Message",
+        "remove": {
+          "action": "Remove",
+          "dialog": {
+            "title": "Remove member",
+            "message": "Are you sure you want to remove {name} from the group?",
+            "confirm": "Remove"
+          },
+          "onSuccess": "Removed {name} from the group",
+          "onError": "Error removing {name} from the group"
+        }
+      }
+    },
+    "info": {
+      "createdBy": "Created by <hoverCard>{name}</hoverCard> on {createdAt, date, medium}.",
+      "createdByUnknown": "Created by unknown on {createdAt, date, medium}.",
+      "membersNumber": "Members ({n, number})"
+    },
+    "list": {
+      "lastMessageByLocal": "You: {message}",
+      "lastMessageByOther": "{message}",
+      "options": {
+        "groupInfo": "Group info",
+        "editGroup": "Edit group",
+        "addMembers": "Add members",
+        "leaveGroup": "Leave group",
+        "deleteGroup": "Delete group"
+      }
+    },
+    "create": {
+      "button": "Create group",
+      "title": "Create Group",
+      "description": "Create a new group and invite your friends to join!",
+      "groupName": "Group name",
+      "groupNamePlaceholder": "Enter group name",
+      "groupAvatarUrl": "Group avatar URL",
+      "groupAvatarUrlPlaceholder": "Enter group avatar URL",
+      "submitButton": {
+        "default": "Create",
+        "loading": "Creating group..."
+      },
+      "success": "Group created successfully"
     }
   }
 }

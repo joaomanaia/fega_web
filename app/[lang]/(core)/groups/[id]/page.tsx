@@ -1,15 +1,15 @@
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
-import { redirect } from "next/navigation"
 import type { GroupViewType } from "@/types/group/GroupType"
 import { getLocalUserUid } from "@/utils/user-utils"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { GroupMessageHeader } from "./components/group-message-header"
 import { MessagesWithForm } from "./components/messages-with-form"
-import { type Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary"
 import { cache } from "react"
 import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
+import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
+import { redirect } from "@/src/i18n/navigation"
 
 interface GroupMessagePageProps {
   params: Promise<{
@@ -45,7 +45,7 @@ export async function generateMetadata(props: GroupMessagePageProps): Promise<Me
   const params = await props.params
   const group = await getGroup(params.id)
 
-  if (!group) return redirect("/groups")
+  if (!group) return {}
 
   return {
     title: group.name,
@@ -54,24 +54,20 @@ export async function generateMetadata(props: GroupMessagePageProps): Promise<Me
 
 export default async function GroupMessagePage(props: GroupMessagePageProps) {
   const params = await props.params
+  // Enable static rendering
+  setRequestLocale(params.lang)
+
   const localUserUid = await getLocalUserUid()
-  if (!localUserUid) return redirect("/login")
+  if (!localUserUid) return redirect({ href: "/login", locale: params.lang })
 
   const group = await getGroup(params.id)
-  if (!group || !group.id || !group.name) return redirect("/groups")
+  if (!group || !group.id || !group.name) return redirect({ href: "/groups", locale: params.lang })
 
   const messages = await getMessages(params.id)
 
-  const dictionary = await getDictionary(params.lang)
-
   return (
     <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center">
-      <GroupMessageHeader
-        group={group}
-        lang={params.lang}
-        className="xl:hidden"
-        dictionary={dictionary}
-      />
+      <GroupMessageHeader group={group} className="xl:hidden" />
       <MessagesWithForm
         localUserUid={localUserUid}
         groupId={group.id}

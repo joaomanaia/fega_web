@@ -11,11 +11,10 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { cn } from "@/lib/utils"
-import { formatString } from "@/src/util/dictionary-util"
 import clsx from "clsx"
 import { type LucideIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 type DialogVariants = "default" | "error"
@@ -67,7 +66,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
     icon: Icon,
   }: ConfirmationDialogProps) => {
     const [inputValue, setInputValue] = useState("")
-    const dictionary = useDictionary()
+    const t = useTranslations("General")
 
     return (
       <Dialog open={promise !== null} onOpenChange={handleCancel}>
@@ -85,10 +84,11 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
           {inputTextToConfirm && (
             <>
               <Label htmlFor="confirm-input">
-                {formatString(dictionary.confirmDialogInputLabel, {
-                  inputTextToConfirm: (
+                {t.rich("confirmDialogInputLabel", {
+                  inputTextToConfirm: inputTextToConfirm,
+                  b: (chunks) => (
                     <strong key="inputTextToConfirm" className="select-none">
-                      {inputTextToConfirm}
+                      {chunks}
                     </strong>
                   ),
                 })}
@@ -114,7 +114,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
                 variant={variant === "error" ? "destructive" : "ghost"}
                 className={variant === "error" ? "hover:bg-errorContainer/10" : ""}
               >
-                {cancelButtonContent || dictionary.cancel}
+                {cancelButtonContent || t("cancel")}
               </Button>
             )}
             <Button
@@ -127,7 +127,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
                   : ""
               }
             >
-              {confirmButtonContent || dictionary.confirm}
+              {confirmButtonContent || t("confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

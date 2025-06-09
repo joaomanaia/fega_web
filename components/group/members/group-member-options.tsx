@@ -10,13 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreVerticalIcon } from "lucide-react"
-import Link from "next/link"
 import { removeParticipant } from "@/app/actions/groupActions"
-import { useDictionary } from "@/hooks/use-get-dictionary"
 import { useConfirm } from "@/hooks/use-confirm"
-import { formatString } from "@/src/util/dictionary-util"
 import { toast } from "sonner"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
+import { useTranslations } from "next-intl"
 
 interface MemberOptionsMenuProps {
   groupId: string
@@ -25,7 +23,6 @@ interface MemberOptionsMenuProps {
   fullName: string | null
   localUid: string
   isLocalAdmin: boolean
-  lang: Locale
 }
 
 export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
@@ -35,12 +32,11 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
   fullName,
   localUid,
   isLocalAdmin,
-  lang,
 }) => {
   const isLocalUser = uid === localUid
   const removeParticipantWithUid = removeParticipant.bind(null, uid, groupId)
 
-  const dictionary = useDictionary()["groups"]["members"]["optionsMenu"]
+  const t = useTranslations("GroupsPage.members.optionsMenu")
 
   const [ConfirmRemoveDialog, confirmRemove] = useConfirm()
 
@@ -50,9 +46,9 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     if (confirmed) {
       try {
         await removeParticipantWithUid()
-        toast.success(formatString(dictionary.remove.onSuccess, { name: <b>{fullName}</b> }))
+        toast.success(t("remove.onSuccess", { name: fullName ?? "Unknown" }))
       } catch (error) {
-        toast.error(formatString(dictionary.remove.onError, { name: <b>{fullName}</b> }))
+        toast.error(t("remove.onError", { name: fullName ?? "Unknown" }))
       }
     }
   }
@@ -61,9 +57,9 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     <>
       {isLocalAdmin && !isLocalUser && (
         <ConfirmRemoveDialog
-          title={dictionary.remove.dialog.title}
-          message={formatString(dictionary.remove.dialog.message, { name: <b>{fullName}</b> })}
-          confirmButtonContent={dictionary.remove.dialog.confirm}
+          title={t("remove.dialog.title")}
+          message={t("remove.dialog.message", { name: fullName ?? "Unknown" })}
+          confirmButtonContent={t("remove.dialog.confirm")}
         />
       )}
       <DropdownMenu>
@@ -73,18 +69,16 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>{dictionary.title}</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("title")}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link lang={lang} href={`/${username}`}>
-              {dictionary.viewProfile}
-            </Link>
+            <Link href={`/${username}`}>{t("viewProfile")}</Link>
           </DropdownMenuItem>
-          {!isLocalUser && <DropdownMenuItem disabled>{dictionary.message}</DropdownMenuItem>}
+          {!isLocalUser && <DropdownMenuItem disabled>{t("message")}</DropdownMenuItem>}
           {isLocalAdmin && !isLocalUser && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem variant="error" onClick={handleRemove}>
-                {dictionary.remove.action}
+                {t("remove.action")}
               </DropdownMenuItem>
             </>
           )}

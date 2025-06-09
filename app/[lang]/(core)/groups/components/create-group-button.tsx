@@ -1,21 +1,19 @@
 "use client"
 
 import { ExtendedFAB } from "@/components/ui/floating-action-button"
-import { type Dictionary } from "@/get-dictionary"
 import { useModal } from "@/hooks/use-modal-store"
-import { cn } from "@/lib/utils"
 
 interface CreateGroupButtonProps {
   className?: string
-  dictionary: Dictionary
+  children?: React.ReactNode
 }
 
-export const CreateGroupButton: React.FC<CreateGroupButtonProps> = ({ className, dictionary }) => {
+export const CreateGroupButton: React.FC<CreateGroupButtonProps> = ({ className, children }) => {
   const { onOpen } = useModal()
 
   return (
-    <ExtendedFAB onClick={() => onOpen("create-group")} className={cn("", className)}>
-      {dictionary.groups.create.button}
+    <ExtendedFAB onClick={() => onOpen("create-group")} className={className}>
+      {children}
     </ExtendedFAB>
   )
 }

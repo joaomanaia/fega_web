@@ -25,7 +25,7 @@ const meta = {
     },
   },
   component: ShareContent,
-  render: (args, { loaded: { dictionary } }) => <ShareContent {...args} dictionary={dictionary} />,
+  render: (args) => <ShareContent {...args} />,
 } satisfies Meta<typeof ShareContent>
 
 export default meta
