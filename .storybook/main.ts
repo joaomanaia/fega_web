@@ -5,11 +5,11 @@ const config: StorybookConfig = {
   stories: ["../stories/**/*.mdx", "../**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
     "@chromatic-com/storybook",
-    "@storybook/addon-interactions",
     "@storybook/addon-themes",
     "@storybook/addon-a11y",
+    "storybook-next-intl",
+    "@storybook/addon-docs"
   ],
   framework: {
     name: "@storybook/nextjs",
@@ -30,7 +30,7 @@ const config: StorybookConfig = {
   },
   features: {
     experimentalRSC: true,
-  }
+  },
 }
 
 export default config

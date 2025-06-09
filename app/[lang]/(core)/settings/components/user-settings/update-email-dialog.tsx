@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { useInfoDialog } from "@/hooks/use-info-dialog"
 import { updateEmailSchema, UpdateEmailSchemaValues } from "@/lib/schemas/user-schemas"
-import { formatString } from "@/src/util/dictionary-util"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"

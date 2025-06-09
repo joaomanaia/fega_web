@@ -4,7 +4,6 @@ import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 import { cn } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
-import { formatString } from "@/src/util/dictionary-util"
 import {
   GroupOptionsContextMenu,
   GroupOptionsDropdown,

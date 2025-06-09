@@ -1,4 +1,4 @@
-import { create } from "@storybook/theming/create"
+import { create } from "storybook/theming/create"
 // import "../app/styles/tokens.css"
 // import "../app/styles/globals.css"
 

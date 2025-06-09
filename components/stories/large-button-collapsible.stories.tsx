@@ -1,5 +1,5 @@
 import { LargeButtonCollapsible } from "@/components/large-button"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 
 const meta = {
   title: "Components/LargeButton/Colapsible",

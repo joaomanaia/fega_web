@@ -1,5 +1,5 @@
-import React, { useEffect } from "react"
-import { useGlobals, addons, types } from "@storybook/manager-api"
+import { useEffect } from "react"
+import { useGlobals, addons, types } from "storybook/manager-api"
 import fegaTheme from "./themes"
 
 addons.setConfig({

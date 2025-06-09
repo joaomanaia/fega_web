@@ -103,6 +103,6 @@ export default async function RootLayout({
   )
 }
 
-export async function generateStaticParams() {
+/* export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ lang: locale }))
-}
+} */

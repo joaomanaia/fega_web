@@ -1,14 +1,12 @@
 import "../app/styles/tokens.css"
 import "../app/styles/globals.css"
-import React from "react"
-import type { Preview } from "@storybook/react"
+import type { Preview } from "@storybook/nextjs"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "../lib/utils"
 import { withThemeByClassName } from "@storybook/addon-themes"
 import { Toaster } from "sonner"
 import fegaTheme from "./themes"
-import { getDictionary } from "../get-dictionary"
-import DictionaryProvider from "../hooks/use-get-dictionary"
+import nextIntl from "./next-intl"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -16,6 +14,13 @@ const fontSans = FontSans({
 })
 
 const preview: Preview = {
+  initialGlobals: {
+    locale: "en",
+    locales: {
+      en: { icon: "🇺🇸", title: "English", right: "EN" },
+      fr: { icon: "🇵🇹", title: "Português", right: "PT" },
+    },
+  },
   parameters: {
     controls: {
       matchers: {
@@ -26,34 +31,13 @@ const preview: Preview = {
     docs: {
       theme: fegaTheme,
     },
+    nextIntl,
   },
-  globalTypes: {
-    theme: { type: "string" },
-    locale: {
-      name: "Locale",
-      description: "Internationalization locale",
-      defaultValue: "en",
-      toolbar: {
-        icon: "globe",
-        items: [
-          { value: "en", right: "🇺🇸", title: "English" },
-          { value: "pt", right: "🇵🇹", title: "Português" },
-        ],
-      },
-    },
-  },
-  loaders: [
-    async ({ globals }) => ({
-      dictionary: await getDictionary(globals.locale),
-    }),
-  ],
   decorators: [
-    (Story, { loaded: { dictionary } }) => (
+    (Story) => (
       <main className={cn("font-sans antialiased", fontSans.variable)}>
-        <DictionaryProvider dictionary={dictionary}>
-          <Story />
-          <Toaster />
-        </DictionaryProvider>
+        <Story />
+        <Toaster />
       </main>
     ),
     withThemeByClassName({

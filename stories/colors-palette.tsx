@@ -2,8 +2,8 @@
 
 import { cn } from "@/lib/utils"
 import { getHexFromCssVar } from "@/utils/color-utils"
-import { ColorPalette, ColorItem } from "@storybook/blocks"
-import { ThemeProvider, ensure, themes } from "@storybook/theming"
+import { ColorPalette, ColorItem } from "@storybook/addon-docs/blocks"
+import { ThemeProvider, ensure, themes } from "storybook/theming"
 import { useEffect, useMemo, useState } from "react"
 import resolveConfig from "tailwindcss/resolveConfig"
 import tailwindConfig from "../basetailwindconfig"

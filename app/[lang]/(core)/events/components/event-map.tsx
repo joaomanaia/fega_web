@@ -8,10 +8,10 @@ import "./event-map.styles.css"
 import { cn } from "@/lib/utils"
 import { useMemo } from "react"
 import { type CalendarEvent } from "@/types/CalendarEvent"
-import { Link } from "@/components/link"
 import Image from "next/image"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
 import { DateText } from "./date-text"
+import { Link } from "@/src/i18n/navigation"
 
 interface EventMapProps {
   events: CalendarEvent[]
