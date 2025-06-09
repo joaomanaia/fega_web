@@ -3,19 +3,17 @@ import Image from "next/image"
 import { DateText } from "./date-text"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
 import type { CalendarEvent } from "@/types/CalendarEvent"
-import Link from "next/link"
 import { useMemo } from "react"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
-import { type Dictionary } from "@/get-dictionary"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
+import { useTranslations } from "next-intl"
 
 interface NextEventCoverProps {
   event: CalendarEvent
-  lang: Locale
-  dictionary: Dictionary
 }
 
-export const NextEventCover: React.FC<NextEventCoverProps> = ({ event, lang, dictionary }) => {
+export const NextEventCover: React.FC<NextEventCoverProps> = ({ event }) => {
+  const t = useTranslations("EventsPage")
   const jsonLd = useMemo(() => createEventJsonLd(event), [event])
 
   return (
@@ -38,9 +36,7 @@ export const NextEventCover: React.FC<NextEventCoverProps> = ({ event, lang, dic
         </p>
 
         <Button asChild>
-          <Link lang={lang} href={`/events/${event.id}`}>
-            {dictionary.events.seeMoreInfo}
-          </Link>
+          <Link href={`/events/${event.id}`}>{t("seeMoreInfo")}</Link>
         </Button>
       </div>
       <div className="relative h-full w-full aspect-[2/1] lg:aspect-[3/2] xl:aspect-[2/1]">

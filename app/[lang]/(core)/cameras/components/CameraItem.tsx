@@ -2,20 +2,18 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { type Locale } from "@/i18n-config"
 import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 import type { Tables } from "@/types/database.types"
-import Link from "next/link"
 import { useParams } from "next/navigation"
 
 type CameraType = Tables<"cameras">
 
 interface CameraItemProps {
   camera: CameraType
-  lang: Locale
 }
 
-export const CameraItem: React.FC<CameraItemProps> = ({ camera, lang }) => {
+export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
   const params = useParams()
   const selected = params.id === camera.id
 
@@ -26,7 +24,6 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera, lang }) => {
         "flex items-center h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
         selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
       )}
-      lang={lang}
       href={`/cameras/${camera.id}`}
     >
       <Avatar>

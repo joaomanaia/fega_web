@@ -9,58 +9,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { type Dictionary } from "@/get-dictionary"
-import { type Locale, languages, i18n } from "@/i18n-config"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { ChevronsUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Cookies from "js-cookie"
+import { type Locale, useLocale, useTranslations } from "next-intl"
+import { usePathname, useRouter } from "@/src/i18n/navigation"
+import { useTransition } from "react"
+import { useParams } from "next/navigation"
+import { routing } from "@/src/i18n/routing"
 
-interface LocaleSwitcherProps {
-  currentLocale: Locale
-  dictionary: Dictionary
-}
+export const LocaleSwitcher: React.FC = () => {
+  const t = useTranslations("SettingsPage.LocaleSwitcher")
+  const locale = useLocale()
 
-export const LocaleSwitcher: React.FC<LocaleSwitcherProps> = ({ currentLocale, dictionary }) => {
-  const pathName = usePathname()
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const pathname = usePathname()
+  const params = useParams()
 
-  const redirectedPathName = (locale: Locale) => {
-    if (pathName.startsWith(`/${currentLocale}/`)) {
-      return pathName.replace(`/${currentLocale}/`, `/${locale}/`)
-    }
-
-    return pathName
+  function onSelectChange(value: string) {
+    startTransition(() => {
+      router.replace(
+        // @ts-expect-error -- TypeScript will validate that only known `params`
+        // are used in combination with a given `pathname`. Since the two will
+        // always match for the current route, we can skip runtime checks.
+        { pathname, params },
+        { locale: value as Locale }
+      )
+    })
   }
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="w-fit rounded-2xl">
+          <Button disabled={isPending} variant="outline" className="w-fit rounded-2xl">
             <ChevronsUpDown size={16} className="mr-2" />
-            {languages.find((lang) => lang.locale === currentLocale)?.name}
+            {t("locale", { locale: locale })}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>{dictionary.chooseLanguage}</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={currentLocale}>
-            {languages.map((lang) => (
-              <DropdownMenuRadioItem key={lang.locale} value={lang.locale}>
-                <Link
-                  className="w-full h-full"
-                  href={redirectedPathName(lang.locale)}
-                  onClick={() => {
-                    if (lang.locale === currentLocale) return
-                    Cookies.set("NEXT_LOCALE", lang.locale, {
-                      // Expires in 400 days
-                      expires: 400,
-                    })
-                  }}
-                >
-                  {lang.name}
-                </Link>
+          <DropdownMenuRadioGroup value={locale} onValueChange={onSelectChange}>
+            {routing.locales.map((lang) => (
+              <DropdownMenuRadioItem key={lang} value={lang} disabled={isPending}>
+                {t("locale", { locale: lang })}
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>

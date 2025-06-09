@@ -1,14 +1,9 @@
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Hint } from "@/components/hint"
-import { Link } from "@/components/link"
-import type { Locale } from "@/i18n-config"
 import { createClient } from "@/lib/supabase/server"
+import { Link } from "@/src/i18n/navigation"
 
-interface HeaderUserAvatar {
-  lang: Locale
-}
-
-export const HeaderUserAvatar: React.FC<HeaderUserAvatar> = async ({ lang }) => {
+export const HeaderUserAvatar: React.FC = async () => {
   const supabase = await createClient()
   const {
     data: { session },
@@ -24,7 +19,7 @@ export const HeaderUserAvatar: React.FC<HeaderUserAvatar> = async ({ lang }) => 
 
   return (
     <Hint label={userData.name ?? "Make login"}>
-      <Link lang={lang} href={userData.actionLink}>
+      <Link href={userData.actionLink}>
         <UserAvatar src={userData.avatar} name={userData.name} />
       </Link>
     </Hint>

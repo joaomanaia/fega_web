@@ -1,7 +1,6 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { type Dictionary } from "@/get-dictionary"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
 import { useConfirm } from "@/hooks/use-confirm"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
@@ -12,18 +11,17 @@ import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/u
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import type { User } from "@supabase/supabase-js"
-
-type UserSettingsDictionary = Dictionary["settings"]["user"]
+import { useTranslations } from "next-intl"
 
 interface UserSettingsProps {
   user: User
-  dictionary: UserSettingsDictionary
 }
 
 // TODO: Add reauthentication for sensitive actions
 // https://supabase.com/docs/reference/javascript/auth-reauthentication
 
-export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) => {
+export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
+  const t = useTranslations("SettingsPage.user")
   const supabase = createClient()
   const router = useRouter()
 
@@ -53,10 +51,10 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
       setDeletingAccount(false)
 
       if (error) {
-        toast.error(dictionary.deleteAccount.error)
+        toast.error(t("deleteAccount.error"))
       } else {
         await supabase.auth.signOut()
-        toast.success(dictionary.deleteAccount.success)
+        toast.success(t("deleteAccount.success"))
         router.refresh()
       }
     }
@@ -64,41 +62,42 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
 
   if (deletingAccount) {
     return (
-      <>
-        <DeletingAccountDialog dictionary={dictionary.deleteAccount} />
-      </>
+      <DeletingAccountDialog
+        deletingAccountTitle={t("deleteAccount.deletingAccountTitle")}
+        deletingAccountDescription={t("deleteAccount.deletingAccountDescription")}
+      />
     )
   }
 
   return (
     <>
       <SignOutConfirmDialog
-        title={dictionary.signout.confirmButton.title}
-        message={dictionary.signout.confirmButton.message}
+        title={t("signout.confirmButton.title")}
+        message={t("signout.confirmButton.message")}
       />
       <DeleteAccountConfirmDialog
-        title={dictionary.deleteAccount.dialogTitle}
-        message={dictionary.deleteAccount.dialogDescription}
-        confirmButtonContent={dictionary.deleteAccount.dialogSubmitButton}
+        title={t("deleteAccount.dialogTitle")}
+        message={t("deleteAccount.dialogDescription")}
+        confirmButtonContent={t("deleteAccount.dialogSubmitButton")}
         variant="error"
         icon={UserRoundXIcon}
-        inputTextToConfirm={dictionary.deleteAccount.inputConfirmText}
+        inputTextToConfirm={t("deleteAccount.inputConfirmText")}
       />
 
-      <BaseSettingsContainer header={dictionary.header}>
+      <BaseSettingsContainer header={t("header")}>
         <div className="grid grid-cols-2 gap-2.5">
-          <UpdateEmailDialog dictionary={dictionary.updateEmail} currentEmail={user.email}>
+          <UpdateEmailDialog currentEmail={user.email}>
             <LargeButton
-              title={dictionary.updateEmail.title}
-              description={dictionary.updateEmail.description}
+              title={t("updateEmail.title")}
+              description={t("updateEmail.description")}
               className="col-span-2"
             />
           </UpdateEmailDialog>
 
           <LargeButtonCollapsible
             disabled
-            title={dictionary.changePassword.title}
-            description={dictionary.changePassword.description}
+            title={t("changePassword.title")}
+            description={t("changePassword.description")}
             className="col-span-2"
           >
             <></>
@@ -107,15 +106,15 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user, dictionary }) 
           <LargeButton
             variant="error"
             onClick={handleSignOut}
-            title={dictionary.signout.title}
-            description={dictionary.signout.description}
+            title={t("signout.title")}
+            description={t("signout.description")}
             className="text-center"
           />
           <LargeButton
             variant="error"
             onClick={handleDeleteAccount}
-            title={dictionary.deleteAccount.title}
-            description={dictionary.deleteAccount.description}
+            title={t("deleteAccount.title")}
+            description={t("deleteAccount.description")}
             className="text-center"
           />
         </div>

@@ -1,13 +1,13 @@
 import { type Metadata } from "next"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import VideoComponent from "./components/VideoComponent"
 import ImageVideoComponent from "./components/ImageVideoComponent"
 import { type Tables } from "@/types/database.types"
 import { notFound } from "next/navigation"
 import { cache } from "react"
 import { createClient } from "@/lib/supabase/server"
+import { Link } from "@/src/i18n/navigation"
 
 type CameraType = Tables<"cameras">
 
@@ -41,8 +41,6 @@ export async function generateMetadata(props: CameraPageProps): Promise<Metadata
     },
   }
 }
-
-export const dynamic = "force-dynamic"
 
 export default async function CameraPage(props: CameraPageProps) {
   const params = await props.params

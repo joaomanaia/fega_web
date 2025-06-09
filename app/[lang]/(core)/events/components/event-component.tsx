@@ -4,20 +4,17 @@ import Image from "next/image"
 import { CalendarIcon, MapPinIcon } from "lucide-react"
 import { useMemo } from "react"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
-import { Link } from "@/components/link"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
 
 interface EventComponentProps {
   event: CalendarEvent
-  lang: Locale
 }
 
-export const EventComponent: React.FC<EventComponentProps> = ({ event, lang }) => {
+export const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
   const jsonLd = useMemo(() => createEventJsonLd(event), [event])
 
   return (
     <Link
-      lang={lang}
       href={`/events/${event.id}`}
       className="bg-surfaceVariant/30 hover:bg-surfaceVariant/50 p-0 rounded-2xl hover:rounded-3xl flex flex-col group cursor-pointer transition"
     >

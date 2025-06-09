@@ -3,22 +3,20 @@
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Input } from "@/components/ui/input"
 import { useSearchUser } from "@/features/user/use-search-user"
-import type { Dictionary } from "@/get-dictionary"
-import type { Locale } from "@/i18n-config"
 import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 import type UserType from "@/types/UserType"
 import { SearchIcon, XIcon } from "lucide-react"
-import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import { useDebounceValue } from "usehooks-ts"
 
 interface HeaderSearchProps {
-  dictionary: Dictionary
-  lang: Locale
   className?: string
 }
 
-export const HeaderSearch: React.FC<HeaderSearchProps> = ({ dictionary, lang, className }) => {
+export const HeaderSearch: React.FC<HeaderSearchProps> = ({ className }) => {
+  const t = useTranslations("General")
   const [isFocused, setIsFocused] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
@@ -92,13 +90,12 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ dictionary, lang, cl
             inputRef.current.value && isFocused && "block z-40"
           )}
         >
-          {isLoading && dictionary.loading}
+          {isLoading && <p>{t("loading")}</p>}
           {users?.length ? (
             users.map((user) => (
               <SearchedUser
                 key={user.id}
                 user={user}
-                lang={lang}
                 onClick={() => {
                   if (inputRef.current) {
                     inputRef.current.value = ""
@@ -109,7 +106,7 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ dictionary, lang, cl
               />
             ))
           ) : (
-            <p>{dictionary.search.usersNotFound}</p>
+            <p>{t("searchContent.noResults")}</p>
           )}
         </div>
       )}
@@ -119,15 +116,13 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ dictionary, lang, cl
 
 interface SearchedUserProps {
   user: UserType
-  lang: Locale
   onClick?: () => void
 }
 
-export const SearchedUser: React.FC<SearchedUserProps> = ({ user, lang, onClick }) => {
+export const SearchedUser: React.FC<SearchedUserProps> = ({ user, onClick }) => {
   return (
     <Link
       href={user.username}
-      lang={lang}
       onClick={onClick}
       className="flex z-50 rounded-2xl hover:bg-surfaceVariant-foreground/10 items-center px-3 py-2 gap-3 transition"
     >

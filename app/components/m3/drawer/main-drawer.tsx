@@ -1,9 +1,8 @@
 "use client"
 
 import { useSelectedLayoutSegments } from "next/navigation"
-import Link from "next/link"
 import { DrawerItem } from "./drawer-item"
-import React, { useMemo } from "react"
+import React from "react"
 import { cn } from "@/lib/utils"
 import {
   CalendarDays,
@@ -15,18 +14,16 @@ import {
   Settings,
   Users,
 } from "lucide-react"
-import { type Dictionary } from "@/get-dictionary"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
+import { useTranslations } from "next-intl"
 
 export interface MainDrawerProps {
   usingSheet?: boolean
   className?: string
-  dictionary: Dictionary
-  lang: Locale
 }
 
 export interface NavDrawerItem {
-  title: string
+  id: string
   Icon: LucideIcon
   pathName: string
   requireAuth?: boolean
@@ -39,45 +36,45 @@ interface NavDrawerItemGroup {
   children: NavDrawerItem[]
 }
 
-const getCategories = (dictionary: Dictionary): NavDrawerItemGroup[] => [
+const categories: NavDrawerItemGroup[] = [
   {
-    id: dictionary.navdrawer.home,
+    id: "home",
     hideTitle: true,
     children: [
       {
-        title: dictionary.navdrawer.home,
+        id: "home",
         Icon: Home,
         pathName: "/",
       },
       {
-        title: dictionary.navdrawer.news,
+        id: "news",
         Icon: Newspaper,
         pathName: "/news",
       },
       {
-        title: dictionary.navdrawer.events,
+        id: "events",
         Icon: CalendarDays,
         pathName: "/events",
       },
       {
-        title: dictionary.navdrawer.cameras,
+        id: "cameras",
         Icon: Camera,
         pathName: "/cameras",
       },
     ],
   },
   {
-    id: dictionary.navdrawer.messages,
+    id: "messages",
     children: [
       {
-        title: dictionary.navdrawer.privateMessages,
+        id: "privateMessages",
         Icon: Users,
         pathName: "/messages",
         requireAuth: true,
         disabled: true,
       },
       {
-        title: dictionary.navdrawer.groups,
+        id: "groups",
         Icon: MessageCircle,
         pathName: "/groups",
         requireAuth: true,
@@ -85,10 +82,10 @@ const getCategories = (dictionary: Dictionary): NavDrawerItemGroup[] => [
     ],
   },
   {
-    id: dictionary.navdrawer.other,
+    id: "otherItems",
     children: [
       {
-        title: dictionary.navdrawer.settings,
+        id: "settings",
         Icon: Settings,
         pathName: "/settings",
       },
@@ -96,22 +93,15 @@ const getCategories = (dictionary: Dictionary): NavDrawerItemGroup[] => [
   },
 ]
 
-export const MainDrawer: React.FC<MainDrawerProps> = ({
-  usingSheet,
-  className,
-  dictionary,
-  lang,
-}) => {
+export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className }) => {
+  const t = useTranslations("General")
   const layoutSegments = useSelectedLayoutSegments()
   const firstSegment = `/${layoutSegments.at(0) ?? ""}`
-
-  const categories = useMemo(() => getCategories(dictionary), [dictionary])
 
   return (
     <nav className={cn("flex flex-col px-4 py-4 space-y-7 justify-start", className)}>
       <Link
         href="/"
-        lang={lang}
         className="next-link px-2 py-2 w-fit rounded-2xl hover:bg-accent/[0.38] transition-colors font-medium tracking-[0.5]"
         style={{ fontSize: 20 }}
       >
@@ -124,14 +114,18 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({
       >
         {categories.map(({ id, children, hideTitle }) => (
           <React.Fragment key={id}>
-            {!hideTitle && <p className="py-2 px-3 text-sm self-start">{id}</p>}
+            {!hideTitle && (
+              <p className="py-2 px-3 text-sm self-start">{t("navdrawerTitle", { title: id })}</p>
+            )}
             {children.map((navDrawerItem) => (
-              <li itemProp="name" key={navDrawerItem.title} className="list-none">
+              <li itemProp="name" key={navDrawerItem.id} className="list-none">
                 <DrawerItem
-                  item={navDrawerItem}
+                  title={t("navdrawerTitle", { title: navDrawerItem.id })}
+                  Icon={navDrawerItem.Icon}
+                  pathName={navDrawerItem.pathName}
+                  disabled={navDrawerItem.disabled}
                   selected={firstSegment == navDrawerItem.pathName}
                   usingSheet={usingSheet}
-                  lang={lang}
                 />
               </li>
             ))}

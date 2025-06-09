@@ -2,6 +2,29 @@
   "RootMetadata": {
     "description": "The best social network in ega!"
   },
+  "General": {
+    "loading": "Loading...",
+    "error": "An error occurred, please try again later.",
+    "notFound": "Page not found",
+    "backToHome": "Back to home",
+    "goBack": "Go back",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "update": "Update",
+    "create": "Create",
+    "submit": "Submit",
+    "searchContent": {
+      "placeholder": "Search...",
+      "noResults": "No results found"
+    },
+    "navdrawerTitle": "{title, select, home {Home} news {News} events {Events} cameras {Cameras} messages {Messages} privateMessages {Private messages} groups {Groups} otherItems {Other} settings {Settings} other {Unknown}}"
+  },
   "HomePage": {
     "title": "Home"
   },
@@ -68,6 +91,69 @@
     "forgotPasswordSuccess": "An email has been sent to your email address with instructions to reset your password.",
     "orContinueWith": "Or continue with",
     "loginWithGoogle": "Login with Google"
+  },
+  "EventsPage": {
+    "emptyEventsPage": "There are no upcoming events.",
+    "otherEvents": "Other events",
+    "eventsMap": "Events map",
+    "seeMoreInfo": "See more info"
+  },
+  "NewsPage": {
+    "header": "News",
+    "emptyNewsPage": "There are no news."
+  },
+  "SettingsPage": {
+    "general": {
+      "header": "General"
+    },
+    "user": {
+      "header": "User settings",
+      "signout": {
+        "title": "Sign out",
+        "description": "Sign out of your account from Fega.",
+        "confirmButton": {
+          "title": "Sign out",
+          "message": "Are you sure you want to sign out?"
+        }
+      },
+      "updateEmail": {
+        "title": "Update email",
+        "description": "Update the email address associated with your account.",
+        "dialogTitle": "Update email",
+        "dialogDescription": "Your current email is <b>{currentEmail}</b>.",
+        "dialogSubmitButton": {
+          "default": "Update",
+          "loading": "Updating email..."
+        },
+        "newEmail": "New email",
+        "newEmailPlaceholder": "Enter new email",
+        "confirmEmail": "Confirm email",
+        "confirmEmailPlaceholder": "Confirm new email",
+        "infoDialogTitle": "Email Update",
+        "infoDialogDescription": "An email has been sent to your new and old email addresses, please follow the instructions to confirm the change.",
+        "noEmail": "You don't have an email set up yet."
+      },
+      "deleteAccount": {
+        "title": "Delete account",
+        "description": "Permanently delete your account and all associated data.",
+        "dialogTitle": "Delete account",
+        "dialogDescription": "Are you sure you want to delete your account? This action cannot be undone.",
+        "dialogSubmitButton": "Delete",
+        "deletingAccountTitle": "Deleting account...",
+        "deletingAccountDescription": "Your account is being deleted. This may take a few moments.",
+        "success": "Account deleted successfully",
+        "error": "Error deleting account",
+        "inputConfirmText": "DELETE"
+      },
+      "changePassword": {
+        "title": "Change password",
+        "description": "Change the password associated with your account."
+      }
+    },
+    "LocaleSwitcher": {
+      "label": "Change language",
+      "locale": "{locale, select, pt {🇵🇹 Portuguese} en {🇺🇸 English} other {Unknown}}"
+    }
   },
   "User": {
     "joinedDate": "Joined {joinDate}"

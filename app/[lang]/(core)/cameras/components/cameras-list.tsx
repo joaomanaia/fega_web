@@ -1,7 +1,6 @@
 import { formatUrlWithBasePath } from "@/core/util/baseUrlUtils"
 import { type Tables } from "@/types/database.types"
 import { CameraItem, CameraItemSkeleton } from "./CameraItem"
-import { type Locale } from "@/i18n-config"
 import { createClient } from "@/lib/supabase/server"
 
 type CameraType = Tables<"cameras">
@@ -28,11 +27,7 @@ const getAllCameras = async (): Promise<CameraType[]> => {
   return camerasFormatted
 }
 
-interface CamerasListProps {
-  lang: Locale
-}
-
-export const CamerasList: React.FC<CamerasListProps> = async ({ lang }) => {
+export const CamerasList: React.FC = async () => {
   const cameras = await getAllCameras()
 
   return (
@@ -50,7 +45,7 @@ export const CamerasList: React.FC<CamerasListProps> = async ({ lang }) => {
           itemType="https://schema.org/ListItem"
         >
           <meta itemProp="position" content={String(index + 1)} />
-          <CameraItem camera={camera} lang={lang} />
+          <CameraItem camera={camera} />
         </li>
       ))}
     </ul>

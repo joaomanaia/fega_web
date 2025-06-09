@@ -1,9 +1,9 @@
 import { type Metadata } from "next"
-import { type Locale } from "@/i18n-config"
-import { getDictionary } from "@/get-dictionary"
 import { GeneralSettings } from "./components/general-settings"
 import { UserSettings } from "@/app/[lang]/(core)/settings/components/user-settings"
 import { createClient } from "@/lib/supabase/server"
+import { setRequestLocale } from "next-intl/server"
+import type { Locale } from "next-intl"
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -18,7 +18,9 @@ interface SettingsPageProps {
 
 export default async function SettingsPage(props: SettingsPageProps) {
   const params = await props.params
-  const dictionary = await getDictionary(params.lang)
+  // Enable static rendering
+  setRequestLocale(params.lang)
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -26,8 +28,8 @@ export default async function SettingsPage(props: SettingsPageProps) {
 
   return (
     <main className=" mx-auto max-w-3xl flex flex-col w-full gap-y-4 overflow-y-auto">
-      <GeneralSettings dictionary={dictionary} currentLocale={params.lang} />
-      {user !== null && <UserSettings user={user} dictionary={dictionary.settings.user} />}
+      <GeneralSettings />
+      {user !== null && <UserSettings user={user} />}
     </main>
   )
 }

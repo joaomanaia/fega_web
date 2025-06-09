@@ -2,57 +2,82 @@ import { Button } from "@/components/ui/button"
 import { NavDrawerItem } from "./main-drawer"
 import { cn } from "@/lib/utils"
 import { SheetClose } from "@/components/ui/sheet"
-import { Link } from "@/components/link"
-import { type Locale } from "@/i18n-config"
+import { Link } from "@/src/i18n/navigation"
+import type { LucideIcon } from "lucide-react"
 
 interface DrawerItemProps {
-  item: NavDrawerItem
+  title: string
+  Icon: LucideIcon
+  pathName: string
+  disabled?: boolean
   selected?: boolean
   usingSheet?: boolean
   className?: string
-  lang: Locale
 }
 
 export const DrawerItem: React.FC<DrawerItemProps> = ({
-  item,
+  title,
+  Icon,
+  pathName,
+  disabled,
   selected,
   usingSheet,
   className,
-  lang,
 }) => {
-  if (item.disabled) {
+  if (disabled) {
     return (
-      <DrawerButton item={item} selected={selected} usingSheet={usingSheet} className={className} />
+      <DrawerButton
+        title={title}
+        Icon={Icon}
+        disabled={disabled}
+        selected={selected}
+        usingSheet={usingSheet}
+        className={className}
+      />
     )
   }
 
   return (
     <Link
-      href={item.pathName}
-      className={cn(item.disabled && "cursor-default", className)}
-      aria-disabled={item.disabled}
-      lang={lang}
+      href={pathName}
+      className={cn(disabled && "cursor-default", className)}
+      aria-disabled={disabled}
       itemProp="url"
       passHref
     >
-      <DrawerButton item={item} selected={selected} usingSheet={usingSheet} />
+      <DrawerButton
+        title={title}
+        Icon={Icon}
+        disabled={disabled}
+        selected={selected}
+        usingSheet={usingSheet}
+      />
     </Link>
   )
 }
 
 interface DrawerButtonProps {
-  item: NavDrawerItem
+  title: string
+  Icon: LucideIcon
+  disabled?: boolean
   selected?: boolean
   usingSheet?: boolean
   className?: string
 }
 
-const DrawerButton: React.FC<DrawerButtonProps> = ({ item, selected, usingSheet, className }) => {
+const DrawerButton: React.FC<DrawerButtonProps> = ({
+  title,
+  Icon,
+  disabled,
+  selected,
+  usingSheet,
+  className,
+}) => {
   return (
     <DrawerButtonContainer usingSheet={usingSheet}>
       <Button
         variant="ghost"
-        disabled={item.disabled}
+        disabled={disabled}
         aria-selected={selected}
         className={cn(
           "gap-2 py-6 w-full text-foreground font-normal text-[16px] justify-start",
@@ -60,8 +85,8 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({ item, selected, usingSheet,
           className
         )}
       >
-        <item.Icon fill={selected ? "currentColor" : "none"} fillOpacity={selected ? 0.28 : 0} />
-        {item.title}
+        <Icon fill={selected ? "currentColor" : "none"} fillOpacity={selected ? 0.28 : 0} />
+        {title}
       </Button>
     </DrawerButtonContainer>
   )

@@ -20,26 +20,22 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Dictionary } from "@/get-dictionary"
 import { useInfoDialog } from "@/hooks/use-info-dialog"
 import { updateEmailSchema, UpdateEmailSchemaValues } from "@/lib/schemas/user-schemas"
 import { formatString } from "@/src/util/dictionary-util"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useServerAction } from "zsa-react"
 
 interface UpdateEmailDialogProps {
   currentEmail?: string
-  dictionary: Dictionary["settings"]["user"]["updateEmail"]
   children: React.ReactNode
 }
 
-export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
-  currentEmail,
-  dictionary,
-  children,
-}) => {
+export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEmail, children }) => {
+  const t = useTranslations("SettingsPage.user.updateEmail")
   const [InfoDialog, openInfoDialog] = useInfoDialog()
 
   const { isPending, execute } = useServerAction(updateUserEmail, {
@@ -62,14 +58,17 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
 
   return (
     <>
-      <InfoDialog title={dictionary.infoDialogTitle} message={dictionary.infoDialogDescription} />
+      <InfoDialog title={t("infoDialogTitle")} message={t("infoDialogDescription")} />
       <Dialog>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{dictionary.dialogTitle}</DialogTitle>
+            <DialogTitle>{t("dialogTitle")}</DialogTitle>
             <DialogDescription className="pt-1">
-              {formatString(dictionary.dialogDescription, { currentEmail: <b>{currentEmail}</b> })}
+              {t.rich("dialogDescription", {
+                currentEmail: currentEmail ?? t("noEmail"),
+                b: (chunks) => <b>{chunks}</b>,
+              })}
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -82,9 +81,9 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{dictionary.newEmail}</FormLabel>
+                    <FormLabel>{t("newEmail")}</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder={dictionary.newEmailPlaceholder} {...field} />
+                      <Input type="email" placeholder={t("newEmailPlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,13 +95,9 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
                 name="confirmEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{dictionary.confirmEmail}</FormLabel>
+                    <FormLabel>{t("confirmEmail")}</FormLabel>
                     <FormControl>
-                      <Input
-                        type="email"
-                        placeholder={dictionary.confirmEmailPlaceholder}
-                        {...field}
-                      />
+                      <Input type="email" placeholder={t("confirmEmailPlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -114,9 +109,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({
                 disabled={isPending || !form.formState.isValid}
                 className="w-fit self-end"
               >
-                {isPending
-                  ? dictionary.dialogSubmitButton.loading
-                  : dictionary.dialogSubmitButton.default}
+                {isPending ? t("dialogSubmitButton.loading") : t("dialogSubmitButton.default")}
               </Button>
             </form>
           </Form>
