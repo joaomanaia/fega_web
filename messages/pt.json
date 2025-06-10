@@ -1,0 +1,235 @@
+{
+  "RootMetadata": {
+    "description": "A melhor rede social em Ega!"
+  },
+  "General": {
+    "loading": "A carregar...",
+    "error": "Ocorreu um erro, por favor tenta novamente mais tarde.",
+    "notFound": "Página não encontrada",
+    "backToHome": "Voltar à página inicial",
+    "goBack": "Voltar",
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "yes": "Sim",
+    "no": "Não",
+    "close": "Fechar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Apagar",
+    "update": "Atualizar",
+    "create": "Criar",
+    "submit": "Enviar",
+    "searchContent": {
+      "placeholder": "Pesquisar...",
+      "noResults": "Nenhum resultado encontrado"
+    },
+    "navdrawerTitle": "{title, select, home {Início} news {Notícias} events {Eventos} cameras {Câmaras} messages {Mensagens} privateMessages {Mensagens privadas} groups {Grupos} otherItems {Outros} settings {Definições} other {Desconhecido}}",
+    "confirmDialogInputLabel": "Se tiveres a certeza, digita <b>{inputTextToConfirm}</b> para confirmar."
+  },
+  "HomePage": {
+    "title": "Início"
+  },
+  "Post": {
+    "loading": "A carregar...",
+    "emptyPosts": {
+      "header": "Ainda não há publicações",
+      "description": {
+        "default": "Começa por criar a tua primeira publicação ou volta mais tarde!",
+        "user": "<b>{username}</b> ainda não partilhou nada, volta mais tarde!"
+      }
+    },
+    "create": {
+      "header": "Criar publicação",
+      "placeholder": "O que tens em mente?",
+      "submitButton": {
+        "default": "Criar",
+        "loading": "A criar..."
+      },
+      "success": "Publicação criada com sucesso",
+      "error": "Erro ao criar publicação"
+    },
+    "delete": {
+      "action": "Apagar",
+      "title": "Apagar publicação",
+      "description": "Tens a certeza que queres apagar esta publicação? Esta ação não pode ser desfeita.",
+      "confirm": "Apagar"
+    }
+  },
+  "ProfilePage": {
+    "editProfile": {
+      "openDialogButton": "Editar perfil",
+      "header": "Editar perfil",
+      "username": "Nome de utilizador",
+      "fullName": "Nome completo",
+      "fullNameDescription": "Este é o teu nome público de exibição.",
+      "success": "Perfil atualizado com sucesso"
+    }
+  },
+  "AuthPage": {
+    "header": "Bem-vindo ao Fega!",
+    "subheader": "A melhor rede social em Ega.",
+    "loginTitle": "Iniciar sessão",
+    "loginButton": "Iniciar sessão",
+    "registerTitle": "Registar",
+    "registerButton": "Registar",
+    "email": "Email",
+    "emailPlaceholder": "fega@example.com",
+    "password": "Palavra-passe",
+    "passwordPlaceholder": "Introduz a palavra-passe",
+    "passwordConfirmation": "Confirmar palavra-passe",
+    "passwordConfirmationPlaceholder": "Confirmar palavra-passe",
+    "resetPassword": "Redefinir palavra-passe",
+    "username": "Nome de utilizador",
+    "usernamePlaceholder": "joaodoe",
+    "fullName": "Nome completo",
+    "fullNamePlaceholder": "João Silva",
+    "forgotPassword": "Esqueceste-te da palavra-passe?",
+    "dontHaveAccount": "Não tens uma conta?",
+    "alreadyHaveAccount": "Já tens uma conta?",
+    "forgotPasswordTitle": "Esqueceste-te da palavra-passe?",
+    "forgotPasswordDescription": "Introduz o teu endereço de email e enviar-te-emos um link para redefinir a tua palavra-passe.",
+    "forgotPasswordButton": "Enviar link de redefinição",
+    "forgotPasswordSuccess": "Foi enviado um email para o teu endereço de email com instruções para redefinir a tua palavra-passe.",
+    "orContinueWith": "Ou continua com",
+    "loginWithGoogle": "Iniciar sessão com o Google"
+  },
+  "EventsPage": {
+    "emptyEventsPage": "Não há eventos futuros.",
+    "otherEvents": "Outros eventos",
+    "eventsMap": "Mapa de eventos",
+    "seeMoreInfo": "Ver mais informações"
+  },
+  "NewsPage": {
+    "header": "Notícias",
+    "emptyNewsPage": "Não há notícias."
+  },
+  "SettingsPage": {
+    "general": {
+      "header": "Geral"
+    },
+    "user": {
+      "header": "Definições de utilizador",
+      "signout": {
+        "title": "Terminar sessão",
+        "description": "Terminar sessão da tua conta no Fega.",
+        "confirmButton": {
+          "title": "Terminar sessão",
+          "message": "Tens a certeza que queres terminar sessão?"
+        }
+      },
+      "updateEmail": {
+        "title": "Atualizar email",
+        "description": "Atualizar o endereço de email associado à tua conta.",
+        "dialogTitle": "Atualizar email",
+        "dialogDescription": "O teu email atual é <b>{currentEmail}</b>.",
+        "dialogSubmitButton": {
+          "default": "Atualizar",
+          "loading": "A atualizar email..."
+        },
+        "newEmail": "Novo email",
+        "newEmailPlaceholder": "Introduz o novo email",
+        "confirmEmail": "Confirmar email",
+        "confirmEmailPlaceholder": "Confirmar novo email",
+        "infoDialogTitle": "Atualização de Email",
+        "infoDialogDescription": "Foi enviado um email para o teu novo e antigo endereços de email, por favor segue as instruções para confirmar a alteração.",
+        "noEmail": "Ainda não tens um email configurado."
+      },
+      "deleteAccount": {
+        "title": "Apagar conta",
+        "description": "Apagar permanentemente a tua conta e todos os dados associados.",
+        "dialogTitle": "Apagar conta",
+        "dialogDescription": "Tens a certeza que queres apagar a tua conta? Esta ação não pode ser desfeita.",
+        "dialogSubmitButton": "Apagar",
+        "deletingAccountTitle": "A apagar conta...",
+        "deletingAccountDescription": "A tua conta está a ser apagada. Isto pode demorar alguns momentos.",
+        "success": "Conta apagada com sucesso",
+        "error": "Erro ao apagar conta",
+        "inputConfirmText": "APAGAR"
+      },
+      "changePassword": {
+        "title": "Alterar palavra-passe",
+        "description": "Alterar a palavra-passe associada à tua conta."
+      }
+    },
+    "LocaleSwitcher": {
+      "label": "Mudar idioma",
+      "locale": "{locale, select, pt {🇵🇹 Português} en {🇺🇸 Inglês} other {Desconhecido}}"
+    }
+  },
+  "User": {
+    "joinedDate": "Aderiu a {joinDate}",
+    "editProfile": {
+      "header": "Editar perfil",
+      "username": "Nome de utilizador",
+      "fullName": "Nome completo",
+      "fullNameDescription": "Este é o teu nome público de exibição.",
+      "success": "Perfil atualizado com sucesso",
+      "save": "Guardar alterações"
+    }
+  },
+  "Share": {
+    "share": "Partilhar",
+    "copy": "Copiar",
+    "copiedToClipboard": "Copiado para a área de transferência!",
+    "failedToCopyToClipboard": "Falha ao copiar para a área de transferência",
+    "post": {
+      "title": "Partilhar publicação",
+      "description": "Partilha esta publicação com os teus amigos",
+      "quote": "Vê esta publicação no Fega!",
+      "shareButton": "Partilhar"
+    }
+  },
+  "GroupsPage": {
+    "startMessagingTitle": "Mensagens de grupo",
+    "startMessagingDescription": "Seleciona um grupo ou cria um novo para começares a conversar com os teus amigos",
+    "emptyGroupsPage": "Não és membro de nenhum grupo.",
+    "members": {
+      "optionsMenu": {
+        "title": "Opções",
+        "viewProfile": "Ver perfil",
+        "message": "Mensagem",
+        "remove": {
+          "action": "Remover",
+          "dialog": {
+            "title": "Remover membro",
+            "message": "Tens a certeza que queres remover {name} do grupo?",
+            "confirm": "Remover"
+          },
+          "onSuccess": "Removeu {name} do grupo",
+          "onError": "Erro ao remover {name} do grupo"
+        }
+      }
+    },
+    "info": {
+      "createdBy": "Criado por <hoverCard>{name}</hoverCard> em {createdAt, date, medium}.",
+      "createdByUnknown": "Criado por desconhecido em {createdAt, date, medium}.",
+      "membersNumber": "Membros ({n, number})"
+    },
+    "list": {
+      "lastMessageByLocal": "Tu: {message}",
+      "lastMessageByOther": "{message}",
+      "options": {
+        "groupInfo": "Informações do grupo",
+        "editGroup": "Editar grupo",
+        "addMembers": "Adicionar membros",
+        "leaveGroup": "Sair do grupo",
+        "deleteGroup": "Apagar grupo"
+      }
+    },
+    "create": {
+      "button": "Criar grupo",
+      "title": "Criar Grupo",
+      "description": "Cria um novo grupo e convida os teus amigos para aderir!",
+      "groupName": "Nome do grupo",
+      "groupNamePlaceholder": "Introduz o nome do grupo",
+      "groupAvatarUrl": "URL do avatar do grupo",
+      "groupAvatarUrlPlaceholder": "Introduz o URL do avatar do grupo",
+      "submitButton": {
+        "default": "Criar",
+        "loading": "A criar grupo..."
+      },
+      "success": "Grupo criado com sucesso"
+    }
+  }
+}

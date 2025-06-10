@@ -41,10 +41,9 @@ export const EditProfileModal: React.FC = () => {
 
   // When the profile is updating, we don't want the user to close the modal
   const [canClose, setCanClose] = useState(true)
+  const t = useTranslations("User.editProfile")
 
   if (!user) return null
-
-  const t = useTranslations("User.editProfile")
 
   return (
     <Dialog open={isOpen} onOpenChange={() => canClose && onClose()}>
