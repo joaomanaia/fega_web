@@ -1,7 +1,8 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/client"
-import { redirect } from "next/navigation"
+import { redirect } from "@/src/i18n/navigation"
+import { getLocale } from "next-intl/server"
 import { z } from "zod"
 
 const createNewsFormSchema = z.object({
@@ -36,5 +37,5 @@ export async function createNews(formData: FormData) {
     throw new Error(error.message)
   }
 
-  redirect(`/news/${data.id}`)
+  redirect({ href: `/news/${data.id}`, locale: await getLocale() })
 }

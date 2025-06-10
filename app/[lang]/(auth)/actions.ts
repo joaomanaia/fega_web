@@ -5,8 +5,9 @@ import { actionClient } from "@/lib/safe-action"
 import { forgotPasswordSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
 import { resetPasswordSchema } from "@/lib/schemas/user-schemas"
 import { createClient } from "@/lib/supabase/server"
+import { redirect } from "@/src/i18n/navigation"
+import { getLocale } from "next-intl/server"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
 
 export const signInAction = actionClient.schema(signInSchema).action(async ({ parsedInput }) => {
   const supabase = await createClient()
@@ -21,7 +22,7 @@ export const signInAction = actionClient.schema(signInSchema).action(async ({ pa
   }
 
   revalidatePath("/", "layout")
-  redirect("/")
+  redirect({ href: "/", locale: await getLocale() })
 })
 
 export const signUpAction = actionClient.schema(signUpSchema).action(async ({ parsedInput }) => {
@@ -54,7 +55,7 @@ export const signUpAction = actionClient.schema(signUpSchema).action(async ({ pa
   }
 
   revalidatePath("/", "layout")
-  redirect("/")
+  redirect({ href: "/", locale: await getLocale() })
 })
 
 export const forgotPasswordAction = actionClient
@@ -84,5 +85,5 @@ export const resetPasswordAction = actionClient
       throw error.message
     }
 
-    redirect("/")
+    redirect({ href: "/", locale: await getLocale() })
   })

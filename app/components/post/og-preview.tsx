@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
+import { Link } from "@/src/i18n/navigation"
 import { ExternalLinkIcon } from "lucide-react"
-import Link from "next/link"
 
 interface OGPreviewProps {
   url: string
@@ -21,6 +21,7 @@ export const OGPreview = ({ url, title, description, image }: OGPreviewProps) =>
             {url}
           </div>
         </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={image} alt={title} className="w-full lg:w-1/3 h-40 lg:h-full object-cover" />
       </div>
     </Card>

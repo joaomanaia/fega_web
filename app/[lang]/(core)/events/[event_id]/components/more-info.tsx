@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 import type {
   CalendarEventOtherDataType,
   CalendarEventOtherData,
   CalendarEventOtherDataItem,
 } from "@/types/CalendarEvent"
 import { DollarSignIcon, InfoIcon, LinkIcon, MailIcon, PhoneIcon } from "lucide-react"
-import Link from "next/link"
 import React from "react"
 
 interface MoreInfoProps {
@@ -61,7 +61,10 @@ const MoreInfoItem: React.FC<MoreInfoItemProps> = ({
   return (
     <ul className={cn("flex items-center space-x-2", className)}>
       {itemPrefixContent}
-      <Button variant="link" className="w-full justify-start gap-2 text-surface-foreground hover:bg-surfaceVariant/20">
+      <Button
+        variant="link"
+        className="w-full justify-start gap-2 text-surface-foreground hover:bg-surfaceVariant/20"
+      >
         <Icon className="size-5" />
         <MoreInfoItemText label={label} type={type} className="truncate" />
       </Button>

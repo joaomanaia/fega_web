@@ -19,3 +19,5 @@ export const MainContainer = forwardRef<HTMLElement, MainContainerProps>(
     )
   }
 )
+
+MainContainer.displayName = "MainContainer"

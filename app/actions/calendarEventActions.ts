@@ -1,8 +1,9 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
+import { redirect } from "@/src/i18n/navigation"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
-import { redirect } from "next/navigation"
+import { getLocale } from "next-intl/server"
 import { z } from "zod"
 
 const createEventFormSchema = z.object({
@@ -38,5 +39,5 @@ export async function createEvent(values: z.infer<typeof createEventFormSchema>)
     throw new Error(error.message)
   }
 
-  redirect("/events")
+  redirect({ href: "/events", locale: await getLocale() })
 }

@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
 import { useConfirm } from "@/hooks/use-confirm"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
@@ -12,6 +11,7 @@ import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import type { User } from "@supabase/supabase-js"
 import { useTranslations } from "next-intl"
+import { useRouter } from "@/src/i18n/navigation"
 
 interface UserSettingsProps {
   user: User

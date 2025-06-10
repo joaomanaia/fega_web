@@ -40,7 +40,7 @@ import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/toolti
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { useState } from "react"
 import ReplyToType from "@/types/ReplyToType"
-import Link from "next/link"
+import { Link } from "@/src/i18n/navigation"
 
 type GroupMessageProps = {
   messageId: string

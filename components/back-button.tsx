@@ -1,9 +1,8 @@
 "use client"
 
 import { Button, ButtonProps } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { useRouter } from "@/src/i18n/navigation"
 import { ArrowLeftIcon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import React from "react"
 
 interface BackIconButtonProps extends ButtonProps {}
@@ -13,7 +12,13 @@ export const BackIconButton = React.forwardRef<ButtonProps, BackIconButtonProps>
     const router = useRouter()
 
     return (
-      <Button className={cn(className)} onClick={() => router.back()} variant={variant} size={size} {...props}>
+      <Button
+        className={className}
+        onClick={() => router.back()}
+        variant={variant}
+        size={size}
+        {...props}
+      >
         <ArrowLeftIcon />
       </Button>
     )

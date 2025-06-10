@@ -1,7 +1,7 @@
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Button } from "@/components/ui/button"
+import { Link } from "@/src/i18n/navigation"
 import { NewspaperIcon } from "lucide-react"
-import Link from "next/link"
 
 interface BaseNotFoundProps {
   title: string

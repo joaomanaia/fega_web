@@ -1,11 +1,12 @@
 import { MainContainer } from "@/app/components/m3/main-container"
-import { type Locale } from "@/i18n-config"
 import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
 import { type Metadata } from "next"
 import dynamic from "next/dynamic"
 import { EventsDateRangePicker } from "./components/events-daterange-picker"
 import { type DateRange } from "react-day-picker"
 import { createClient } from "@/lib/supabase/server"
+import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 
 export const metadata: Metadata = {
   title: "Events Map",
@@ -60,6 +61,10 @@ const getDateRangeFromQuery = (from?: string, to?: string): DateRange | undefine
 }
 
 export default async function EventsMapPage(props: EventsMapPageProps) {
+  const { lang } = await props.params
+  // Enable static rendering
+  setRequestLocale(lang)
+
   const searchParams = await props.searchParams
   const dateRange =
     getDateRangeFromQuery(searchParams.fromDate, searchParams.toDate) || defaultDateRange

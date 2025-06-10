@@ -1,10 +1,10 @@
 import { Hint } from "@/components/hint"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 import { SiFacebook, SiLinkedin, SiReddit, SiWhatsapp, SiX } from "@icons-pack/react-simple-icons"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { MailIcon } from "lucide-react"
-import Link from "next/link"
 
 export const socialValues = ["facebook", "x", "whatsapp", "email", "reddit", "linkedin"] as const
 export type Social = (typeof socialValues)[number]

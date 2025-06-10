@@ -1,8 +1,9 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
+import { redirect } from "@/src/i18n/navigation"
 import { PostVoteType } from "@/types/PostType"
-import { redirect } from "next/navigation"
+import { getLocale } from "next-intl/server"
 
 export const handleVote = async (postId: string, formData: FormData) => {
   const buttonVoteType = formData.get("vote_button") as PostVoteType
@@ -15,7 +16,7 @@ export const handleVote = async (postId: string, formData: FormData) => {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return redirect("/login")
+    return redirect({ href: "/login", locale: await getLocale() })
   }
 
   const { data: currentPostVote } = await supabase

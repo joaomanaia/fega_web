@@ -1,7 +1,7 @@
+import { Link } from "@/src/i18n/navigation"
 import { type CalendarEvent } from "@/types/CalendarEvent"
 import { type DirectionApp, type Point, getDirectionUrl } from "@/types/location"
 import dynamic from "next/dynamic"
-import Link from "next/link"
 
 interface DirectionsProps {
   event: CalendarEvent

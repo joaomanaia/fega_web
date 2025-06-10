@@ -1,10 +1,11 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
+import { redirect } from "@/src/i18n/navigation"
+import { getLocale } from "next-intl/server"
 // TODO: Change the this actions to the new folder
 
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
 import * as z from "zod"
 
 const editGroupSchema = z.object({
@@ -78,7 +79,7 @@ export async function exitGroup(groupId: string) {
     throw new Error(error.message)
   }
 
-  redirect("/")
+  redirect({ href: "/", locale: await getLocale() })
 }
 
 export async function removeParticipant(uid: string, groupId: string) {
@@ -187,5 +188,5 @@ export const deleteGroup = async (groupId: string) => {
 
   revalidatePath("/groups")
   revalidatePath("/groups", "layout")
-  redirect("/groups")
+  redirect({ href: "/groups", locale: await getLocale() })
 }

@@ -9,7 +9,7 @@ import { CalendarIcon } from "lucide-react"
 import { useState } from "react"
 import { type DateRange } from "react-day-picker"
 import qs from "query-string"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/src/i18n/navigation"
 
 interface EventsDateRangePickerProps {
   dateRange?: DateRange
