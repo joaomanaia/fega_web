@@ -1,7 +1,9 @@
 "use client"
 
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
+import dynamic from "next/dynamic"
 import { isServer, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { env } from "@/env"
 
 function makeQueryClient() {
   return new QueryClient({
@@ -35,12 +37,17 @@ type ProvidersProps = {
   children: React.ReactNode
 }
 
+const ReactQueryDevtools = dynamic(() =>
+  import("@tanstack/react-query-devtools").then((mod) => mod.ReactQueryDevtools)
+)
+
 export function QueryProvider({ children }: ProvidersProps) {
-  // NOTE: Avoid useState when initializing the query client if you don't
-  //       have a suspense boundary between this and the code that may
-  //       suspend because React will throw away the client on the initial
-  //       render if it suspends and there is no boundary
   const queryClient = getQueryClient()
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      {env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
+    </QueryClientProvider>
+  )
 }

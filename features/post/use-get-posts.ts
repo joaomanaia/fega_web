@@ -1,16 +1,16 @@
 "use client"
 
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { ITEMS_PER_PAGE } from "@/features/post/constants"
 import { getPosts } from "@/features/post/get-posts"
 import { createClient } from "@/lib/supabase/client"
 import type { PostViewType } from "@/types/PostType"
-import { useInfiniteQuery } from "@tanstack/react-query"
 
 export const useGetInfinitePosts = (initialPosts: PostViewType[], uid?: string) => {
   const client = createClient()
 
   return useInfiniteQuery({
-    queryKey: ["posts", uid],
+    queryKey: uid ? ["posts", uid] : ["posts"],
     queryFn: ({ pageParam }) => getPosts(client, uid, pageParam),
     // Load the first page of posts immediately and use it as initial data
     initialData: {

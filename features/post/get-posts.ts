@@ -1,7 +1,7 @@
+import { SupabaseClient } from "@supabase/supabase-js"
 import { ITEMS_PER_PAGE } from "@/features/post/constants"
 import type { Database } from "@/types/database.types"
 import type { PostViewType } from "@/types/PostType"
-import { SupabaseClient } from "@supabase/supabase-js"
 
 /**
  * Get posts from the database with pagination.

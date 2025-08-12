@@ -32,6 +32,7 @@
   },
   "Post": {
     "loading": "A carregar...",
+    "errorLoadingPosts": "Erro ao carregar publicações",
     "emptyPosts": {
       "header": "Ainda não há publicações",
       "description": {

@@ -1,11 +1,11 @@
 "use client"
 
-import Post from "@/app/components/post/Post"
+import { useEffect, useMemo } from "react"
+import { useTranslations } from "next-intl"
+import { useInView } from "react-intersection-observer"
+import Post, { PostSkeleton } from "@/app/components/post/Post"
 import { useGetInfinitePosts } from "@/features/post/use-get-posts"
 import type { PostViewType } from "@/types/PostType"
-import { useTranslations } from "next-intl"
-import { useEffect, useMemo } from "react"
-import { useInView } from "react-intersection-observer"
 
 interface PagingPostsProps {
   uid?: string
@@ -33,29 +33,32 @@ export const PagingPosts: React.FC<PagingPostsProps> = ({
     delay: 500,
   })
 
-  const posts = useMemo(() => {
-    return data.pages.flat()
-  }, [data.pages])
+  const posts = useMemo(() => data.pages.flat(), [data.pages])
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [inView, hasNextPage])
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  if (isError) {
+    return <p className="text-error">{t("errorLoadingPosts")}</p>
+  }
 
   return (
     <>
-      <li className="flex flex-col gap-y-4 md:gap-y-6">
-        {posts?.map((post) => (
-          <ul key={post.id}>
+      <ul className="flex flex-col gap-y-4 md:gap-y-6">
+        {posts.map((post) => (
+          <li key={post.id}>
             <Post post={post} localUid={localUid} schemaHasPart={schemaHasPart} />
-          </ul>
+          </li>
         ))}
-      </li>
+      </ul>
 
-      {isFetchingNextPage && <p>{t("loading")}</p>}
+      {isFetchingNextPage && <PostSkeleton />}
 
-      <div ref={ref} className="-my-2" />
+      {/* Intersection observer trigger */}
+      <div ref={ref} className="h-1" />
     </>
   )
 }

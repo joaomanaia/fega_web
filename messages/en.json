@@ -32,6 +32,7 @@
   },
   "Post": {
     "loading": "Loading...",
+    "errorLoadingPosts": "Error loading posts",
     "emptyPosts": {
       "header": "No posts yet",
       "description": {
