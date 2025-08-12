@@ -1,6 +1,10 @@
 "use client"
 
-import { forgotPasswordAction } from "@/app/[lang]/(auth)/actions"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,13 +16,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { type ForgotPasswordActionValues, forgotPasswordSchema } from "@/lib/schemas/auth-schemas"
+import { forgotPasswordAction } from "@/app/[lang]/auth/actions"
+import { forgotPasswordSchema, type ForgotPasswordActionValues } from "@/lib/schemas/auth-schemas"
 import { Link } from "@/src/i18n/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export default function ForgotPasswordForm() {
   const t = useTranslations("AuthPage")
@@ -41,7 +41,7 @@ export default function ForgotPasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(execute)} className="space-y-6 w-full">
+      <form onSubmit={form.handleSubmit(execute)} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="email"
@@ -61,7 +61,7 @@ export default function ForgotPasswordForm() {
         </Button>
         <div className="text-center text-sm">
           {t("alreadyHaveAccount")}{" "}
-          <Link href="/login" className="underline underline-offset-4">
+          <Link href="/auth/login" className="underline underline-offset-4">
             {t("loginButton")}
           </Link>
         </div>

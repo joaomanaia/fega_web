@@ -1,8 +1,9 @@
+import { NextResponse, type NextRequest } from "next/server"
 import { createServerClient } from "@supabase/ssr"
 import type { Route } from "next"
-import { type NextRequest, NextResponse } from "next/server"
+import { env } from "@/env"
 
-const PROTECTED_ROUTES: Route[] = ["/groups"]
+const PROTECTED_ROUTES: Route[] = ["/groups", "/news/create", "/events/create"]
 
 /* const createRouteMatcher = (routes: readonly string[]) => {
   // Escape special regex characters and add optional trailing slash
@@ -14,8 +15,8 @@ const rotectedRouteMatcher = createRouteMatcher(PROTECTED_ROUTES) */
 
 export const updateSession = async (request: NextRequest, response: NextResponse) => {
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -32,9 +33,8 @@ export const updateSession = async (request: NextRequest, response: NextResponse
   )
 
   // This will refresh session if expired - required for Server Components
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data } = await supabase.auth.getClaims()
+  const user = data?.claims
 
   /* const isProtectedRoute = rotectedRouteMatcher.test(removeLocaleFromPath(request.nextUrl.pathname)) */
 
@@ -43,7 +43,7 @@ export const updateSession = async (request: NextRequest, response: NextResponse
   )
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = "/login"
+    url.pathname = "/auth/login"
     return NextResponse.redirect(url)
   }
 

@@ -1,11 +1,13 @@
-import type { Database } from "@/types/database.types"
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import { MetadataRoute, type Route } from "next"
+import { env } from "@/env"
+import type { Database } from "@/types/database.types"
 
+// TODO: Update this
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const client = createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
 
   const postsPages = await getPostsPages(client)

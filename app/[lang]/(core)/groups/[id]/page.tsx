@@ -1,15 +1,15 @@
-import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
-import type { GroupViewType } from "@/types/group/GroupType"
-import { getLocalUserUid } from "@/utils/user-utils"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { GroupMessageHeader } from "./components/group-message-header"
-import { MessagesWithForm } from "./components/messages-with-form"
 import { cache } from "react"
 import type { Metadata } from "next"
-import { createClient } from "@/lib/supabase/server"
 import type { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
+import { MainContainer } from "@/app/components/m3/main-container"
+import { verifySession } from "@/lib/dal"
+import { createClient } from "@/lib/supabase/server"
 import { redirect } from "@/src/i18n/navigation"
+import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
+import type { GroupViewType } from "@/types/group/GroupType"
+import { GroupMessageHeader } from "./components/group-message-header"
+import { MessagesWithForm } from "./components/messages-with-form"
 
 interface GroupMessagePageProps {
   params: Promise<{
@@ -57,8 +57,7 @@ export default async function GroupMessagePage(props: GroupMessagePageProps) {
   // Enable static rendering
   setRequestLocale(params.lang)
 
-  const localUserUid = await getLocalUserUid()
-  if (!localUserUid) return redirect({ href: "/login", locale: params.lang })
+  const session = await verifySession()
 
   const group = await getGroup(params.id)
   if (!group || !group.id || !group.name) return redirect({ href: "/groups", locale: params.lang })
@@ -66,10 +65,10 @@ export default async function GroupMessagePage(props: GroupMessagePageProps) {
   const messages = await getMessages(params.id)
 
   return (
-    <MainContainer className="w-full h-auto max-md:rounded-b-none md:mb-3 flex flex-col items-center">
+    <MainContainer className="flex h-auto w-full flex-col items-center max-md:rounded-b-none md:mb-3">
       <GroupMessageHeader group={group} className="xl:hidden" />
       <MessagesWithForm
-        localUserUid={localUserUid}
+        localUserUid={session.uid}
         groupId={group.id}
         groupName={group.name}
         serverMessages={messages}

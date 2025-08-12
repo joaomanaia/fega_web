@@ -1,6 +1,10 @@
 "use client"
 
-import { resetPasswordAction } from "@/app/[lang]/(auth)/actions"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -11,12 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { resetPasswordAction } from "@/app/[lang]/auth/actions"
 import { resetPasswordSchema, type ResetPasswordSchemaValues } from "@/lib/schemas/user-schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export default function ResetPasswordForm() {
   const t = useTranslations("AuthPage")
@@ -40,7 +40,7 @@ export default function ResetPasswordForm() {
 
   return (
     <Form {...form}>
-      <form className="space-y-6 w-full" onSubmit={form.handleSubmit(execute)}>
+      <form className="w-full space-y-6" onSubmit={form.handleSubmit(execute)}>
         <FormField
           control={form.control}
           name="password"

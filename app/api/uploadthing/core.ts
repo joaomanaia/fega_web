@@ -1,18 +1,17 @@
-import { createClient } from "@/lib/supabase/server"
 import { createUploadthing, type FileRouter } from "uploadthing/next"
 import { UploadThingError, UTApi } from "uploadthing/server"
+import { getSession } from "@/lib/dal"
 
 const f = createUploadthing()
 
 const hadleAuth = async () => {
-  const supabase = await createClient()
-  const { data: user } = await supabase.auth.getUser()
+  const session = await getSession()
 
-  if (!user || !user.user) {
+  if (!session) {
     throw new UploadThingError("Unauthorized")
   }
 
-  return { user: user.user }
+  return { user: session.user }
 }
 
 export const utapi = new UTApi()

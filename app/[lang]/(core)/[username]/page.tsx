@@ -1,15 +1,16 @@
-import { getLocalUserUid, getUserByUsername } from "@/utils/user-utils"
-import CreatePost from "@/app/components/create-post/create-post"
-import { UserProfileContent } from "./components/user-profile-content"
-import PostsContent, { PostsSkeleton } from "../PostsContent"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { cn } from "@/lib/utils"
-import { type Metadata } from "next"
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import { FileWarningIcon } from "lucide-react"
-import { Suspense } from "react"
-import { setRequestLocale } from "next-intl/server"
+import { type Metadata } from "next"
 import { useTranslations, type Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
+import CreatePost from "@/app/components/create-post/create-post"
+import { MainContainer } from "@/app/components/m3/main-container"
+import { getSession } from "@/lib/dal"
+import { cn } from "@/lib/utils"
+import { getUserByUsername } from "@/utils/user-utils"
+import PostsContent, { PostsSkeleton } from "../PostsContent"
+import { UserProfileContent } from "./components/user-profile-content"
 
 interface UserPageProps {
   params: Promise<{
@@ -52,14 +53,15 @@ export default async function UserPage(props: UserPageProps) {
     notFound()
   }
 
-  const localUserUid = await getLocalUserUid()
+  const session = await getSession()
+  const localUserUid = session?.uid
   const isLocalUser = localUserUid === user.id
 
   return (
     <main
       itemScope
       itemType="https://schema.org/ProfilePage"
-      className="flex flex-col md:pb-3 md:gap-4 xl:flex-row-reverse w-full h-full overflow-auto xl:overflow-hidden"
+      className="flex h-full w-full flex-col overflow-auto md:gap-4 md:pb-3 xl:flex-row-reverse xl:overflow-hidden"
     >
       <meta itemProp="dateCreated" content={user.created_at} />
       <meta itemProp="dateModified" content={user.updated_at ?? undefined} />
@@ -72,7 +74,7 @@ export default async function UserPage(props: UserPageProps) {
         <meta itemProp="identifier" content={user.id} />
         <MainContainer
           className={cn(
-            "h-fit xl:w-96 flex flex-col space-y-4",
+            "flex h-fit flex-col space-y-4 xl:w-96",
             isLocalUser && "rounded-b-none md:rounded-[30px]"
           )}
         >
@@ -80,12 +82,12 @@ export default async function UserPage(props: UserPageProps) {
         </MainContainer>
         {isLocalUser && <CreatePost className="rounded-none rounded-b-[30px]" />}
       </div>
-      <MainContainer className="flex flex-col rounded-none md:rounded-[30px] gap-y-4 md:gap-y-6 xl:w-full xl:overflow-auto">
+      <MainContainer className="flex flex-col gap-y-4 rounded-none md:gap-y-6 md:rounded-[30px] xl:w-full xl:overflow-auto">
         <Suspense fallback={<PostsSkeleton />}>
           <PostsContent
             schemaHasPart // Has part of the main entity
             uid={user.id}
-            localUid={localUserUid}
+            localUid={localUserUid ?? null}
             EmptyPostsContent={() => <UserEmptyPostsContent userName={user.full_name ?? "User"} />}
           />
         </Suspense>
@@ -102,10 +104,10 @@ const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({ userName 
   const t = useTranslations("Post.emptyPosts")
 
   return (
-    <div className="flex flex-col py-8 items-center justify-center h-full mx-auto max-w-md text-center">
-      <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
+    <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center py-8 text-center">
+      <FileWarningIcon className="mb-4 h-16 w-16 text-secondary/50" />
       <h2 className="text-xl font-semibold">{t("header")}</h2>
-      <p className="text-secondary/50 mt-2">
+      <p className="mt-2 text-secondary/50">
         {t.rich("description.user", {
           username: userName,
           b: (chunks) => <b>{chunks}</b>,

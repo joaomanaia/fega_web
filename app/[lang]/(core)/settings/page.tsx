@@ -1,9 +1,13 @@
+import { Suspense, use } from "react"
 import { type Metadata } from "next"
-import { GeneralSettings } from "./components/general-settings"
-import { UserSettings } from "@/app/[lang]/(core)/settings/components/user-settings"
-import { createClient } from "@/lib/supabase/server"
-import { setRequestLocale } from "next-intl/server"
 import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
+import {
+  UserSettings,
+  UserSettingsSkeleton,
+} from "@/app/[lang]/(core)/settings/components/user-settings"
+import { getSession } from "@/lib/dal"
+import { GeneralSettings } from "./components/general-settings"
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -16,20 +20,26 @@ interface SettingsPageProps {
   }>
 }
 
-export default async function SettingsPage(props: SettingsPageProps) {
-  const params = await props.params
+export default function SettingsPage(props: SettingsPageProps) {
+  const params = use(props.params)
   // Enable static rendering
   setRequestLocale(params.lang)
 
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
   return (
-    <main className=" mx-auto max-w-3xl flex flex-col w-full gap-y-4 overflow-y-auto">
+    <main className="mx-auto flex w-full max-w-3xl flex-col gap-y-4 overflow-y-auto">
       <GeneralSettings />
-      {user !== null && <UserSettings user={user} />}
+      <Suspense fallback={<UserSettingsSkeleton />}>
+        <UserSettingsContent />
+      </Suspense>
     </main>
   )
+}
+
+async function UserSettingsContent() {
+  const data = await getSession()
+  if (!data) {
+    return null
+  }
+
+  return <UserSettings user={data.user} />
 }

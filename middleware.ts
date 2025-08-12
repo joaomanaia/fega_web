@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server"
+import createMiddleware from "next-intl/middleware"
 import { updateSession } from "@/lib/supabase/middleware"
 import { routing } from "@/src/i18n/routing"
-import createMiddleware from "next-intl/middleware"
 
 const handleI18nRouting = createMiddleware(routing)
 

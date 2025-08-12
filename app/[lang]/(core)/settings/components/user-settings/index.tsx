@@ -1,20 +1,21 @@
 "use client"
 
+import { useState } from "react"
+import type { JwtPayload } from "@supabase/supabase-js"
+import { UserRoundXIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { toast } from "sonner"
+import { Skeleton } from "@/components/ui/skeleton"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
-import { useConfirm } from "@/hooks/use-confirm"
+import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
 import { LargeButton, LargeButtonCollapsible } from "@/components/large-button"
-import { UserRoundXIcon } from "lucide-react"
-import { toast } from "sonner"
-import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
-import { useState } from "react"
+import { useConfirm } from "@/hooks/use-confirm"
 import { createClient } from "@/lib/supabase/client"
-import type { User } from "@supabase/supabase-js"
-import { useTranslations } from "next-intl"
 import { useRouter } from "@/src/i18n/navigation"
 
 interface UserSettingsProps {
-  user: User
+  user: JwtPayload
 }
 
 // TODO: Add reauthentication for sensitive actions
@@ -28,6 +29,7 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
   const [SignOutConfirmDialog, confirmSignOut] = useConfirm()
   const [DeleteAccountConfirmDialog, confirmDeleteAccount] = useConfirm()
 
+  // Make an transition
   const [deletingAccount, setDeletingAccount] = useState(false)
 
   const handleSignOut = async () => {
@@ -120,5 +122,18 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
         </div>
       </BaseSettingsContainer>
     </>
+  )
+}
+
+export const UserSettingsSkeleton: React.FC = () => {
+  return (
+    <BaseSettingsContainer header={"User Settings"}>
+      <div className="grid grid-cols-2 gap-2.5">
+        <Skeleton className="col-span-2 h-20" />
+        <Skeleton className="col-span-2 h-20" />
+        <Skeleton className="h-20" />
+        <Skeleton className="h-20" />
+      </div>
+    </BaseSettingsContainer>
   )
 }

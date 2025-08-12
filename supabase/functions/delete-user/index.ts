@@ -17,9 +17,8 @@ Deno.serve(async (req) => {
     // Get the session or user object
     const authHeader = req.headers.get("Authorization")!
     const token = authHeader.replace("Bearer ", "")
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser(token)
+    const { data } = await supabaseClient.auth.getClaims(token)
+    const user = data?.claims
 
     if (!user) {
       throw new Error("User not found")
@@ -36,7 +35,8 @@ Deno.serve(async (req) => {
       status: 200,
     })
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 400,
     })

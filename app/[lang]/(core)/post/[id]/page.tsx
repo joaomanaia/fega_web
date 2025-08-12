@@ -1,13 +1,13 @@
-import Post from "@/app/components/post/Post"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { getLocalUserUid } from "@/utils/user-utils"
-import { notFound } from "next/navigation"
-import type { PostViewType } from "@/types/PostType"
 import { cache } from "react"
+import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { createClient } from "@/lib/supabase/server"
-import { setRequestLocale } from "next-intl/server"
 import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
+import { MainContainer } from "@/app/components/m3/main-container"
+import Post from "@/app/components/post/Post"
+import { getSession } from "@/lib/dal"
+import { createClient } from "@/lib/supabase/server"
+import type { PostViewType } from "@/types/PostType"
 
 interface PostPageProps {
   params: Promise<{
@@ -62,11 +62,11 @@ export default async function PostPage(props: PostPageProps) {
     notFound()
   }
 
-  const localUid = await getLocalUserUid()
+  const session = await getSession()
 
   return (
-    <MainContainer className="lg:container mx-3 lg:mx-auto">
-      <Post hideContainer post={post} localUid={localUid} className="p-2" />
+    <MainContainer className="mx-3 lg:container lg:mx-auto">
+      <Post hideContainer post={post} localUid={session?.uid ?? null} className="p-2" />
     </MainContainer>
   )
 }
