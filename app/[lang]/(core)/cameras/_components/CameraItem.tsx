@@ -1,11 +1,11 @@
 "use client"
 
+import { useParams } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { Link } from "@/src/i18n/navigation"
 import type { Tables } from "@/types/database.types"
-import { useParams } from "next/navigation"
 
 type CameraType = Tables<"cameras">
 
@@ -21,8 +21,8 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
     <Link
       itemProp="url"
       className={cn(
-        "flex items-center h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
-        selected && "bg-primary hover:bg-primary/90 text-primary-foreground"
+        "next-link flex h-fit items-center rounded-3xl px-4 py-4 transition-colors hover:bg-surfaceVariant/[0.38]",
+        selected && "bg-primary text-primary-foreground hover:bg-primary/90"
       )}
       href={`/cameras/${camera.id}`}
     >
@@ -44,11 +44,11 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
 
 export const CameraItemSkeleton: React.FC = () => {
   return (
-    <div className="flex items-center h-fit px-4 py-4">
+    <div className="flex h-fit items-center px-4 py-4">
       <Skeleton className="size-10 rounded-full" />
       <div className="ml-4">
-        <Skeleton className="w-32 h-4 mb-2" />
-        <Skeleton className="w-64 h-4" />
+        <Skeleton className="mb-2 h-4 w-32" />
+        <Skeleton className="h-4 w-64" />
       </div>
     </div>
   )

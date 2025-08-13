@@ -1,27 +1,16 @@
-import { type Metadata } from "next"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { Button } from "@/components/ui/button"
-import VideoComponent from "./components/VideoComponent"
-import ImageVideoComponent from "./components/ImageVideoComponent"
-import { type Tables } from "@/types/database.types"
+import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
-import { cache } from "react"
-import { createClient } from "@/lib/supabase/server"
+import type { Metadata } from "next"
+import type { Locale } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
+import { Button } from "@/components/ui/button"
+import { getCameraById } from "@/app/[lang]/(core)/cameras/_lib/queries"
+import { MainContainer } from "@/app/components/m3/main-container"
+import { createClient } from "@/lib/supabase/client"
 import { Link } from "@/src/i18n/navigation"
 
-type CameraType = Tables<"cameras">
-
-const getCameraById = cache(async (id: string): Promise<CameraType | null> => {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase.from("cameras").select("*").eq("id", id).single()
-
-  if (error) return null
-  return data
-})
-
 type CameraPageProps = {
-  params: Promise<{ id: string }>
+  params: Promise<{ lang: Locale; id: string }>
 }
 
 export async function generateMetadata(props: CameraPageProps): Promise<Metadata> {
@@ -42,8 +31,13 @@ export async function generateMetadata(props: CameraPageProps): Promise<Metadata
   }
 }
 
+const VideoComponent = dynamic(() => import("./_components/VideoComponent"))
+const ImageVideoComponent = dynamic(() => import("./_components/ImageVideoComponent"))
+
 export default async function CameraPage(props: CameraPageProps) {
   const params = await props.params
+  setRequestLocale(params.lang)
+
   const camera = await getCameraById(params.id)
 
   if (!camera) {
@@ -52,7 +46,7 @@ export default async function CameraPage(props: CameraPageProps) {
 
   return (
     <MainContainer className="flex flex-col">
-      <h1 className="text-xl font-normal mb-2" itemProp="name">
+      <h1 className="mb-2 text-xl font-normal" itemProp="name">
         {camera.name}
       </h1>
       <p className="mb-4" itemProp="description">
@@ -60,7 +54,7 @@ export default async function CameraPage(props: CameraPageProps) {
       </p>
 
       {camera.original_camera_url && (
-        <Button variant="outline" className="w-fit mb-4" asChild>
+        <Button variant="outline" className="mb-4 w-fit" asChild>
           <Link href={camera.original_camera_url}>Ver original</Link>
         </Button>
       )}
@@ -72,4 +66,17 @@ export default async function CameraPage(props: CameraPageProps) {
       )}
     </MainContainer>
   )
+}
+
+export async function generateStaticParams() {
+  // Need to be client side because of generateStaticParams
+  const supabase = createClient()
+
+  const { data, error } = await supabase.from("cameras").select("id")
+
+  if (error || !data) {
+    return []
+  }
+
+  return data.map((camera) => ({ id: camera.id }))
 }

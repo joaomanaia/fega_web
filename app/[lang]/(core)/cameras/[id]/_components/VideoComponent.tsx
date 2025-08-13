@@ -1,7 +1,8 @@
 "use client"
 
-import dynamic from "next/dynamic"
 import { useState } from "react"
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface VideoComponentProps {
   url: string
@@ -9,7 +10,7 @@ interface VideoComponentProps {
 
 const DynamicReactPlayer = dynamic(() => import("react-player/lazy"), {
   ssr: false,
-  loading: () => <p>Loading camera...</p>,
+  loading: () => <Skeleton className="aspect-video h-full w-full rounded-3xl" />,
 })
 
 const VideoComponent: React.FC<VideoComponentProps> = ({ url }) => {
