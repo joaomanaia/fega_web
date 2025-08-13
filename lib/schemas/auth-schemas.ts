@@ -1,8 +1,8 @@
-import { passwordSchema, usernameSchema } from "@/lib/schemas/user-schemas"
 import { z } from "zod"
+import { passwordSchema, usernameSchema } from "@/lib/schemas/user-schemas"
 
 export const signInSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: passwordSchema,
 })
 
@@ -16,7 +16,7 @@ export const signUpSchema = signInSchema.extend({
 export type SignUpActionValues = z.infer<typeof signUpSchema>
 
 export const forgotPasswordSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 })
 
 export type ForgotPasswordActionValues = z.infer<typeof forgotPasswordSchema>

@@ -1,5 +1,5 @@
-import blockedUsernames from "@/lib/constants/blockedUsernames"
 import { z } from "zod"
+import blockedUsernames from "@/lib/constants/blockedUsernames"
 
 export const USERNAME_REGEX = /^(?=[a-z0-9._]{3,20}$)(?!.*[_.]{2})[^_.0-9].*[^_.]$/
 export const USERNAME_WITH_AT_REGEX =
@@ -17,19 +17,19 @@ export const usernameSchema = z
   // 5. Username cannot contain consecutive periods or underscores
   // 6. Username cannot be in the list of blocked usernames
   .regex(USERNAME_REGEX, {
-    message:
+    error:
       "Username must be between 3 and 20 characters and can only contain lowercase letters, numbers, periods, and underscore characters",
   })
   .refine((username) => !blockedUsernames.includes(username), {
-    message: "Username is reserved",
+    error: "Username is reserved",
   })
 
 export const passwordSchema = z.string().min(6)
 
 export const updateEmailSchema = z
   .object({
-    email: z.string().email(),
-    confirmEmail: z.string().email(),
+    email: z.email(),
+    confirmEmail: z.email(),
   })
   .superRefine(({ email, confirmEmail }, ctx) => {
     if (email !== confirmEmail) {
@@ -47,7 +47,7 @@ export const updateProfileSchema = z.object({
   username: usernameSchema,
   full_name: z.string().min(2).max(30).trim(),
   bio: z.string().max(160).trim().optional(),
-  avatar: z.string().trim().url().nullable(),
+  avatar: z.url().trim().nullable(),
 })
 
 export type UpdateProfileSchemaValues = z.infer<typeof updateProfileSchema>

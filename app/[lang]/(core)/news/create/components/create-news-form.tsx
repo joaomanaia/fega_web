@@ -1,8 +1,9 @@
 "use client"
 
-import { createNews } from "@/app/actions/news/newsActions"
-import { FileUpload } from "@/components/file-upload"
-import { MdxEditor } from "@/components/mdx-editor"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,11 +14,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { createNews } from "@/app/actions/news/newsActions"
+import { FileUpload } from "@/components/file-upload"
+import { MdxEditor } from "@/components/mdx-editor"
 import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
 
 interface CreateNewsFormProps {
   className?: string
@@ -26,7 +26,7 @@ interface CreateNewsFormProps {
 const formSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
-  imageUrl: z.string().url(),
+  imageUrl: z.url(),
   content: z.string().min(1).max(10000),
 })
 
@@ -102,7 +102,7 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
                   endpoint="newsImage"
                   value={field.value}
                   onChange={field.onChange}
-                  className="w-full lg:w-1/2 aspect-video rounded-xl"
+                  className="aspect-video w-full rounded-xl lg:w-1/2"
                 />
               </FormControl>
               <FormMessage />
@@ -117,7 +117,7 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
             <FormItem>
               <FormControl>
                 <MdxEditor
-                  className="w-full h-[700px] max-h-full"
+                  className="h-[700px] max-h-full w-full"
                   maxLength={10000}
                   field={field}
                 />

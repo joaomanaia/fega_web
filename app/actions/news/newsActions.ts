@@ -1,14 +1,14 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/client"
-import { redirect } from "@/src/i18n/navigation"
 import { getLocale } from "next-intl/server"
 import { z } from "zod"
+import { createClient } from "@/lib/supabase/client"
+import { redirect } from "@/src/i18n/navigation"
 
 const createNewsFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
-  imageUrl: z.string().url(),
+  imageUrl: z.url(),
   content: z.string().min(1).max(10000),
 })
 

@@ -1,8 +1,13 @@
 "use client"
 
-import { FileUpload } from "@/components/file-upload"
-import { MdxEditor } from "@/components/mdx-editor"
-import { AsyncCreatableSelect } from "@/components/select/select-creatable"
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { format } from "date-fns"
+import { CalendarIcon, TrashIcon } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { useDebounceCallback } from "usehooks-ts"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -14,21 +19,16 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { TimePickerPopover } from "@/components/ui/time-picker/time-picker-popover"
+import { createEvent } from "@/app/actions/calendarEventActions"
+import { FileUpload } from "@/components/file-upload"
+import { MdxEditor } from "@/components/mdx-editor"
+import { Select } from "@/components/select/select"
+import { AsyncCreatableSelect } from "@/components/select/select-creatable"
 import { useModal } from "@/hooks/use-modal-store"
+import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
-import { CalendarIcon, TrashIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useDebounceCallback } from "usehooks-ts"
-import { z } from "zod"
 import { MoreInfo } from "../../[event_id]/components/more-info"
-import { Select } from "@/components/select/select"
-import { useState } from "react"
-import { createEvent } from "@/app/actions/calendarEventActions"
-import { createClient } from "@/lib/supabase/client"
 
 interface CreateEventFormProps {
   className?: string
@@ -37,14 +37,10 @@ interface CreateEventFormProps {
 const formSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
-  coverImage: z.string().url(),
+  coverImage: z.url(),
   content: z.string(),
-  fromDate: z.date({
-    required_error: "From date is required",
-  }),
-  toDate: z.date({
-    required_error: "To date is required",
-  }),
+  fromDate: z.date(),
+  toDate: z.date(),
   locationId: z.string().nullable().optional(),
   otherData: z.custom<CalendarEventOtherDataItem>().array(),
 })
@@ -179,7 +175,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-[280px] rounded-2xl justify-start text-left font-normal text-foreground"
+                        "w-[280px] justify-start rounded-2xl text-left font-normal text-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -203,7 +199,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-[280px] rounded-2xl justify-start text-left font-normal text-foreground"
+                        "w-[280px] justify-start rounded-2xl text-left font-normal text-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -225,7 +221,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
               <FormLabel className="text-left">Location</FormLabel>
               <FormControl>
                 <AsyncCreatableSelect
-                  className="min-w-[280px] w-full"
+                  className="w-full min-w-[280px]"
                   placeholder="Select a location"
                   options={[]}
                   onCreate={(locationName) => onOpen("create-location", { locationName })}
@@ -251,7 +247,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                   endpoint="eventCoverImage"
                   value={field.value}
                   onChange={field.onChange}
-                  className="w-full lg:w-1/2 aspect-video rounded-xl"
+                  className="aspect-video w-full rounded-xl lg:w-1/2"
                 />
               </FormControl>
               <FormMessage />
@@ -266,7 +262,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
             <FormItem>
               <FormControl>
                 <MdxEditor
-                  className="w-full h-[700px] max-h-full"
+                  className="h-[700px] max-h-full w-full"
                   maxLength={10000}
                   field={field}
                 />

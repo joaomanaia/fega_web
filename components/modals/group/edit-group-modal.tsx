@@ -1,5 +1,10 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
@@ -10,14 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useModal } from "@/hooks/use-modal-store"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { editGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
-import { toast } from "sonner"
+import { useModal } from "@/hooks/use-modal-store"
 
 export const EditGroupModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("edit-group")
@@ -29,8 +29,8 @@ export const EditGroupModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Edit Group</DialogTitle>
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">Edit Group</DialogTitle>
         </DialogHeader>
         <EditGroupForm groupId={group.id} groupName={group.name} iconUrl={group.icon_url} />
       </DialogContent>
@@ -46,7 +46,7 @@ interface EditGroupFormProps {
 
 const formSchema = z.object({
   groupName: z.string().min(1, "Group name is required").max(50, "Group name is too long"),
-  iconUrl: z.string().url(),
+  iconUrl: z.url(),
 })
 
 const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconUrl }) => {
@@ -82,7 +82,7 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
               onClose()
             }
           }}
-          className="flex flex-col w-full gap-4 py-4"
+          className="flex w-full flex-col gap-4 py-4"
         >
           <FormField
             control={form.control}

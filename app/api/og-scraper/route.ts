@@ -1,13 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { z } from "zod"
 import ogs from "open-graph-scraper"
+import { z } from "zod"
 
 export type OgDataResponse = {
   ogTitle: string
   ogDescription: string
 }
 
-const urlSchema = z.string().url()
+const urlSchema = z.url()
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
