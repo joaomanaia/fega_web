@@ -16,7 +16,7 @@
     "check-i18n": "i18n-check --source en --locales messages"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
+    "@hookform/resolvers": "^5.2.1",
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@maptiler/leaflet-maptilersdk": "^2.0.0",
     "@material/material-color-utilities": "^0.3.0",
@@ -65,7 +65,7 @@
     "react-day-picker": "^9.0.9",
     "react-dom": "^19.1.1",
     "react-easy-crop": "^5.0.8",
-    "react-hook-form": "^7.53.0",
+    "react-hook-form": "^7.62.0",
     "react-intersection-observer": "^9.13.1",
     "react-leaflet": "^4.2.1",
     "react-linkify-it": "^1.0.8",
