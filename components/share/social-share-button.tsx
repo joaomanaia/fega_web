@@ -1,12 +1,12 @@
-import { Hint } from "@/components/hint"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { Link } from "@/src/i18n/navigation"
-import { SiFacebook, SiLinkedin, SiReddit, SiWhatsapp, SiX } from "@icons-pack/react-simple-icons"
+import { SiFacebook, SiReddit, SiWhatsapp, SiX } from "@icons-pack/react-simple-icons"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { MailIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Hint } from "@/components/hint"
+import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 
-export const socialValues = ["facebook", "x", "whatsapp", "email", "reddit", "linkedin"] as const
+export const socialValues = ["facebook", "x", "whatsapp", "email", "reddit"] as const
 export type Social = (typeof socialValues)[number]
 
 interface SocialShareRowProps {
@@ -65,7 +65,7 @@ export const SocialShareButton: React.FC<SocialShareButtonProps> = ({
       <Button
         onClick={onClick}
         variant="outline"
-        className="size-14 min-w-14 aspect-square"
+        className="aspect-square size-14 min-w-14"
         asChild
       >
         <Link target="_blank" rel="noreferrer" href={getShareUrl(social, url, text)}>
@@ -86,8 +86,6 @@ const getSocialIcon = (social: Social) => {
       return <SiWhatsapp className="size-full fill-foreground" />
     case "reddit":
       return <SiReddit className="size-full fill-foreground" />
-    case "linkedin":
-      return <SiLinkedin className="size-full fill-foreground" />
     case "email":
       return <MailIcon className="size-full stroke-foreground" />
   }
@@ -106,8 +104,6 @@ const getShareUrl = (social: Social, url: string, text: string) => {
       return `https://wa.me/?text=${textEncoded}%20${urlEncoded}`
     case "reddit":
       return `https://www.reddit.com/submit?url=${urlEncoded}&title=${textEncoded}`
-    case "linkedin":
-      return `https://www.linkedin.com/shareArticle?mini=true&url=${urlEncoded}&text=${textEncoded}`
     case "email":
       return `mailto:?subject=${textEncoded}&body=${urlEncoded}`
   }

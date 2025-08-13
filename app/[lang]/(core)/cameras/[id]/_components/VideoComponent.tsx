@@ -8,15 +8,13 @@ interface VideoComponentProps {
   url: string
 }
 
-const DynamicReactPlayer = dynamic(() => import("react-player/lazy"), {
+const DynamicReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
   loading: () => <Skeleton className="aspect-video h-full w-full rounded-3xl" />,
 })
 
 const VideoComponent: React.FC<VideoComponentProps> = ({ url }) => {
   const [videoPlaying, setVideoPlaying] = useState(false)
-
-  const playVideo = () => setVideoPlaying(true)
 
   return (
     <>
@@ -28,11 +26,15 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ url }) => {
         volume={0}
         muted={true}
         playing={videoPlaying}
-        onReady={playVideo}
+        onCanPlay={() => {
+          if (!videoPlaying) {
+            setVideoPlaying(true)
+          }
+        }}
         controls={true}
         width="100%"
         height="100%"
-        url={url}
+        src={url}
       />
     </>
   )
