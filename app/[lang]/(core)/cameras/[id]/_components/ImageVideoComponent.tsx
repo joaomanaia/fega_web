@@ -15,10 +15,11 @@ interface ImageVideoComponentProps {
 const ImageVideoComponent: React.FC<ImageVideoComponentProps> = ({ camera }) => {
   const { data, error, isPending } = useQuery({
     queryKey: ["camera", camera.id],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const response = await fetch(camera.link, {
         method: "GET",
         cache: "no-cache",
+        signal,
       })
       if (!response.ok) {
         throw new Error(`Failed to fetch camera image: ${response.statusText}`)
