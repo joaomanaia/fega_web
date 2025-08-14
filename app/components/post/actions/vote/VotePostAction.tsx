@@ -1,9 +1,9 @@
 "use client"
 
+import { useState } from "react"
+import { handleVote } from "@/app/actions/post/voteActions"
 import { PostVoteType } from "@/types/PostType"
 import { VotePostActionButton } from "./VotePostActionButton"
-import { handleVote } from "@/app/actions/post/voteActions"
-import { useState } from "react"
 
 interface VotePostActionProps {
   postId: string

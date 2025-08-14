@@ -2,21 +2,21 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "../styles/tokens.css"
 import "../styles/globals.css"
-import { Toaster as SonnerToaster } from "@/components/ui/sonner"
-import { ModalProvider } from "@/src/providers/modal-provider"
+import { notFound } from "next/navigation"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
-import { extractRouterConfig } from "uploadthing/server"
-import { ourFileRouter } from "../api/uploadthing/core"
 import { type Metadata } from "next"
+import { hasLocale, NextIntlClientProvider, type Locale } from "next-intl"
+import { getTranslations, setRequestLocale } from "next-intl/server"
+import { extractRouterConfig } from "uploadthing/server"
+import { Toaster as SonnerToaster } from "@/components/ui/sonner"
+import { appName } from "@/core/common"
+import { env } from "@/env"
+import { routing } from "@/src/i18n/routing"
+import { ModalProvider } from "@/src/providers/modal-provider"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
-import { env } from "@/env"
-import { hasLocale, type Locale, NextIntlClientProvider } from "next-intl"
-import { routing } from "@/src/i18n/routing"
-import { notFound } from "next/navigation"
-import { getTranslations, setRequestLocale } from "next-intl/server"
-import { appName } from "@/core/common"
+import { ourFileRouter } from "../api/uploadthing/core"
 
 export async function generateMetadata({
   params,
@@ -78,7 +78,7 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background text-foreground font-sans antialiased",
+          "bg-background text-foreground min-h-screen font-sans antialiased",
           fontSans.variable
         )}
       >

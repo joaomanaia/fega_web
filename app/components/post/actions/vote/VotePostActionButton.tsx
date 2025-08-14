@@ -1,11 +1,11 @@
 "use client"
 
-import { PostVoteType } from "@/types/PostType"
+import { forwardRef } from "react"
+import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useFormStatus } from "react-dom"
 import { Button, ButtonProps } from "@/components/ui/button"
-import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { forwardRef } from "react"
+import { PostVoteType } from "@/types/PostType"
 
 interface VotePostActionButtonProps extends ButtonProps {
   voteType: PostVoteType
@@ -25,7 +25,7 @@ export const VotePostActionButton = forwardRef<HTMLButtonElement, VotePostAction
         disabled={pending}
         variant={votedType === voteType ? "default" : "surfaceVariant"}
         className={cn(
-          "flex items-center rounded-none first:rounded-l-full last:rounded-r-full",
+          "flex items-center rounded-none first:rounded-l-full last:rounded-r-full last:pr-4",
           className
         )}
         {...props}
@@ -52,5 +52,5 @@ interface ButtonIconProps {
 }
 
 const ButtonIcon: React.FC<ButtonIconProps> = ({ type, votedType, Icon }) => {
-  return <Icon fill={votedType === type ? "currentColor" : "none"} size={20} className="mr-2" />
+  return <Icon fill={votedType === type ? "currentColor" : "none"} />
 }

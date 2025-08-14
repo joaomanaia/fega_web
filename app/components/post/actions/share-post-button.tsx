@@ -1,9 +1,9 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { useShare } from "@/hooks/use-share"
 import { Share } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { Button } from "@/components/ui/button"
+import { useShare } from "@/hooks/use-share"
 
 interface SharePostButtonProps {
   postId: string
@@ -25,7 +25,7 @@ export const SharePostButton: React.FC<SharePostButtonProps> = ({ postId }) => {
         })
       }
     >
-      <Share size={20} className="mr-2" />
+      <Share />
       {t("shareButton")}
     </Button>
   )

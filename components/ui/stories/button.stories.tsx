@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import { action } from "storybook/actions"
 import { Button } from "../button"
+import { TestTubeIcon } from "lucide-react"
 
 const meta = {
   title: "Components/ui/Button",
@@ -16,6 +17,7 @@ const meta = {
       options: [
         "default",
         "destructive",
+        "destructiveContainer",
         "outline",
         "secondary",
         "tonal",
@@ -64,6 +66,16 @@ export const Destructive: Story = {
     disabled: false,
     onClick: action("destructive click"),
     children: "Destructive button",
+  },
+}
+
+export const DestructiveContainer: Story = {
+  args: {
+    variant: "destructiveContainer",
+    size: "default",
+    disabled: false,
+    onClick: action("destructiveContainer click"),
+    children: "Destructive Container button",
   },
 }
 
@@ -125,4 +137,30 @@ export const Link: Story = {
     onClick: action("link click"),
     children: "Link button",
   },
+}
+
+export const WithIcon: Story = {
+  args: {
+    variant: "default",
+    size: "default",
+    disabled: false,
+    onClick: action("icon click"),
+    children: "Icon button",
+  },
+  render: (args) => (
+    <Button {...args}>
+      <TestTubeIcon />
+      {args.children}
+    </Button>
+  ),
+}
+
+export const IconOnly: Story = {
+  args: {
+    variant: "default",
+    size: "icon",
+    disabled: false,
+    onClick: action("icon only click"),
+  },
+  render: (args) => <Button {...args}><TestTubeIcon /></Button>,
 }

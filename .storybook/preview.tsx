@@ -1,11 +1,14 @@
 import "../app/styles/tokens.css"
 import "../app/styles/globals.css"
-import type { Preview } from "@storybook/nextjs"
 import { Inter as FontSans } from "next/font/google"
-import { cn } from "../lib/utils"
+import { DocsRenderer } from "@storybook/addon-docs"
 import { withThemeByClassName } from "@storybook/addon-themes"
+import type { Preview } from "@storybook/nextjs"
 import { Toaster } from "sonner"
-import fegaTheme from "./themes"
+import { DocsContextProps, Parameters, Renderer } from "storybook/internal/types"
+import { themes } from "storybook/theming"
+import { cn } from "../lib/utils"
+import { ThemeProvider } from "../src/providers/theme-provider"
 import nextIntl from "./next-intl"
 
 const fontSans = FontSans({
@@ -29,15 +32,37 @@ const preview: Preview = {
       },
     },
     docs: {
-      theme: fegaTheme,
+      theme: themes.light,
+      renderer: () => {
+        const renderer = new DocsRenderer()
+        const oldRender = renderer.render
+
+        renderer.render = async (
+          context: DocsContextProps<Renderer>,
+          docsParameter: Parameters,
+          element: HTMLElement
+        ) => {
+          const theme = (context as any).store.userGlobals.globals.theme
+
+          docsParameter.theme = theme === "dark" ? themes.dark : themes.light
+
+          const result = await oldRender.call(renderer, context, docsParameter, element)
+
+          return result
+        }
+
+        return renderer
+      },
     },
     nextIntl,
   },
   decorators: [
     (Story) => (
       <main className={cn("font-sans antialiased", fontSans.variable)}>
-        <Story />
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange>
+          <Story />
+          <Toaster />
+        </ThemeProvider>
       </main>
     ),
     withThemeByClassName({

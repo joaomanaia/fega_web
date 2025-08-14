@@ -12,5 +12,6 @@
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "i18n-ally.localesPaths": ["messages"],
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.sourceLanguage": "en"
+  "i18n-ally.sourceLanguage": "en",
+  "tailwindCSS.classFunctions": ["cva", "cx"]
 }
