@@ -16,7 +16,7 @@ export const EventComponent: React.FC<EventComponentProps> = ({ event }) => {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="bg-surfaceVariant/30 hover:bg-surfaceVariant/50 p-0 rounded-2xl hover:rounded-3xl flex flex-col group cursor-pointer transition"
+      className="bg-surface-variant/30 hover:bg-surface-variant/50 p-0 rounded-2xl hover:rounded-3xl flex flex-col group cursor-pointer transition"
     >
       <script
         type="application/ld+json"

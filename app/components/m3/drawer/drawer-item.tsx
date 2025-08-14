@@ -81,7 +81,7 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
         aria-selected={selected}
         className={cn(
           "gap-2 py-6 w-full text-foreground font-normal text-[16px] justify-start",
-          selected && "font-bold bg-primary/[0.25] hover:bg-primary/[0.30] text-primary",
+          selected && "font-bold bg-primary/25 hover:bg-primary/30 text-primary",
           className
         )}
       >

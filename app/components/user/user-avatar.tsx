@@ -34,5 +34,5 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ src, name, alt, variant,
 }
 
 export const UserAvatarSkeleton: React.FC = () => {
-  return <Skeleton className="size-10 rounded-full bg-surfaceVariant" />
+  return <Skeleton className="size-10 rounded-full bg-surface-variant" />
 }

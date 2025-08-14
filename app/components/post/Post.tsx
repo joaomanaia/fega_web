@@ -29,7 +29,7 @@ const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, s
       itemProp={schemaHasPart ? "hasPart" : undefined}
       className={cn(
         "rounded-3xl flex flex-col gap-4",
-        !hideContainer && "p-4 bg-surfaceVariant/30 dark:bg-surfaceVariant/[0.28]",
+        !hideContainer && "p-4 bg-surface-variant/30 dark:bg-surface-variant/[0.28]",
         className
       )}
     >
@@ -124,7 +124,7 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, class
     <div
       className={cn(
         "rounded-3xl flex flex-col gap-4",
-        !hideContainer && "p-4 bg-surfaceVariant/30 dark:bg-surfaceVariant/[0.28]",
+        !hideContainer && "p-4 bg-surface-variant/30 dark:bg-surface-variant/[0.28]",
         className
       )}
     >

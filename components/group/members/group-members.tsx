@@ -49,7 +49,7 @@ export async function GroupMembers({ group, isDialog }: GroupMembersProps) {
       <ScrollArea className="h-full max-h-full overflow-y-auto px-5">
         <ul
           className={cn(
-            "flex w-full flex-col divide-y divide-surfaceVariant/30 pt-4",
+            "flex w-full flex-col divide-y divide-surface-variant/30 pt-4",
             isDialog && "max-h-[300px]"
           )}
         >

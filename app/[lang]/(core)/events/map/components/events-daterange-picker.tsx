@@ -51,7 +51,7 @@ export const EventsDateRangePicker: React.FC<EventsDateRangePickerProps> = ({
             id="date"
             variant="outline"
             className={cn(
-              "w-[300px] border-surfaceVariant/50 bg-surfaceVariant/30 hover:bg-surfaceVariant/40 rounded-2xl justify-start text-left font-normal text-surfaceVariant-foreground",
+              "w-[300px] border-surface-variant/50 bg-surface-variant/30 hover:bg-surface-variant/40 rounded-2xl justify-start text-left font-normal text-surface-variant-foreground",
               !date && "text-muted-foreground"
             )}
           >

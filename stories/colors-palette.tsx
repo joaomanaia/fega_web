@@ -1,16 +1,10 @@
-"use client"
+/* "use client"
 
 import { cn } from "@/lib/utils"
 import { getHexFromCssVar } from "@/utils/color-utils"
 import { ColorPalette, ColorItem } from "@storybook/addon-docs/blocks"
 import { ThemeProvider, ensure, themes } from "storybook/theming"
 import { useEffect, useMemo, useState } from "react"
-import resolveConfig from "tailwindcss/resolveConfig"
-import tailwindConfig from "../basetailwindconfig"
-
-const fullConfig = resolveConfig(tailwindConfig)
-const twColors = fullConfig.theme.colors
-type TwColorsKeys = keyof typeof twColors
 
 interface ColorsPaletteProps {
   theme: "light" | "dark"
@@ -178,3 +172,4 @@ const mapObject = (
     Object.entries(obj).map(([key, value]) => [key, computeValue(value, key)])
   )
 }
+ */

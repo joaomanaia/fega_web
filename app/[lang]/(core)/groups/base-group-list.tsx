@@ -1,7 +1,7 @@
 "use client"
 
-import { useBreakpoint } from "@/lib/breakpoints"
 import { useEffect, useState } from "react"
+import { useBreakpoint } from "@/lib/breakpoints"
 
 interface BaseGroupListProps {
   isLayout?: boolean

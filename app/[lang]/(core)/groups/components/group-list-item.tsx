@@ -27,7 +27,7 @@ export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, cl
     <GroupOptionsContextMenu group={group} isOwner={group.is_owner ?? false}>
       <Link
         className={cn(
-          "group flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surfaceVariant/[0.38] transition-colors",
+          "group flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surface-variant/38 transition-colors",
           selected && "bg-primary hover:bg-primary/90 text-primary-foreground",
           className
         )}

@@ -70,7 +70,7 @@ interface GroupListSkeletonProps {
 export const GroupListSkeleton: React.FC<GroupListSkeletonProps> = ({ className }) => {
   return (
     <div className={cn("flex flex-col space-y-3", className)}>
-      <Skeleton className="h-16 w-full rounded-[25px] bg-surfaceVariant/20" />
+      <Skeleton className="h-16 w-full rounded-[25px] bg-surface-variant/20" />
 
       <MainContainer className="flex h-auto w-auto flex-col">
         <GroupItemSkeleton />

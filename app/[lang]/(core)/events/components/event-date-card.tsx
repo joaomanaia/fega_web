@@ -24,7 +24,7 @@ export const EventDateCard: React.FC<EventDateCardProps> = ({ colorArgb, childre
           "--darkContentColor": hexFromArgb(color.dark.onColorContainer),
         } as React.CSSProperties
       }
-      className="flex flex-col space-y-2 items-center p-4 rounded-xl w-40 bg-[color:var(--lightColor)] dark:bg-[color:var(--darkColor)] text-[color:var(--lightContentColor)] dark:text-[color:var(--darkContentColor)]"
+      className="flex flex-col space-y-2 items-center p-4 rounded-xl w-40 bg-(--lightColor) dark:bg-(--darkColor) text-(--lightContentColor) dark:text-(--darkContentColor)"
     >
       {children}
     </div>

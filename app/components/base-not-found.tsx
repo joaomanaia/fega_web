@@ -16,7 +16,7 @@ export const BaseNotFound: React.FC<BaseNotFoundProps> = ({ title, description }
         <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           {title}
         </h2>
-        <p className="mt-4 text-surfaceVariant-foreground">{description}</p>
+        <p className="mt-4 text-surface-variant-foreground">{description}</p>
         <Button className="mt-6" asChild>
           <Link href="/">Go to Homepage</Link>
         </Button>

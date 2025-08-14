@@ -11,7 +11,7 @@ interface OGPreviewProps {
 
 export const OGPreview = ({ url, title, description, image }: OGPreviewProps) => (
   <Link href={url} target="_blank" rel="noopener noreferrer" className="block no-underline">
-    <Card className="overflow-hidden border-surfaceVariant/50 hover:bg-surfaceVariant/30 transition lg:max-h-60">
+    <Card className="overflow-hidden border-surface-variant/50 hover:bg-surface-variant/30 transition lg:max-h-60">
       <div className="flex flex-col lg:flex-row items-center">
         <div className="lg:w-2/3 p-4">
           <h4 className="text-lg font-semibold mb-2 line-clamp-2">{title}</h4>

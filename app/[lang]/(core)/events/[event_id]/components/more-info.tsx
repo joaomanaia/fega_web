@@ -63,7 +63,7 @@ const MoreInfoItem: React.FC<MoreInfoItemProps> = ({
       {itemPrefixContent}
       <Button
         variant="link"
-        className="w-full justify-start gap-2 text-surface-foreground hover:bg-surfaceVariant/20"
+        className="w-full justify-start gap-2 text-surface-foreground hover:bg-surface-variant/20"
       >
         <Icon className="size-5" />
         <MoreInfoItemText label={label} type={type} className="truncate" />

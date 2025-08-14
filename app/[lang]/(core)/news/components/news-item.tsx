@@ -20,7 +20,7 @@ export const NewsItem: React.FC<NewsItemProps> = ({ news }) => {
       <article
         itemScope
         itemType="https://schema.org/NewsArticle"
-        className="w-full h-full flex flex-col relative bg-accent/40 p-2 lg:p-3 gap-2 hover:bg-surfaceVariant/[0.28] transition-colors cursor-pointer rounded-2xl aspect-video"
+        className="w-full h-full flex flex-col relative bg-accent/40 p-2 lg:p-3 gap-2 hover:bg-surface-variant/[0.28] transition-colors cursor-pointer rounded-2xl aspect-video"
       >
         <meta itemProp="author" content="João Manaia" />
 

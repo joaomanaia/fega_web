@@ -18,7 +18,7 @@ export default function Layout({ children, params }: LayoutProps) {
 
   return (
     <div className="flex h-screen min-h-screen overflow-hidden">
-      <MainDrawer className="hidden w-72 md:block" />
+      <MainDrawer className="hidden w-72 md:flex" />
       <main className="flex w-full flex-col md:px-3">
         <MainHeader />
         {children}

@@ -25,7 +25,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChang
         <img src={value} alt="Upload Image" className="w-full h-full rounded-2xl" />
         <button
           onClick={() => onChange("")}
-          className="bg-error text-error-foreground p-1 rounded-full absolute top-2 right-2 shadow-sm"
+          className="bg-error text-error-foreground p-1 rounded-full absolute top-2 right-2 shadow-xs"
           type="button"
         >
           <X className="h-4 w-4" />
@@ -36,7 +36,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChang
 
   return (
     <UploadDropzone
-      className="ut-button:bg-primary ut-button:text-primary-foreground ut-label:text-primary ut-label:hover:text-primary/90 ut-allowed-content:text-foreground/70 border-dashed border-outline/30 hover:bg-surfaceVariant/[0.08]"
+      className="ut-button:bg-primary ut-button:text-primary-foreground ut-label:text-primary ut-label:hover:text-primary/90 ut-allowed-content:text-foreground/70 border-dashed border-outline/30 hover:bg-surface-variant/8"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         onChange(res?.[0].url)

@@ -53,7 +53,7 @@ export const PostMoreActions: React.FC<PostMoreActionsProps> = ({ postId }) => {
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="ml-auto text-surfaceVariant-foreground">
+          <Button variant="ghost" size="icon" className="ml-auto text-surface-variant-foreground">
             <MoreHorizontalIcon />
           </Button>
         </DropdownMenuTrigger>

@@ -133,7 +133,7 @@ export const SearchMemberForm: React.FC<SearchMemberFormProps> = ({ groupId, gro
           {searchedUsers.length > 0 ? (
             <>
               <p className="mt-2">Users found:</p>
-              <ul className="flex flex-col w-full divide-y divide-surfaceVariant bg-surfaceVariant/[0.28] rounded-2xl p-4">
+              <ul className="flex flex-col w-full divide-y divide-surface-variant bg-surface-variant/[0.28] rounded-2xl p-4">
                 {searchedUsers.map((user) => (
                   <li
                     key={user.id}

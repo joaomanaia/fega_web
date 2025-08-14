@@ -1,6 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "uploadthing/tw/v4";
+
+@plugin "@tailwindcss/typography";
+@source "../../node_modules/@uploadthing/react/dist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans:
+    var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-border: hsl(var(--outline));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--on-primary));
+  --color-primary-inverse: hsl(var(--inverse-primary));
+
+  --color-primary-container: hsl(var(--primary-container));
+  --color-primary-container-foreground: hsl(var(--on-primary-container));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--on-secondary));
+
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-secondary-container-foreground: hsl(var(--on-secondary-container));
+
+  --color-tertiary: hsl(var(--tertiary));
+  --color-tertiary-foreground: hsl(var(--on-tertiary));
+
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-tertiary-container-foreground: hsl(var(--on-tertiary-container));
+
+  --color-error: hsl(var(--error));
+  --color-error-foreground: hsl(var(--on-error));
+
+  --color-error-container: hsl(var(--error-container));
+  --color-error-container-foreground: hsl(var(--on-error-container));
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--on-background));
+
+  --color-surface: hsl(var(--surface));
+  --color-surface-foreground: hsl(var(--on-surface));
+  --color-surface-inverse: hsl(var(--inverse-surface));
+  --color-surface-inverse-foreground: hsl(var(--inverse-on-surface));
+  --color-surface-tint: hsl(var(--surface-tint));
+
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-surface-variant-foreground: hsl(var(--on-surface-variant));
+
+  --color-outline: hsl(var(--outline));
+  --color-outline-variant: hsl(var(--outline-variant));
+
+  --color-shadow: hsl(var(--shadow));
+  --color-scrim: hsl(var(--scrim));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@utility next-link {
+  @apply bg-inherit text-inherit decoration-transparent;
+}
 
 /* Default theme color: #0066ff */
 
@@ -82,11 +148,5 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-@layer components {
-  .next-link {
-    @apply text-inherit bg-inherit decoration-transparent;
   }
 }

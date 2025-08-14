@@ -6,9 +6,9 @@ import { ChevronDownIcon } from "lucide-react"
 const largeButtonVariants = cva("rounded-lg border border-border/30 bg-surface/30 transition", {
   variants: {
     variant: {
-      default: "hover:border-border/40 hover:bg-surfaceVariant/10",
+      default: "hover:border-border/40 hover:bg-surface-variant/10",
       error:
-        "border-errorContainer-foreground/20 hover:border-errorContainer-foreground/30 bg-errorContainer/10 hover:bg-errorContainer/20 text-errorContainer-foreground/90 hover:text-errorContainer-foreground disabled:bg-surface/30 disabled:hover:bg-surface/30 disabled:border-foreground/[0.12] disabled:text-foreground/[0.38]",
+        "border-error-container-foreground/20 hover:border-error-container-foreground/30 bg-error-container/10 hover:bg-error-container/20 text-error-container-foreground/90 hover:text-error-container-foreground disabled:bg-surface/30 disabled:hover:bg-surface/30 disabled:border-foreground/12 disabled:text-foreground/38",
     },
   },
   defaultVariants: {
@@ -38,7 +38,7 @@ export const LargeButton: React.FC<LargeButtonProps> = ({
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-col w-full text-start space-y-1 items-start justify-center px-6 py-4 disabled:hover:bg-surface/30 disabled:border-foreground/[0.12] disabled:text-foreground/[0.38]",
+        "flex flex-col w-full text-start space-y-1 items-start justify-center px-6 py-4 disabled:hover:bg-surface/30 disabled:border-foreground/12 disabled:text-foreground/38",
         largeButtonVariants({ variant }),
         className
       )}
@@ -71,7 +71,7 @@ export const LargeButtonCollapsible: React.FC<LargeButtonCollapsible> = ({
       disabled={disabled}
       aria-disabled={disabled}
       className={cn(
-        "gap-y-2 rounded-lg transition aria-disabled:hover:bg-surface/30 aria-disabled:border-foreground/[0.12] aria-disabled:text-foreground/[0.38]",
+        "gap-y-2 rounded-lg transition aria-disabled:hover:bg-surface/30 aria-disabled:border-foreground/12 aria-disabled:text-foreground/38",
         largeButtonVariants({ variant }),
         className
       )}
@@ -89,7 +89,7 @@ export const LargeButtonCollapsible: React.FC<LargeButtonCollapsible> = ({
       <CollapsibleContent
         className={cn(
           "w-full px-6 py-4 border-t-2 border-border/30 bg-surface/70 text-surface-foreground rounded-b-lg",
-          variant === "error" && "border-errorContainer-foreground/20"
+          variant === "error" && "border-error-container-foreground/20"
         )}
       >
         {children}

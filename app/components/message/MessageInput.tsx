@@ -6,7 +6,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ messageTo, ...props }) => {
   return (
     <>
       <input
-        className="bg-accent/[0.38] rounded-2xl py-2 px-4 border-0 outline-none text-lg w-full"
+        className="bg-accent/[0.38] rounded-2xl py-2 px-4 border-0 outline-hidden text-lg w-full"
         type="text"
         name="message"
         maxLength={512}

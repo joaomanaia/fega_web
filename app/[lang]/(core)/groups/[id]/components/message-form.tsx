@@ -96,7 +96,7 @@ interface ReplyContentProps {
 const ReplyContent: React.FC<ReplyContentProps> = ({ replyTo, clearReplyTo }) => {
   return (
     <>
-      <div className="flex items-center space-x-2 rounded-t-md pl-3 pr-1 py-2 bg-surfaceVariant dark:bg-surfaceVariant/20">
+      <div className="flex items-center space-x-2 rounded-t-md pl-3 pr-1 py-2 bg-surface-variant dark:bg-surface-variant/20">
         <div className="flex flex-col grow justify-center space-y-1">
           <p className="text-sm">
             Replying to <span className="font-bold">{replyTo.replyToName}</span>

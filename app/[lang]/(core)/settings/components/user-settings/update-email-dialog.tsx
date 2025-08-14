@@ -1,15 +1,19 @@
 "use client"
 
-import { updateUserEmail } from "@/app/actions/userActions"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { useServerAction } from "zsa-react"
 import { Button } from "@/components/ui/button"
 import {
+  closeDialog,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  closeDialog,
 } from "@/components/ui/dialog"
 import {
   Form,
@@ -20,13 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { updateUserEmail } from "@/app/actions/userActions"
 import { useInfoDialog } from "@/hooks/use-info-dialog"
 import { updateEmailSchema, UpdateEmailSchemaValues } from "@/lib/schemas/user-schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useTranslations } from "next-intl"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useServerAction } from "zsa-react"
 
 interface UpdateEmailDialogProps {
   currentEmail?: string
@@ -72,7 +72,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
           </DialogHeader>
           <Form {...form}>
             <form
-              className="flex flex-col gap-y-4 w-full"
+              className="flex w-full flex-col gap-y-4"
               onSubmit={form.handleSubmit((values) => execute(values))}
             >
               <FormField

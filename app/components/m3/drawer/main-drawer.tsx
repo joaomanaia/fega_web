@@ -1,9 +1,7 @@
 "use client"
 
-import { useSelectedLayoutSegments } from "next/navigation"
-import { DrawerItem } from "./drawer-item"
 import React from "react"
-import { cn } from "@/lib/utils"
+import { useSelectedLayoutSegments } from "next/navigation"
 import {
   CalendarDays,
   Camera,
@@ -14,8 +12,10 @@ import {
   Settings,
   Users,
 } from "lucide-react"
-import { Link } from "@/src/i18n/navigation"
 import { useTranslations } from "next-intl"
+import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
+import { DrawerItem } from "./drawer-item"
 
 export interface MainDrawerProps {
   usingSheet?: boolean
@@ -99,10 +99,10 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className })
   const firstSegment = `/${layoutSegments.at(0) ?? ""}`
 
   return (
-    <nav className={cn("flex flex-col px-4 py-4 space-y-7 justify-start", className)}>
+    <nav className={cn("flex flex-col justify-start gap-y-2 px-4 py-2", className)}>
       <Link
         href="/"
-        className="next-link px-2 py-2 w-fit rounded-2xl hover:bg-accent/[0.38] transition-colors font-medium tracking-[0.5]"
+        className="next-link hover:bg-accent/[0.38] w-fit rounded-2xl px-2 py-2 font-medium tracking-[0.5] transition-colors"
         style={{ fontSize: 20 }}
       >
         Fega
@@ -110,12 +110,12 @@ export const MainDrawer: React.FC<MainDrawerProps> = ({ usingSheet, className })
       <ul
         itemScope
         itemType="https://schema.org/SiteNavigationElement"
-        className="flex flex-col ml-0 py-0 px-0"
+        className="ml-0 flex flex-col px-0 py-0"
       >
         {categories.map(({ id, children, hideTitle }) => (
           <React.Fragment key={id}>
             {!hideTitle && (
-              <p className="py-2 px-3 text-sm self-start">{t("navdrawerTitle", { title: id })}</p>
+              <p className="self-start px-3 py-2 text-sm">{t("navdrawerTitle", { title: id })}</p>
             )}
             {children.map((navDrawerItem) => (
               <li itemProp="name" key={navDrawerItem.id} className="list-none">

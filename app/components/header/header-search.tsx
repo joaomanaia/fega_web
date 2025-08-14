@@ -86,7 +86,7 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ className }) => {
           id="search-results"
           role="listbox"
           className={cn(
-            "absolute hidden p-3 w-full bg-surfaceVariant rounded-b-2xl ring-offset-surfaceVariant/[0.38] peer-focus:ring-1 peer-focus:ring-surfaceVariant peer-focus:ring-offset-2",
+            "absolute hidden p-3 w-full bg-surface-variant rounded-b-2xl ring-offset-surface-variant/38 peer-focus:ring-1 peer-focus:ring-surface-variant peer-focus:ring-offset-2",
             inputRef.current.value && isFocused && "block z-40"
           )}
         >
@@ -124,7 +124,7 @@ export const SearchedUser: React.FC<SearchedUserProps> = ({ user, onClick }) => 
     <Link
       href={user.username}
       onClick={onClick}
-      className="flex z-50 rounded-2xl hover:bg-surfaceVariant-foreground/10 items-center px-3 py-2 gap-3 transition"
+      className="flex z-50 rounded-2xl hover:bg-surface-variant-foreground/10 items-center px-3 py-2 gap-3 transition"
     >
       <UserAvatar src={user.avatar_url} name={user.full_name} />
       <div className="flex flex-col">

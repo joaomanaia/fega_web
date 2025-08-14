@@ -37,7 +37,7 @@ interface DirectionLinkProps {
 const DirectionLink: React.FC<DirectionLinkProps> = ({ point, type }) => {
   return (
     <Link
-      className="text-sm text-center w-fit bg-surfaceVariant/50 hover:bg-surfaceVariant/70 text-surfaceVariant-foreground px-4 py-2 rounded-xl cursor-pointer"
+      className="text-sm text-center w-fit bg-surface-variant/50 hover:bg-surface-variant/70 text-surface-variant-foreground px-4 py-2 rounded-xl cursor-pointer"
       href={getDirectionUrl(point, type)}
     >
       {type === "google" ? "Google Maps" : type === "apple" ? "Apple Maps" : "Waze"}

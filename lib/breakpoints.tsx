@@ -1,11 +1,14 @@
 "use client"
 
 import { useMediaQuery } from "react-responsive"
-import resolveConfig from "tailwindcss/resolveConfig"
-import tailwindConfig from "../basetailwindconfig"
 
-const fullConfig = resolveConfig(tailwindConfig)
-const breakpoints = fullConfig.theme.screens
+const breakpoints = {
+  sm: "40rem", // 640px
+  md: "48rem", // 768px
+  lg: "64rem", // 1024px
+  xl: "80rem", // 1280px
+  "2xl": "96rem", // 1536px
+} as const
 
 type BreakpointKey = keyof typeof breakpoints
 

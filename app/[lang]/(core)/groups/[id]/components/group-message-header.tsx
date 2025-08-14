@@ -14,11 +14,11 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({ group, c
   return (
     <div
       className={cn(
-        "flex items-center w-full p-3 mb-1 rounded-[20px] bg-surfaceVariant",
+        "flex items-center w-full p-3 mb-1 rounded-[20px] bg-surface-variant",
         className
       )}
     >
-      <BackIconButton className="text-surfaceVariant-foreground mr-2" />
+      <BackIconButton className="text-surface-variant-foreground mr-2" />
 
       <Link href={`/groups/${group.id}/info`}>
         <UserAvatar src={group.icon_url} name={group.name} />
@@ -26,7 +26,7 @@ export const GroupMessageHeader: React.FC<GroupMessageHeaderProps> = ({ group, c
 
       <Link
         href={`/groups/${group.id}/info`}
-        className="ml-2 grow truncate text-surfaceVariant-foreground"
+        className="ml-2 grow truncate text-surface-variant-foreground"
       >
         {group.name}
       </Link>
@@ -40,7 +40,7 @@ export const GroupMessageHeaderSkeleton: React.FC<{ className?: string }> = ({ c
   return (
     <div
       className={cn(
-        "flex items-center w-full p-3 mb-1 rounded-[20px] bg-surfaceVariant",
+        "flex items-center w-full p-3 mb-1 rounded-[20px] bg-surface-variant",
         className
       )}
     >

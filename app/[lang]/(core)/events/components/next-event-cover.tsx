@@ -39,7 +39,7 @@ export const NextEventCover: React.FC<NextEventCoverProps> = ({ event }) => {
           <Link href={`/events/${event.id}`}>{t("seeMoreInfo")}</Link>
         </Button>
       </div>
-      <div className="relative h-full w-full aspect-[2/1] lg:aspect-[3/2] xl:aspect-[2/1]">
+      <div className="relative h-full w-full aspect-2/1 lg:aspect-3/2 xl:aspect-2/1">
         <Image
           src={event.coverImage}
           alt="Next Event Cover"

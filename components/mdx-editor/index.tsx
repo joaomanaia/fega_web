@@ -65,7 +65,7 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
       >
         <ResizablePanel>
           <Textarea
-            className="w-full h-full resize-none p-4 border-none rounded-none bg-surfaceVariant/20 text-surfaceVariant-foreground"
+            className="w-full h-full resize-none p-4 border-none rounded-none bg-surface-variant/20 text-surface-variant-foreground"
             placeholder="Type your content here..."
             maxLength={maxLength}
             {...field}

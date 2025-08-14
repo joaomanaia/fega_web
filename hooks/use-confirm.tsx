@@ -102,7 +102,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
                 className={clsx(
                   "border-transparent",
                   variant === "error" &&
-                    "bg-errorContainer/30 text-surface !placeholder-errorContainer-foreground"
+                    "bg-error-container/30 text-surface placeholder-error-container-foreground!"
                 )}
               />
             </>
@@ -112,7 +112,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
               <Button
                 onClick={handleCancel}
                 variant={variant === "error" ? "destructive" : "ghost"}
-                className={variant === "error" ? "hover:bg-errorContainer/10" : ""}
+                className={variant === "error" ? "hover:bg-error-container/10" : ""}
               >
                 {cancelButtonContent || t("cancel")}
               </Button>
@@ -123,7 +123,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
               variant={variant === "error" ? "destructiveContainer" : "ghost"}
               className={
                 variant === "error"
-                  ? "disabled:bg-transparent disabled:!text-error-foreground/40"
+                  ? "disabled:bg-transparent disabled:text-error-foreground/40!"
                   : ""
               }
             >

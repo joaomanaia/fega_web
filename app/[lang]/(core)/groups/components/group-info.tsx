@@ -30,7 +30,7 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
         authorName={group.author_name}
         createdAt={group.created_at}
       />
-      <div className="rounded-2xl bg-surfaceVariant/[0.28] w-full min-h-0 overflow-y-hidden">
+      <div className="rounded-2xl bg-surface-variant/[0.28] w-full min-h-0 overflow-y-hidden">
         <GroupMembers group={group} isDialog={isDialog} />
       </div>
     </>
@@ -104,12 +104,12 @@ const CreatedBy: React.FC<CreatedByProps> = ({
 export const GroupInfoSkeleton: React.FC = () => {
   return (
     <>
-      <Skeleton className="mt-2 w-1/2 h-8 bg-surfaceVariant/[0.28]" />
+      <Skeleton className="mt-2 w-1/2 h-8 bg-surface-variant/[0.28]" />
       <div className="flex flex-col w-full gap-4 py-4">
-        <Skeleton className="self-center size-24 rounded-full bg-surfaceVariant/[0.28]" />
-        <Skeleton className="w-1/3 h-4 bg-surfaceVariant/[0.28]" />
+        <Skeleton className="self-center size-24 rounded-full bg-surface-variant/[0.28]" />
+        <Skeleton className="w-1/3 h-4 bg-surface-variant/[0.28]" />
       </div>
-      <Skeleton className="rounded-2xl p-4 bg-surfaceVariant/[0.28] w-full h-96" />
+      <Skeleton className="rounded-2xl p-4 bg-surface-variant/[0.28] w-full h-96" />
     </>
   )
 }

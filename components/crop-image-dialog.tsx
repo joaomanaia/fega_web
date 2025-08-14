@@ -107,7 +107,7 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
             min={1}
             max={3}
             step={0.1}
-            className="flex-grow"
+            className="grow"
             aria-labelledby="Zoom"
           />
         </div>
@@ -120,7 +120,7 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
             min={0}
             max={360}
             step={1}
-            className="flex-grow"
+            className="grow"
             aria-labelledby="Rotation"
           />
         </div>

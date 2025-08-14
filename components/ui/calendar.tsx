@@ -53,12 +53,12 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 modifiers?.today && "bg-tertiary text-tertiary-foreground hover:bg-tertiary/90 hover:text-tertiary-foreground focus:bg-tertiary focus:text-tertiary-foreground",
                 modifiers?.selected &&
                   "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                modifiers?.outside && "text-surfaceVariant opacity-50 pointer-events-none",
-                modifiers?.disabled && "opacity-50 text-surfaceVariant",
+                modifiers?.outside && "text-surface-variant opacity-50 pointer-events-none",
+                modifiers?.disabled && "opacity-50 text-surface-variant",
                 modifiers?.hidden && "invisible",
                 modifiers.range_middle &&
-                  "bg-transparent text-surfaceVariant-foreground hover:bg-surfaceVariant hover:text-surfaceVariant-foreground rounded-none last:rounded-e-md first:rounded-s-md",
-                modifiers.outside && modifiers.selected && "bg-surfaceVariant/40 text-surfaceVariant-foreground"
+                  "bg-transparent text-surface-variant-foreground hover:bg-surface-variant hover:text-surface-variant-foreground rounded-none last:rounded-e-md first:rounded-s-md",
+                modifiers.outside && modifiers.selected && "bg-surface-variant/40 text-surface-variant-foreground"
               )}
               {...buttonProps}
               aria-selected={modifiers.selected || buttonProps["aria-selected"]}

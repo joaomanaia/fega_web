@@ -69,7 +69,7 @@ interface EmptyEventsPageProps {
 const EmptyEventsPage: React.FC<EmptyEventsPageProps> = ({ emptyNewsText }) => {
   return (
     <MainContainer className="h-full mb-3 flex flex-col items-center justify-center">
-      <div className="bg-surfaceVariant/40 text-surfaceVariant-foreground p-8 lg:p-12 rounded-full">
+      <div className="bg-surface-variant/40 text-surface-variant-foreground p-8 lg:p-12 rounded-full">
         <NewspaperIcon className="size-20 lg:size-40" />
       </div>
       <h1 className="text-xl lg:text-2xl font-bold mt-8 text-center">{emptyNewsText}</h1>

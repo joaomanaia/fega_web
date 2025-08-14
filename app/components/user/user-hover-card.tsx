@@ -88,7 +88,7 @@ const UserHoverCardContent = ({ id }: UserHoverCardContent) => {
 const UserHoverCardSkeleton = () => {
   return (
     <div className="flex w-full items-center justify-center">
-      <Loader2 className="size-8 text-surfaceVariant animate-spin" />
+      <Loader2 className="size-8 text-surface-variant animate-spin" />
     </div>
   )
 }
