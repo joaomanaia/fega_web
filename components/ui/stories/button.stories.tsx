@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
+import { TestTubeIcon } from "lucide-react"
 import { action } from "storybook/actions"
 import { Button } from "../button"
-import { TestTubeIcon } from "lucide-react"
 
 const meta = {
   title: "Components/ui/Button",
@@ -162,5 +162,9 @@ export const IconOnly: Story = {
     disabled: false,
     onClick: action("icon only click"),
   },
-  render: (args) => <Button {...args}><TestTubeIcon /></Button>,
+  render: (args) => (
+    <Button {...args}>
+      <TestTubeIcon />
+    </Button>
+  ),
 }

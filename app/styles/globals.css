@@ -12,6 +12,13 @@
     var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
 
+  --color-card: hsl(var(--surface-variant) / 0.2);
+  --color-card-foreground: hsl(var(--on-surface-variant));
+  --color-destructive: hsl(var(--error));
+  --color-destructive-foreground: hsl(var(--on-error));
+  --color-muted: hsl(var(--surface-variant) / 0.5);
+  --color-muted-foreground: hsl(var(--on-surface-variant));
+
   --color-border: hsl(var(--outline));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));

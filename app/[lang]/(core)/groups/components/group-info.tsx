@@ -1,11 +1,10 @@
+import { useTranslations, type Locale } from "next-intl"
+import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
 import { GroupMembers } from "@/components/group/members/group-members"
-import { Skeleton } from "@/components/ui/skeleton"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "@/src/i18n/navigation"
-import { type Locale } from "next-intl"
-import { useTranslations } from "next-intl"
 
 interface GroupInfoProps {
   groupId: string
@@ -21,7 +20,7 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
 
   return (
     <>
-      <h2 className="mt-2 text-2xl font-bold truncate w-full text-center">{group.name}</h2>
+      <h2 className="mt-2 w-full truncate text-center text-2xl font-bold">{group.name}</h2>
       <GroupInfoHeader
         groupName={group.name ?? "Unknown"}
         iconUrl={group.icon_url ?? undefined}
@@ -30,7 +29,7 @@ export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDia
         authorName={group.author_name}
         createdAt={group.created_at}
       />
-      <div className="rounded-2xl bg-surface-variant/[0.28] w-full min-h-0 overflow-y-hidden">
+      <div className="bg-surface-variant/[0.28] min-h-0 w-full overflow-y-hidden rounded-2xl">
         <GroupMembers group={group} isDialog={isDialog} />
       </div>
     </>
@@ -55,8 +54,8 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
   createdAt,
 }) => {
   return (
-    <div className="flex flex-col w-full gap-4 py-4">
-      <UserAvatar variant="large" src={iconUrl} name={groupName} className="self-center" />
+    <div className="flex w-full flex-col gap-4 py-4">
+      <UserAvatar size="large" src={iconUrl} name={groupName} className="self-center" />
       <CreatedBy
         authorUid={authorUid}
         authorName={authorName}
@@ -104,12 +103,12 @@ const CreatedBy: React.FC<CreatedByProps> = ({
 export const GroupInfoSkeleton: React.FC = () => {
   return (
     <>
-      <Skeleton className="mt-2 w-1/2 h-8 bg-surface-variant/[0.28]" />
-      <div className="flex flex-col w-full gap-4 py-4">
-        <Skeleton className="self-center size-24 rounded-full bg-surface-variant/[0.28]" />
-        <Skeleton className="w-1/3 h-4 bg-surface-variant/[0.28]" />
+      <Skeleton className="bg-surface-variant/[0.28] mt-2 h-8 w-1/2" />
+      <div className="flex w-full flex-col gap-4 py-4">
+        <Skeleton className="bg-surface-variant/[0.28] size-24 self-center rounded-full" />
+        <Skeleton className="bg-surface-variant/[0.28] h-4 w-1/3" />
       </div>
-      <Skeleton className="rounded-2xl p-4 bg-surface-variant/[0.28] w-full h-96" />
+      <Skeleton className="bg-surface-variant/[0.28] h-96 w-full rounded-2xl p-4" />
     </>
   )
 }

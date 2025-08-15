@@ -6,10 +6,10 @@ import { withThemeByClassName } from "@storybook/addon-themes"
 import type { Preview } from "@storybook/nextjs"
 import { Toaster } from "sonner"
 import { DocsContextProps, Parameters, Renderer } from "storybook/internal/types"
-import { themes } from "storybook/theming"
 import { cn } from "../lib/utils"
 import { ThemeProvider } from "../src/providers/theme-provider"
 import nextIntl from "./next-intl"
+import { dark, light } from "./themes"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -24,6 +24,7 @@ const preview: Preview = {
       fr: { icon: "🇵🇹", title: "Português", right: "PT" },
     },
   },
+  tags: ["autodocs"],
   parameters: {
     controls: {
       matchers: {
@@ -32,7 +33,7 @@ const preview: Preview = {
       },
     },
     docs: {
-      theme: themes.light,
+      theme: light,
       renderer: () => {
         const renderer = new DocsRenderer()
         const oldRender = renderer.render
@@ -44,7 +45,7 @@ const preview: Preview = {
         ) => {
           const theme = (context as any).store.userGlobals.globals.theme
 
-          docsParameter.theme = theme === "dark" ? themes.dark : themes.light
+          docsParameter.theme = theme === "dark" ? dark : light
 
           const result = await oldRender.call(renderer, context, docsParameter, element)
 

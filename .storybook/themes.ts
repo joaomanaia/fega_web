@@ -1,9 +1,18 @@
 import { create } from "storybook/theming/create"
+
 // import "../app/styles/tokens.css"
 // import "../app/styles/globals.css"
 
-export default create({
+export const light = create({
   base: "light",
+  brandTitle: "Fega",
+  brandUrl: "https://fega.vercel.app",
+  // brandImage: "/fega_round-192x192.png",
+  brandTarget: "_self",
+})
+
+export const dark = create({
+  base: "dark",
   brandTitle: "Fega",
   brandUrl: "https://fega.vercel.app",
   // brandImage: "/fega_round-192x192.png",
