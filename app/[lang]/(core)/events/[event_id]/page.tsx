@@ -1,17 +1,18 @@
-import { type CalendarEvent, calendarEntityToModel } from "@/types/CalendarEvent"
-import { MainContainer } from "@/app/components/m3/main-container"
+import { error } from "console"
+import { cache, Suspense } from "react"
 import Image from "next/image"
-import { CalendarIcon, MapPinIcon } from "lucide-react"
-import { DateText } from "../components/date-text"
-import { MoreInfo } from "./components/more-info"
-import { Directions } from "./components/directions"
-import { MDXRemote } from "next-mdx-remote/rsc"
-import remarkGfm from "remark-gfm"
-import { type Metadata } from "next"
-import { createEventJsonLd } from "../utils/eventMetadataUtil"
-import { cache } from "react"
 import { notFound } from "next/navigation"
+import { CalendarIcon, MapPinIcon } from "lucide-react"
+import { type Metadata } from "next"
+import { MDXRemote, type MDXComponents } from "next-mdx-remote-client/rsc"
+import remarkGfm from "remark-gfm"
+import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/server"
+import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
+import { DateText } from "../components/date-text"
+import { createEventJsonLd } from "../utils/eventMetadataUtil"
+import { Directions } from "./components/directions"
+import { MoreInfo } from "./components/more-info"
 
 interface EventIdPageProps {
   params: Promise<{
@@ -57,6 +58,12 @@ export async function generateMetadata(props: EventIdPageProps): Promise<Metadat
   }
 }
 
+const components: MDXComponents = {
+  wrapper: function ({ children }: React.ComponentPropsWithoutRef<"div">) {
+    return <div className="prose dark:prose-invert mt-4">{children}</div>
+  },
+}
+
 export default async function EventIdPage(props: EventIdPageProps) {
   const params = await props.params
   const event = await getEventById(params.event_id)
@@ -68,12 +75,12 @@ export default async function EventIdPage(props: EventIdPageProps) {
   const jsonLd = createEventJsonLd(event)
 
   return (
-    <MainContainer className="flex flex-col items-center h-full mb-3 overflow-y-auto overflow-x-hidden">
+    <MainContainer className="mb-3 flex h-full flex-col items-center overflow-x-hidden overflow-y-auto">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="relative w-full aspect-video lg:w-2/3">
+      <div className="relative aspect-video w-full lg:w-2/3">
         <Image
           src={event.coverImage}
           alt="Next Event Cover"
@@ -82,7 +89,7 @@ export default async function EventIdPage(props: EventIdPageProps) {
         />
       </div>
 
-      <div className="flex flex-col w-full lg:w-2/3 mt-4 lg:mt-6 xl:mt-8 items-start">
+      <div className="mt-4 flex w-full flex-col items-start lg:mt-6 lg:w-2/3 xl:mt-8">
         <div className="flex flex-wrap gap-2">
           <div className="flex items-center justify-center gap-2">
             <CalendarIcon className="size-5" />
@@ -95,7 +102,7 @@ export default async function EventIdPage(props: EventIdPageProps) {
           </div>
         </div>
 
-        <div className="prose dark:prose-invert mt-4">
+        <Suspense fallback={<div className="mt-4">Loading content...</div>}>
           <MDXRemote
             source={event.content}
             options={{
@@ -103,8 +110,14 @@ export default async function EventIdPage(props: EventIdPageProps) {
                 remarkPlugins: [remarkGfm],
               },
             }}
+            components={components}
+            onError={({ error }) => (
+              <>
+                <p className="text-destructive">Error loading content: {error.message}</p>
+              </>
+            )}
           />
-        </div>
+        </Suspense>
 
         <Directions event={event} />
 

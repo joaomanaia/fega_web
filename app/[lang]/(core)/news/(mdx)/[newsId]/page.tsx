@@ -1,10 +1,10 @@
+import { cache } from "react"
+import { notFound } from "next/navigation"
+import { type Metadata } from "next"
+import { MDXRemote } from "next-mdx-remote-client/rsc"
+import remarkGfm from "remark-gfm"
 import { createClient } from "@/lib/supabase/server"
 import { type Tables } from "@/types/database.types"
-import { type Metadata } from "next"
-import { MDXRemote } from "next-mdx-remote/rsc"
-import { notFound } from "next/navigation"
-import { cache } from "react"
-import remarkGfm from "remark-gfm"
 
 interface NewsIdPageProps {
   params: Promise<{ newsId: string }>

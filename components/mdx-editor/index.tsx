@@ -72,11 +72,8 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
           <>
             <ResizableHandle withHandle />
             <ResizablePanel>
-              <ScrollArea className="h-full w-full">
-                <DynamicMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  className="prose prose-invert h-full w-full p-4"
-                >
+              <ScrollArea className="prose prose-invert h-full w-full p-4">
+                <DynamicMarkdown remarkPlugins={[remarkGfm]}>
                   {field.value === "" ? "Nothing to preview" : field.value}
                 </DynamicMarkdown>
               </ScrollArea>
