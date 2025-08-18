@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-
 import { SocialShareRow, socialValues } from "../share/social-share-button"
 
 const meta = {
@@ -35,5 +34,6 @@ export const Default: Story = {
   args: {
     url: "https://fega.vercel.app",
     text: "See this cool thing!",
+    socials: ["facebook", "x", "whatsapp", "email", "reddit"],
   },
 }

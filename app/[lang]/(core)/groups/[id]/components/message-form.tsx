@@ -1,18 +1,18 @@
 "use client"
 
-import sendGroupMessage from "@/core/actions/group/sendGroupMessage"
-import { EmojiPicker } from "./emoji-picker"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { XIcon } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { XIcon } from "lucide-react"
-import ReplyToType from "@/types/ReplyToType"
-import { cn } from "@/lib/utils"
-import { Hint } from "@/components/hint"
 import SendMessageButton from "@/app/components/message/SendMessageButton"
+import { Hint } from "@/components/hint"
+import sendGroupMessage from "@/core/actions/group/sendGroupMessage"
+import { cn } from "@/lib/utils"
+import ReplyToType from "@/types/ReplyToType"
+import { EmojiPicker } from "./emoji-picker"
 
 interface GroupMessageFormProps {
   groupId: string
@@ -51,7 +51,7 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({
 
           await sendGroupMessage(groupId, message, replyTo?.messageId)
         }}
-        className="flex space-x-2 w-full items-end justify-center"
+        className="flex w-full items-end justify-center space-x-2"
       >
         <FormField
           control={form.control}
@@ -59,11 +59,11 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({
           render={({ field }) => (
             <FormItem className="grow">
               <FormControl>
-                <div className="flex space-x-2 items-end justify-center">
+                <div className="flex items-end justify-center space-x-2">
                   <EmojiPicker
                     onEmojiClick={(emoji) => field.onChange(`${field.value} ${emoji}`)}
                   />
-                  <div className="flex flex-col grow">
+                  <div className="flex grow flex-col">
                     {replyTo && <ReplyContent replyTo={replyTo} clearReplyTo={clearReplyTo} />}
                     <Input
                       disabled={form.formState.isSubmitting}
@@ -80,7 +80,7 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({
           )}
         />
 
-        {form.getValues("message") && <SendMessageButton className="rounded-2xl size-11" />}
+        {form.watch("message") && <SendMessageButton className="size-11 rounded-2xl" />}
       </form>
     </Form>
   )
@@ -96,12 +96,12 @@ interface ReplyContentProps {
 const ReplyContent: React.FC<ReplyContentProps> = ({ replyTo, clearReplyTo }) => {
   return (
     <>
-      <div className="flex items-center space-x-2 rounded-t-md pl-3 pr-1 py-2 bg-surface-variant dark:bg-surface-variant/20">
-        <div className="flex flex-col grow justify-center space-y-1">
+      <div className="bg-surface-variant dark:bg-surface-variant/20 flex items-center space-x-2 rounded-t-md py-2 pr-1 pl-3">
+        <div className="flex grow flex-col justify-center space-y-1">
           <p className="text-sm">
             Replying to <span className="font-bold">{replyTo.replyToName}</span>
           </p>
-          <p className="text-xs truncate">{replyTo.message}</p>
+          <p className="truncate text-xs">{replyTo.message}</p>
         </div>
 
         <Hint label="Clear reply" side="top" align="end">

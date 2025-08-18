@@ -15,14 +15,15 @@ const buttonVariants = cva(
         destructiveContainer:
           "bg-error-container text-error-container-foreground hover:bg-error-container/90 focus-visible:ring-error-container disabled:bg-surface-foreground/12 disabled:text-surface-foreground/38 shadow-xs",
         outline:
-          "border-surface-variant disabled:border-foreground/12 text-primary disabled:text-foreground/38 hover:bg-primary/8 border bg-inherit shadow-xs",
+          "disabled:border-foreground/12 text-primary disabled:text-foreground/38 hover:bg-primary/8 border bg-inherit shadow-xs",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 disabled:bg-surface-foreground/12 disabled:text-surface-foreground/38 shadow-xs",
         tonal:
           "bg-secondary-container text-secondary-container-foreground disabled:bg-surface-foreground/12 disabled:text-surface-foreground/38 hover:bg-secondary-container/80 border-none",
         surfaceVariant:
           "bg-surface-variant text-surface-variant-foreground disabled:bg-surface-foreground/12 disabled:text-surface-foreground/38 hover:bg-surface-variant/80 border-none",
-        ghost: "text-primary disabled:text-foreground/38 hover:bg-primary/8",
+        ghost:
+          "text-foregound disabled:text-foreground/38 aria-disabled:text-foreground/38 hover:bg-primary/8",
         link: "text-primary disabled:text-foreground/38 underline-offset-4 hover:underline",
       },
       size: {

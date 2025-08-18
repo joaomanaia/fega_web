@@ -4,8 +4,8 @@ import { Inter as FontSans } from "next/font/google"
 import { DocsRenderer } from "@storybook/addon-docs"
 import { withThemeByClassName } from "@storybook/addon-themes"
 import type { Preview } from "@storybook/nextjs"
-import { Toaster } from "sonner"
 import { DocsContextProps, Parameters, Renderer } from "storybook/internal/types"
+import { Toaster } from "../components/ui/sonner"
 import { cn } from "../lib/utils"
 import { ThemeProvider } from "../src/providers/theme-provider"
 import nextIntl from "./next-intl"
@@ -62,7 +62,7 @@ const preview: Preview = {
       <main className={cn("font-sans antialiased", fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange>
           <Story />
-          <Toaster />
+          <Toaster richColors />
         </ThemeProvider>
       </main>
     ),

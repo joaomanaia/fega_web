@@ -1,9 +1,9 @@
 import { FileWarningIcon } from "lucide-react"
-import { getPosts } from "@/features/post/get-posts"
-import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
-import { createClient } from "@/lib/supabase/server"
-import { PostSkeleton } from "@/app/components/post/Post"
 import { useTranslations } from "next-intl"
+import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
+import { PostSkeleton } from "@/app/components/post/Post"
+import { getPosts } from "@/features/post/get-posts"
+import { createClient } from "@/lib/supabase/server"
 
 interface PostsContentProps {
   uid?: string
@@ -41,8 +41,8 @@ const DefaultEmptyPostsContent = () => {
   const t = useTranslations("Post.emptyPosts")
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <FileWarningIcon className="w-16 h-16 text-secondary/50 mb-4" />
+    <div className="flex h-full flex-col items-center justify-center">
+      <FileWarningIcon className="text-secondary/50 mb-4 h-16 w-16" />
       <h2 className="text-xl font-semibold">{t("header")}</h2>
       <p className="text-secondary/50 mt-2">{t("description.default")}</p>
     </div>

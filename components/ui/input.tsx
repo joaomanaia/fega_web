@@ -1,53 +1,48 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.ComponentProps<"input"> {
   startAdornment?: React.JSX.Element
   endAdornment?: React.JSX.Element
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, startAdornment, endAdornment, ...props }, ref) => {
-    const hasAdornment = Boolean(startAdornment) || Boolean(endAdornment)
+function Input({ className, type, startAdornment, endAdornment, ...props }: InputProps) {
+  const hasAdornment = Boolean(startAdornment) || Boolean(endAdornment)
 
-    return (
-      <>
-        {hasAdornment ? (
-          <div
-            className={cn(
-              "flex items-center justify-center gap-2 px-3 py-2 h-10 rounded-md border border-surface-variant bg-surface-variant/38 ring-offset-surface placeholder:text-foreground/60 focus-within:ring-2 focus-within:ring-surface-variant focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 transition",
-              className
-            )}
-            data-disabled={props.disabled}
-          >
-            {startAdornment && <div className={cn("text-foreground/60")}>{startAdornment}</div>}
-            <input
-              type={type}
-              className={
-                "flex h-full w-full bg-transparent text-sm file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground/60 shadow-none outline-hidden border-none focus-visible:outline-hidden focus-visible:border-none focus-visible:shadow-none"
-              }
-              ref={ref}
-              {...props}
-            />
-            {endAdornment && <div className={cn("text-foreground/60")}>{endAdornment}</div>}
-          </div>
-        ) : (
+  return (
+    <>
+      {hasAdornment ? (
+        <div
+          className={cn(
+            "border-input bg-surface-variant/38 ring-offset-surface placeholder:text-foreground/60 focus-within:ring-surface-variant flex h-10 items-center justify-center gap-2 rounded-md border px-3 py-2 transition focus-within:ring-2 focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
+            className
+          )}
+          data-disabled={props.disabled}
+        >
+          {startAdornment && <div className="text-foreground/60">{startAdornment}</div>}
           <input
             type={type}
-            className={cn(
-              "flex h-10 w-full rounded-md border border-surface-variant bg-surface-variant/38 px-3 py-2 text-sm ring-offset-surface file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-foreground/60 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-surface-variant focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition",
-              startAdornment && "pl-10",
-              endAdornment && "pr-10",
-              className
-            )}
-            ref={ref}
+            className={
+              "placeholder:text-foreground/60 flex h-full w-full border-none bg-transparent text-sm shadow-none outline-hidden file:bg-transparent file:text-sm file:font-medium focus-visible:border-none focus-visible:shadow-none focus-visible:outline-hidden"
+            }
             {...props}
           />
-        )}
-      </>
-    )
-  }
-)
-Input.displayName = "Input"
+          {endAdornment && <div className="text-foreground/60">{endAdornment}</div>}
+        </div>
+      ) : (
+        <input
+          type={type}
+          className={cn(
+            "border-input file:text-foreground selection:bg-primary selection:text-primary-foreground bg-surface-variant/38 ring-offset-surface placeholder:text-foreground/60 focus-visible:ring-surface-variant flex h-10 w-full rounded-md border px-3 py-2 text-sm transition file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            startAdornment && "pl-10",
+            endAdornment && "pr-10",
+            className
+          )}
+          {...props}
+        />
+      )}
+    </>
+  )
+}
 
 export { Input }

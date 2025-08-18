@@ -4,7 +4,6 @@ import { Slider } from "../slider"
 const meta = {
   title: "Components/ui/Slider",
   component: Slider,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -34,10 +33,23 @@ const meta = {
     step: {
       control: {
         type: "number",
-        min: 0,
+        min: 1,
         max: 100,
         step: 1,
       },
+    },
+    disabled: {
+      control: {
+        type: "boolean",
+      },
+      defaultValue: false,
+    },
+    orientation: {
+      control: {
+        type: "select",
+      },
+      options: ["horizontal", "vertical"],
+      defaultValue: "horizontal",
     },
   },
 } satisfies Meta<typeof Slider>
@@ -46,11 +58,24 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Horizontal: Story = {
   args: {
     defaultValue: [33],
     min: 0,
     max: 100,
     step: 1,
+    disabled: false,
+    orientation: "horizontal",
+  },
+}
+
+export const Vertical: Story = {
+  args: {
+    defaultValue: [33],
+    min: 0,
+    max: 100,
+    step: 1,
+    disabled: false,
+    orientation: "vertical",
   },
 }

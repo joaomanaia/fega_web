@@ -1,5 +1,7 @@
 "use client"
 
+import { MoreVerticalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import {
   ContextMenu,
@@ -18,8 +20,6 @@ import {
 import { useModal } from "@/hooks/use-modal-store"
 import { Link } from "@/src/i18n/navigation"
 import type { GroupViewType } from "@/types/group/GroupType"
-import { MoreVerticalIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
 
 interface BaseGroupOptions {
   group: GroupViewType
@@ -38,13 +38,13 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
         <Button
           variant="ghost"
           size="icon"
-          className="text-inherit bg-transparent hover:bg-primary-foreground/5 transition"
+          className="hover:bg-primary-foreground/5 bg-transparent text-inherit transition"
         >
           <MoreVerticalIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-56">
-        <DropdownMenuItem className="px-3 py-2 cursor-pointer" asChild>
+        <DropdownMenuItem className="cursor-pointer px-3 py-2" asChild>
           <Link href={`/groups/${group.id}/info`}>{t("groupInfo")}</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -52,20 +52,20 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
           <>
             <DropdownMenuItem
               onClick={() => onOpen("edit-group", { group })}
-              className="px-3 py-2 cursor-pointer"
+              className="cursor-pointer px-3 py-2"
             >
               {t("editGroup")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onOpen("group-invite", { group })}
-              className="px-3 py-2 cursor-pointer"
+              className="cursor-pointer px-3 py-2"
             >
               {t("addMembers")}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => onOpen("delete-group", { group })}
-              variant="error"
-              className="px-3 py-2 cursor-pointer"
+              variant="destructive"
+              className="cursor-pointer px-3 py-2"
             >
               {t("deleteGroup")}
             </DropdownMenuItem>
@@ -74,8 +74,8 @@ export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ grou
         {!isOwner && (
           <DropdownMenuItem
             onClick={() => onOpen("exit-group", { group })}
-            variant="error"
-            className="px-3 py-2 cursor-pointer"
+            variant="destructive"
+            className="cursor-pointer px-3 py-2"
           >
             {t("leaveGroup")}
           </DropdownMenuItem>
@@ -114,13 +114,16 @@ export const GroupOptionsContextMenu: React.FC<GroupOptionsContextMenu> = ({
             <ContextMenuItem onClick={() => onOpen("group-invite", { group })}>
               {t("addMembers")}
             </ContextMenuItem>
-            <ContextMenuItem variant="error" onClick={() => onOpen("delete-group", { group })}>
+            <ContextMenuItem
+              variant="destructive"
+              onClick={() => onOpen("delete-group", { group })}
+            >
               {t("deleteGroup")}
             </ContextMenuItem>
           </>
         )}
         {!isOwner && (
-          <ContextMenuItem variant="error" onClick={() => onOpen("exit-group", { group })}>
+          <ContextMenuItem variant="destructive" onClick={() => onOpen("exit-group", { group })}>
             {t("leaveGroup")}
           </ContextMenuItem>
         )}

@@ -1,17 +1,17 @@
 "use client"
 
-import { UserAvatar } from "@/app/components/user/user-avatar"
-import { CropImageDialog } from "@/components/crop-image-dialog"
+import { useState } from "react"
+import { PencilIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { UserAvatar } from "@/app/components/user/user-avatar"
+import { CropImageDialog } from "@/components/crop-image-dialog"
 import { useConfirm } from "@/hooks/use-confirm"
 import { cn } from "@/lib/utils"
-import { PencilIcon } from "lucide-react"
-import { useState } from "react"
 
 interface UserEditableAvatarProps {
   avatar: string | null
@@ -74,16 +74,16 @@ export const UserEditableAvatar: React.FC<UserEditableAvatarProps> = ({
           <button
             aria-label="Edit avatar"
             className={cn(
-              "relative group flex items-center transition justify-center top-0 right-0 p-1 rounded-full size-24",
+              "group relative top-0 right-0 flex size-24 items-center justify-center rounded-full p-1 transition",
               className
             )}
           >
             <UserAvatar
               src={avatar}
               name={name}
-              className="group-hover:opacity-50 size-full text-3xl transition"
+              className="size-full text-3xl transition group-hover:opacity-50"
             />
-            <PencilIcon className="absolute size-7 opacity-0 group-hover:opacity-100 transition" />
+            <PencilIcon className="absolute size-7 opacity-0 transition group-hover:opacity-100" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right">
@@ -92,7 +92,7 @@ export const UserEditableAvatar: React.FC<UserEditableAvatarProps> = ({
               Edit avatar
             </label>
           </DropdownMenuItem>
-          <DropdownMenuItem disabled={!avatar} onClick={handleRemoveAvatar} variant="error">
+          <DropdownMenuItem disabled={!avatar} onClick={handleRemoveAvatar} variant="destructive">
             Remove avatar
           </DropdownMenuItem>
         </DropdownMenuContent>

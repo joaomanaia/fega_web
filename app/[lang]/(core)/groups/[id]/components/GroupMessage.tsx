@@ -1,7 +1,12 @@
 "use client"
 
-import { SubmitButton } from "@/components/submit-button"
-import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { TooltipTrigger } from "@radix-ui/react-tooltip"
+import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as z from "zod"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,17 +35,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
-import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
-import { toast } from "sonner"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
-import { TooltipTrigger } from "@radix-ui/react-tooltip"
-import { useState } from "react"
-import ReplyToType from "@/types/ReplyToType"
+import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
+import { Hint } from "@/components/hint"
 import Link from "@/components/link"
+import { SubmitButton } from "@/components/submit-button"
+import { cn } from "@/lib/utils"
+import ReplyToType from "@/types/ReplyToType"
 
 type GroupMessageProps = {
   messageId: string
@@ -104,7 +104,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   const [moreOptionsOpen, setMoreOptionsOpen] = useState(false)
 
   return (
-    <li className="flex flex-col w-full group" id={messageId}>
+    <li className="group flex w-full flex-col" id={messageId}>
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
           <Link href={`/${username}`}>
@@ -123,7 +123,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
       <div
         className={cn(
           "flex items-center justify-center gap-2",
-          byLocalUser ? "self-end" : "self-start flex-row-reverse"
+          byLocalUser ? "self-end" : "flex-row-reverse self-start"
         )}
       >
         <>
@@ -133,7 +133,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
             size="icon"
             className="hidden group-hover:inline-flex"
           >
-            <ReplyIcon className="w-5 h-5 text-foreground" />
+            <ReplyIcon className="text-foreground h-5 w-5" />
           </Button>
           <MessageOptionsDropdown
             open={moreOptionsOpen}
@@ -153,16 +153,16 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
                 setMoreOptionsOpen(!moreOptionsOpen)
               }}
             >
-              <MoreVerticalIcon className="w-5 h-5 text-foreground" />
+              <MoreVerticalIcon className="text-foreground h-5 w-5" />
             </Button>
           </MessageOptionsDropdown>
         </>
 
-        <MessageDateTimeTooltip createdAt={createdAt}>
+        <Hint label={createdAt.toLocaleString()}>
           <div
             className={cn(
-              "p-3 w-fit rounded-2xl",
-              byLocalUser ? "bg-primary text-primary-foreground" : "border border-border",
+              "w-fit rounded-2xl p-3",
+              byLocalUser ? "bg-primary text-primary-foreground" : "border-border border",
               messageCorners(),
               margins()
             )}
@@ -177,7 +177,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
             )}
             <p>{message}</p>
           </div>
-        </MessageDateTimeTooltip>
+        </Hint>
       </div>
     </li>
   )
@@ -243,9 +243,9 @@ const ReplyMessage: React.FC<ReplyMessageProps> = ({
   return (
     <p
       className={cn(
-        "p-3 mb-2 w-full rounded-2xl",
+        "mb-2 w-full rounded-2xl p-3",
         toLocalUser ? "bg-primary text-primary-foreground" : "bg-surface text-surface-foreground",
-        byLocalUser && toLocalUser && "border border-surface",
+        byLocalUser && toLocalUser && "border-surface border",
         replyMessageToElement && "cursor-pointer"
       )}
       onClick={() => {
@@ -257,24 +257,6 @@ const ReplyMessage: React.FC<ReplyMessageProps> = ({
     >
       {message}
     </p>
-  )
-}
-
-interface MessageDateTimeTooltipProps {
-  createdAt: Date
-  children: React.ReactNode
-}
-
-const MessageDateTimeTooltip: React.FC<MessageDateTimeTooltipProps> = ({ createdAt, children }) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent className="bg-surface border-outline/10">
-          <p>{createdAt.toLocaleString()}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   )
 }
 
@@ -340,7 +322,7 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
                       <Input
                         required
                         maxLength={500}
-                        className="border-none mt-2"
+                        className="mt-2 border-none"
                         placeholder="Message"
                         {...field}
                       />

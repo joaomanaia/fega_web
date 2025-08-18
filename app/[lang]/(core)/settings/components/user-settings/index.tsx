@@ -106,14 +106,14 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
           </LargeButtonCollapsible>
 
           <LargeButton
-            variant="error"
+            variant="destructive"
             onClick={handleSignOut}
             title={t("signout.title")}
             description={t("signout.description")}
             className="text-center"
           />
           <LargeButton
-            variant="error"
+            variant="destructive"
             onClick={handleDeleteAccount}
             title={t("deleteAccount.title")}
             description={t("deleteAccount.description")}

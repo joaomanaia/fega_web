@@ -1,5 +1,8 @@
 "use client"
 
+import { MoreVerticalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,12 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreVerticalIcon } from "lucide-react"
 import { removeParticipant } from "@/app/actions/groupActions"
 import { useConfirm } from "@/hooks/use-confirm"
-import { toast } from "sonner"
 import { Link } from "@/src/i18n/navigation"
-import { useTranslations } from "next-intl"
 
 interface MemberOptionsMenuProps {
   groupId: string
@@ -77,7 +77,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
           {isLocalAdmin && !isLocalUser && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="error" onClick={handleRemove}>
+              <DropdownMenuItem variant="destructive" onClick={handleRemove}>
                 {t("remove.action")}
               </DropdownMenuItem>
             </>

@@ -1,5 +1,10 @@
 "use client"
 
+import { useTransition } from "react"
+import { useParams } from "next/navigation"
+import { ChevronsUpDown } from "lucide-react"
+import { useLocale, useTranslations, type Locale } from "next-intl"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronsUpDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { type Locale, useLocale, useTranslations } from "next-intl"
 import { usePathname, useRouter } from "@/src/i18n/navigation"
-import { useTransition } from "react"
-import { useParams } from "next/navigation"
 import { routing } from "@/src/i18n/routing"
 
 export const LocaleSwitcher: React.FC = () => {
@@ -43,7 +43,7 @@ export const LocaleSwitcher: React.FC = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button disabled={isPending} variant="outline" className="w-fit rounded-2xl">
-            <ChevronsUpDown size={16} className="mr-2" />
+            <ChevronsUpDown />
             {t("locale", { locale: locale })}
           </Button>
         </DropdownMenuTrigger>

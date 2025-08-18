@@ -1,16 +1,16 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable"
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import { ScrollArea } from "../ui/scroll-area"
-import { Button } from "../ui/button"
 import { Columns2Icon, PanelRightCloseIcon, PanelRightOpenIcon, RowsIcon } from "lucide-react"
-import { Hint } from "../hint"
-import { Textarea } from "../ui/textarea"
 import { type ControllerRenderProps } from "react-hook-form"
 import remarkGfm from "remark-gfm"
+import { cn } from "@/lib/utils"
+import { Hint } from "../hint"
+import { Button } from "../ui/button"
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable"
+import { ScrollArea } from "../ui/scroll-area"
+import { Textarea } from "../ui/textarea"
 
 interface MdxEditorProps {
   maxLength?: number
@@ -35,7 +35,7 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
         <h2 className="text-xl">Content Editor</h2>
         <Hint label="Toggle Preview">
           <Button
-            className="ml-auto text-surface-foreground"
+            className="text-surface-foreground ml-auto"
             variant="ghost"
             size="icon"
             type="button"
@@ -46,7 +46,7 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
         </Hint>
         <Hint label="Toggle Preview Direction">
           <Button
-            className="ml-2 text-surface-foreground"
+            className="text-surface-foreground ml-2"
             variant="ghost"
             size="icon"
             type="button"
@@ -59,13 +59,10 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
         </Hint>
       </div>
 
-      <ResizablePanelGroup
-        className="rounded-xl border border-outline/30 mt-3"
-        direction={previewDirection}
-      >
+      <ResizablePanelGroup className="mt-3 rounded-xl border" direction={previewDirection}>
         <ResizablePanel>
           <Textarea
-            className="w-full h-full resize-none p-4 border-none rounded-none bg-surface-variant/20 text-surface-variant-foreground"
+            className="bg-surface-variant/20 text-surface-variant-foreground h-full w-full resize-none rounded-none border-none p-4"
             placeholder="Type your content here..."
             maxLength={maxLength}
             {...field}
@@ -76,9 +73,10 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
             <ResizableHandle withHandle />
             <ResizablePanel>
               <ScrollArea className="h-full w-full">
-                <DynamicMarkdown 
+                <DynamicMarkdown
                   remarkPlugins={[remarkGfm]}
-                  className="h-full w-full prose prose-invert p-4">
+                  className="prose prose-invert h-full w-full p-4"
+                >
                   {field.value === "" ? "Nothing to preview" : field.value}
                 </DynamicMarkdown>
               </ScrollArea>

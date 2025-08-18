@@ -1,5 +1,5 @@
-import { LargeButtonCollapsible } from "@/components/large-button"
 import type { Meta, StoryObj } from "@storybook/nextjs"
+import { LargeButtonCollapsible } from "@/components/large-button"
 
 const meta = {
   title: "Components/LargeButton/Colapsible",
@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "error"],
+      options: ["outline", "destructive"],
     },
     disabled: {
       control: "boolean",
@@ -31,6 +31,8 @@ export const Default: Story = {
   args: {
     title: "Large button",
     description: "Content of the button",
+    variant: "outline",
+    disabled: false,
     children: "Content of the collapsible",
   },
 }
@@ -39,7 +41,8 @@ export const Error: Story = {
   args: {
     title: "Large button",
     description: "Content of the button",
-    variant: "error",
+    variant: "destructive",
+    disabled: false,
     children: "Content of the error collapsible",
   },
 }
