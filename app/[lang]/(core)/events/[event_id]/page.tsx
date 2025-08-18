@@ -1,4 +1,3 @@
-import { error } from "console"
 import { cache, Suspense } from "react"
 import Image from "next/image"
 import { notFound } from "next/navigation"

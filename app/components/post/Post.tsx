@@ -1,14 +1,14 @@
-import type { PostViewType } from "@/types/PostType"
-import PostImages from "./PostImages"
-import { VotePostAction } from "./actions/vote/VotePostAction"
-import { SharePostButton } from "./actions/share-post-button"
-import { cn } from "@/lib/utils"
-import { PostMoreActions } from "./post-more-actions"
+import { useFormatter, useNow } from "next-intl"
 import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
-import Linkify from "@/components/linkify"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
-import { useFormatter, useNow } from "next-intl"
+import Linkify from "@/components/linkify"
+import { cn } from "@/lib/utils"
+import type { PostViewType } from "@/types/PostType"
+import { SharePostButton } from "./actions/share-post-button"
+import { VotePostAction } from "./actions/vote/VotePostAction"
+import { PostMoreActions } from "./post-more-actions"
+import PostImages from "./PostImages"
 
 /**
  * @param schemaHasPart - if true, the post is part of a parent schema
@@ -28,8 +28,8 @@ const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, s
       itemType="https://schema.org/SocialMediaPosting"
       itemProp={schemaHasPart ? "hasPart" : undefined}
       className={cn(
-        "rounded-3xl flex flex-col gap-4",
-        !hideContainer && "p-4 bg-surface-variant/30 dark:bg-surface-variant/[0.28]",
+        "flex flex-col gap-4 rounded-3xl",
+        !hideContainer && "bg-surface-variant/30 dark:bg-surface-variant/[0.28] p-4",
         className
       )}
     >
@@ -48,7 +48,7 @@ const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, s
         userProfileUrl={post.author_avatar_url!}
       />
       <Linkify>
-        <h3 itemProp="headline" className="text-lg">
+        <h3 itemProp="headline" className="overflow-x-hidden text-lg text-ellipsis">
           {post.description}
         </h3>
       </Linkify>
@@ -88,18 +88,18 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       itemScope
       itemProp="author"
       itemType="https://schema.org/Person"
-      className="flex items-center w-full group"
+      className="group flex w-full items-center"
     >
       <meta itemProp="identifier" content={uid} />
       <meta itemProp="alternateName" content={`@${username}`} />
       <UserHoverCardWithLink uid={uid} username={username}>
         <UserAvatar src={userProfileUrl} name={userFullname} />
       </UserHoverCardWithLink>
-      <div className="flex flex-col ml-3 space-y-1 justify-center">
+      <div className="ml-3 flex flex-col justify-center space-y-1">
         <UserHoverCardWithLink
           uid={uid}
           username={username}
-          className="font-semibold my-0 next-link"
+          className="next-link my-0 font-semibold"
         >
           <span itemProp="name">{userFullname}</span>
         </UserHoverCardWithLink>
@@ -123,27 +123,27 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, class
   return (
     <div
       className={cn(
-        "rounded-3xl flex flex-col gap-4",
-        !hideContainer && "p-4 bg-surface-variant/30 dark:bg-surface-variant/[0.28]",
+        "flex flex-col gap-4 rounded-3xl",
+        !hideContainer && "bg-surface-variant/30 dark:bg-surface-variant/[0.28] p-4",
         className
       )}
     >
       <PostHeaderSkeleton />
-      <Skeleton className="w-full h-20" />
+      <Skeleton className="h-20 w-full" />
       <div className="flex items-center space-x-4">
-        <Skeleton className="w-12 h-6" />
-        <Skeleton className="w-12 h-6" />
+        <Skeleton className="h-6 w-12" />
+        <Skeleton className="h-6 w-12" />
       </div>
     </div>
   )
 }
 
 const PostHeaderSkeleton: React.FC = () => (
-  <div className="flex items-center w-full group">
-    <Skeleton className="w-12 h-12 rounded-full" />
-    <div className="flex flex-col ml-3 space-y-1 justify-center">
-      <Skeleton className="w-36 h-6" />
-      <Skeleton className="w-24 h-4" />
+  <div className="group flex w-full items-center">
+    <Skeleton className="h-12 w-12 rounded-full" />
+    <div className="ml-3 flex flex-col justify-center space-y-1">
+      <Skeleton className="h-6 w-36" />
+      <Skeleton className="h-4 w-24" />
     </div>
   </div>
 )

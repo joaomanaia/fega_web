@@ -20,10 +20,10 @@ export default async function HomePage(props: HomePageProps) {
   const t = await getTranslations("HomePage")
 
   return (
-    <main className="flex h-full w-full flex-col overflow-auto md:gap-4 md:pb-3 xl:flex-row-reverse xl:overflow-hidden">
+    <main className="flex h-full w-full flex-col overflow-x-hidden overflow-y-auto md:gap-4 md:pb-3 xl:flex-row-reverse xl:overflow-hidden">
       <h1 className="hidden">{t("title")}</h1>
       <CreatePost />
-      <MainContainer className="flex flex-col gap-y-4 rounded-none md:gap-y-6 md:rounded-[30px] xl:w-full xl:overflow-auto">
+      <MainContainer className="flex flex-col gap-y-4 overflow-x-hidden rounded-none md:gap-y-6 md:rounded-[30px] xl:w-full xl:overflow-y-auto">
         <Suspense fallback={<PostsSkeleton />}>
           <HomePagePostsContent />
         </Suspense>
