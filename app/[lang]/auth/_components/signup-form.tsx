@@ -1,10 +1,9 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,35 +16,44 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { signUpAction } from "@/app/[lang]/auth/actions"
-import { signUpSchema, type SignUpActionValues } from "@/lib/schemas/auth-schemas"
+import { signUpSchema } from "@/lib/schemas/auth-schemas"
 import { Link } from "@/src/i18n/navigation"
 
 export function SignUpForm() {
   const t = useTranslations("AuthPage")
 
-  const { isPending, execute } = useAction(signUpAction, {
-    onSuccess: () => {
-      toast.success("Account created successfully!")
-      sendGTMEvent({ event: "sign_up", method: "email" })
+  const {
+    action: { isPending },
+    form,
+    handleSubmitWithAction,
+  } = useHookFormAction(signUpAction, zodResolver(signUpSchema), {
+    actionProps: {
+      onExecute: () => {
+        toast.loading("Creating account...", { id: "signup" })
+      },
+      onNavigation: () => {
+        toast.success("Account created successfully!", { id: "signup" })
+        sendGTMEvent({ event: "sign_up", method: "email" })
+      },
+      onError: ({ error }) => {
+        toast.error(error.serverError ?? "An error occurred while processing your request.", {
+          id: "signup",
+        })
+      },
     },
-    onError: ({ error }) => {
-      toast.error(error.serverError ?? "An error occurred while processing your request.")
-    },
-  })
-
-  const form = useForm<SignUpActionValues>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      username: "",
-      fullname: "",
-      email: "",
-      password: "",
+    formProps: {
+      defaultValues: {
+        username: "",
+        fullname: "",
+        email: "",
+        password: "",
+      },
     },
   })
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(execute)} className="w-full space-y-6">
+      <form onSubmit={handleSubmitWithAction} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="username"

@@ -8,6 +8,7 @@ import { createPostSchema } from "@/lib/schemas/post-schemas"
 import { createClient } from "@/lib/supabase/server"
 
 export const createPost = authActionClient
+  .metadata({ actionName: "createPost" })
   .inputSchema(createPostSchema)
   .action(async ({ parsedInput, ctx }) => {
     const supabase = await createClient()
@@ -30,6 +31,7 @@ export const createPost = authActionClient
   })
 
 export const deletePost = authActionClient
+  .metadata({ actionName: "deletePost" })
   .inputSchema(z.object({ id: z.string() }))
   .action(async ({ parsedInput, ctx }) => {
     const supabase = await createClient()

@@ -1,10 +1,9 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,33 +16,37 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { signInAction } from "@/app/[lang]/auth/actions"
-import { signInSchema, type SignInActionValues } from "@/lib/schemas/auth-schemas"
+import { signInSchema } from "@/lib/schemas/auth-schemas"
 import { Link } from "@/src/i18n/navigation"
 
 export function LoginForm() {
   const t = useTranslations("AuthPage")
 
-  const { isPending, execute } = useAction(signInAction, {
-    onSuccess: () => {
-      toast.success("Login successful!")
-      sendGTMEvent({ event: "login", method: "email" })
+  const {
+    action: { isPending },
+    form,
+    handleSubmitWithAction,
+  } = useHookFormAction(signInAction, zodResolver(signInSchema), {
+    actionProps: {
+      onNavigation: () => {
+        toast.success("Login successful!")
+        sendGTMEvent({ event: "login", method: "email" })
+      },
+      onError: ({ error }) => {
+        toast.error(error.serverError ?? "Login failed")
+      },
     },
-    onError: () => {
-      toast.error("Login failed")
-    },
-  })
-
-  const form = useForm<SignInActionValues>({
-    resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-      password: "",
+    formProps: {
+      defaultValues: {
+        email: "",
+        password: "",
+      },
     },
   })
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(execute)} className="w-full space-y-6">
+      <form onSubmit={handleSubmitWithAction} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="email"

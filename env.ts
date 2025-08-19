@@ -15,6 +15,9 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "production", "test"]),
     NEXT_PUBLIC_SUPABASE_URL: z.url(),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
+    LOG_LEVEL: z
+      .enum(["silent", "fatal", "error", "warn", "info", "debug", "trace"])
+      .default("info"),
   },
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -22,5 +25,6 @@ export const env = createEnv({
     NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    LOG_LEVEL: process.env.LOG_LEVEL,
   },
 })
