@@ -206,6 +206,7 @@
     "info": {
       "createdBy": "Criado por <hoverCard>{name}</hoverCard> em {createdAt, date, medium}.",
       "createdByUnknown": "Criado por desconhecido em {createdAt, date, medium}.",
+      "createdAtUnknown": "Criado em desconhecido",
       "membersNumber": "Membros ({n, number})"
     },
     "list": {

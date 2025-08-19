@@ -42,7 +42,7 @@ interface GroupInfoHeaderProps {
   authorUid: string | null
   authorUsername: string | null
   authorName: string | null
-  createdAt: string
+  createdAt: string | null
 }
 
 const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
@@ -70,7 +70,7 @@ interface CreatedByProps {
   authorUid: string | null
   authorUsername: string | null
   authorName: string | null
-  createdAt: string
+  createdAt: string | null
 }
 
 const CreatedBy: React.FC<CreatedByProps> = ({
@@ -81,15 +81,20 @@ const CreatedBy: React.FC<CreatedByProps> = ({
 }) => {
   const t = useTranslations("GroupsPage.info")
 
+  const createdAtDate = createdAt ? new Date(createdAt) : undefined
+  if (!createdAtDate) {
+    return <p>{t("createdAtUnknown")}</p>
+  }
+
   if (!authorUid || !authorName || !authorUsername) {
-    return <p>{t("createdByUnknown", { createdAt: new Date(createdAt) })}</p>
+    return <p>{t("createdByUnknown", { createdAt: createdAtDate })}</p>
   }
 
   return (
     <p>
       {t.rich("createdBy", {
         name: authorName,
-        createdAt: new Date(createdAt),
+        createdAt: createdAtDate,
         hoverCard: (chunks) => (
           <UserHoverCardWithLink uid={authorUid} username={authorUsername}>
             <b className="hover:underline">{chunks}</b>
