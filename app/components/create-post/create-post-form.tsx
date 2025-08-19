@@ -3,16 +3,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { useServerAction } from "zsa-react"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createPost } from "@/core/actions/postActions"
 import { createPostSchema, type CreatePostSchemaValues } from "@/lib/schemas/post-schemas"
 import { cn } from "@/lib/utils"
-import { useRouter } from "@/src/i18n/navigation"
 
 interface CreatePostFormProps {
   className?: string
@@ -20,20 +19,22 @@ interface CreatePostFormProps {
 
 export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className }) => {
   const queryClient = useQueryClient()
-  const router = useRouter()
   const t = useTranslations("Post.create")
 
-  const { execute, isPending } = useServerAction(createPost, {
+  const { execute, isPending } = useAction(createPost, {
+    onExecute: () => {
+      form.reset()
+      toast.loading(t("submitButton.loading"), { description: undefined, id: "create-post" })
+    },
     onSuccess: () => {
       toast.success(t("success"), { id: "create-post" })
       queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
-    onError: ({ err }) => {
-      toast.error(t("error"), { id: "create-post" })
-
-      if (err.code === "NOT_AUTHORIZED") {
-        router.push("/auth/login")
-      }
+    onError: ({ error }) => {
+      toast.error(t("error"), {
+        description: error.serverError,
+        id: "create-post",
+      })
     },
   })
 
@@ -44,19 +45,10 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className }) => 
     },
   })
 
-  const handleSubmit = async (values: CreatePostSchemaValues) => {
-    form.reset()
-    toast.loading(t("submitButton.loading"), { id: "create-post" })
-    await execute(values)
-  }
-
   return (
     <Form {...form}>
-      <form
-        className={cn("flex flex-col gap-4", className)}
-        onSubmit={form.handleSubmit(handleSubmit)}
-      >
-        <h3 className="mb-0 mt-4 text-2xl">{t("header")}</h3>
+      <form className={cn("flex flex-col gap-4", className)} onSubmit={form.handleSubmit(execute)}>
+        <h3 className="mt-4 mb-0 text-2xl">{t("header")}</h3>
         <FormField
           name="description"
           control={form.control}
@@ -76,7 +68,6 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className }) => 
         <Button
           disabled={isPending || !form.formState.isValid}
           variant="default"
-          color="primary"
           type="submit"
           className="w-full"
         >

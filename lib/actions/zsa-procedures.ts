@@ -1,6 +1,9 @@
-import { createClient } from "@/lib/supabase/server"
 import { createServerActionProcedure, ZSAError } from "zsa"
+import { createClient } from "@/lib/supabase/server"
 
+/**
+ * @deprecated Use next-safe-action instead.
+ */
 export const authenticatedProcedure = createServerActionProcedure().handler(async () => {
   const supabase = await createClient()
 

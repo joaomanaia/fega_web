@@ -1,36 +1,39 @@
 "use server"
 
 import { revalidatePath, revalidateTag } from "next/cache"
+import { getTranslations } from "next-intl/server"
 import { z } from "zod"
-import { authenticatedProcedure } from "@/lib/actions/zsa-procedures"
+import { ActionError, authActionClient } from "@/lib/safe-action"
 import { createPostSchema } from "@/lib/schemas/post-schemas"
+import { createClient } from "@/lib/supabase/server"
 
-export const createPost = authenticatedProcedure
-  .createServerAction()
-  .input(createPostSchema)
-  .handler(async ({ input, ctx }) => {
-    const { description } = input
+export const createPost = authActionClient
+  .inputSchema(createPostSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const supabase = await createClient()
+    const { data: userCanPost } = await supabase
+      .rpc("user_can_post", {
+        user_id: ctx.uid,
+      })
+      .throwOnError()
 
-    const { error } = await ctx.supabase.from("posts").insert({ description })
-
-    if (error) {
-      throw Error("Failed to create post")
+    if (Boolean(userCanPost) === false) {
+      const t = await getTranslations("Post.create")
+      throw new ActionError(t("waitTime", { timeSeconds: 60 }))
     }
+
+    await supabase.from("posts").insert({ description: parsedInput.description }).throwOnError()
 
     revalidateTag("posts")
     revalidatePath("/")
     revalidatePath(`/${ctx.user.user_metadata?.username}`)
   })
 
-export const deletePost = authenticatedProcedure
-  .createServerAction()
-  .input(z.object({ id: z.string() }))
-  .handler(async ({ input, ctx }) => {
-    const { error } = await ctx.supabase.from("posts").delete().eq("id", input.id)
-
-    if (error) {
-      throw Error("Failed to delete post")
-    }
+export const deletePost = authActionClient
+  .inputSchema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput, ctx }) => {
+    const supabase = await createClient()
+    await supabase.from("posts").delete().eq("id", parsedInput.id).throwOnError()
 
     revalidateTag("posts")
     revalidatePath("/")

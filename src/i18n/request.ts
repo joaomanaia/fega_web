@@ -1,5 +1,6 @@
+import deepmerge from "deepmerge"
+import { hasLocale, type Formats } from "next-intl"
 import { getRequestConfig } from "next-intl/server"
-import { type Formats, hasLocale } from "next-intl"
 import { routing } from "./routing"
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -7,9 +8,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale
   const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale
 
+  const userMessages = (await import(`../../messages/${locale}.json`)).default
+  const defaultMessages = (await import(`../../messages/en.json`)).default
+  const messages = deepmerge(defaultMessages, userMessages)
+
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default,
+    messages,
   }
 })
 

@@ -48,7 +48,8 @@
         "loading": "A criar..."
       },
       "success": "Publicação criada com sucesso",
-      "error": "Erro ao criar publicação"
+      "error": "Erro ao criar publicação",
+      "waitTime": "Por favor, espera {timeSeconds, number} segundos antes de criar outra publicação."
     },
     "delete": {
       "action": "Apagar",

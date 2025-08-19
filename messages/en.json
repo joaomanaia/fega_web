@@ -48,7 +48,8 @@
         "loading": "Creating..."
       },
       "success": "Post created successfully",
-      "error": "Error creating post"
+      "error": "Error creating post",
+      "waitTime": "Please wait {timeSeconds, number} seconds before creating another post."
     },
     "delete": {
       "action": "Delete",
