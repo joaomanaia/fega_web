@@ -21,6 +21,8 @@ export default async function PostsContent({
   const client = await createClient()
   const posts = await getPosts(client, uid)
 
+  /* return <EmptyPostsContent /> */
+
   if (!posts.length) {
     return <EmptyPostsContent />
   }
@@ -41,7 +43,7 @@ const DefaultEmptyPostsContent = () => {
   const t = useTranslations("Post.emptyPosts")
 
   return (
-    <div className="flex h-full flex-col items-center justify-center">
+    <div className="flex h-full flex-col items-center justify-center text-center">
       <FileWarningIcon className="text-secondary/50 mb-4 h-16 w-16" />
       <h2 className="text-xl font-semibold">{t("header")}</h2>
       <p className="text-secondary/50 mt-2">{t("description.default")}</p>

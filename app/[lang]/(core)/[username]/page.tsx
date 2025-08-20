@@ -7,7 +7,6 @@ import { setRequestLocale } from "next-intl/server"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { getSession } from "@/lib/dal"
-import { cn } from "@/lib/utils"
 import { getUserByUsername } from "@/utils/user-utils"
 import PostsContent, { PostsSkeleton } from "../PostsContent"
 import { UserProfileContent } from "./components/user-profile-content"
@@ -72,17 +71,12 @@ export default async function UserPage(props: UserPageProps) {
         className="flex flex-col md:gap-4"
       >
         <meta itemProp="identifier" content={user.id} />
-        <MainContainer
-          className={cn(
-            "flex h-fit flex-col space-y-4 xl:w-96",
-            isLocalUser && "rounded-b-none md:rounded-[30px]"
-          )}
-        >
+        <MainContainer className="flex h-fit flex-col space-y-4 rounded-b-none md:rounded-[30px] xl:w-96">
           <UserProfileContent user={user} isLocalUser={isLocalUser} />
         </MainContainer>
-        {isLocalUser && <CreatePost className="rounded-none rounded-b-[30px]" />}
+        {isLocalUser && <CreatePost className="rounded-none md:rounded-b-[30px]" />}
       </div>
-      <MainContainer className="flex flex-col gap-y-4 rounded-none md:gap-y-6 md:rounded-[30px] xl:w-full xl:overflow-auto">
+      <MainContainer className="flex grow flex-col gap-y-4 rounded-none md:gap-y-6 md:rounded-[30px] xl:w-full xl:overflow-auto">
         <Suspense fallback={<PostsSkeleton />}>
           <PostsContent
             schemaHasPart // Has part of the main entity
@@ -105,9 +99,9 @@ const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({ userName 
 
   return (
     <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center py-8 text-center">
-      <FileWarningIcon className="mb-4 h-16 w-16 text-secondary/50" />
+      <FileWarningIcon className="text-secondary/50 mb-4 h-16 w-16" />
       <h2 className="text-xl font-semibold">{t("header")}</h2>
-      <p className="mt-2 text-secondary/50">
+      <p className="text-secondary/50 mt-2">
         {t.rich("description.user", {
           username: userName,
           b: (chunks) => <b>{chunks}</b>,
