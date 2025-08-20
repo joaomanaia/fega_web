@@ -1,12 +1,12 @@
-import { MainContainer } from "@/app/components/m3/main-container"
-import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
-import { type Metadata } from "next"
 import dynamic from "next/dynamic"
-import { EventsDateRangePicker } from "./components/events-daterange-picker"
-import { type DateRange } from "react-day-picker"
-import { createClient } from "@/lib/supabase/server"
+import { type Metadata } from "next"
 import type { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
+import { type DateRange } from "react-day-picker"
+import { MainContainer } from "@/app/components/m3/main-container"
+import { createClient } from "@/lib/supabase/server"
+import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
+import { EventsDateRangePicker } from "./components/events-daterange-picker"
 
 export const metadata: Metadata = {
   title: "Events Map",
@@ -22,7 +22,7 @@ interface EventsMapPageProps {
   }>
 }
 
-const DynamicMap = dynamic(() => import("../components/event-map"), {
+const DynamicMap = dynamic(() => import("../_components/event-map"), {
   loading: () => <div>Loading map...</div>,
   ssr: !!false,
 })
@@ -72,9 +72,9 @@ export default async function EventsMapPage(props: EventsMapPageProps) {
   const events = await getAllEvents(dateRange.from, dateRange.to)
 
   return (
-    <MainContainer className="flex flex-col gap-4 w-full h-full mb-3">
+    <MainContainer className="mb-3 flex h-full w-full flex-col gap-4">
       <EventsDateRangePicker dateRange={dateRange} />
-      <DynamicMap events={events} className="w-full h-full" />
+      <DynamicMap events={events} className="h-full w-full" />
     </MainContainer>
   )
 }

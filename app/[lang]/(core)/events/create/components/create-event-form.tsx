@@ -28,7 +28,7 @@ import { useModal } from "@/hooks/use-modal-store"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
-import { MoreInfo } from "../../[event_id]/components/more-info"
+import { MoreInfo } from "../../[event_id]/_components/more-info"
 
 interface CreateEventFormProps {
   className?: string
@@ -153,7 +153,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Event Description <span className="text-xs text-foreground/50">(Optional)</span>
+                Event Description <span className="text-foreground/50 text-xs">(Optional)</span>
               </FormLabel>
               <FormControl>
                 <Input placeholder="Enter event description" {...field} />
@@ -175,7 +175,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-[280px] justify-start rounded-2xl text-left font-normal text-foreground"
+                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -199,7 +199,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-[280px] justify-start rounded-2xl text-left font-normal text-foreground"
+                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />

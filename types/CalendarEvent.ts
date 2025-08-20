@@ -4,12 +4,12 @@ import type { Location } from "./location"
 export type CalendarEvent = {
   id: string
   title: string
-  description: string
+  description: string | null
   content: string
   coverImage: string
   startDate: Date
   endDate: Date
-  location: Location
+  location: Location | null
   otherData: CalendarEventOtherData
 }
 
@@ -41,22 +41,27 @@ export const calendarEntityToModel = (dbEvent: DbCalendarEvent): CalendarEvent =
     value: (data.value as string) ?? "",
   }))
 
+  const hasLocation =
+    dbEvent.location_name != null && dbEvent.location_lat != null && dbEvent.location_lng != null
+
   return {
     id: id,
     title: dbEvent.title ?? "",
-    description: dbEvent.description ?? "",
+    description: dbEvent.description,
     content: dbEvent.content ?? "",
     coverImage: dbEvent.cover_image ?? "",
     startDate: new Date(dbEvent.start_date ?? 0),
     endDate: new Date(dbEvent.end_date ?? 0),
-    location: {
-      name: dbEvent.location_name ?? "",
-      address: dbEvent.location_address ?? "",
-      point: {
-        lat: dbEvent.location_lat ?? 0,
-        lng: dbEvent.location_lng ?? 0,
-      },
-    },
+    location: hasLocation
+      ? {
+          name: dbEvent.location_name!,
+          address: dbEvent.location_address,
+          point: {
+            lat: dbEvent.location_lat!,
+            lng: dbEvent.location_lng!,
+          },
+        }
+      : null,
     otherData: otherDataFormatted,
   }
 }

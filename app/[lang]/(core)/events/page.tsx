@@ -1,24 +1,24 @@
-import { type CalendarEvent, calendarEntityToModel } from "@/types/CalendarEvent"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { EventComponent } from "./components/event-component"
-import { NextEventCover } from "./components/next-event-cover"
+import { cache } from "react"
 import { CalendarIcon, MapIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Hint } from "@/components/hint"
-import { type Metadata } from "next"
-import { createClient } from "@/lib/supabase/server"
+import type { Metadata } from "next"
 import type { Locale } from "next-intl"
-import { getTranslations, setRequestLocale } from "next-intl/server"
-import { Link } from "@/src/i18n/navigation"
+import { getNow, getTranslations, setRequestLocale } from "next-intl/server"
+import { Button } from "@/components/ui/button"
+import { MainContainer } from "@/app/components/m3/main-container"
+import { Hint } from "@/components/hint"
+import Link from "@/components/link"
+import { createClient } from "@/lib/supabase/server"
+import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
+import { EventComponent } from "./_components/event-component"
+import { NextEventCover } from "./_components/next-event-cover"
 
 export const metadata: Metadata = {
   title: "Events",
 }
 
-const getEvents = async (): Promise<CalendarEvent[]> => {
+const getEvents = cache(async (): Promise<CalendarEvent[]> => {
   const supabase = await createClient()
-
-  const now = new Date()
+  const now = await getNow()
 
   const { data: events, error } = await supabase
     .from("calendar_events_view")
@@ -29,33 +29,27 @@ const getEvents = async (): Promise<CalendarEvent[]> => {
   if (error) return []
 
   return events.map(calendarEntityToModel)
-}
+})
 
-interface EventsPageProps {
-  params: Promise<{
-    lang: Locale
-  }>
-}
-
-export default async function EventsPage(props: EventsPageProps) {
+export default async function EventsPage(props: PageProps<"/[lang]/events">) {
   const params = await props.params
   // Enable static rendering
-  setRequestLocale(params.lang)
-  const t = await getTranslations("EventsPage")
+  setRequestLocale(params.lang as Locale)
 
   const events = await getEvents()
+  const t = await getTranslations("EventsPage")
 
   if (events.length === 0) {
     return <EmptyEventsPage headerText={t("emptyEventsPage")} />
   }
 
   return (
-    <div className="w-full h-full overflow-y-auto">
-      <MainContainer className="flex flex-col-reverse lg:flex-row w-full items-center">
+    <div className="h-full w-full overflow-y-auto">
+      <MainContainer className="flex w-full flex-col-reverse items-center lg:flex-row">
         <NextEventCover event={events[0]} />
       </MainContainer>
       {events.length > 1 && (
-        <MainContainer className="flex flex-col space-y-4 my-3">
+        <MainContainer className="my-3 flex flex-col space-y-4">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">{t("otherEvents")}</h2>
             <Hint label={t("eventsMap")}>
@@ -66,7 +60,7 @@ export default async function EventsPage(props: EventsPageProps) {
               </Button>
             </Hint>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {events.slice(1).map((event) => (
               <EventComponent key={event.id} event={event} />
             ))}
@@ -83,11 +77,11 @@ interface EmptyEventsPageProps {
 
 const EmptyEventsPage: React.FC<EmptyEventsPageProps> = ({ headerText }) => {
   return (
-    <MainContainer className="h-full mb-3 flex flex-col items-center justify-center">
-      <div className="bg-surface-variant/40 text-surface-variant-foreground p-8 lg:p-12 rounded-full">
+    <MainContainer className="mb-3 flex h-full flex-col items-center justify-center">
+      <div className="bg-surface-variant/40 text-surface-variant-foreground rounded-full p-8 lg:p-12">
         <CalendarIcon className="size-20 lg:size-40" />
       </div>
-      <h1 className="text-xl lg:text-2xl font-bold mt-8 text-center">{headerText}</h1>
+      <h1 className="mt-8 text-center text-xl font-bold lg:text-2xl">{headerText}</h1>
     </MainContainer>
   )
 }

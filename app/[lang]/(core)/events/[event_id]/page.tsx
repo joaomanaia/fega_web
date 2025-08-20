@@ -1,17 +1,16 @@
 import { cache, Suspense } from "react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { CalendarIcon, MapPinIcon } from "lucide-react"
 import { type Metadata } from "next"
 import { MDXRemote, type MDXComponents } from "next-mdx-remote-client/rsc"
 import remarkGfm from "remark-gfm"
+import { DateLocationText } from "@/app/[lang]/(core)/events/_components/date-location-text"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/server"
 import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"
-import { DateText } from "../components/date-text"
 import { createEventJsonLd } from "../utils/eventMetadataUtil"
-import { Directions } from "./components/directions"
-import { MoreInfo } from "./components/more-info"
+import { Directions } from "./_components/directions"
+import { MoreInfo } from "./_components/more-info"
 
 interface EventIdPageProps {
   params: Promise<{
@@ -50,7 +49,7 @@ export async function generateMetadata(props: EventIdPageProps): Promise<Metadat
     description: event?.description,
     openGraph: {
       title: event?.title,
-      description: event?.description,
+      description: event?.description ?? undefined,
       images: event?.coverImage,
       url: `/events/${event.id}`,
     },
@@ -89,17 +88,11 @@ export default async function EventIdPage(props: EventIdPageProps) {
       </div>
 
       <div className="mt-4 flex w-full flex-col items-start lg:mt-6 lg:w-2/3 xl:mt-8">
-        <div className="flex flex-wrap gap-2">
-          <div className="flex items-center justify-center gap-2">
-            <CalendarIcon className="size-5" />
-            <DateText startDate={event.startDate} endDate={event.endDate} />
-          </div>
-          <span>&bull;</span>
-          <div className="flex items-center justify-center gap-2">
-            <MapPinIcon className="size-5" />
-            <span>{event.location.name}</span>
-          </div>
-        </div>
+        <DateLocationText
+          startDate={event.startDate}
+          endDate={event.endDate}
+          location={event.location}
+        />
 
         <Suspense fallback={<div className="mt-4">Loading content...</div>}>
           <MDXRemote
@@ -120,7 +113,7 @@ export default async function EventIdPage(props: EventIdPageProps) {
 
         <Directions event={event} />
 
-        {event.otherData && <MoreInfo data={event.otherData} />}
+        {event.otherData.length > 0 && <MoreInfo data={event.otherData} />}
       </div>
     </MainContainer>
   )

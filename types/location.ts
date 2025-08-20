@@ -1,6 +1,6 @@
 export type Location = {
   name: string
-  address: string
+  address: string | null
   point: Point
 }
 
@@ -9,7 +9,8 @@ export type Point = {
   lng: number
 }
 
-export type DirectionApp = "google" | "waze" | "apple"
+export const allDirectionApps = ["google", "waze", "apple"] as const
+export type DirectionApp = (typeof allDirectionApps)[number]
 
 export const getDirectionUrl = (point: Point, app: DirectionApp) => {
   switch (app) {
