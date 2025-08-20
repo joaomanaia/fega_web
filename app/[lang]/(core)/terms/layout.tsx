@@ -1,7 +1,7 @@
-export default function NewsLayout({ children }: { children: React.ReactNode }) {
+export default function NewsLayout({ children }: LayoutProps<"/[lang]/terms">) {
   return (
     <section className="w-full overflow-y-auto">
-      <article className="container prose lg:prose-xl dark:prose-invert">{children}</article>
+      <article className="prose lg:prose-xl dark:prose-invert container">{children}</article>
     </section>
   )
 }

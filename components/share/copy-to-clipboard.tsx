@@ -1,14 +1,14 @@
 "use client"
 
-import { Hint } from "@/components/hint"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/utils"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { CopyIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Hint } from "@/components/hint"
+import { cn } from "@/lib/utils"
 
 interface CopyToClipboardProps {
   text: string
@@ -28,7 +28,7 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied
         method: "copy",
       })
       onCopied?.()
-    } catch (error) {
+    } catch {
       toast.error(t("failedToCopyToClipboard"))
     }
   }
@@ -42,7 +42,7 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied
         <Input id="link" className="border-none" defaultValue={text} readOnly />
       </div>
       <Hint label={t("copy")}>
-        <Button type="submit" size="sm" className="px-3 rounded-sm" onClick={copyText}>
+        <Button type="submit" size="sm" className="rounded-sm px-3" onClick={copyText}>
           <span className="sr-only">{t("copy")}</span>
           <CopyIcon className="size-4" />
         </Button>

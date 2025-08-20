@@ -1,7 +1,7 @@
+/* import { Link } from "@/src/i18n/navigation" */
+import { LinkIt, LinkItUrl } from "react-linkify-it"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
 import { USERNAME_WITH_AT_REGEX } from "@/lib/schemas/user-schemas"
-import { Link } from "@/src/i18n/navigation"
-import { LinkIt, LinkItUrl } from "react-linkify-it"
 
 interface LinkifyProps {
   children: React.ReactNode
@@ -42,7 +42,7 @@ function LinkifyUsername({ children }: LinkifyUsernameProps) {
   )
 }
 
-function LinkifyHashtag({ children }: { children: React.ReactNode }) {
+/* function LinkifyHashtag({ children }: { children: React.ReactNode }) {
   return (
     <LinkIt
       regex={/(#[a-zA-Z0-9]+)/}
@@ -59,4 +59,4 @@ function LinkifyHashtag({ children }: { children: React.ReactNode }) {
       {children}
     </LinkIt>
   )
-}
+} */

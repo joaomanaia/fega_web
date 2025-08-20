@@ -1,5 +1,6 @@
 "use client"
 
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -8,10 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useModal } from "@/hooks/use-modal-store"
 import { exitGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
-import { toast } from "sonner"
+import { useModal } from "@/hooks/use-modal-store"
 
 export const ExitGroupModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("exit-group")
@@ -25,8 +25,8 @@ export const ExitGroupModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Exit Group</DialogTitle>
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">Exit Group</DialogTitle>
         </DialogHeader>
         <DialogDescription>
           Are you sure you want to exit the group <strong>{group.name}</strong>? This action cannot
@@ -37,7 +37,7 @@ export const ExitGroupModal: React.FC = () => {
             action={async () => {
               try {
                 await exitGroupWithId()
-              } catch (error) {
+              } catch {
                 toast.error("Failed to delete group")
               } finally {
                 onClose()

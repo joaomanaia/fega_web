@@ -2,9 +2,9 @@ import { ScreenModal } from "@/components/screen-modal"
 
 export default function ModalGroupInfoLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: LayoutProps<"/[lang]/groups/[id]/info">) {
   return (
-    <ScreenModal className="overflow-hidden flex flex-col items-center gap-4">
+    <ScreenModal className="flex flex-col items-center gap-4 overflow-hidden">
       {children}
     </ScreenModal>
   )

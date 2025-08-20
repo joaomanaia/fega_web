@@ -4,17 +4,10 @@ import { setRequestLocale } from "next-intl/server"
 import { MainHeader } from "@/app/components/header"
 import { MainDrawer } from "@/app/components/m3/drawer/main-drawer"
 
-interface LayoutProps {
-  children?: React.ReactNode
-  params: Promise<{
-    lang: Locale
-  }>
-}
-
-export default function Layout({ children, params }: LayoutProps) {
+export default function Layout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = use(params)
   // Enable static rendering
-  setRequestLocale(lang)
+  setRequestLocale(lang as Locale)
 
   return (
     <div className="flex h-screen min-h-screen overflow-hidden">

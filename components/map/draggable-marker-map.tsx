@@ -1,8 +1,8 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { useMemo, useRef, useState } from "react"
 import { MapContainer, Marker, TileLayer } from "react-leaflet"
+import { cn } from "@/lib/utils"
 import "leaflet/dist/leaflet.css"
 import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
@@ -24,11 +24,7 @@ const DraggableMarkerMap: React.FC<DraggableMarkerMapProps> = ({
   onPositionChange,
 }) => {
   return (
-    <MapContainer
-      className={cn("w-full h-full rounded-xl", className)}
-      center={center}
-      zoom={13}
-    >
+    <MapContainer className={cn("h-full w-full rounded-xl", className)} center={center} zoom={13}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -48,6 +44,7 @@ interface DraggableMarkerProps {
 
 const DraggableMarker: React.FC<DraggableMarkerProps> = ({ onPositionChange, center }) => {
   const [position, setPosition] = useState(center)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRef: React.RefObject<any> = useRef(null)
 
   const eventHandlers = useMemo(
@@ -60,7 +57,7 @@ const DraggableMarker: React.FC<DraggableMarkerProps> = ({ onPositionChange, cen
         }
       },
     }),
-    []
+    [onPositionChange]
   )
 
   return (

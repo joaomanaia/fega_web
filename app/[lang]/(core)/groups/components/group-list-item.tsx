@@ -1,16 +1,16 @@
 "use client"
 
-import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
-import { cn } from "@/lib/utils"
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { Skeleton } from "@/components/ui/skeleton"
-import { UserAvatar } from "@/app/components/user/user-avatar"
 import {
   GroupOptionsContextMenu,
   GroupOptionsDropdown,
 } from "@/app/[lang]/(core)/groups/components/group-options"
-import { useParams } from "next/navigation"
+import { UserAvatar } from "@/app/components/user/user-avatar"
+import { cn } from "@/lib/utils"
 import { Link } from "@/src/i18n/navigation"
-import { useTranslations } from "next-intl"
+import type { GroupWithLastMessageViewType } from "@/types/group/GroupType"
 
 type GroupListItemType = {
   group: GroupWithLastMessageViewType
@@ -21,13 +21,13 @@ type GroupListItemType = {
 export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, className }) => {
   const t = useTranslations("GroupsPage.list")
   const params = useParams()
-  const selected = params.id === group.id
+  const selected = params?.id === group.id
 
   return (
     <GroupOptionsContextMenu group={group} isOwner={group.is_owner ?? false}>
       <Link
         className={cn(
-          "group flex items-center gap-4 h-fit px-4 py-4 next-link rounded-3xl hover:bg-surface-variant/38 transition-colors",
+          "group next-link hover:bg-surface-variant/38 flex h-fit items-center gap-4 rounded-3xl px-4 py-4 transition-colors",
           selected && "bg-primary hover:bg-primary/90 text-primary-foreground",
           className
         )}
@@ -38,8 +38,8 @@ export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, cl
           name={group.name}
           className={cn(selected && "bg-transparent")}
         />
-        <div className="flex flex-col grow truncate">
-          <p className="text-xl font-semibold truncate">{group.name}</p>
+        <div className="flex grow flex-col truncate">
+          <p className="truncate text-xl font-semibold">{group.name}</p>
           <p className="truncate">
             {t(group.last_message_by === localUid ? "lastMessageByLocal" : "lastMessageByOther", {
               message: group.last_message ?? "",
@@ -53,16 +53,12 @@ export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, cl
   )
 }
 
-interface ItemContextMenuProps {
-  children: React.ReactNode
-}
-
 export const GroupItemSkeleton = () => (
-  <div className="flex items-center gap-4 h-fit px-4 py-4 rounded-3xl">
+  <div className="flex h-fit items-center gap-4 rounded-3xl px-4 py-4">
     <Skeleton className="size-10 rounded-full" />
-    <div className="flex flex-col grow">
-      <Skeleton className="w-32 h-6 mb-1 rounded-md" />
-      <Skeleton className="w-48 h-4 rounded-md" />
+    <div className="flex grow flex-col">
+      <Skeleton className="mb-1 h-6 w-32 rounded-md" />
+      <Skeleton className="h-4 w-48 rounded-md" />
     </div>
   </div>
 )

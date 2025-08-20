@@ -76,7 +76,7 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
             try {
               await editGroupWithId(formData)
               toast.success("Group edited")
-            } catch (error) {
+            } catch {
               toast.error("Failed to edit group")
             } finally {
               onClose()

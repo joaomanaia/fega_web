@@ -19,14 +19,14 @@ export async function GET(req: NextRequest) {
 
   try {
     urlSchema.parse(url)
-  } catch (error) {
+  } catch {
     return new NextResponse("Invalid URL", { status: 400 })
   }
 
   try {
     const data = await ogs({ url: url })
     return NextResponse.json(data)
-  } catch (error) {
+  } catch {
     return new NextResponse("Internal Server Error", { status: 500 })
   }
 }

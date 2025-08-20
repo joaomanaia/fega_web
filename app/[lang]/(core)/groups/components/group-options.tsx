@@ -26,9 +26,7 @@ interface BaseGroupOptions {
   isOwner: boolean
 }
 
-interface GroupOptionsDropdownProps extends BaseGroupOptions {}
-
-export const GroupOptionsDropdown: React.FC<GroupOptionsDropdownProps> = ({ group, isOwner }) => {
+export const GroupOptionsDropdown: React.FC<BaseGroupOptions> = ({ group, isOwner }) => {
   const t = useTranslations("GroupsPage.list.options")
   const { onOpen } = useModal()
 

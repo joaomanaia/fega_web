@@ -16,7 +16,7 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     if (!config.resolve) {
       return config
     }

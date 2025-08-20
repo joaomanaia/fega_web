@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button"
-import { NavDrawerItem } from "./main-drawer"
-import { cn } from "@/lib/utils"
-import { SheetClose } from "@/components/ui/sheet"
-import { Link } from "@/src/i18n/navigation"
 import type { LucideIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { SheetClose } from "@/components/ui/sheet"
+import { cn } from "@/lib/utils"
+import { Link } from "@/src/i18n/navigation"
 
 interface DrawerItemProps {
   title: string
@@ -80,8 +79,8 @@ const DrawerButton: React.FC<DrawerButtonProps> = ({
         disabled={disabled}
         aria-selected={selected}
         className={cn(
-          "gap-2 py-6 w-full text-foreground font-normal text-[16px] justify-start",
-          selected && "font-bold bg-primary/25 hover:bg-primary/30 text-primary",
+          "text-foreground w-full justify-start gap-2 py-6 text-[16px] font-normal",
+          selected && "bg-primary/25 hover:bg-primary/30 text-primary font-bold",
           className
         )}
       >

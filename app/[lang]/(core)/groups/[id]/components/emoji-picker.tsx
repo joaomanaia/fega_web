@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import dynamic from "next/dynamic"
 import { Theme } from "emoji-picker-react"
 import { SmileIcon } from "lucide-react"
 import { useTheme } from "next-themes"
-import dynamic from "next/dynamic"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 interface EmojiPickerPopupProps {
   className?: string
@@ -27,16 +27,16 @@ export const EmojiPicker: React.FC<EmojiPickerPopupProps> = ({ className, onEmoj
           variant="ghost"
           size="icon"
           className={cn(
-            "text-secondary rounded-2xl aria-expanded:bg-secondary aria-expanded:text-secondary-foreground aspect-square",
+            "text-secondary aria-expanded:bg-secondary aria-expanded:text-secondary-foreground aspect-square rounded-2xl",
             className
           )}
         >
-          <SmileIcon className="w-6 h-6" aria-label="Open emoji picker" />
+          <SmileIcon className="h-6 w-6" aria-label="Open emoji picker" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0 border-none ml-4 mb-2">
+      <PopoverContent className="mb-2 ml-4 w-full border-none p-0">
         <Picker
-          onEmojiClick={(emoji, event) => {
+          onEmojiClick={(emoji) => {
             onEmojiClick(emoji.emoji)
           }}
           theme={emojiTheme}

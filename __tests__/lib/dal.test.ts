@@ -14,13 +14,13 @@ jest.mock("@/src/i18n/navigation", () => ({
 }))
 jest.mock("react", () => ({
   ...jest.requireActual("react"),
-  cache: (fn: any) => fn,
+  cache: (fn: unknown) => fn,
 }))
 
 const mockedGetLocale = getLocale as jest.Mock
 const mockedCreateClient = createClient as jest.Mock
 
-function mockSupabaseGetClaims(getClaimsResponse: any = { data: null, error: null }) {
+function mockSupabaseGetClaims(getClaimsResponse: unknown = { data: null, error: null }) {
   mockedCreateClient.mockResolvedValue({
     auth: {
       getClaims: jest.fn().mockResolvedValue(getClaimsResponse),

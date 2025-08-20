@@ -1,5 +1,5 @@
-import { convertCanvasToCompressedBlob, isValidSize } from "@/lib/crop-image"
 import { setupJestCanvasMock } from "jest-canvas-mock"
+import { convertCanvasToCompressedBlob, isValidSize } from "@/lib/crop-image"
 
 describe("isValidSize", () => {
   it("should return true when blob size is less than max size", async () => {
@@ -92,12 +92,13 @@ describe("convertCanvasToCompressedBlob", () => {
 
     try {
       await convertCanvasToCompressedBlob(canvas, maxSizeInBytes)
-    } catch (e) {
+    } catch {
       // Ignore error
     }
 
     expect(toBlobSpy).toHaveBeenCalled()
-    const qualities = toBlobSpy.mock.calls.map((call) => call[2])
+    const qualitiesWithUndefined = toBlobSpy.mock.calls.map((call) => call[2])
+    const qualities = qualitiesWithUndefined.filter((q): q is number => typeof q === "number")
     expect(qualities.length).toBeGreaterThan(1)
     expect(qualities[0]).toBeGreaterThan(qualities[qualities.length - 1])
   })

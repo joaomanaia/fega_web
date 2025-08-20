@@ -6,7 +6,6 @@ interface ScrollContainerProps {
 }
 
 const ScrollContainer: React.FC<ScrollContainerProps> = ({ className, children }) => {
-  // @ts-ignore
   return <ScrollableFeed className={className}>{children}</ScrollableFeed>
 }
 

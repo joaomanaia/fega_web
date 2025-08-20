@@ -5,7 +5,9 @@ import { z } from "zod"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "@/src/i18n/navigation"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
+import type { Json } from "@/types/database.types"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createEventFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
@@ -27,8 +29,8 @@ export async function createEvent(values: z.infer<typeof createEventFormSchema>)
     start_date: values.fromDate.toISOString(),
     end_date: values.toDate.toISOString(),
     title: values.title,
-    other_data: values.otherData,
-    location: Number(values.locationId),
+    other_data: values.otherData as unknown as Json,
+    location: values.locationId ? Number(values.locationId) : null,
   })
 
   if (error) {

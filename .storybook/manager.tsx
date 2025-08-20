@@ -1,13 +1,17 @@
-import { useEffect } from "react"
-import { addons, types, useGlobals } from "storybook/manager-api"
-import { themes } from "storybook/theming"
+import { addons } from "storybook/manager-api"
 import { dark } from "./themes"
 
 addons.setConfig({
   theme: dark,
 })
 
-/* type Theme = "light" | "dark"
+/* 
+import { useEffect } from "react"
+import { addons, types, useGlobals } from "storybook/manager-api"
+import { themes } from "storybook/theming"
+import { dark } from "./themes"
+
+type Theme = "light" | "dark"
 
 addons.register("fega-addon", () => {
   addons.add("fega-addon/theme-switcher", {

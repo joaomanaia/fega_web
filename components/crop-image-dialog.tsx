@@ -1,20 +1,20 @@
 "use client"
 
 import { useCallback, useState } from "react"
+import { RotateCw, ZoomIn } from "lucide-react"
 import Cropper, { type Area } from "react-easy-crop"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog"
 import { Slider } from "@/components/ui/slider"
-import { Button } from "@/components/ui/button"
-import { RotateCw, ZoomIn } from "lucide-react"
-import { getCroppedImg } from "@/lib/crop-image"
-import { toast } from "sonner"
 import { MAX_IMAGE_SIZE_FOR_TYPE, type ImageType } from "@/features/post/constants"
+import { getCroppedImg } from "@/lib/crop-image"
 
 interface ImageEditDialogProps {
   isOpen: boolean
@@ -74,7 +74,7 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
     } finally {
       setCropping(false)
     }
-  }, [croppedAreaPixels, imageUrl, rotation, onSave])
+  }, [croppedAreaPixels, imageUrl, rotation, onSave, onClose, type])
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -82,7 +82,7 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
         <DialogHeader>
           <DialogTitle>Edit Image</DialogTitle>
         </DialogHeader>
-        <div className="relative w-full h-64 mt-4">
+        <div className="relative mt-4 h-64 w-full">
           <Cropper
             image={imageUrl}
             crop={crop}
@@ -98,8 +98,8 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
             }}
           />
         </div>
-        <div className="flex items-center mt-4">
-          <ZoomIn className="w-4 h-4 mr-2" />
+        <div className="mt-4 flex items-center">
+          <ZoomIn className="mr-2 h-4 w-4" />
           <Slider
             value={[zoom]}
             onValueChange={(value) => setZoom(value[0])}
@@ -111,8 +111,8 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
             aria-labelledby="Zoom"
           />
         </div>
-        <div className="flex items-center mt-4">
-          <RotateCw className="w-4 h-4 mr-2" />
+        <div className="mt-4 flex items-center">
+          <RotateCw className="mr-2 h-4 w-4" />
           <Slider
             value={[rotation]}
             onValueChange={(value) => setRotation(value[0])}

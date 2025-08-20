@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { TooltipTrigger } from "@radix-ui/react-tooltip"
 import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -64,7 +63,6 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   messageId,
   message,
   createdAt,
-  uid,
   groupId,
   username,
   userFullname,

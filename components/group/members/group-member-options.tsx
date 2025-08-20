@@ -47,7 +47,7 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
       try {
         await removeParticipantWithUid()
         toast.success(t("remove.onSuccess", { name: fullName ?? "Unknown" }))
-      } catch (error) {
+      } catch {
         toast.error(t("remove.onError", { name: fullName ?? "Unknown" }))
       }
     }

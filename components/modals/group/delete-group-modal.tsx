@@ -1,5 +1,6 @@
 "use client"
 
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -8,10 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useModal } from "@/hooks/use-modal-store"
 import { deleteGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
-import { toast } from "sonner"
+import { useModal } from "@/hooks/use-modal-store"
 
 export const DeleteGroupModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("delete-group")
@@ -25,8 +25,8 @@ export const DeleteGroupModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Delete Group</DialogTitle>
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">Delete Group</DialogTitle>
         </DialogHeader>
         <DialogDescription>
           Are you sure you want to delete the group <strong>{group.name}</strong>? This action
@@ -37,7 +37,7 @@ export const DeleteGroupModal: React.FC = () => {
             action={async () => {
               try {
                 await deleteGroupWithId()
-              } catch (error) {
+              } catch {
                 toast.error("Failed to delete group")
               } finally {
                 onClose()

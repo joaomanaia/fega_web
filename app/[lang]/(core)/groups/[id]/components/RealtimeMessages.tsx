@@ -1,14 +1,12 @@
 "use client"
 
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 import type GroupMessageType from "@/types/group/GroupMessageType"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
-import { useEffect } from "react"
-import { GroupMessage } from "./GroupMessage"
-import { cn } from "@/lib/utils"
 import type ReplyToType from "@/types/ReplyToType"
 import ScrollContainer from "../../../../../components/ScrollContainer"
-import { createClient } from "@/lib/supabase/client"
+import { GroupMessage } from "./GroupMessage"
 
 interface RealtimeMessagesProps {
   localUserUid: string
@@ -194,7 +192,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
   return (
     <ScrollContainer className="w-full grow">
-      <ul className="w-full py-4 grow">
+      <ul className="w-full grow py-4">
         {messages.map((message, index) => (
           <React.Fragment key={message.id}>
             {index < messages.length && (
@@ -231,7 +229,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
 export default RealtimeMessages
 
-interface ReplyMessageProps {
+/* interface ReplyMessageProps {
   message: string
   toLocalUser: boolean
 }
@@ -247,7 +245,7 @@ const ReplyMessage: React.FC<ReplyMessageProps> = ({ message, toLocalUser }) => 
       {message}
     </p>
   )
-}
+} */
 
 interface MessageTopTime {
   currentTime: Date
@@ -262,8 +260,8 @@ export const MessageTopTime: React.FC<MessageTopTime> = ({ currentTime, aboveTim
   }
 
   return (
-    <li className="flex justify-center items-center my-1">
-      <p className="text-xs text-foreground/50 mx-2">{currentTime.toLocaleDateString()}</p>
+    <li className="my-1 flex items-center justify-center">
+      <p className="text-foreground/50 mx-2 text-xs">{currentTime.toLocaleDateString()}</p>
     </li>
   )
 }

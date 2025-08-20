@@ -52,13 +52,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: Promise<{ lang: string }>
-}) {
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
   // Ensure that the incoming `lang` is valid
   const { lang } = await params
   if (!hasLocale(routing.locales, lang)) {

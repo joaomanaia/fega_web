@@ -9,14 +9,9 @@ export const metadata: Metadata = {
   title: "Cameras",
 }
 
-interface CameraLayoutProps {
-  children: React.ReactNode
-  params: Promise<{ lang: Locale }>
-}
-
-export default function Layout({ children, params }: CameraLayoutProps) {
+export default function Layout({ children, params }: LayoutProps<"/[lang]/cameras">) {
   const { lang } = use(params)
-  setRequestLocale(lang)
+  setRequestLocale(lang as Locale)
 
   return (
     <main className="flex h-full flex-col overflow-y-auto md:pb-3">

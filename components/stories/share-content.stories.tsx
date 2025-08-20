@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-
 import { ShareContent } from "../share/share-content"
 
 const meta = {
@@ -33,7 +32,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
   args: {
     url: "https://example.com",
     text: "Example text",
@@ -43,7 +41,6 @@ export const Default: Story = {
 }
 
 export const OnlyCopyUrl: Story = {
-  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
   args: {
     url: "https://example.com",
     text: "Example text",
@@ -52,7 +49,6 @@ export const OnlyCopyUrl: Story = {
 }
 
 export const OnlySocials: Story = {
-  // @ts-ignore Dictionary is not defined (it's loaded by the render function)
   args: {
     url: "https://example.com",
     text: "Example text",

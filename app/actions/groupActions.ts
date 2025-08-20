@@ -1,16 +1,16 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "@/src/i18n/navigation"
-import { getLocale } from "next-intl/server"
 // TODO: Change the this actions to the new folder
 
 import { revalidatePath } from "next/cache"
+import { getLocale } from "next-intl/server"
 import * as z from "zod"
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "@/src/i18n/navigation"
 
 const editGroupSchema = z.object({
   groupName: z.string().min(1, "Group name is required").max(50, "Group name is too long"),
-  iconUrl: z.string().url(),
+  iconUrl: z.url(),
 })
 
 export async function editGroup(groupId: string, formData: FormData) {
@@ -145,7 +145,7 @@ export async function addParticipant(uid: string, groupId: string) {
   return revalidatePath(`/group/${groupId}/info`)
 }
 
-export async function searchNoParticipants(prevState: any, formData: FormData) {
+export async function searchNoParticipants(prevState: unknown, formData: FormData) {
   const groupId = formData.get("group_id") as string
 
   if (!groupId) {
