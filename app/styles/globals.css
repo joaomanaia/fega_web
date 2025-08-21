@@ -22,6 +22,15 @@
   --color-muted-foreground: hsl(var(--on-surface-variant));
   --color-popover: hsl(var(--surface));
   --color-popover-foreground: hsl(var(--on-surface));
+  /* Sidebar colors */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent) / 0.2);
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border) / 0.2);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
 
   --color-border: hsl(var(--outline) / 0.2);
   --color-input: hsl(var(--surface-variant));
@@ -113,7 +122,14 @@
     --surface-tint: var(--md-sys-color-surface-tint-light);
     --outline-variant: var(--md-sys-color-outline-variant-light);
     --scrim: var(--md-sys-color-scrim-light);
-
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--surface-variant);
+    --sidebar-accent-foreground: var(--on-surface-variant);
+    --sidebar-border: var(--outline);
+    --sidebar-ring: var(--ring);
     --radius: 1rem;
   }
 
@@ -148,14 +164,32 @@
     --surface-tint: var(--md-sys-color-surface-tint-dark);
     --outline-variant: var(--md-sys-color-outline-variant-dark);
     --scrim: var(--md-sys-color-scrim-dark);
-
     --ring: 224.3 76.3% 48%;
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--on-surface);
+    /* --sidebar: 0 0% 0%; */
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--surface-variant);
+    --sidebar-accent-foreground: var(--on-surface-variant);
+    --sidebar-border: var(--outline);
+    --sidebar-ring: var(--ring);
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

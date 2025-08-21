@@ -1,8 +1,9 @@
 import { use } from "react"
 import type { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { MainHeader } from "@/app/components/header"
-import { MainDrawer } from "@/app/components/m3/drawer/main-drawer"
+import { AppSidebar } from "@/components/app-sidebar"
 
 export default function Layout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = use(params)
@@ -11,11 +12,14 @@ export default function Layout({ children, params }: LayoutProps<"/[lang]">) {
 
   return (
     <div className="flex h-screen min-h-screen overflow-hidden">
-      <MainDrawer className="hidden w-72 md:flex" />
-      <main className="flex w-full min-w-0 flex-col md:px-3">
-        <MainHeader />
-        {children}
-      </main>
+      <SidebarProvider>
+        <AppSidebar />
+
+        <main className="flex w-full min-w-0 flex-col md:px-3">
+          <MainHeader />
+          {children}
+        </main>
+      </SidebarProvider>
     </div>
   )
 }
