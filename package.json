@@ -130,7 +130,7 @@
     "shadcn": "^2.10.0",
     "storybook": "^9.1.2",
     "storybook-next-intl": "^2.0.13",
-    "supabase": "^2.34.3",
+    "supabase": "^2.54.11",
     "tailwind-scrollbar-hide": "^4.0.0",
     "tailwindcss": "^4.1.12",
     "ts-jest": "^29.4.1",
