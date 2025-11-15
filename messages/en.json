@@ -22,7 +22,8 @@
     "submit": "Submit",
     "searchContent": {
       "placeholder": "Search...",
-      "noResults": "No results found"
+      "noResults": "No results found",
+      "typeToSearch": "Type at least 2 characters to search..."
     },
     "navdrawerTitle": "{title, select, home {Home} news {News} events {Events} cameras {Cameras} messages {Messages} privateMessages {Private messages} groups {Groups} otherItems {Other} settings {Settings} other {Unknown}}",
     "confirmDialogInputLabel": "If you sure, type <b>{inputTextToConfirm}</b> to confirm."

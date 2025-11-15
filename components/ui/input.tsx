@@ -1,47 +1,19 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-interface InputProps extends React.ComponentProps<"input"> {
-  startAdornment?: React.JSX.Element
-  endAdornment?: React.JSX.Element
-}
-
-function Input({ className, type, startAdornment, endAdornment, ...props }: InputProps) {
-  const hasAdornment = Boolean(startAdornment) || Boolean(endAdornment)
-
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
-    <>
-      {hasAdornment ? (
-        <div
-          className={cn(
-            "border-input bg-surface-variant/38 ring-offset-surface placeholder:text-foreground/60 focus-within:ring-surface-variant flex h-10 items-center justify-center gap-2 rounded-md border px-3 py-2 transition focus-within:ring-2 focus-within:ring-offset-2 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
-            className
-          )}
-          data-disabled={props.disabled}
-        >
-          {startAdornment && <div className="text-foreground/60">{startAdornment}</div>}
-          <input
-            type={type}
-            className={
-              "placeholder:text-foreground/60 flex h-full w-full border-none bg-transparent text-sm shadow-none outline-hidden file:bg-transparent file:text-sm file:font-medium focus-visible:border-none focus-visible:shadow-none focus-visible:outline-hidden"
-            }
-            {...props}
-          />
-          {endAdornment && <div className="text-foreground/60">{endAdornment}</div>}
-        </div>
-      ) : (
-        <input
-          type={type}
-          className={cn(
-            "border-input file:text-foreground selection:bg-primary selection:text-primary-foreground bg-surface-variant/38 ring-offset-surface placeholder:text-foreground/60 focus-visible:ring-surface-variant flex h-10 w-full rounded-md border px-3 py-2 text-sm transition file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-            startAdornment && "pl-10",
-            endAdornment && "pr-10",
-            className
-          )}
-          {...props}
-        />
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+        className
       )}
-    </>
+      {...props}
+    />
   )
 }
 

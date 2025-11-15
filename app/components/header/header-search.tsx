@@ -1,15 +1,20 @@
 "use client"
 
+import { useCallback, useEffect, useRef, useState } from "react"
+import { SearchIcon, XIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useDebounceValue } from "usehooks-ts"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import { Spinner } from "@/components/ui/spinner"
 import { UserAvatar } from "@/app/components/user/user-avatar"
-import { Input } from "@/components/ui/input"
 import { useSearchUser } from "@/features/user/use-search-user"
 import { cn } from "@/lib/utils"
 import { Link } from "@/src/i18n/navigation"
-import type UserType from "@/types/UserType"
-import { SearchIcon, XIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
-import { useDebounceValue } from "usehooks-ts"
 
 interface HeaderSearchProps {
   className?: string
@@ -18,16 +23,25 @@ interface HeaderSearchProps {
 export const HeaderSearch: React.FC<HeaderSearchProps> = ({ className }) => {
   const t = useTranslations("General")
   const [isFocused, setIsFocused] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
 
-  const [debouncedValue, setDebounceValue] = useDebounceValue("", 500)
-
+  const [debouncedValue] = useDebounceValue(searchValue, 300)
   const { data: users, isLoading } = useSearchUser(debouncedValue.trim())
+
+  const clearSearch = useCallback(() => {
+    setSearchValue("")
+  }, [])
+
+  const handleResultClick = useCallback(() => {
+    setSearchValue("")
+    setIsFocused(false)
+    inputRef.current?.blur()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Close the results if the user clicks outside the input or the results
       if (
         resultsRef.current &&
         !resultsRef.current.contains(event.target as Node) &&
@@ -38,75 +52,90 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ className }) => {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFocused(false)
+        inputRef.current?.blur()
+      }
+    }
 
+    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("keydown", handleEscape)
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("keydown", handleEscape)
     }
-  })
+  }, [])
+
+  const showResults = isFocused && searchValue.trim().length > 0
+  const hasResults = users && users.length > 0
+  const shouldSearch = searchValue.trim().length >= 2
 
   return (
-    <div className={cn("relative group w-full lg:max-w-lg", className)}>
-      <SearchIcon className="size-5 absolute top-1/2 left-2.5 transform -translate-y-1/2 text-foreground/60" />
-      <Input
-        ref={inputRef}
-        type="search"
-        placeholder="Search..."
+    <div className={cn("group relative w-full lg:max-w-lg", className)}>
+      <InputGroup
         className={cn(
-          "border-none peer rounded-full w-full px-10 focus-visible:ring-1 transition",
-          inputRef.current?.value && "focus-visible:rounded-b focus-visible:rounded-t-2xl"
-        )}
-        onChange={(e) => setDebounceValue(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        aria-label="Search"
-        aria-autocomplete="list"
-        aria-controls="search-results"
-        aria-expanded={isFocused && !!inputRef.current?.value}
-      />
-
-      <button
-        onClick={() => {
-          if (inputRef.current) {
-            inputRef.current.value = ""
-            setDebounceValue("")
-          }
-        }}
-        type="button"
-        className={cn(
-          "opacity-0 absolute right-2.5 top-1/2 transform -translate-y-1/2 text-foreground/60 group-hover:text-foreground/80 transition duration-200",
-          inputRef.current?.value && "opacity-100"
+          "rounded-full border-none transition-all duration-75",
+          showResults && "rounded-t-2xl rounded-b-none",
+          searchValue && "has-[[data-slot=input-group-control]:focus-visible]:ring-0"
         )}
       >
-        <XIcon />
-      </button>
+        <InputGroupInput
+          placeholder={t("searchContent.placeholder")}
+          ref={inputRef}
+          type="search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          aria-autocomplete="list"
+          aria-controls="search-results"
+          aria-expanded={showResults}
+          className={cn()}
+        />
+        <InputGroupAddon>
+          <SearchIcon />
+        </InputGroupAddon>
+        {searchValue && (
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton onClick={clearSearch}>
+              <XIcon />
+            </InputGroupButton>
+          </InputGroupAddon>
+        )}
+      </InputGroup>
 
-      {inputRef.current?.value && (
+      {showResults && (
         <div
           ref={resultsRef}
           id="search-results"
           role="listbox"
-          className={cn(
-            "absolute hidden p-3 w-full bg-surface-variant rounded-b-2xl ring-offset-surface-variant/38 peer-focus:ring-1 peer-focus:ring-surface-variant peer-focus:ring-offset-2",
-            inputRef.current.value && isFocused && "block z-40"
-          )}
+          className="bg-surface dark:border-input/30 ring-offset-surface-variant/38 peer-focus:ring-surface-variant animate-in fade-in-0 slide-in-from-top-2 peer-focus:ring-offset-surface absolute z-50 block max-h-96 w-full overflow-y-auto rounded-b-2xl border-2 shadow-xl duration-200 peer-focus:ring-2 peer-focus:ring-offset-2 focus-within:ring-2"
         >
-          {isLoading && <p>{t("loading")}</p>}
-          {users?.length ? (
-            users.map((user) => (
-              <SearchedUser
-                key={user.id}
-                user={user}
-                onClick={() => {
-                  if (inputRef.current) {
-                    inputRef.current.value = ""
-                    setDebounceValue("")
-                  }
-                  setIsFocused(false)
-                }}
-              />
-            ))
+          {!shouldSearch ? (
+            <p className="text-foreground/60 px-3 py-4 text-center text-sm">
+              {t("searchContent.typeToSearch")}
+            </p>
+          ) : isLoading ? (
+            <div className="flex items-center justify-center gap-2 py-4">
+              <Spinner />
+              <p className="text-sm">{t("loading")}</p>
+            </div>
+          ) : hasResults ? (
+            <div className="p-2">
+              {users.map((user) => (
+                <SearchedUser
+                  key={user.id}
+                  username={user.username}
+                  fullName={user.full_name}
+                  avatarUrl={user.avatar_url}
+                  onClick={handleResultClick}
+                />
+              ))}
+            </div>
           ) : (
-            <p>{t("searchContent.noResults")}</p>
+            <p className="text-foreground/60 px-3 py-4 text-center text-sm">
+              {t("searchContent.noResults")}
+            </p>
           )}
         </div>
       )}
@@ -115,21 +144,29 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = ({ className }) => {
 }
 
 interface SearchedUserProps {
-  user: UserType
+  username: string
+  fullName: string
+  avatarUrl?: string
   onClick?: () => void
 }
 
-export const SearchedUser: React.FC<SearchedUserProps> = ({ user, onClick }) => {
+export const SearchedUser: React.FC<SearchedUserProps> = ({
+  username,
+  fullName,
+  avatarUrl,
+  onClick,
+}) => {
   return (
     <Link
-      href={user.username}
+      href={username}
       onClick={onClick}
-      className="flex z-50 rounded-2xl hover:bg-surface-variant-foreground/10 items-center px-3 py-2 gap-3 transition"
+      role="option"
+      className="hover:bg-surface-variant/28 focus:ring-primary flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all focus:ring-2 focus:outline-none active:scale-[0.98]"
     >
-      <UserAvatar src={user.avatar_url} name={user.full_name} />
-      <div className="flex flex-col">
-        <span>{user.full_name}</span>
-        <span className="text-foreground/60">@{user.username}</span>
+      <UserAvatar src={avatarUrl} name={fullName} className="shrink-0" />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate font-medium">{fullName}</span>
+        <span className="text-foreground/60 truncate text-sm">@{username}</span>
       </div>
     </Link>
   )

@@ -22,7 +22,8 @@
     "submit": "Enviar",
     "searchContent": {
       "placeholder": "Pesquisar...",
-      "noResults": "Nenhum resultado encontrado"
+      "noResults": "Nenhum resultado encontrado",
+      "typeToSearch": "Escreve pelo menos 2 caracteres para pesquisar..."
     },
     "navdrawerTitle": "{title, select, home {Início} news {Notícias} events {Eventos} cameras {Câmaras} messages {Mensagens} privateMessages {Mensagens privadas} groups {Grupos} otherItems {Outros} settings {Definições} other {Desconhecido}}",
     "confirmDialogInputLabel": "Se tiveres a certeza, digita <b>{inputTextToConfirm}</b> para confirmar."

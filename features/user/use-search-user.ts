@@ -1,44 +1,58 @@
 "use client"
 
-import { createClient } from "@/lib/supabase/client"
-import type { Database } from "@/types/database.types"
-import { SupabaseClient } from "@supabase/supabase-js"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { createClient } from "@/lib/supabase/client"
 
-/**
- * Search for a user by username
- *
- * @param search - The search query
- * @returns The user data
- */
-export const useSearchUser = (search: string) => {
-  return useQuery({
-    queryKey: ["search", search],
-    placeholderData: keepPreviousData,
-    queryFn: async () => {
-      if (!search || search == "@") return []
+const MAX_RESULTS = 10
+const MAX_SEARCH_LEN = 64
+const MIN_SEARCH_LEN = 2
 
-      const supabase = createClient()
+function sanitizeSearch(input: string): string {
+  const normalized = (input ?? "").trim().replace(/\s+/g, " ").normalize("NFC")
 
-      const { data, error } = await getSearchQuery(supabase, search).limit(10)
+  if (!normalized) {
+    return ""
+  }
 
-      if (error) {
-        throw new Error("Failed to search for user")
-      }
+  // Remove @ prefix if present
+  const withoutAt = normalized.startsWith("@") ? normalized.slice(1) : normalized
 
-      return data
-    },
-  })
+  // Allow letters, numbers, spaces, and common punctuation
+  const sanitized = withoutAt.replace(/[^ \p{L}\p{N}_''.-]/gu, "").slice(0, MAX_SEARCH_LEN)
+
+  return sanitized.length >= MIN_SEARCH_LEN ? sanitized : ""
 }
 
-const getSearchQuery = (supabase: SupabaseClient<Database>, search: string) => {
-  if (search.startsWith("@")) {
-    return supabase.rpc("search_users_by_username", {
-      search: search.slice(1),
-    })
-  } else {
-    return supabase.rpc("search_users_by_fullname", {
-      search,
-    })
-  }
+/**
+ * Search for a user by username or full name.
+ *
+ * @param rawSearch - The raw search input
+ * @returns Query result with user data
+ */
+export const useSearchUser = (rawSearch: string) => {
+  const term = sanitizeSearch(rawSearch)
+
+  return useQuery({
+    queryKey: ["search-users", term] as const,
+    enabled: term !== "",
+    placeholderData: keepPreviousData,
+    staleTime: 15_000, // 15 seconds
+    gcTime: 60_000, // 60 seconds
+    retry: 1,
+    refetchOnWindowFocus: false,
+    queryFn: async ({ signal }) => {
+      const supabase = createClient()
+
+      const { data } = await supabase
+        .rpc("search_users", {
+          search_query: term,
+          limit_count: MAX_RESULTS,
+          offset_count: 0,
+        })
+        .abortSignal(signal)
+        .throwOnError()
+
+      return data ?? []
+    },
+  })
 }
