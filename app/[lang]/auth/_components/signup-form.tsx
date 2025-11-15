@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
 import { signUpAction } from "@/app/[lang]/auth/actions"
 import { signUpSchema } from "@/lib/schemas/auth-schemas"
 import { Link } from "@/src/i18n/navigation"
@@ -61,12 +63,16 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>{t("username")}</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none"
-                  placeholder={t("usernamePlaceholder")}
-                  startAdornment={<span>@</span>}
-                  {...field}
-                />
+                <InputGroup className="border-none">
+                  <InputGroupInput
+                    id="username"
+                    placeholder={t("usernamePlaceholder")}
+                    {...field}
+                  />
+                  <InputGroupAddon>
+                    <Label htmlFor="username">@</Label>
+                  </InputGroupAddon>
+                </InputGroup>
               </FormControl>
               <FormMessage />
             </FormItem>

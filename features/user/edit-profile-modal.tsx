@@ -1,11 +1,19 @@
 "use client"
 
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
+import { useTranslations } from "next-intl"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { ZSAError } from "zsa"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog"
 import {
   Form,
@@ -16,21 +24,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import type UserType from "@/types/UserType"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { updateProfileSchema, UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { useModal } from "@/hooks/use-modal-store"
+import { removeUserAvatar } from "@/app/actions/userActions"
 import { UserEditableAvatar } from "@/app/components/user/user-editable-avatar"
 import { useUpdateProfileMutation } from "@/features/user/useUpdateProfileMutation"
-import { ZSAError } from "zsa"
-import { useState } from "react"
-import { useQueryClient } from "@tanstack/react-query"
-import { removeUserAvatar } from "@/app/actions/userActions"
-import { useTranslations } from "next-intl"
+import { useModal } from "@/hooks/use-modal-store"
+import { updateProfileSchema, UpdateProfileSchemaValues } from "@/lib/schemas/user-schemas"
+import type UserType from "@/types/UserType"
 
 export const EditProfileModal: React.FC = () => {
   const {
@@ -48,8 +50,8 @@ export const EditProfileModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={() => canClose && onClose()}>
       <DialogContent>
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">{t("header")}</DialogTitle>
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">{t("header")}</DialogTitle>
         </DialogHeader>
         <EditProfileForm user={user} onClose={onClose} changeCanClose={setCanClose} />
       </DialogContent>
@@ -102,7 +104,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
     <>
       <Form {...form}>
         <form
-          className="flex flex-col mt-4 gap-y-4 w-full"
+          className="mt-4 flex w-full flex-col gap-y-4"
           onSubmit={form.handleSubmit((values) => {
             if (form.formState.isDirty) {
               toast.loading("Saving changes...", { id: "edit-profile" })
@@ -142,7 +144,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
             control={form.control}
             name="avatar"
             render={({ field }) => (
-              <FormItem className="self-center flex flex-col items-center">
+              <FormItem className="flex flex-col items-center self-center">
                 <FormControl>
                   <UserEditableAvatar
                     avatar={field.value}
@@ -167,12 +169,12 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
               <FormItem>
                 <FormLabel>{t("username")}</FormLabel>
                 <FormControl>
-                  <Input
-                    className="border-none"
-                    placeholder={t("username")}
-                    startAdornment={<span>@</span>}
-                    {...field}
-                  />
+                  <InputGroup className="border-none">
+                    <InputGroupInput id="username" placeholder={t("username")} {...field} />
+                    <InputGroupAddon>
+                      <Label htmlFor="username">@</Label>
+                    </InputGroupAddon>
+                  </InputGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -200,7 +202,7 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
               <FormItem>
                 <FormLabel>Bio</FormLabel>
                 <FormControl>
-                  <Textarea className="border-none resize-none" placeholder="Bio" {...field} />
+                  <Textarea className="resize-none border-none" placeholder="Bio" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
