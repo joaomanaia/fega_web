@@ -1,6 +1,5 @@
 import { Suspense } from "react"
 import { AvatarSkeleton } from "@/components/ui/avatar"
-import { ModeToggle } from "@/components/ui/mode-toggle"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { HeaderSearch } from "@/app/components/header/header-search"
 import { HeaderUserAvatar } from "@/app/components/header/header-user-avatar"
@@ -14,8 +13,6 @@ export const MainHeader: React.FC = () => {
         <HeaderSearch className="mx-auto" />
 
         <div className="flex justify-end gap-4 xl:w-full xl:max-w-sm">
-          <ModeToggle />
-
           <Suspense fallback={<AvatarSkeleton />}>
             <HeaderUserAvatar />
           </Suspense>

@@ -109,7 +109,15 @@
   },
   "SettingsPage": {
     "general": {
-      "header": "General"
+      "header": "General",
+      "modeToggle": {
+        "title": "Theme mode",
+        "options": {
+          "system": "System",
+          "light": "Light",
+          "dark": "Dark"
+        }
+      }
     },
     "user": {
       "header": "User settings",

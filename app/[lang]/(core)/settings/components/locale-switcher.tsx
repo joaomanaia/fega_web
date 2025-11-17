@@ -14,10 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 import { usePathname, useRouter } from "@/src/i18n/navigation"
 import { routing } from "@/src/i18n/routing"
 
-export const LocaleSwitcher: React.FC = () => {
+export function LocaleSwitcher({ className }: { className?: string }) {
   const t = useTranslations("SettingsPage.LocaleSwitcher")
   const locale = useLocale()
 
@@ -39,26 +40,28 @@ export const LocaleSwitcher: React.FC = () => {
   }
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button disabled={isPending} variant="outline" className="w-fit rounded-2xl">
-            <ChevronsUpDown />
-            {t("locale", { locale: locale })}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={locale} onValueChange={onSelectChange}>
-            {routing.locales.map((lang) => (
-              <DropdownMenuRadioItem key={lang} value={lang} disabled={isPending}>
-                {t("locale", { locale: lang })}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          disabled={isPending}
+          variant="outline"
+          className={cn("w-fit rounded-2xl", className)}
+        >
+          <ChevronsUpDown className="mr-auto" />
+          <span className="mr-auto">{t("locale", { locale: locale })}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={locale} onValueChange={onSelectChange}>
+          {routing.locales.map((lang) => (
+            <DropdownMenuRadioItem key={lang} value={lang} disabled={isPending}>
+              {t("locale", { locale: lang })}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
