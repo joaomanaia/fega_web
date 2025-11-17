@@ -35,7 +35,7 @@ export async function generateMetadata({
     icons: {
       icon: "/favicon.ico",
     },
-    manifest: "/manifest.json",
+    manifest: "/manifest.webmanifest",
     metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
     applicationName: appName,
     openGraph: {
@@ -69,6 +69,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           name="google-site-verification"
           content="vduNWIMxVDPQZoidzqpL-4nO41GAbOB_LOGrfAJAFms"
         />
+        {/* Manifest should be included in head to be detected, but next.js includes in body */}
+        <link rel="manifest" href="/manifest.webmanifest" />
       </head>
       <body
         className={cn(

@@ -25,6 +25,6 @@ export const config = {
      * - manifest.json (PWA manifest file)
      * - And all other static files (html, css, js, images, fonts, etc.)
      */
-    "/((?!share|api|auth/callback|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/((?!share|api|auth/callback|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|manifest.webmanifest|.well-known|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip)).*)",
   ],
 }
