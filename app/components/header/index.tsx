@@ -12,7 +12,8 @@ export const MainHeader: React.FC = () => {
 
         <HeaderSearch className="mx-auto" />
 
-        <div className="flex justify-end gap-4 xl:w-full xl:max-w-sm">
+        <div className="flex justify-end gap-4">
+          {/* xl:w-full xl:max-w-sm */}
           <Suspense fallback={<AvatarSkeleton />}>
             <HeaderUserAvatar />
           </Suspense>
