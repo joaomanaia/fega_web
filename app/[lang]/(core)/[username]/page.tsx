@@ -1,11 +1,12 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
-import { FileWarningIcon } from "lucide-react"
 import { type Metadata } from "next"
 import { useTranslations, type Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 import { getSession } from "@/lib/dal"
 import { getUserByUsername } from "@/utils/user-utils"
 import PostsContent, { PostsSkeleton } from "../PostsContent"
@@ -82,7 +83,12 @@ export default async function UserPage(props: UserPageProps) {
             schemaHasPart // Has part of the main entity
             uid={user.id}
             localUid={localUserUid ?? null}
-            EmptyPostsContent={() => <UserEmptyPostsContent userName={user.full_name ?? "User"} />}
+            EmptyPostsContent={() => (
+              <UserEmptyPostsContent
+                userName={user.full_name ?? "User"}
+                userAvatarUrl={user.avatar_url}
+              />
+            )}
           />
         </Suspense>
       </MainContainer>
@@ -92,21 +98,29 @@ export default async function UserPage(props: UserPageProps) {
 
 interface UserEmptyPostsContentProps {
   userName: string
+  userAvatarUrl?: string | null
 }
 
-const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({ userName }) => {
+const UserEmptyPostsContent: React.FC<UserEmptyPostsContentProps> = ({
+  userName,
+  userAvatarUrl,
+}) => {
   const t = useTranslations("Post.emptyPosts")
 
   return (
-    <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center py-8 text-center">
-      <FileWarningIcon className="text-secondary/50 mb-4 h-16 w-16" />
-      <h2 className="text-xl font-semibold">{t("header")}</h2>
-      <p className="text-secondary/50 mt-2">
-        {t.rich("description.user", {
-          username: userName,
-          b: (chunks) => <b>{chunks}</b>,
-        })}
-      </p>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="default">
+          <UserAvatar src={userAvatarUrl} name={userName} />
+        </EmptyMedia>
+        <EmptyTitle>{t("header")}</EmptyTitle>
+        <EmptyDescription>
+          {t.rich("description.user", {
+            username: userName,
+            b: (chunks) => <b>{chunks}</b>,
+          })}
+        </EmptyDescription>
+      </EmptyHeader>
+    </Empty>
   )
 }

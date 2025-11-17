@@ -1,5 +1,6 @@
-import { FileWarningIcon } from "lucide-react"
+import { FileTextIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { PagingPosts } from "@/app/[lang]/(core)/paging-posts"
 import { PostSkeleton } from "@/app/components/post/Post"
 import { getPosts } from "@/features/post/get-posts"
@@ -21,8 +22,6 @@ export default async function PostsContent({
   const client = await createClient()
   const posts = await getPosts(client, uid)
 
-  /* return <EmptyPostsContent /> */
-
   if (!posts.length) {
     return <EmptyPostsContent />
   }
@@ -43,11 +42,15 @@ const DefaultEmptyPostsContent = () => {
   const t = useTranslations("Post.emptyPosts")
 
   return (
-    <div className="flex h-full flex-col items-center justify-center text-center">
-      <FileWarningIcon className="text-secondary/50 mb-4 h-16 w-16" />
-      <h2 className="text-xl font-semibold">{t("header")}</h2>
-      <p className="text-secondary/50 mt-2">{t("description.default")}</p>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <FileTextIcon />
+        </EmptyMedia>
+        <EmptyTitle>{t("header")}</EmptyTitle>
+        <EmptyDescription>{t("description.default")}</EmptyDescription>
+      </EmptyHeader>
+    </Empty>
   )
 }
 
