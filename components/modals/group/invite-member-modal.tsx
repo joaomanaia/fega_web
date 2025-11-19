@@ -1,27 +1,20 @@
 "use client"
 
-import { useModal } from "@/hooks/use-modal-store"
+import React from "react"
+import { SearchIcon } from "lucide-react"
+import { toast } from "sonner"
+import { useDebounceValue } from "usehooks-ts"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import React, { useState } from "react"
-import UserType from "@/types/UserType"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Spinner } from "@/components/ui/spinner"
 import { addParticipant } from "@/app/actions/groupActions"
-import { toast } from "sonner"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 import { SubmitButton } from "@/components/submit-button"
-import { createClient } from "@/lib/supabase/client"
+import {
+  useSearchUserExcludeGroup,
+  type SearchUserResult,
+} from "@/features/user/use-search-user-exclude-group"
+import { useModal } from "@/hooks/use-modal-store"
 
 export const InviteMemberModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("group-invite")
@@ -33,10 +26,10 @@ export const InviteMemberModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Invite Member</DialogTitle>
+        <DialogHeader className="px-6 pt-8">
+          <DialogTitle className="text-center text-2xl font-bold">Invite Member</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col w-full gap-4 py-4">
+        <div className="flex w-full flex-col gap-4 py-4">
           <SearchMemberForm groupId={group.id} groupName={group.name ?? "Unknown"} />
         </div>
       </DialogContent>
@@ -49,113 +42,73 @@ interface SearchMemberFormProps {
   groupName: string
 }
 
-const formSchema = z.object({
-  name: z.string().min(1).max(255),
-})
-
 export const SearchMemberForm: React.FC<SearchMemberFormProps> = ({ groupId, groupName }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-    },
-  })
+  const [debouncedValue, setValue] = useDebounceValue("", 500)
+  const {
+    data: users,
+    isLoading,
+    isFetched,
+  } = useSearchUserExcludeGroup(debouncedValue.trim(), groupId)
 
-  const [isSearched, setIsSearched] = useState(false)
-  const [searchedUsers, setSearchedUsers] = useState<UserType[]>([])
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const parsed = formSchema.parse(values)
-
-      const supabase = createClient()
-
-      const { data: currentParticipants, error: currentParticipantsError } = await supabase
-        .from("group_participants")
-        .select("uid")
-        .eq("group_id", groupId)
-
-      if (currentParticipantsError) {
-        toast.error("Failed to search for users")
-        throw currentParticipantsError
-      }
-
-      const currentParticipantsIds = currentParticipants?.map((participant) => participant.uid)
-
-      const { data: users, error } = await supabase
-        .from("users")
-        .select("*")
-        .textSearch("full_name", parsed.name)
-        .not("id", "in", `(${currentParticipantsIds?.join(",")})`)
-        .limit(5)
-
-      if (error) {
-        toast.error("Failed to search for users")
-        throw error
-      }
-
-      setSearchedUsers(users)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsSearched(true)
-    }
-  }
+  const hasResults = Array.isArray(users) && users.length > 0
+  const shouldSearch = debouncedValue.trim().length >= 2
 
   return (
     <>
       <p>
         Search for a user to invite to <span className="font-bold">{groupName}</span>
       </p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex gap-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="User name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+      <div className="relative w-full">
+        <div className="relative flex items-center gap-2">
+          <SearchIcon className="text-muted-foreground absolute left-3 h-5 w-5" />
+          <Input
+            placeholder="Search by name or username..."
+            defaultValue=""
+            onChange={(e) => setValue(e.target.value)}
+            className="pr-10 pl-10"
           />
-          <Button variant="default" type="submit" className="mt-8">
-            Search
-          </Button>
-        </form>
-      </Form>
-
-      {isSearched && (
-        <>
-          {searchedUsers.length > 0 ? (
-            <>
-              <p className="mt-2">Users found:</p>
-              <ul className="flex flex-col w-full divide-y divide-surface-variant bg-surface-variant/[0.28] rounded-2xl p-4">
-                {searchedUsers.map((user) => (
-                  <li
-                    key={user.id}
-                    className="flex items-center gap-4 w-full py-4 first:pt-0 last:pb-0"
-                  >
-                    <InviteUser groupId={groupId} user={user} />
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <p className="mt-2">No users found</p>
+          {isLoading && (
+            <div className="absolute right-3">
+              <Spinner className="h-4 w-4" />
+            </div>
           )}
-        </>
-      )}
+        </div>
+
+        {isFetched && (
+          <div className="mt-4">
+            {!shouldSearch ? (
+              <p className="text-muted-foreground text-sm">Type at least 2 characters to search</p>
+            ) : isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Spinner className="h-8 w-8" />
+              </div>
+            ) : hasResults ? (
+              <>
+                <p className="text-muted-foreground mb-2 text-sm">Users found:</p>
+                <ul className="divide-surface-variant bg-surface-variant/[0.28] flex w-full flex-col divide-y rounded-2xl p-4">
+                  {users?.map((user) => (
+                    <li
+                      key={user.id}
+                      className="flex w-full items-center gap-4 py-4 first:pt-0 last:pb-0"
+                    >
+                      <InviteUser groupId={groupId} user={user} />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="text-muted-foreground text-sm">No users found</p>
+            )}
+          </div>
+        )}
+      </div>
     </>
   )
 }
 
 interface InviteUserProps {
   groupId: string
-  user: UserType
+  user: SearchUserResult
 }
 
 export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
@@ -165,11 +118,11 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
 
   return (
     <>
-      <Avatar>
-        <AvatarImage src={user.avatar_url ?? undefined} alt={user.full_name ?? "Unknown"} />
-        <AvatarFallback>{user.full_name?.charAt(0)}</AvatarFallback>
-      </Avatar>
-      <p>{user.full_name}</p>
+      <UserAvatar src={user.avatar_url} alt={user.username} />
+      <div>
+        <p className="font-medium">{user.full_name}</p>
+        <p className="text-muted-foreground text-sm">@{user.username}</p>
+      </div>
       <SubmitButton
         onClick={async () => {
           try {
