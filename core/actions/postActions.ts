@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath, updateTag } from "next/cache"
 import { getTranslations } from "next-intl/server"
 import { z } from "zod"
 import { ActionError, authActionClient } from "@/lib/safe-action"
@@ -25,7 +25,7 @@ export const createPost = authActionClient
 
     await supabase.from("posts").insert({ description: parsedInput.description }).throwOnError()
 
-    revalidateTag("posts")
+    updateTag("posts")
     revalidatePath("/")
     revalidatePath(`/${ctx.user.user_metadata?.username}`)
   })
@@ -37,7 +37,7 @@ export const deletePost = authActionClient
     const supabase = await createClient()
     await supabase.from("posts").delete().eq("id", parsedInput.id).throwOnError()
 
-    revalidateTag("posts")
+    updateTag("posts")
     revalidatePath("/")
     revalidatePath(`/${ctx.user.user_metadata?.username}`)
   })
