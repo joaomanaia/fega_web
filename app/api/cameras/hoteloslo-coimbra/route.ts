@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic"
-export const revalidate = 2
-
 export async function GET() {
   const cameraBaseUrl = "https://rooftop.tryfail.net:50000/image.jpeg"
   const cameraUrl = `${cameraBaseUrl}?date=${Date.now()}`
@@ -11,7 +8,7 @@ export async function GET() {
       "Cache-Control": "no-cache",
       "Content-Type": "image/jpeg",
       "Access-Control-Allow-Origin": "*",
-    }
+    },
   })
 
   return res

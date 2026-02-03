@@ -168,6 +168,12 @@
       "locale": "{locale, select, pt {🇵🇹 Português} en {🇺🇸 Inglês} other {Desconhecido}}"
     }
   },
+  "CamerasPage": {
+    "emptyCamerasPage": {
+      "header": "Nenhuma câmara disponível",
+      "description": "Atualmente não há câmaras para exibir. Por favor, volta mais tarde."
+    }
+  },
   "User": {
     "joinedDate": "Aderiu a {joinDate}",
     "editProfile": {

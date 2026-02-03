@@ -1,8 +1,31 @@
+import { cacheLife } from "next/cache"
+import { CameraIcon } from "lucide-react"
+import { getTranslations } from "next-intl/server"
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { getAllCameras } from "@/app/[lang]/(core)/cameras/_lib/queries"
 import { CameraItem, CameraItemSkeleton } from "./CameraItem"
 
 export const CamerasList: React.FC = async () => {
+  "use cache"
+  cacheLife("weeks")
+
   const cameras = await getAllCameras()
+
+  if (cameras.length === 0) {
+    const t = await getTranslations("CamerasPage.emptyCamerasPage")
+
+    return (
+      <Empty className="h-full">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <CameraIcon />
+          </EmptyMedia>
+          <EmptyTitle>{t("header")}</EmptyTitle>
+          <EmptyDescription>{t("description")}</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    )
+  }
 
   return (
     <ul

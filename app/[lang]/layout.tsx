@@ -2,7 +2,9 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import "../styles/tokens.css"
 import "../styles/globals.css"
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
+import { connection } from "next/server"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { type Metadata } from "next"
@@ -52,6 +54,12 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
+async function UTSSR() {
+  await connection()
+
+  return <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+}
+
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
   // Ensure that the incoming `lang` is valid
   const { lang } = await params
@@ -78,7 +86,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           fontSans.variable
         )}
       >
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+        <Suspense>
+          <UTSSR />
+        </Suspense>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -86,11 +96,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           disableTransitionOnChange
         >
           <QueryProvider>
-            <NextIntlClientProvider>
-              {children}
-              <SonnerToaster richColors />
-              <ModalProvider />
-            </NextIntlClientProvider>
+            {/* TODO: (Suspense) Temprary fix for the cacheComponents */}
+            <Suspense>
+              <NextIntlClientProvider>
+                {children}
+                <SonnerToaster richColors />
+                <ModalProvider />
+              </NextIntlClientProvider>
+            </Suspense>
           </QueryProvider>
         </ThemeProvider>
       </body>
@@ -99,6 +112,6 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   )
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return routing.locales.map((locale) => ({ lang: locale }))
 }

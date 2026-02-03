@@ -1,11 +1,12 @@
 import { vercel } from "@t3-oss/env-core/presets-zod"
 import { createEnv } from "@t3-oss/env-nextjs"
-import * as z from "zod";
+import * as z from "zod"
 
 export const env = createEnv({
   extends: [vercel()],
   server: {
     ANALYTICS_DISABLED: z.transform((s) => s !== "false" && s !== "0").optional(),
+    SUPABASE_SERVICE_ROLE_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.url(),

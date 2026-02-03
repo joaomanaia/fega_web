@@ -1,12 +1,13 @@
 import "server-only"
 import { cache } from "react"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 import type { Tables } from "@/types/database.types"
 
 type CameraType = Tables<"cameras">
 
 export const getAllCameras = cache(async (): Promise<CameraType[]> => {
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
 
   const { data, error } = await supabase.from("cameras").select("*")
 

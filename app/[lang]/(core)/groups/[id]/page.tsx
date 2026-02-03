@@ -39,8 +39,6 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
   return groupMessages as GroupMessageWithUserType[]
 }
 
-export const dynamic = "force-dynamic"
-
 export async function generateMetadata(props: GroupMessagePageProps): Promise<Metadata> {
   const params = await props.params
   const group = await getGroup(params.id)

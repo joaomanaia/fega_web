@@ -21,7 +21,7 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
     <Link
       itemProp="url"
       className={cn(
-        "next-link flex h-fit items-center rounded-3xl px-4 py-4 transition-colors hover:bg-surface-variant/38",
+        "next-link hover:bg-surface-variant/38 flex h-fit items-center rounded-3xl px-4 py-4 transition-colors",
         selected && "bg-primary text-primary-foreground hover:bg-primary/90"
       )}
       href={`/cameras/${camera.id}`}
@@ -31,7 +31,7 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
         <AvatarFallback>{camera.name}</AvatarFallback>
       </Avatar>
       <div className="ml-4">
-        <h2 className="text-xl font-semibold" itemProp="name">
+        <h2 className="text-lg font-semibold md:text-xl" itemProp="name">
           {camera.name}
         </h2>
         <p className="text-sm text-inherit" itemProp="description">

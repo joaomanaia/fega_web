@@ -14,9 +14,9 @@ export default function Layout({ children, params }: LayoutProps<"/[lang]/camera
   setRequestLocale(lang as Locale)
 
   return (
-    <main className="flex h-full flex-col overflow-y-auto md:pb-3">
+    <main className="flex h-full flex-col gap-y-4 overflow-y-auto md:pb-3">
       {children}
-      <MainContainer className="rounded-b-none last:mt-4 md:rounded-[30px]">
+      <MainContainer className="h-full rounded-b-none md:h-fit md:rounded-[30px]">
         <Suspense fallback={<CamerasListSkeleton />}>
           <CamerasList />
         </Suspense>

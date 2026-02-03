@@ -5,6 +5,7 @@ import createNextIntlPlugin from "next-intl/plugin"
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  cacheComponents: true,
   images: {
     domains: [
       "lh3.googleusercontent.com",
@@ -19,6 +20,13 @@ const nextConfig: NextConfig = {
         pathname: "/f/*",
       },
     ],
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+    incomingRequests: true,
   },
   serverExternalPackages: ["pino", "pino-pretty"],
   experimental: {
