@@ -60,7 +60,7 @@ export const MdxEditor: React.FC<MdxEditorProps> = ({ maxLength, className, fiel
         </Hint>
       </div>
 
-      <ResizablePanelGroup className="mt-3 rounded-xl border" direction={previewDirection}>
+      <ResizablePanelGroup className="mt-3 rounded-xl border" orientation={previewDirection}>
         <ResizablePanel>
           <Textarea
             className="bg-surface-variant/20 text-surface-variant-foreground h-full w-full resize-none rounded-none border-none p-4"

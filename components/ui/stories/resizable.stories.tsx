@@ -12,10 +12,10 @@ const meta = {
     layout: "centered",
   },
   argTypes: {
-    direction: {
+    orientation: {
       control: { type: "select" },
       options: ["horizontal", "vertical"],
-      description: "Direction of resizing",
+      description: "Orientation of resizing",
     },
     withHandle: {
       control: { type: "boolean" },
@@ -49,14 +49,14 @@ type Story = StoryObj<typeof meta>
 
 export const Horizontal: Story = {
   args: {
-    direction: "horizontal",
+    orientation: "horizontal",
     withHandle: true,
   },
 }
 
 export const Vertical: Story = {
   args: {
-    direction: "vertical",
+    orientation: "vertical",
     withHandle: true,
   },
 }
