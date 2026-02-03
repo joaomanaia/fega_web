@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
+import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -81,7 +81,7 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                News Description <span className="text-xs text-foreground/50">(Optional)</span>
+                News Description <span className="text-foreground/50 text-xs">(Optional)</span>
               </FormLabel>
               <FormControl>
                 <Input placeholder="Enter news description" {...field} />

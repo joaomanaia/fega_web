@@ -46,5 +46,4 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Default: Story = { args: {} as any }

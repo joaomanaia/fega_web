@@ -7,7 +7,7 @@ import { CalendarIcon, TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useDebounceCallback } from "usehooks-ts"
-import { z } from "zod"
+import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -42,7 +42,7 @@ const formSchema = z.object({
   fromDate: z.date(),
   toDate: z.date(),
   locationId: z.string().nullable().optional(),
-  otherData: z.custom<CalendarEventOtherDataItem>().array(),
+  otherData: z.array(z.custom<CalendarEventOtherDataItem>()),
 })
 
 type Option = {

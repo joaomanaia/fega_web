@@ -1,7 +1,7 @@
 "use server"
 
 import { getLocale } from "next-intl/server"
-import { z } from "zod"
+import * as z from "zod"
 import { createClient } from "@/lib/supabase/client"
 import { redirect } from "@/src/i18n/navigation"
 

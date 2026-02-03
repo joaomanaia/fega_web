@@ -44,7 +44,7 @@ interface DraggableMarkerProps {
 
 const DraggableMarker: React.FC<DraggableMarkerProps> = ({ onPositionChange, center }) => {
   const [position, setPosition] = useState(center)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const markerRef: React.RefObject<any> = useRef(null)
 
   const eventHandlers = useMemo(

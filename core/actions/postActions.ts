@@ -2,7 +2,7 @@
 
 import { revalidatePath, updateTag } from "next/cache"
 import { getTranslations } from "next-intl/server"
-import { z } from "zod"
+import * as z from "zod"
 import { ActionError, authActionClient } from "@/lib/safe-action"
 import { createPostSchema } from "@/lib/schemas/post-schemas"
 import { createClient } from "@/lib/supabase/server"

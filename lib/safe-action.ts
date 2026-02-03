@@ -1,7 +1,7 @@
 import "server-only"
 import { PostgrestError } from "@supabase/supabase-js"
 import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action"
-import z from "zod"
+import * as z from "zod"
 import { getSession } from "@/lib/dal"
 import { logger } from "@/lib/logging"
 

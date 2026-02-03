@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import ogs from "open-graph-scraper"
-import { z } from "zod"
+import * as z from "zod"
 
 export type OgDataResponse = {
   ogTitle: string

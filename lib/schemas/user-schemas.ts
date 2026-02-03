@@ -1,4 +1,4 @@
-import { z } from "zod"
+import * as z from "zod"
 import blockedUsernames from "@/lib/constants/blockedUsernames"
 
 export const USERNAME_REGEX = /^(?=[a-z0-9._]{3,20}$)(?!.*[_.]{2})[^_.0-9].*[^_.]$/

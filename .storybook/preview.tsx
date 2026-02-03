@@ -43,7 +43,6 @@ const preview: Preview = {
           docsParameter: Parameters,
           element: HTMLElement
         ) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const theme = (context as any).store.userGlobals.globals.theme
 
           docsParameter.theme = theme === "dark" ? dark : light

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import * as z from "zod"
 import { passwordSchema, usernameSchema } from "@/lib/schemas/user-schemas"
 
 export const signInSchema = z.object({

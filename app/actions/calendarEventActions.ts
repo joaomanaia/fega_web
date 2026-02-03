@@ -1,7 +1,7 @@
 "use server"
 
 import { getLocale } from "next-intl/server"
-import { z } from "zod"
+import * as z from "zod"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "@/src/i18n/navigation"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
@@ -16,7 +16,7 @@ const createEventFormSchema = z.object({
   fromDate: z.date(),
   toDate: z.date(),
   locationId: z.string().nullable().optional(),
-  otherData: z.custom<CalendarEventOtherDataItem>().array(),
+  otherData: z.array(z.custom<CalendarEventOtherDataItem>()),
 })
 
 export async function createEvent(values: z.infer<typeof createEventFormSchema>) {
