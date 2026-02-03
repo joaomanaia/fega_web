@@ -32,7 +32,7 @@ export const ourFileRouter = {
   avatar: f({ image: { maxFileSize: "512KB", maxFileCount: 1 } })
     .middleware(() => hadleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
-      const oldAvatarUrl = metadata.user.user_metadata.avatar_url
+      const oldAvatarUrl = metadata.user.user_metadata?.avatar_url
 
       if (oldAvatarUrl) {
         await deleteAvatarIfFromUploadthing(oldAvatarUrl)

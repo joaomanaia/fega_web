@@ -52,7 +52,6 @@ export const useSearchUserExcludeGroup = (rawSearch: string, groupId: string) =>
     queryFn: async () => {
       const supabase = createClient()
 
-      // @ts-expect-error - Function exists in database but types not yet regenerated
       const { data, error } = await supabase.rpc("search_users_exclude_group", {
         search_query: term,
         group_id_param: groupId,
