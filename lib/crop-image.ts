@@ -111,7 +111,7 @@ export async function convertCanvasToCompressedBlob(
 
   while (quality >= MIN_QUALITY) {
     const blob = await new Promise<Blob | null>((resolve) => {
-      console.log(`Trying quality: ${quality}`)
+      // console.log(`Trying quality: ${quality}`)
       canvas.toBlob((b) => resolve(b), "image/jpeg", quality)
     })
 
@@ -120,7 +120,7 @@ export async function convertCanvasToCompressedBlob(
     }
 
     if (isValidSize(blob, maxFileSizeInBytes)) {
-      console.log(`Image compressed to ${blob.size} bytes with quality: ${quality}`)
+      // console.log(`Image compressed to ${blob.size} bytes with quality: ${quality}`)
       return blob
     }
 

@@ -110,14 +110,14 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
             onClick={handleSignOut}
             title={t("signout.title")}
             description={t("signout.description")}
-            className="text-center"
+            className="col-span-2 text-center md:col-span-1"
           />
           <LargeButton
             variant="destructive"
             onClick={handleDeleteAccount}
             title={t("deleteAccount.title")}
             description={t("deleteAccount.description")}
-            className="text-center"
+            className="col-span-2 text-center md:col-span-1"
           />
         </div>
       </BaseSettingsContainer>
