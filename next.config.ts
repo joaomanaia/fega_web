@@ -1,6 +1,8 @@
 import createMDX from "@next/mdx"
 import type { NextConfig } from "next"
 import createNextIntlPlugin from "next-intl/plugin"
+import { env } from "@/env"
+import { UMAMI_SRC_PATH } from "@/src/lib/constants"
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -32,6 +34,12 @@ const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
   },
+  rewrites: async () => [
+    {
+      source: `${UMAMI_SRC_PATH}/:match*`,
+      destination: env.NEXT_PUBLIC_UMAMI_SRC,
+    },
+  ],
 }
 
 const withMDX = createMDX({})

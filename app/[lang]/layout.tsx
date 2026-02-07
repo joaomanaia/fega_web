@@ -4,6 +4,7 @@ import "../styles/tokens.css"
 import "../styles/globals.css"
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
+import Script from "next/script"
 import { connection } from "next/server"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
@@ -15,6 +16,7 @@ import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { appName } from "@/core/common"
 import { env } from "@/env"
 import { routing } from "@/src/i18n/routing"
+import { UMAMI_SRC_PATH } from "@/src/lib/constants"
 import { ModalProvider } from "@/src/providers/modal-provider"
 import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
@@ -79,6 +81,27 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         />
         {/* Manifest should be included in head to be detected, but next.js includes in body */}
         <link rel="manifest" href="/manifest.webmanifest" />
+        {!env.ANALYTICS_DISABLED && (
+          <>
+            <Script id="umami-before-send" strategy="beforeInteractive">
+              {`
+            function beforeSendHandler(type, payload) {
+          if (payload.url) {
+            payload.url = payload.url.replace(/\\/[^\\/]+\\//, '/');
+          }
+          return payload;
+            }
+          `}
+            </Script>
+            <Script
+              defer
+              strategy="afterInteractive"
+              src={`${UMAMI_SRC_PATH}/script.js`}
+              data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+              data-before-send="beforeSendHandler"
+            />
+          </>
+        )}
       </head>
       <body
         className={cn(

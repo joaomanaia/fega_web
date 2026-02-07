@@ -11,6 +11,8 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_APP_URL: z.url(),
     NEXT_PUBLIC_GTM_ID: z.string(),
+    NEXT_PUBLIC_UMAMI_SRC: z.string(),
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string(),
   },
   shared: {
     NODE_ENV: z.enum(["development", "production", "test"]),
@@ -26,6 +28,8 @@ export const env = createEnv({
     NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_UMAMI_SRC: process.env.NEXT_PUBLIC_UMAMI_SRC,
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID,
     LOG_LEVEL: process.env.LOG_LEVEL,
   },
 })
