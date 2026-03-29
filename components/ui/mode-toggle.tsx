@@ -22,6 +22,7 @@ export function ModeToggle({
   className?: string
 }) {
   const { resolvedTheme, setTheme } = useTheme()
+  const resolvedThemeWithFallback = (resolvedTheme as "light" | "dark" | "system") || "system"
   const t = useTranslations("SettingsPage.general.modeToggle")
 
   return (
@@ -39,7 +40,7 @@ export function ModeToggle({
             <div className="mr-auto flex items-center justify-center gap-2">
               <SunIcon className="block dark:hidden" />
               <MoonIcon className="hidden dark:block" />
-              {t(`options.${resolvedTheme as "light" | "dark" | "system"}`)}
+              {t(`options.${resolvedThemeWithFallback}`)}
             </div>
           </Button>
         )}

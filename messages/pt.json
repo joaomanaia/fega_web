@@ -26,7 +26,8 @@
       "typeToSearch": "Escreve pelo menos 2 caracteres para pesquisar..."
     },
     "navdrawerTitle": "{title, select, home {Início} news {Notícias} events {Eventos} cameras {Câmaras} messages {Mensagens} privateMessages {Mensagens privadas} groups {Grupos} otherItems {Outros} settings {Definições} other {Desconhecido}}",
-    "confirmDialogInputLabel": "Se tiveres a certeza, digita <b>{inputTextToConfirm}</b> para confirmar."
+    "confirmDialogInputLabel": "Se tiveres a certeza, digita <b>{inputTextToConfirm}</b> para confirmar.",
+    "goToHomepage": "Ir para a página inicial"
   },
   "HomePage": {
     "title": "Início"
@@ -40,6 +41,10 @@
         "default": "Começa por criar a tua primeira publicação ou volta mais tarde!",
         "user": "<b>{username}</b> ainda não partilhou nada, volta mais tarde!"
       }
+    },
+    "notFound": {
+      "header": "Publicação não encontrada",
+      "description": "Não conseguimos encontrar a publicação que procuravas. Por favor, verifica o URL ou tenta novamente mais tarde."
     },
     "create": {
       "header": "Criar publicação",

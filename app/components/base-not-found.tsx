@@ -1,26 +1,37 @@
-import { MainContainer } from "@/app/components/m3/main-container"
+import { NewspaperIcon, type LucideIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import { Link } from "@/src/i18n/navigation"
-import { NewspaperIcon } from "lucide-react"
 
 interface BaseNotFoundProps {
   title: string
   description: string
+  Icon?: LucideIcon
 }
 
-export const BaseNotFound: React.FC<BaseNotFoundProps> = ({ title, description }) => {
+export const BaseNotFound: React.FC<BaseNotFoundProps> = ({ title, description, Icon }) => {
+  const t = useTranslations("General")
+
   return (
-    <MainContainer className="h-full w-full min-w-full md:mb-3 rounded-b-none md:rounded-b-3xl">
-      <div className="h-full w-full flex flex-col items-center justify-center mx-auto max-w-md text-center">
-        <NewspaperIcon className="mx-auto size-16 text-foreground" />
-        <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          {title}
-        </h2>
-        <p className="mt-4 text-surface-variant-foreground">{description}</p>
-        <Button className="mt-6" asChild>
-          <Link href="/">Go to Homepage</Link>
+    <Empty className="h-full w-full rounded-[30px] rounded-b-none bg-[#fbf8fd] px-4 py-4 text-[#1b1b1f] md:mb-3 md:rounded-b-3xl md:px-6 md:py-6 dark:bg-[#131316] dark:text-[#e4e2e6]">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">{Icon ? <Icon /> : <NewspaperIcon />}</EmptyMedia>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button asChild variant="outline">
+          <Link href="/">{t("goToHomepage")}</Link>
         </Button>
-      </div>
-    </MainContainer>
+      </EmptyContent>
+    </Empty>
   )
 }

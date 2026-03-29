@@ -54,7 +54,7 @@ export default async function PostPage(props: PageProps<"/[lang]/post/[id]">) {
   const session = await getSession()
 
   return (
-    <MainContainer className="mx-3 lg:container lg:mx-auto">
+    <MainContainer className="mx-4 md:mx-0">
       <Post hideContainer post={post} localUid={session?.uid ?? null} className="p-2" />
     </MainContainer>
   )

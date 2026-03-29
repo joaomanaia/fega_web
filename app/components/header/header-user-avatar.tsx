@@ -13,10 +13,10 @@ export const HeaderUserAvatar: React.FC = async () => {
   }
 
   return (
-    <Hint label={userData.name ?? "Make login"}>
-      <Link href={user ? `/${user.user_metadata?.username}` : "/auth/login"}>
+    <Link href={user ? `/${user.user_metadata?.username}` : "/auth/login"}>
+      <Hint label={userData.name ?? "Make login"}>
         <UserAvatar src={userData.avatar} name={userData.name} />
-      </Link>
-    </Hint>
+      </Hint>
+    </Link>
   )
 }

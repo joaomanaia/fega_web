@@ -12,6 +12,7 @@ import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getTranslations } from "next-intl/server"
 import { extractRouterConfig } from "uploadthing/server"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { appName } from "@/core/common"
 import { env } from "@/env"
 import { routing } from "@/src/i18n/routing"
@@ -109,9 +110,11 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             {/* TODO: (Suspense) Temprary fix for the cacheComponents */}
             <Suspense>
               <NextIntlClientProvider>
-                {children}
-                <SonnerToaster richColors />
-                <ModalProvider />
+                <TooltipProvider>
+                  {children}
+                  <SonnerToaster richColors />
+                  <ModalProvider />
+                </TooltipProvider>
               </NextIntlClientProvider>
             </Suspense>
           </QueryProvider>
