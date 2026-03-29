@@ -47,3 +47,5 @@ chromatic.config.json
 
 # Next Intl
 messages/*.d.json.ts
+
+.next-env.d.ts

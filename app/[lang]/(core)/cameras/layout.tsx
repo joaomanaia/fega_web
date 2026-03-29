@@ -1,7 +1,5 @@
-import { Suspense, use } from "react"
+import { Suspense } from "react"
 import { type Metadata } from "next"
-import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { CamerasList, CamerasListSkeleton } from "./_components/cameras-list"
 
@@ -9,10 +7,7 @@ export const metadata: Metadata = {
   title: "Cameras",
 }
 
-export default function Layout({ children, params }: LayoutProps<"/[lang]/cameras">) {
-  const { lang } = use(params)
-  setRequestLocale(lang as Locale)
-
+export default function Layout({ children }: LayoutProps<"/[lang]/cameras">) {
   return (
     <main className="flex h-full flex-col gap-y-4 overflow-y-auto md:pb-3">
       {children}

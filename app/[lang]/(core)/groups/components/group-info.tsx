@@ -1,4 +1,5 @@
-import { useTranslations, type Locale } from "next-intl"
+import { useTranslations } from "next-intl"
+import { getLocale } from "next-intl/server"
 import { Skeleton } from "@/components/ui/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
@@ -8,15 +9,14 @@ import { redirect } from "@/src/i18n/navigation"
 
 interface GroupInfoProps {
   groupId: string
-  lang: Locale
   isDialog?: boolean
 }
 
-export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, lang, isDialog }) => {
+export const GroupInfo: React.FC<GroupInfoProps> = async ({ groupId, isDialog }) => {
   const supabase = await createClient()
 
   const { data: group } = await supabase.from("group_view").select("*").eq("id", groupId).single()
-  if (!group) return redirect({ href: "/groups", locale: lang })
+  if (!group) return redirect({ href: "/groups", locale: await getLocale() })
 
   return (
     <>

@@ -1,11 +1,10 @@
-import { type Metadata } from "next"
-import { NewsItem } from "./components/news-item"
-import { MainContainer } from "@/app/components/m3/main-container"
-import { type Tables } from "@/types/database.types"
 import { NewspaperIcon } from "lucide-react"
+import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
+import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/server"
-import type { Locale } from "next-intl"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { type Tables } from "@/types/database.types"
+import { NewsItem } from "./components/news-item"
 
 type NewsItemType = Tables<"news_view">
 
@@ -30,16 +29,7 @@ export const metadata: Metadata = {
   description: "Find out the latest news about the community of the app.",
 }
 
-interface NewsPageProps {
-  params: Promise<{
-    lang: Locale
-  }>
-}
-
-export default async function NewsPage(props: NewsPageProps) {
-  const params = await props.params
-  // Enable static rendering
-  setRequestLocale(params.lang)
+export default async function NewsPage() {
   const t = await getTranslations("NewsPage")
 
   const news = await getNews()
@@ -49,9 +39,9 @@ export default async function NewsPage(props: NewsPageProps) {
   }
 
   return (
-    <MainContainer className="w-full h-full rounded-b-none md:rounded-b-3xl md:mb-3 overflow-y-scroll">
+    <MainContainer className="h-full w-full overflow-y-scroll rounded-b-none md:mb-3 md:rounded-b-3xl">
       <h1 className="hidden">{t("header")}</h1>
-      <ul className="w-full h-full items-start gap-2 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid h-full w-full grid-cols-1 items-start gap-2 lg:grid-cols-2 xl:grid-cols-3">
         {news.map((item) => (
           <li key={item.id}>
             <NewsItem news={item} />
@@ -68,11 +58,11 @@ interface EmptyEventsPageProps {
 
 const EmptyEventsPage: React.FC<EmptyEventsPageProps> = ({ emptyNewsText }) => {
   return (
-    <MainContainer className="h-full mb-3 flex flex-col items-center justify-center">
-      <div className="bg-surface-variant/40 text-surface-variant-foreground p-8 lg:p-12 rounded-full">
+    <MainContainer className="mb-3 flex h-full flex-col items-center justify-center">
+      <div className="bg-surface-variant/40 text-surface-variant-foreground rounded-full p-8 lg:p-12">
         <NewspaperIcon className="size-20 lg:size-40" />
       </div>
-      <h1 className="text-xl lg:text-2xl font-bold mt-8 text-center">{emptyNewsText}</h1>
+      <h1 className="mt-8 text-center text-xl font-bold lg:text-2xl">{emptyNewsText}</h1>
     </MainContainer>
   )
 }

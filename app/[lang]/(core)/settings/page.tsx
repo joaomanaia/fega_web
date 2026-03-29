@@ -1,7 +1,5 @@
-import { Suspense, use } from "react"
+import { Suspense } from "react"
 import { type Metadata } from "next"
-import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import {
   UserSettings,
   UserSettingsSkeleton,
@@ -14,17 +12,7 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 }
 
-interface SettingsPageProps {
-  params: Promise<{
-    lang: Locale
-  }>
-}
-
-export default function SettingsPage(props: SettingsPageProps) {
-  const params = use(props.params)
-  // Enable static rendering
-  setRequestLocale(params.lang)
-
+export default function SettingsPage() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-y-4 overflow-y-auto">
       <GeneralSettings />

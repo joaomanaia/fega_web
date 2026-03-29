@@ -1,8 +1,7 @@
 import { cache } from "react"
 import { CalendarIcon, MapIcon } from "lucide-react"
 import type { Metadata } from "next"
-import type { Locale } from "next-intl"
-import { getNow, getTranslations, setRequestLocale } from "next-intl/server"
+import { getNow, getTranslations } from "next-intl/server"
 import { Button } from "@/components/ui/button"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Hint } from "@/components/hint"
@@ -31,11 +30,7 @@ const getEvents = cache(async (): Promise<CalendarEvent[]> => {
   return events.map(calendarEntityToModel)
 })
 
-export default async function EventsPage(props: PageProps<"/[lang]/events">) {
-  const params = await props.params
-  // Enable static rendering
-  setRequestLocale(params.lang as Locale)
-
+export default async function EventsPage() {
   const events = await getEvents()
   const t = await getTranslations("EventsPage")
 

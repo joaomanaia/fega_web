@@ -1,7 +1,6 @@
 import { cache } from "react"
 import type { Metadata } from "next"
 import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { verifySession } from "@/lib/dal"
 import { createClient } from "@/lib/supabase/server"
@@ -10,13 +9,6 @@ import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import type { GroupViewType } from "@/types/group/GroupType"
 import { GroupMessageHeader } from "./components/group-message-header"
 import { MessagesWithForm } from "./components/messages-with-form"
-
-interface GroupMessagePageProps {
-  params: Promise<{
-    lang: Locale
-    id: string
-  }>
-}
 
 const getGroup = cache(async (groupId: string): Promise<GroupViewType | null> => {
   const supabase = await createClient()
@@ -39,7 +31,7 @@ const getMessages = async (groupId: string): Promise<GroupMessageWithUserType[]>
   return groupMessages as GroupMessageWithUserType[]
 }
 
-export async function generateMetadata(props: GroupMessagePageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/[lang]/groups/[id]">): Promise<Metadata> {
   const params = await props.params
   const group = await getGroup(params.id)
 
@@ -50,15 +42,14 @@ export async function generateMetadata(props: GroupMessagePageProps): Promise<Me
   }
 }
 
-export default async function GroupMessagePage(props: GroupMessagePageProps) {
+export default async function GroupMessagePage(props: PageProps<"/[lang]/groups/[id]">) {
   const params = await props.params
-  // Enable static rendering
-  setRequestLocale(params.lang)
+  const locale = params.lang as Locale
 
   const session = await verifySession()
 
   const group = await getGroup(params.id)
-  if (!group || !group.id || !group.name) return redirect({ href: "/groups", locale: params.lang })
+  if (!group || !group.id || !group.name) return redirect({ href: "/groups", locale })
 
   const messages = await getMessages(params.id)
 

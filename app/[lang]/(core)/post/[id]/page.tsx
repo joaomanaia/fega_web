@@ -1,20 +1,11 @@
 import { cache } from "react"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import { MainContainer } from "@/app/components/m3/main-container"
 import Post from "@/app/components/post/Post"
 import { getSession } from "@/lib/dal"
 import { createClient } from "@/lib/supabase/server"
 import type { PostViewType } from "@/types/PostType"
-
-interface PostPageProps {
-  params: Promise<{
-    id: string
-    lang: Locale
-  }>
-}
 
 const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
   const supabase = await createClient()
@@ -28,7 +19,7 @@ const getPostById = cache(async (id: string): Promise<PostViewType | null> => {
   return post
 })
 
-export async function generateMetadata(props: PostPageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/[lang]/post/[id]">): Promise<Metadata> {
   const params = await props.params
   const post = await getPostById(params.id)
 
@@ -52,10 +43,8 @@ export async function generateMetadata(props: PostPageProps): Promise<Metadata> 
   }
 }
 
-export default async function PostPage(props: PostPageProps) {
+export default async function PostPage(props: PageProps<"/[lang]/post/[id]">) {
   const params = await props.params
-  // Enable static rendering
-  setRequestLocale(params.lang)
 
   const post = await getPostById(params.id)
   if (!post) {

@@ -1,7 +1,6 @@
 import { use } from "react"
 import { notFound } from "next/navigation"
-import { useTranslations, type Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { useTranslations } from "next-intl"
 import ForgotPasswordForm from "@/app/[lang]/auth/_components/ForgotPasswordForm"
 import GoogleLoginButton from "@/app/[lang]/auth/_components/google-login-button"
 import { LoginForm } from "@/app/[lang]/auth/_components/LoginForm"
@@ -12,25 +11,14 @@ import ResetPasswordForm from "@/components/user/reset-password-form"
 const authTypes = ["login", "signup", "forgot-password", "reset-password"] as const
 export type AuthType = (typeof authTypes)[number]
 
-interface AuthPageProps {
-  params: Promise<{
-    lang: Locale
-    authType: string
-  }>
-}
-
 export async function generateStaticParams() {
   return authTypes.map((type) => ({
     authType: type,
   }))
 }
 
-export default function AuthPage(props: AuthPageProps) {
+export default function AuthPage(props: PageProps<"/[lang]/auth/[authType]">) {
   const params = use(props.params)
-
-  // Enable static rendering
-  setRequestLocale(params.lang)
-
   const t = useTranslations("AuthPage")
 
   const authType = params.authType

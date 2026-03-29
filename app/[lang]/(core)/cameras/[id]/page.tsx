@@ -1,19 +1,15 @@
 import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import { Button } from "@/components/ui/button"
 import { getCameraById } from "@/app/[lang]/(core)/cameras/_lib/queries"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/client"
 import { Link } from "@/src/i18n/navigation"
 
-type CameraPageProps = {
-  params: Promise<{ lang: Locale; id: string }>
-}
-
-export async function generateMetadata(props: CameraPageProps): Promise<Metadata> {
+export async function generateMetadata(
+  props: PageProps<"/[lang]/cameras/[id]">
+): Promise<Metadata> {
   const params = await props.params
   const camera = await getCameraById(params.id)
 
@@ -34,10 +30,8 @@ export async function generateMetadata(props: CameraPageProps): Promise<Metadata
 const VideoComponent = dynamic(() => import("./_components/VideoComponent"))
 const ImageVideoComponent = dynamic(() => import("./_components/ImageVideoComponent"))
 
-export default async function CameraPage(props: CameraPageProps) {
+export default async function CameraPage(props: PageProps<"/[lang]/cameras/[id]">) {
   const params = await props.params
-  setRequestLocale(params.lang)
-
   const camera = await getCameraById(params.id)
 
   if (!camera) {

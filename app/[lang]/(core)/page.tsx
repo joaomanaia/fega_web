@@ -1,16 +1,11 @@
 import { Suspense } from "react"
-import type { Locale } from "next-intl"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 import PostsContent, { PostsSkeleton } from "@/app/[lang]/(core)/PostsContent"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { getSession } from "@/lib/dal"
 
-export default async function HomePage(props: PageProps<"/[lang]">) {
-  const { lang } = await props.params
-  // Enable static rendering
-  setRequestLocale(lang as Locale)
-
+export default async function HomePage() {
   const t = await getTranslations("HomePage")
 
   return (

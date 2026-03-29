@@ -3,14 +3,13 @@ import { cn } from "@/lib/utils"
 import "../styles/tokens.css"
 import "../styles/globals.css"
 import { Suspense } from "react"
-import { notFound } from "next/navigation"
 import Script from "next/script"
 import { connection } from "next/server"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { type Metadata } from "next"
-import { hasLocale, NextIntlClientProvider, type Locale } from "next-intl"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getTranslations } from "next-intl/server"
 import { extractRouterConfig } from "uploadthing/server"
 import { Toaster as SonnerToaster } from "@/components/ui/sonner"
 import { appName } from "@/core/common"
@@ -22,13 +21,8 @@ import { QueryProvider } from "@/src/providers/query-provider"
 import { ThemeProvider } from "@/src/providers/theme-provider"
 import { ourFileRouter } from "../api/uploadthing/core"
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ lang: Locale }>
-}): Promise<Metadata> {
-  const { lang } = await params
-  const t = await getTranslations({ locale: lang, namespace: "RootMetadata" })
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RootMetadata")
 
   return {
     title: {
@@ -62,15 +56,8 @@ async function UTSSR() {
   return <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 }
 
-export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
-  // Ensure that the incoming `lang` is valid
-  const { lang } = await params
-  if (!hasLocale(routing.locales, lang)) {
-    notFound()
-  }
-
-  // Enable static rendering
-  setRequestLocale(lang)
+export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
+  const lang = await getLocale()
 
   return (
     <html lang={lang} suppressHydrationWarning>

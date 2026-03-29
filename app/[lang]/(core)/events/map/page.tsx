@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic"
 import { type Metadata } from "next"
 import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
 import { type DateRange } from "react-day-picker"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/server"
@@ -61,10 +60,7 @@ const getDateRangeFromQuery = (from?: string, to?: string): DateRange | undefine
 }
 
 export default async function EventsMapPage(props: EventsMapPageProps) {
-  const { lang } = await props.params
-  // Enable static rendering
-  setRequestLocale(lang)
-
+  // TODO: Add nuqs
   const searchParams = await props.searchParams
   const dateRange =
     getDateRangeFromQuery(searchParams.fromDate, searchParams.toDate) || defaultDateRange

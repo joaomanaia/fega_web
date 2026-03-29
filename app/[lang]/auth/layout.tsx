@@ -1,10 +1,6 @@
-import type { Locale } from "next-intl"
-import { getTranslations, setRequestLocale } from "next-intl/server"
+import { getTranslations } from "next-intl/server"
 
-export default async function AuthLayout({ children, params }: LayoutProps<"/[lang]/auth">) {
-  const { lang } = await params
-  // Enable static rendering
-  setRequestLocale(lang as Locale)
+export default async function AuthLayout({ children }: LayoutProps<"/[lang]/auth">) {
   const t = await getTranslations("AuthPage")
 
   return (

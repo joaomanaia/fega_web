@@ -1,8 +1,7 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import { type Metadata } from "next"
-import { useTranslations, type Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { useTranslations } from "next-intl"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import CreatePost from "@/app/components/create-post/create-post"
 import { MainContainer } from "@/app/components/m3/main-container"
@@ -12,14 +11,7 @@ import { getUserByUsername } from "@/utils/user-utils"
 import PostsContent, { PostsSkeleton } from "../PostsContent"
 import { UserProfileContent } from "./components/user-profile-content"
 
-interface UserPageProps {
-  params: Promise<{
-    lang: Locale
-    username: string
-  }>
-}
-
-export async function generateMetadata(props: UserPageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/[lang]/[username]">): Promise<Metadata> {
   const params = await props.params
   const user = await getUserByUsername(params.username)
 
@@ -43,10 +35,8 @@ export async function generateMetadata(props: UserPageProps): Promise<Metadata> 
   }
 }
 
-export default async function UserPage(props: UserPageProps) {
+export default async function UserPage(props: PageProps<"/[lang]/[username]">) {
   const params = await props.params
-  // Enable static rendering
-  setRequestLocale(params.lang)
   const user = await getUserByUsername(params.username)
 
   if (!user) {
