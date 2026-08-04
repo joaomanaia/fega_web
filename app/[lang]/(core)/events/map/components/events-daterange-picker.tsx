@@ -1,14 +1,14 @@
 "use client"
 
+import { useState } from "react"
+import { type DateRange } from "@daypicker/react"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import qs from "query-string"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { useState } from "react"
-import { type DateRange } from "react-day-picker"
-import qs from "query-string"
 import { useRouter } from "@/src/i18n/navigation"
 
 interface EventsDateRangePickerProps {
@@ -51,7 +51,7 @@ export const EventsDateRangePicker: React.FC<EventsDateRangePickerProps> = ({
             id="date"
             variant="outline"
             className={cn(
-              "w-[300px] border-surface-variant/50 bg-surface-variant/30 hover:bg-surface-variant/40 rounded-2xl justify-start text-left font-normal text-surface-variant-foreground",
+              "border-surface-variant/50 bg-surface-variant/30 hover:bg-surface-variant/40 text-surface-variant-foreground w-[300px] justify-start rounded-2xl text-left font-normal",
               !date && "text-muted-foreground"
             )}
           >

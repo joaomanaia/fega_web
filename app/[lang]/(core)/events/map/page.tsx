@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
+import { type DateRange } from "@daypicker/react"
 import { type Metadata } from "next"
 import type { Locale } from "next-intl"
-import { type DateRange } from "react-day-picker"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { createClient } from "@/lib/supabase/server"
 import { calendarEntityToModel, type CalendarEvent } from "@/types/CalendarEvent"

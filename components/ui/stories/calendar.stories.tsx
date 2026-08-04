@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import { within } from "@storybook/test"
-import { action } from "storybook/internal/actions"
+import { action } from "storybook/actions"
 import { Calendar } from "@/components/ui/calendar"
 
 const meta = {
