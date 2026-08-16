@@ -1,6 +1,6 @@
 /* "use client"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@workspace/ui/lib/utils"
 import { getHexFromCssVar } from "@/utils/color-utils"
 import { ColorPalette, ColorItem } from "@storybook/addon-docs/blocks"
 import { ThemeProvider, ensure, themes } from "storybook/theming"

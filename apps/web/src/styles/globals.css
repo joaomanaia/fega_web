@@ -1,0 +1,198 @@
+@import "tailwindcss";
+@source "../../**/*.{js,ts,jsx,tsx}";
+@source "../../../../packages/ui/src/**/*.{js,ts,jsx,tsx}";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans:
+    var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-accent: hsl(var(--surface-variant));
+  --color-accent-foreground: hsl(var(--on-surface-variant));
+  --color-card: hsl(var(--surface-variant) / 0.2);
+  --color-card-foreground: hsl(var(--on-surface-variant));
+  --color-destructive: hsl(var(--error));
+  --color-destructive-foreground: hsl(var(--on-error));
+  --color-muted: hsl(var(--surface-variant) / 0.5);
+  --color-muted-foreground: hsl(var(--on-surface-variant));
+  --color-popover: hsl(var(--surface));
+  --color-popover-foreground: hsl(var(--on-surface));
+  /* Sidebar colors */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent) / 0.2);
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border) / 0.2);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --color-border: hsl(var(--outline) / 0.2);
+  --color-input: hsl(var(--surface-variant));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--on-primary));
+  --color-primary-inverse: hsl(var(--inverse-primary));
+
+  --color-primary-container: hsl(var(--primary-container));
+  --color-primary-container-foreground: hsl(var(--on-primary-container));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--on-secondary));
+
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-secondary-container-foreground: hsl(var(--on-secondary-container));
+
+  --color-tertiary: hsl(var(--tertiary));
+  --color-tertiary-foreground: hsl(var(--on-tertiary));
+
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-tertiary-container-foreground: hsl(var(--on-tertiary-container));
+
+  --color-error: hsl(var(--error));
+  --color-error-foreground: hsl(var(--on-error));
+
+  --color-error-container: hsl(var(--error-container));
+  --color-error-container-foreground: hsl(var(--on-error-container));
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--on-background));
+
+  --color-surface: hsl(var(--surface));
+  --color-surface-foreground: hsl(var(--on-surface));
+  --color-surface-inverse: hsl(var(--inverse-surface));
+  --color-surface-inverse-foreground: hsl(var(--inverse-on-surface));
+  --color-surface-tint: hsl(var(--surface-tint));
+
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-surface-variant-foreground: hsl(var(--on-surface-variant));
+
+  --color-outline: hsl(var(--outline));
+  --color-outline-variant: hsl(var(--outline-variant));
+
+  --color-shadow: hsl(var(--shadow));
+  --color-scrim: hsl(var(--scrim));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@utility next-link {
+  @apply bg-inherit text-inherit decoration-transparent;
+}
+
+/* Default theme color: #0066ff */
+
+@layer base {
+  :root {
+    --primary: var(--md-sys-color-primary-light);
+    --on-primary: var(--md-sys-color-on-primary-light);
+    --primary-container: var(--md-sys-color-primary-container-light);
+    --on-primary-container: var(--md-sys-color-on-primary-container-light);
+    --secondary: var(--md-sys-color-secondary-light);
+    --on-secondary: var(--md-sys-color-on-secondary-light);
+    --secondary-container: var(--md-sys-color-secondary-container-light);
+    --on-secondary-container: var(--md-sys-color-on-secondary-container-light);
+    --tertiary: var(--md-sys-color-tertiary-light);
+    --on-tertiary: var(--md-sys-color-on-tertiary-light);
+    --tertiary-container: var(--md-sys-color-tertiary-container-light);
+    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-light);
+    --error: var(--md-sys-color-error-light);
+    --error-container: var(--md-sys-color-error-container-light);
+    --on-error: var(--md-sys-color-on-error-light);
+    --on-error-container: var(--md-sys-color-on-error-container-light);
+    --background: var(--md-sys-color-background-light);
+    --on-background: var(--md-sys-color-on-background-light);
+    --surface: var(--md-sys-color-surface-light);
+    --on-surface: var(--md-sys-color-on-surface-light);
+    --surface-variant: var(--md-sys-color-surface-variant-light);
+    --on-surface-variant: var(--md-sys-color-on-surface-variant-light);
+    --outline: var(--md-sys-color-outline-light);
+    --inverse-on-surface: var(--md-sys-color-inverse-on-surface-light);
+    --inverse-surface: var(--md-sys-color-inverse-surface-light);
+    --inverse-primary: var(--md-sys-color-inverse-primary-light);
+    --shadow: var(--md-sys-color-shadow-light);
+    --surface-tint: var(--md-sys-color-surface-tint-light);
+    --outline-variant: var(--md-sys-color-outline-variant-light);
+    --scrim: var(--md-sys-color-scrim-light);
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--surface-variant);
+    --sidebar-accent-foreground: var(--on-surface-variant);
+    --sidebar-border: var(--outline);
+    --sidebar-ring: var(--ring);
+    --radius: 1rem;
+  }
+
+  .dark {
+    --primary: var(--md-sys-color-primary-dark);
+    --on-primary: var(--md-sys-color-on-primary-dark);
+    --primary-container: var(--md-sys-color-primary-container-dark);
+    --on-primary-container: var(--md-sys-color-on-primary-container-dark);
+    --secondary: var(--md-sys-color-secondary-dark);
+    --on-secondary: var(--md-sys-color-on-secondary-dark);
+    --secondary-container: var(--md-sys-color-secondary-container-dark);
+    --on-secondary-container: var(--md-sys-color-on-secondary-container-dark);
+    --tertiary: var(--md-sys-color-tertiary-dark);
+    --on-tertiary: var(--md-sys-color-on-tertiary-dark);
+    --tertiary-container: var(--md-sys-color-tertiary-container-dark);
+    --on-tertiary-container: var(--md-sys-color-on-tertiary-container-dark);
+    --error: var(--md-sys-color-error-dark);
+    --error-container: var(--md-sys-color-error-container-dark);
+    --on-error: var(--md-sys-color-on-error-dark);
+    --on-error-container: var(--md-sys-color-on-error-container-dark);
+    --background: var(--md-sys-color-background-dark);
+    --on-background: var(--md-sys-color-on-background-dark);
+    --surface: var(--md-sys-color-surface-dark);
+    --on-surface: var(--md-sys-color-on-surface-dark);
+    --surface-variant: var(--md-sys-color-surface-variant-dark);
+    --on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
+    --outline: var(--md-sys-color-outline-dark);
+    --inverse-on-surface: var(--md-sys-color-inverse-on-surface-dark);
+    --inverse-surface: var(--md-sys-color-inverse-surface-dark);
+    --inverse-primary: var(--md-sys-color-inverse-primary-dark);
+    --shadow: var(--md-sys-color-shadow-dark);
+    --surface-tint: var(--md-sys-color-surface-tint-dark);
+    --outline-variant: var(--md-sys-color-outline-variant-dark);
+    --scrim: var(--md-sys-color-scrim-dark);
+    --ring: 224.3 76.3% 48%;
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--on-surface);
+    /* --sidebar: 0 0% 0%; */
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--surface-variant);
+    --sidebar-accent-foreground: var(--on-surface-variant);
+    --sidebar-border: var(--outline);
+    --sidebar-ring: var(--ring);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

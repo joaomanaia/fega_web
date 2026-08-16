@@ -1,0 +1,84 @@
+"use client"
+
+import { useState } from "react"
+import { type DateRange } from "@daypicker/react"
+import { cn } from "@workspace/ui/lib/utils"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import qs from "query-string"
+import { Button } from "@workspace/ui/components/button"
+import { Calendar } from "@workspace/ui/components/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
+import { useRouter } from "@/i18n/navigation"
+
+interface EventsDateRangePickerProps {
+  dateRange?: DateRange
+  className?: string
+}
+
+export const EventsDateRangePicker: React.FC<EventsDateRangePickerProps> = ({
+  dateRange,
+  className,
+}) => {
+  // from today to end of the year
+  const [date, setDate] = useState<DateRange | undefined>(dateRange)
+
+  const router = useRouter()
+
+  const handleDateChange = (date: DateRange | undefined) => {
+    setDate(date)
+
+    if (!date || !date.from || !date.to) {
+      return
+    }
+
+    const url = qs.stringifyUrl({
+      url: "/events/map",
+      query: {
+        fromDate: date.from?.toISOString(),
+        toDate: date.to?.toISOString(),
+      },
+    })
+
+    router.push(url)
+  }
+
+  return (
+    <div className={cn("grid gap-2", className)}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant="outline"
+            className={cn(
+              "border-surface-variant/50 bg-surface-variant/30 hover:bg-surface-variant/40 text-surface-variant-foreground w-[300px] justify-start rounded-2xl text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                </>
+              ) : (
+                format(date.from, "LLL dd, y")
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={handleDateChange}
+            numberOfMonths={2}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}

@@ -25,7 +25,7 @@
     "^react$",
     "^next/(.*)$",
     "<THIRD_PARTY_MODULES>",
-    "^@/components/ui/(.*)$",
+    "^@workspace/ui/components/(.*)$",
     "^@/(.*)$",
     "^[./]"
   ],

@@ -3,16 +3,17 @@
 .yarn/
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
-# testing
-/coverage
+# Testing
+coverage
 
-# next.js
-/.next/
-/out/
+# Next.js
+**/.next/
+**/out/
+**/next-env.d.ts
 
 # production
 /build
@@ -49,3 +50,5 @@ chromatic.config.json
 messages/*.d.json.ts
 
 .next-env.d.ts
+
+.turbo
