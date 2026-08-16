@@ -102,7 +102,9 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
           <ZoomIn className="mr-2 h-4 w-4" />
           <Slider
             value={[zoom]}
-            onValueChange={(value) => setZoom(value[0])}
+            onValueChange={(value) => {
+              if (value[0] !== undefined) setZoom(value[0])
+            }}
             disabled={cropping}
             min={1}
             max={3}
@@ -115,7 +117,9 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
           <RotateCw className="mr-2 h-4 w-4" />
           <Slider
             value={[rotation]}
-            onValueChange={(value) => setRotation(value[0])}
+            onValueChange={(value) => {
+              if (value[0] !== undefined) setRotation(value[0])
+            }}
             disabled={cropping}
             min={0}
             max={360}

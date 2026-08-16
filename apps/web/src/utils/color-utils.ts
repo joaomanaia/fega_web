@@ -27,7 +27,9 @@ function parseHSL(hsl: string): string | null {
 
   if (matches && matches.length === 3) {
     const [h, s, l] = matches.map(Number)
-    return hslToHex(h, s, l)
+    if (h !== undefined && s !== undefined && l !== undefined) {
+      return hslToHex(h, s, l)
+    }
   }
 
   return null // Return null if the input format is incorrect

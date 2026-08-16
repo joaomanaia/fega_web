@@ -21,7 +21,7 @@ export function useBreakpoint<K extends BreakpointKey>(breakpointKey: K) {
     query: `(max-width: ${breakpoints[breakpointKey]})`,
   })
 
-  const capitalizedKey = breakpointKey[0].toUpperCase() + breakpointKey.substring(1)
+  const capitalizedKey = breakpointKey.charAt(0).toUpperCase() + breakpointKey.substring(1)
 
   type MinKey = `isMin${Capitalize<K>}`
   type MaxKey = `isMax${Capitalize<K>}`

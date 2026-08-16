@@ -24,11 +24,11 @@ export default function EventMap({ events, className }: EventMapProps) {
     // If there are no locations, return the default center
     if (events.length === 0) return { lat: 0, lng: 0 }
     // If there is only one location, return that location's point
-    if (events.length === 1) return events[0].location?.point
+    if (events.length === 1) return events[0]?.location?.point ?? { lat: 0, lng: 0 }
 
     // Calculate the average of all the locations
     // TODO: Implement this
-    return events[0].location?.point
+    return events[0]?.location?.point ?? { lat: 0, lng: 0 }
   }, [events])
 
   // Filter events to only those with a location point

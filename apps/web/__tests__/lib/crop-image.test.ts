@@ -100,6 +100,6 @@ describe("convertCanvasToCompressedBlob", () => {
     const qualitiesWithUndefined = toBlobSpy.mock.calls.map((call) => call[2])
     const qualities = qualitiesWithUndefined.filter((q): q is number => typeof q === "number")
     expect(qualities.length).toBeGreaterThan(1)
-    expect(qualities[0]).toBeGreaterThan(qualities[qualities.length - 1])
+    expect(qualities[0]!).toBeGreaterThan(qualities[qualities.length - 1]!)
   })
 })

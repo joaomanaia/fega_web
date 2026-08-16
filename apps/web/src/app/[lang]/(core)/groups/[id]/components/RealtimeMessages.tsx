@@ -138,7 +138,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
       const updatedIndex = messages.findIndex((message) => message.id === updatedMessage.id)
       const oldMessage = messages[updatedIndex]
 
-      if (updatedIndex === -1) {
+      if (updatedIndex === -1 || !oldMessage) {
         return messages
       }
 

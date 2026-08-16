@@ -39,7 +39,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ endpoint, value, onChang
       className="ut-button:bg-primary ut-button:text-primary-foreground ut-label:text-primary ut-label:hover:text-primary/90 ut-allowed-content:text-foreground/70 border-outline/30 hover:bg-surface-variant/8 border-dashed"
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
-        onChange(res?.[0].url)
+        onChange(res?.[0]?.url)
       }}
       onUploadError={(error: Error) => {
         console.error(error)

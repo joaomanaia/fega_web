@@ -41,7 +41,7 @@ export default async function EventsPage() {
   return (
     <div className="h-full w-full overflow-y-auto">
       <MainContainer className="flex w-full flex-col-reverse items-center lg:flex-row">
-        <NextEventCover event={events[0]} />
+        <NextEventCover event={events[0]!} />
       </MainContainer>
       {events.length > 1 && (
         <MainContainer className="my-3 flex flex-col space-y-4">
