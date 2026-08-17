@@ -4,11 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
+    "dev:web": "turbo run fegaweb#dev",
     "build": "turbo run build",
-    "check-types": "turbo run check-types",
+    "build:web": "turbo run fegaweb#build",
+    "typecheck": "turbo run typecheck",
     "start": "turbo run start",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "storybook": "turbo run storybook",
+    "build-storybook": "turbo run build-storybook"
   },
   "devDependencies": {
     "turbo": "^2.10.8"

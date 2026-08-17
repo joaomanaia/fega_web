@@ -4,10 +4,10 @@ import { getSession } from "@/lib/dal"
 
 const f = createUploadthing()
 
-const hadleAuth = async () => {
+const handleAuth = async () => {
   const session = await getSession()
 
-  if (!session) {
+  if (!session?.user) {
     throw new UploadThingError("Unauthorized")
   }
 
@@ -18,21 +18,19 @@ export const utapi = new UTApi()
 
 const uploadthingAppBaseUrl = `https://${process.env.UPLOADTHING_APP_ID}.ufs.sh/f/`
 
-export const deleteAvatarIfFromUploadthing = async (url: string) => {
-  // Check if the user has an avatar old uploaded in uploadthing
+export const deleteAvatarIfFromUploadthing = async (url: string): Promise<void> => {
   if (url.startsWith(uploadthingAppBaseUrl)) {
     const key = url.replace(uploadthingAppBaseUrl, "")
-
     await utapi.deleteFiles(key)
   }
 }
 
-// If need update the file size, update to in the constants.ts
 export const ourFileRouter = {
   avatar: f({ image: { maxFileSize: "512KB", maxFileCount: 1 } })
-    .middleware(() => hadleAuth())
+    .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
-      const oldAvatarUrl = metadata.user.user_metadata?.avatar_url
+      const oldAvatarUrl = (metadata.user as { user_metadata?: { avatar_url?: string } })
+        ?.user_metadata?.avatar_url
 
       if (oldAvatarUrl) {
         await deleteAvatarIfFromUploadthing(oldAvatarUrl)
@@ -43,10 +41,10 @@ export const ourFileRouter = {
       return { avatarUrl: newAvatarUrl }
     }),
   newsImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
-    .middleware(() => hadleAuth())
+    .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
   eventCoverImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
-    .middleware(() => hadleAuth())
+    .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 } satisfies FileRouter
 

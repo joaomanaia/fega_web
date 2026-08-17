@@ -38,6 +38,7 @@ next-env.d.ts
 
 fega_firebase_admin.json
 
+storybook-static
 *storybook.log
 
 # Chromatic

@@ -1,9 +1,9 @@
 "use client"
 
-import { ModeToggle } from "@workspace/ui/components/mode-toggle"
 import { useTranslations } from "next-intl"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
 import { LocaleSwitcher } from "@/app/[lang]/(core)/settings/components/locale-switcher"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export const GeneralSettings: React.FC = () => {
   const t = useTranslations("SettingsPage.general")
