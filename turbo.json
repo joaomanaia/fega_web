@@ -1,6 +1,14 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "UPLOADTHING_SECRET",
+    "UPLOADTHING_APP_ID",
+    "UPLOADTHING_TOKEN",
+    "ANALYTICS_DISABLED",
+    "LOG_LEVEL"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
