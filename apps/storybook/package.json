@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "storybook build"
+    "build": "storybook build",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.15.1",
