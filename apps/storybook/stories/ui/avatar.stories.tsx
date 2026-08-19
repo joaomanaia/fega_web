@@ -26,10 +26,10 @@ const meta = {
       description: "Alternative text for the image",
     },
   },
-  render: (args) => (
+  render: ({ imgSrc, alt, ...args }) => (
     <Avatar {...args}>
-      <AvatarImage src={args.imgSrc} alt={args.alt} />
-      <AvatarFallback>{args.alt || "?"}</AvatarFallback>
+      <AvatarImage src={imgSrc} alt={alt} />
+      <AvatarFallback>{alt || "?"}</AvatarFallback>
     </Avatar>
   ),
 } satisfies Meta<AvatarProps>

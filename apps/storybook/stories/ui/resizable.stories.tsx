@@ -31,7 +31,7 @@ const meta = {
       },
     },
   },
-  render: (args) => (
+  render: ({ withHandle, ...args }) => (
     <ResizablePanelGroup
       className="min-h-[200px] max-w-md rounded-lg border md:min-w-[450px]"
       {...args}
@@ -39,7 +39,7 @@ const meta = {
       <ResizablePanel>
         <div className="flex h-full items-center justify-center p-6">One</div>
       </ResizablePanel>
-      <ResizableHandle withHandle={args.withHandle} />
+      <ResizableHandle withHandle={withHandle} />
       <ResizablePanel>
         <div className="flex h-full items-center justify-center p-6">Two</div>
       </ResizablePanel>

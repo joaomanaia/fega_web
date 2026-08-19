@@ -3,6 +3,10 @@ import "@workspace/ui/styles/globals.css"
 import type { Preview } from "@storybook/nextjs-vite"
 import { withThemeByClassName } from "@storybook/addon-themes"
 
+import messages from "../../web/src/messages/en.json"
+import { NextIntlClientProvider } from "next-intl"
+import { TooltipProvider } from "@workspace/ui/components/tooltip"
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -19,6 +23,13 @@ const preview: Preview = {
     },
   },
   decorators: [
+    (Story) => (
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <TooltipProvider>
+          <Story />
+        </TooltipProvider>
+      </NextIntlClientProvider>
+    ),
     withThemeByClassName({
       themes: {
         light: "light",
