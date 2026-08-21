@@ -27,6 +27,11 @@ export const nextJsConfig = [
   ]),
   {
     ...pluginReact.configs.flat.recommended,
+    settings: {
+      react: {
+        version: "19.2.8",
+      },
+    },
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {

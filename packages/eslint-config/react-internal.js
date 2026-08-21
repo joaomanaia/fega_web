@@ -15,7 +15,14 @@ export const config = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  {
+    ...pluginReact.configs.flat.recommended,
+    settings: {
+      react: {
+        version: "19.2.8",
+      },
+    },
+  },
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,

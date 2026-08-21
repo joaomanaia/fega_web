@@ -16,6 +16,11 @@ export default defineConfig([
   ...pluginQuery.configs["flat/recommended"],
   eslintPluginZod.configs.recommended,
   {
+    settings: {
+      react: {
+        version: "19.2.8",
+      },
+    },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "react/jsx-no-literals": "error",
