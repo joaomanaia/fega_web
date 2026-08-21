@@ -1,10 +1,6 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useTranslations } from "next-intl"
-import { useAction } from "next-safe-action/hooks"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
 import {
   Form,
@@ -16,6 +12,10 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
+import { useForm } from "react-hook-form"
 import { forgotPasswordAction } from "@/app/[lang]/auth/actions"
 import { Link } from "@/i18n/navigation"
 import { forgotPasswordSchema, type ForgotPasswordActionValues } from "@/lib/schemas/auth-schemas"
@@ -25,10 +25,13 @@ export default function ForgotPasswordForm() {
 
   const { isPending, execute } = useAction(forgotPasswordAction, {
     onSuccess: () => {
-      toast.success(t("forgotPasswordSuccess"))
+      toast.add({ type: "success", description: t("forgotPasswordSuccess") })
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "An error occurred while processing your request.")
+      toast.add({
+        type: "error",
+        description: error.serverError ?? "An error occurred while processing your request.",
+      })
     },
   })
 

@@ -11,10 +11,10 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import { resetPasswordAction } from "@/app/[lang]/auth/actions"
 import { resetPasswordSchema, type ResetPasswordSchemaValues } from "@/lib/schemas/user-schemas"
 
@@ -23,10 +23,13 @@ export default function ResetPasswordForm() {
 
   const { isPending, execute } = useAction(resetPasswordAction, {
     onSuccess: () => {
-      toast.success("Password reset successfully. ")
+      toast.add({ type: "success", description: "Password reset successfully." })
     },
     onError: ({ error }) => {
-      toast.error(error.serverError ?? "An error occurred while processing your request.")
+      toast.add({
+        type: "error",
+        description: error.serverError ?? "An error occurred while processing your request.",
+      })
     },
   })
 

@@ -1,8 +1,8 @@
 import { SiFacebook, SiReddit, SiWhatsapp, SiX } from "@icons-pack/react-simple-icons"
 import { sendGTMEvent } from "@next/third-parties/google"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 import { MailIcon } from "lucide-react"
-import { Button } from "@workspace/ui/components/button"
 import { Hint } from "@/components/hint"
 import { Link } from "@/i18n/navigation"
 
@@ -62,16 +62,18 @@ export const SocialShareButton: React.FC<SocialShareButtonProps> = ({
 
   return (
     <Hint label={social}>
-      <Button
+      <Link
+        target="_blank"
+        rel="noreferrer"
+        href={getShareUrl(social, url, text)}
         onClick={onClick}
-        variant="outline"
-        className="aspect-square size-14 min-w-14"
-        asChild
+        className={cn(
+          buttonVariants({ variant: "outline", size: "default" }),
+          "aspect-square size-14 min-w-14",
+        )}
       >
-        <Link target="_blank" rel="noreferrer" href={getShareUrl(social, url, text)}>
-          {Icon}
-        </Link>
-      </Button>
+        {Icon}
+      </Link>
     </Hint>
   )
 }

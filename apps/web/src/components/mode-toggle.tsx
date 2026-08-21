@@ -27,24 +27,28 @@ export function ModeToggle({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        {type === "icon" ? (
-          <Button variant="ghost" size="icon" className={cn("text-foreground", className)}>
-            <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-            <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-            <span className="sr-only">{t("title")}</span>
-          </Button>
-        ) : (
-          <Button variant="outline" className={cn("w-fit rounded-2xl", className)}>
-            <ChevronsUpDownIcon className="mr-auto" />
-            <div className="mr-auto flex items-center justify-center gap-2">
-              <SunIcon className="block dark:hidden" />
-              <MoonIcon className="hidden dark:block" />
-              {t(`options.${resolvedThemeWithFallback}`)}
-            </div>
-          </Button>
-        )}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <>
+            {type === "icon" ? (
+              <Button variant="ghost" size="icon" className={cn("text-foreground", className)}>
+                <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <span className="sr-only">{t("title")}</span>
+              </Button>
+            ) : (
+              <Button variant="outline" className={cn("w-fit rounded-2xl", className)}>
+                <ChevronsUpDownIcon className="mr-auto" />
+                <div className="mr-auto flex items-center justify-center gap-2">
+                  <SunIcon className="block dark:hidden" />
+                  <MoonIcon className="hidden dark:block" />
+                  {t(`options.${resolvedThemeWithFallback}`)}
+                </div>
+              </Button>
+            )}
+          </>
+        }
+      />
       <DropdownMenuContent align="end">
         <DropdownMenuRadioGroup value={resolvedTheme} onValueChange={setTheme}>
           <DropdownMenuRadioItem value="light">{t("options.light")}</DropdownMenuRadioItem>

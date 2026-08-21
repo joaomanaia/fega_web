@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "@workspace/ui/components/button"
 import { Link } from "@/i18n/navigation"
 import { type CalendarEvent } from "@/types/CalendarEvent"
 import { allDirectionApps, getDirectionUrl, type DirectionApp, type Point } from "@/types/location"
@@ -48,10 +48,12 @@ interface DirectionLinkProps {
 
 const DirectionLink: React.FC<DirectionLinkProps> = ({ point, type }) => {
   return (
-    <Button variant="outline" size="sm" className="rounded-xl" asChild>
-      <Link target="_blank" href={getDirectionUrl(point, type)}>
-        {type === "google" ? "Google Maps" : type === "apple" ? "Apple Maps" : "Waze"}
-      </Link>
-    </Button>
+    <Link
+      target="_blank"
+      href={getDirectionUrl(point, type)}
+      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-xl")}
+    >
+      {type === "google" ? "Google Maps" : type === "apple" ? "Apple Maps" : "Waze"}
+    </Link>
   )
 }

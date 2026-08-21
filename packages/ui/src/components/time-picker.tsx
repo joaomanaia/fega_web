@@ -1,6 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { Calendar } from "@workspace/ui/components/calendar"
+import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 import {
   getArrowByType,
   getDateByType,
@@ -10,10 +14,6 @@ import {
 } from "@workspace/ui/lib/time-picker-utils"
 import { cn } from "@workspace/ui/lib/utils"
 import { Clock } from "lucide-react"
-import { Calendar } from "@workspace/ui/components/calendar"
-import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
-import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 
 interface TimePickerDemoProps {
   date: Date | undefined
@@ -98,7 +98,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
       onRightFocus,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [flag, setFlag] = React.useState<boolean>(false)
     const [prevIntKey, setPrevIntKey] = React.useState<string>("0")
@@ -163,7 +163,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
         name={name || picker}
         className={cn(
           "focus:bg-accent focus:text-accent-foreground w-[48px] text-center font-mono text-base tabular-nums caret-transparent [&::-webkit-inner-spin-button]:appearance-none",
-          className
+          className,
         )}
         value={value || calculatedValue}
         onChange={(e) => {
@@ -179,7 +179,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
         {...props}
       />
     )
-  }
+  },
 )
 
 TimePickerInput.displayName = "TimePickerInput"
@@ -197,7 +197,7 @@ export const TimePickerPopover: React.FC<TimePickerPopoverProps> = ({
 }) => {
   return (
     <Popover>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
+      <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar mode="single" selected={value} onSelect={onChange} />
         <div className="border-border/30 border-t p-3">

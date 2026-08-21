@@ -2,12 +2,6 @@
 
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@workspace/ui/lib/utils"
-import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import * as z from "zod"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
 import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
@@ -35,7 +29,13 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { cn } from "@workspace/ui/lib/utils"
+import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Hint } from "@/components/hint"
 import Link from "@/components/link"
 import { SubmitButton } from "@/components/submit-button"
@@ -106,10 +106,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
       {!byLocalUser && !hasMessageAbove && (
         <div className="flex items-center space-x-2">
           <Link href={`/${username}`}>
-            <Avatar className="h-4 w-4">
-              <AvatarImage src={userAvatarUrl ?? undefined} />
-              <AvatarFallback>{userFullname}</AvatarFallback>
-            </Avatar>
+            <UserAvatar src={userAvatarUrl} name={userFullname} alt={userFullname} size="sm" />
           </Link>
 
           <Link href={`/${username}`}>
@@ -121,7 +118,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
       <div
         className={cn(
           "flex items-center justify-center gap-2",
-          byLocalUser ? "self-end" : "flex-row-reverse self-start"
+          byLocalUser ? "self-end" : "flex-row-reverse self-start",
         )}
       >
         <>
@@ -162,7 +159,7 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
               "w-fit rounded-2xl p-3",
               byLocalUser ? "bg-primary text-primary-foreground" : "border-border border",
               messageCorners(),
-              margins()
+              margins(),
             )}
           >
             {replyMessage && (
@@ -203,12 +200,12 @@ const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
   const copyMessage = () => {
     navigator.clipboard.writeText(message)
 
-    toast.success("Message copied to clipboard")
+    toast.add({ type: "success", description: "Message copied to clipboard" })
   }
 
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={copyMessage}>Copy</DropdownMenuItem>
         {byLocalUser && (
@@ -244,7 +241,7 @@ const ReplyMessage: React.FC<ReplyMessageProps> = ({
         "mb-2 w-full rounded-2xl p-3",
         toLocalUser ? "bg-primary text-primary-foreground" : "bg-surface text-surface-foreground",
         byLocalUser && toLocalUser && "border-surface border",
-        replyMessageToElement && "cursor-pointer"
+        replyMessageToElement && "cursor-pointer",
       )}
       onClick={() => {
         // Scroll to the message
@@ -284,8 +281,8 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
   return (
     <>
       <Dialog>
-        <DialogTrigger asChild>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
+        <DialogTrigger render={<DropdownMenuItem onSelect={(e) => e.preventDefault()} />}>
+          Edit
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -297,17 +294,20 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
               action={async (formData: FormData) => {
                 // Check if the message is the same as the current message
                 if (formData.get("message") === currentMessage) {
-                  toast.error("Message is the same as the current message")
+                  toast.add({
+                    type: "error",
+                    description: "Message is the same as the current message",
+                  })
                   return
                 }
 
                 const result = await editMessageWithId(formData)
                 if (result?.errorMessage) {
-                  toast.error(result.errorMessage)
+                  toast.add({ type: "error", description: result.errorMessage })
                   return
                 }
 
-                toast.success("Message edited")
+                toast.add({ type: "success", description: "Message edited" })
               }}
             >
               <FormField
@@ -330,9 +330,7 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
                 )}
               />
               <DialogFooter className="mt-4">
-                <DialogClose asChild>
-                  <Button variant="ghost">Cancel</Button>
-                </DialogClose>
+                <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
                 <SubmitButton variant="ghost">Save</SubmitButton>
               </DialogFooter>
             </form>
@@ -353,8 +351,8 @@ const DeleteMessage: React.FC<DeleteMessageProps> = ({ messageId }) => {
   return (
     <>
       <Dialog>
-        <DialogTrigger asChild>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+        <DialogTrigger render={<DropdownMenuItem onSelect={(e) => e.preventDefault()} />}>
+          Delete
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -364,23 +362,19 @@ const DeleteMessage: React.FC<DeleteMessageProps> = ({ messageId }) => {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="ghost">Cancel</Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <SubmitButton
-                variant="ghost"
-                onClick={async () => {
-                  const result = await deleteMessageWithId()
-                  if (result?.errorMessage) {
-                    return toast.error(result.errorMessage)
-                  }
+            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <DialogClose
+              onClick={async () => {
+                const result = await deleteMessageWithId()
+                if (result?.errorMessage) {
+                  return toast.add({ type: "error", description: result.errorMessage })
+                }
 
-                  toast.success("Message deleted")
-                }}
-              >
-                Delete
-              </SubmitButton>
+                toast.add({ type: "success", description: "Message deleted" })
+              }}
+              render={<SubmitButton variant="ghost" />}
+            >
+              Delete
             </DialogClose>
           </DialogFooter>
         </DialogContent>

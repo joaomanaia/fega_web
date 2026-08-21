@@ -12,8 +12,8 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import * as z from "zod"
 import { editGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
@@ -69,15 +69,15 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
           action={async (formData: FormData) => {
             // Check if the fields are the same as the current group
             if (form.getValues().groupName === groupName && form.getValues().iconUrl === iconUrl) {
-              toast.error("No changes made")
+              toast.add({ type: "warning", description: "No changes made" })
               return
             }
 
             try {
               await editGroupWithId(formData)
-              toast.success("Group edited")
+              toast.add({ type: "success", description: "Group edited" })
             } catch {
-              toast.error("Failed to edit group")
+              toast.add({ type: "error", description: "Failed to edit group" })
             } finally {
               onClose()
             }

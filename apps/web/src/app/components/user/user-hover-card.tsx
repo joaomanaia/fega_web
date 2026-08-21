@@ -1,8 +1,8 @@
 "use client"
 
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@workspace/ui/components/hover-card"
 import { CalendarDaysIcon, Loader2 } from "lucide-react"
 import { useFormatter, useNow, useTranslations } from "next-intl"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@workspace/ui/components/hover-card"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { useGetUser } from "@/features/user/use-get-user"
 import { Link } from "@/i18n/navigation"
@@ -10,12 +10,13 @@ import { Link } from "@/i18n/navigation"
 interface UserHoverCardProps {
   id: string
   children: React.ReactNode
+  render?: React.ReactElement
 }
 
-export const UserHoverCard: React.FC<UserHoverCardProps> = ({ id, children }) => {
+export const UserHoverCard: React.FC<UserHoverCardProps> = ({ id, children, render }) => {
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
+      <HoverCardTrigger render={render}>{children}</HoverCardTrigger>
       <HoverCardContent className="w-80">
         <UserHoverCardContent id={id} />
       </HoverCardContent>
@@ -37,10 +38,11 @@ export const UserHoverCardWithLink: React.FC<UserHoverCardWithLinkProps> = ({
   className,
 }) => {
   return (
-    <UserHoverCard id={uid ?? username}>
-      <Link href={`/${username}`} className={className}>
-        {children}
-      </Link>
+    <UserHoverCard
+      id={uid ?? username}
+      render={<Link href={`/${username}`} className={className} />}
+    >
+      {children}
     </UserHoverCard>
   )
 }

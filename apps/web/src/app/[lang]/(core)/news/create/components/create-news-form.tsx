@@ -1,10 +1,6 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@workspace/ui/lib/utils"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import * as z from "zod"
 import { Button } from "@workspace/ui/components/button"
 import {
   Form,
@@ -15,6 +11,10 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { cn } from "@workspace/ui/lib/utils"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 import { createNews } from "@/app/actions/news/newsActions"
 import { FileUpload } from "@/components/file-upload"
 import { MdxEditor } from "@/components/mdx-editor"
@@ -50,12 +50,12 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
 
           try {
             await createNews(formData)
-            toast.success("News created successfully")
+            toast.add({ type: "success", description: "News created successfully" })
           } catch (error) {
             if (error instanceof Error) {
-              toast.error(error.message)
+              toast.add({ type: "error", description: error.message })
             } else {
-              toast.error("Something went wrong")
+              toast.add({ type: "error", description: "Something went wrong" })
             }
           }
         }}

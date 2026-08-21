@@ -1,6 +1,6 @@
+import { Skeleton } from "@workspace/ui/components/skeleton"
 import { cn } from "@workspace/ui/lib/utils"
 import { useFormatter, useNow } from "next-intl"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
 import Linkify from "@/components/linkify"
@@ -30,7 +30,7 @@ const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, s
       className={cn(
         "flex flex-col gap-4 rounded-3xl",
         !hideContainer && "bg-surface-variant/30 dark:bg-surface-variant/[0.28] p-4",
-        className
+        className,
       )}
     >
       <meta itemProp="datePublished" content={post.created_at!} />
@@ -93,7 +93,7 @@ const PostUserHeader: React.FC<PostUserHeaderProps> = ({
       <meta itemProp="identifier" content={uid} />
       <meta itemProp="alternateName" content={`@${username}`} />
       <UserHoverCardWithLink uid={uid} username={username}>
-        <UserAvatar src={userProfileUrl} name={userFullname} />
+        <UserAvatar src={userProfileUrl} name={userFullname} size="lg" />
       </UserHoverCardWithLink>
       <div className="ml-3 flex flex-col justify-center space-y-1">
         <UserHoverCardWithLink
@@ -125,7 +125,7 @@ export const PostSkeleton: React.FC<PostSkeletonProps> = ({ hideContainer, class
       className={cn(
         "flex flex-col gap-4 rounded-3xl",
         !hideContainer && "bg-surface-variant/30 dark:bg-surface-variant/[0.28] p-4",
-        className
+        className,
       )}
     >
       <PostHeaderSkeleton />

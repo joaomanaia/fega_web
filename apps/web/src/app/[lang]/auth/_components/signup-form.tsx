@@ -3,8 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { useTranslations } from "next-intl"
-import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
 import {
   Form,
@@ -17,6 +15,8 @@ import {
 import { Input } from "@workspace/ui/components/input"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@workspace/ui/components/input-group"
 import { Label } from "@workspace/ui/components/label"
+import { toast } from "@workspace/ui/components/toast"
+import { useTranslations } from "next-intl"
 import { signUpAction } from "@/app/[lang]/auth/actions"
 import { Link } from "@/i18n/navigation"
 import { signUpSchema } from "@/lib/schemas/auth-schemas"
@@ -31,15 +31,16 @@ export function SignUpForm() {
   } = useHookFormAction(signUpAction, zodResolver(signUpSchema), {
     actionProps: {
       onExecute: () => {
-        toast.loading("Creating account...", { id: "signup" })
+        toast.add({ type: "loading", description: "Creating account...", id: "signup" })
       },
       onNavigation: () => {
-        toast.success("Account created successfully!", { id: "signup" })
+        toast.update("signup", { type: "success", description: "Account created successfully!" })
         sendGTMEvent({ event: "sign_up", method: "email" })
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "An error occurred while processing your request.", {
-          id: "signup",
+        toast.update("signup", {
+          type: "error",
+          description: error.serverError ?? "An error occurred while processing your request.",
         })
       },
     },

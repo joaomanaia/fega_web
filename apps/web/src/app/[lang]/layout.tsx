@@ -7,12 +7,12 @@ import Script from "next/script"
 import { connection } from "next/server"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
+import { Toaster } from "@workspace/ui/components/toast"
+import { TooltipProvider } from "@workspace/ui/components/tooltip"
 import { type Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getTranslations } from "next-intl/server"
 import { extractRouterConfig } from "uploadthing/server"
-import { Toaster as SonnerToaster } from "@workspace/ui/components/sonner"
-import { TooltipProvider } from "@workspace/ui/components/tooltip"
 import { appName } from "@/core/common"
 import { env } from "@/env"
 import { routing } from "@/i18n/routing"
@@ -94,7 +94,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
       <body
         className={cn(
           "bg-background text-foreground min-h-screen font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Suspense>
@@ -112,7 +112,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
               <NextIntlClientProvider>
                 <TooltipProvider>
                   {children}
-                  <SonnerToaster richColors />
+                  <Toaster />
                   <ModalProvider />
                 </TooltipProvider>
               </NextIntlClientProvider>

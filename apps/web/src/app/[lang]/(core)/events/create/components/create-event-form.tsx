@@ -2,13 +2,6 @@
 
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@workspace/ui/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon, TrashIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useDebounceCallback } from "usehooks-ts"
-import * as z from "zod"
 import { Button } from "@workspace/ui/components/button"
 import {
   Form,
@@ -20,6 +13,13 @@ import {
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
 import { TimePickerPopover } from "@workspace/ui/components/time-picker"
+import { toast } from "@workspace/ui/components/toast"
+import { cn } from "@workspace/ui/lib/utils"
+import { format } from "date-fns"
+import { CalendarIcon, TrashIcon } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { useDebounceCallback } from "usehooks-ts"
+import * as z from "zod"
 import { MoreInfo } from "@/app/[lang]/(core)/events/[event_id]/_components/more-info"
 import { createEvent } from "@/app/actions/calendarEventActions"
 import { FileUpload } from "@/components/file-upload"
@@ -84,7 +84,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
       .limit(10)
 
     if (error) {
-      toast.error("Something went wrong")
+      toast.add({ type: "error", description: "Something went wrong" })
       return []
     }
 
@@ -100,12 +100,13 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await createEvent(values)
-      toast.success("Event created successfully")
+
+      toast.add({ type: "success", description: "Event created successfully" })
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message)
+        toast.add({ type: "error", description: error.message })
       } else {
-        toast.error("Something went wrong")
+        toast.add({ type: "error", description: "Something went wrong" })
       }
     }
   }
@@ -175,7 +176,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal"
+                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -199,7 +200,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
                     <Button
                       variant="outline"
                       className={cn(
-                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal"
+                        "text-foreground w-[280px] justify-start rounded-2xl text-left font-normal",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />

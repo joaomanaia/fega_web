@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@workspace/ui/components/dialog"
-import { toast } from "sonner"
+import { toast } from "@workspace/ui/components/toast"
 import { deleteGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
 import { useModal } from "@/hooks/use-modal-store"
@@ -38,10 +38,10 @@ export const DeleteGroupModal: React.FC = () => {
               try {
                 await deleteGroupWithId()
               } catch {
-                toast.error("Failed to delete group")
+                toast.add({ type: "error", description: "Failed to delete group" })
               } finally {
                 onClose()
-                toast.success("Group deleted")
+                toast.add({ type: "success", description: "Group deleted" })
               }
             }}
           >

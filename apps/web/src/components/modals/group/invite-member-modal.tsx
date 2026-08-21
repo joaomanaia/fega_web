@@ -4,8 +4,8 @@ import React from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@workspace/ui/components/dialog"
 import { Input } from "@workspace/ui/components/input"
 import { Spinner } from "@workspace/ui/components/spinner"
+import { toast } from "@workspace/ui/components/toast"
 import { SearchIcon } from "lucide-react"
-import { toast } from "sonner"
 import { useDebounceValue } from "usehooks-ts"
 import { addParticipant } from "@/app/actions/groupActions"
 import { UserAvatar } from "@/app/components/user/user-avatar"
@@ -127,12 +127,12 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
         onClick={async () => {
           try {
             await addParticipantWithUid()
-            toast.success(`Invited ${user.full_name} to the group`)
+            toast.add({ type: "success", description: `Invited ${user.full_name} to the group` })
           } catch (error) {
             if (error instanceof Error) {
-              toast.error(error.message)
+              toast.add({ type: "error", description: error.message })
             } else {
-              toast.error("Failed to invite user")
+              toast.add({ type: "error", description: "Failed to invite user" })
             }
           } finally {
             onClose()

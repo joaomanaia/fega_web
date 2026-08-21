@@ -1,5 +1,6 @@
 import { cache } from "react"
-import { Button } from "@workspace/ui/components/button"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
+import { cn } from "@workspace/ui/lib/utils"
 import { CalendarIcon, MapIcon } from "lucide-react"
 import type { Metadata } from "next"
 import { getNow, getTranslations } from "next-intl/server"
@@ -48,11 +49,15 @@ export default async function EventsPage() {
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">{t("otherEvents")}</h2>
             <Hint label={t("eventsMap")}>
-              <Button variant="ghost" className="text-foreground" size="icon" asChild>
-                <Link href="/events/map">
-                  <MapIcon />
-                </Link>
-              </Button>
+              <Link
+                href="/events/map"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "text-foreground",
+                )}
+              >
+                <MapIcon />
+              </Link>
             </Hint>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

@@ -8,6 +8,7 @@ type AvatarProps = React.ComponentProps<typeof Avatar> & {
 
 const meta = {
   title: "Components/ui/Avatar",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -15,7 +16,7 @@ const meta = {
     size: {
       control: "select",
       description: "Avatar size",
-      options: ["default", "large"],
+      options: ["default", "sm", "lg"],
     },
     imgSrc: {
       control: "text",

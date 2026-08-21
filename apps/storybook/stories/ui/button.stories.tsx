@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
+import { Button } from "@workspace/ui/components/button"
 import { TestTubeIcon } from "lucide-react"
 import { action } from "storybook/actions"
-import { Button } from "@workspace/ui/components/button"
 
 const meta = {
   title: "Components/ui/Button",
@@ -29,7 +29,7 @@ const meta = {
     size: {
       control: "select",
       description: "Button size",
-      options: ["default", "sm", "lg", "icon"],
+      options: ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"],
     },
     disabled: {
       control: "boolean",

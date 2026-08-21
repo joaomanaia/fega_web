@@ -112,16 +112,15 @@ export function SidebarNavigation() {
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     size="lg"
+                    variant="primary"
                     isActive={firstSegment === item.pathName}
                     disabled={item.disabled}
                     aria-disabled={item.disabled}
-                    className="rounded-full px-4"
-                    asChild
+                    className="rounded-full"
+                    render={<Link href={item.pathName} />}
                   >
-                    <Link href={item.pathName}>
-                      <item.Icon />
-                      <span className="">{t("navdrawerTitle", { title: item.id })}</span>
-                    </Link>
+                    <item.Icon />
+                    <span>{t("navdrawerTitle", { title: item.id })}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -20,9 +20,9 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import { useServerAction } from "zsa-react"
 import { updateUserEmail } from "@/app/actions/userActions"
 import { useInfoDialog } from "@/hooks/use-info-dialog"
@@ -39,7 +39,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
 
   const { isPending, execute } = useServerAction(updateUserEmail, {
     onError: ({ err }) => {
-      toast.error(err.message)
+      toast.add({ type: "error", description: err.message })
     },
     onSuccess: () => {
       closeDialog()
@@ -59,7 +59,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
     <>
       <InfoDialog title={t("infoDialogTitle")} message={t("infoDialogDescription")} />
       <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogTrigger>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("dialogTitle")}</DialogTitle>

@@ -21,12 +21,34 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  argTypes: {
+    align: {
+      control: "select",
+      options: ["start", "center", "end"],
+    },
+    alignOffset: {
+      control: "number",
+    },
+    side: {
+      control: "select",
+      options: ["top", "bottom", "left", "right", "inline-end", "inline-start"],
+    },
+    sideOffset: {
+      control: "number",
+    },
+  },
   render: (args) => (
     <ContextMenu {...args}>
       <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
         Right click here
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-52">
+      <ContextMenuContent
+        className="w-52"
+        side={args.side}
+        sideOffset={args.sideOffset}
+        align={args.align}
+        alignOffset={args.alignOffset}
+      >
         <ContextMenuItem inset>
           Back
           <ContextMenuShortcut>⌘[</ContextMenuShortcut>

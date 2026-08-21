@@ -53,3 +53,5 @@ messages/*.d.json.ts
 .next-env.d.ts
 
 .turbo
+
+tsconfig.tsbuildinfo

@@ -1,10 +1,6 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useTranslations } from "next-intl"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useServerAction } from "zsa-react"
 import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
@@ -23,6 +19,10 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { useTranslations } from "next-intl"
+import { useForm } from "react-hook-form"
+import { useServerAction } from "zsa-react"
 import { createGroup } from "@/app/actions/group/groupActions"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { useModal } from "@/hooks/use-modal-store"
@@ -37,10 +37,10 @@ export const CreateGroupModal: React.FC = () => {
 
   const { isPending, execute } = useServerAction(createGroup, {
     onError: ({ err }) => {
-      toast.error(err.message)
+      toast.add({ type: "error", title: err.message })
     },
     onSuccess: ({ data: id }) => {
-      toast.success(t("success"))
+      toast.add({ type: "success", title: t("success") })
       onClose()
       router.push(`/groups/${id}`)
     },

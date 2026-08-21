@@ -7,8 +7,8 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "./event-map.styles.css"
 import { useMemo } from "react"
 import Image from "next/image"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "@workspace/ui/components/button"
 import { DateLocationText } from "@/app/[lang]/(core)/events/_components/date-location-text"
 import Link from "@/components/link"
 import { type CalendarEvent } from "@/types/CalendarEvent"
@@ -73,11 +73,12 @@ export default function EventMap({ events, className }: EventMapProps) {
                   endDate={event.endDate}
                   location={event.location}
                 />
-                <Button className="mt-2 w-full" asChild>
-                  <Link className="!text-primary-foreground" href={`/events/${event.id}`}>
-                    More Info
-                  </Link>
-                </Button>
+                <Link
+                  className={cn(buttonVariants(), "text-primary-foreground! mt-2 w-full")}
+                  href={`/events/${event.id}`}
+                >
+                  More Info
+                </Link>
               </div>
             </Popup>
           </Marker>

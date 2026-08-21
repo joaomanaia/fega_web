@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage, AvatarVariant } from "@workspace/ui/components/avatar"
+import { Avatar, AvatarFallback, AvatarImage, AvatarProps } from "@workspace/ui/components/avatar"
 
-interface UserAvatarProps extends AvatarVariant {
+interface UserAvatarProps extends AvatarProps {
   src?: string | null
   name?: string | null
   alt?: string

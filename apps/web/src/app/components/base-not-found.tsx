@@ -1,6 +1,4 @@
-import { NewspaperIcon, type LucideIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { Button } from "@workspace/ui/components/button"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import {
   Empty,
   EmptyContent,
@@ -9,6 +7,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@workspace/ui/components/empty"
+import { cn } from "@workspace/ui/lib/utils"
+import { NewspaperIcon, type LucideIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/navigation"
 
 interface BaseNotFoundProps {
@@ -28,9 +29,9 @@ export const BaseNotFound: React.FC<BaseNotFoundProps> = ({ title, description, 
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button asChild variant="outline">
-          <Link href="/">{t("goToHomepage")}</Link>
-        </Button>
+        <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>
+          {t("goToHomepage")}
+        </Link>
       </EmptyContent>
     </Empty>
   )

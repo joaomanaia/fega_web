@@ -3,8 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { useTranslations } from "next-intl"
-import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
 import {
   Form,
@@ -15,6 +13,8 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { useTranslations } from "next-intl"
 import { signInAction } from "@/app/[lang]/auth/actions"
 import { Link } from "@/i18n/navigation"
 import { signInSchema } from "@/lib/schemas/auth-schemas"
@@ -29,11 +29,11 @@ export function LoginForm() {
   } = useHookFormAction(signInAction, zodResolver(signInSchema), {
     actionProps: {
       onNavigation: () => {
-        toast.success("Login successful!")
+        toast.add({ type: "success", description: "Login successful!" })
         sendGTMEvent({ event: "login", method: "email" })
       },
       onError: ({ error }) => {
-        toast.error(error.serverError ?? "Login failed")
+        toast.add({ type: "error", description: error.serverError ?? "Login failed" })
       },
     },
     formProps: {

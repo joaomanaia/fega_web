@@ -1,7 +1,8 @@
 import { useMemo } from "react"
 import Image from "next/image"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
+import { cn } from "@workspace/ui/lib/utils"
 import { useTranslations } from "next-intl"
-import { Button } from "@workspace/ui/components/button"
 import { DateLocationText } from "@/app/[lang]/(core)/events/_components/date-location-text"
 import { Link } from "@/i18n/navigation"
 import type { CalendarEvent } from "@/types/CalendarEvent"
@@ -34,11 +35,12 @@ export const NextEventCover: React.FC<NextEventCoverProps> = ({ event }) => {
           </p>
         )}
 
-        <Button asChild>
-          <Link className="w-full min-w-40 lg:w-auto" href={`/events/${event.id}`}>
-            {t("seeMoreInfo")}
-          </Link>
-        </Button>
+        <Link
+          className={cn(buttonVariants(), "w-full min-w-40 lg:w-auto")}
+          href={`/events/${event.id}`}
+        >
+          {t("seeMoreInfo")}
+        </Link>
       </div>
       <div className="relative aspect-2/1 h-full w-full lg:aspect-3/2 xl:aspect-2/1">
         <Image

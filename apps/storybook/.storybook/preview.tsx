@@ -1,11 +1,11 @@
 import "@workspace/ui/styles/tokens.css"
 import "@workspace/ui/styles/globals.css"
-import type { Preview } from "@storybook/nextjs-vite"
 import { withThemeByClassName } from "@storybook/addon-themes"
-
-import messages from "../../web/src/messages/en.json"
-import { NextIntlClientProvider } from "next-intl"
+import type { Preview } from "@storybook/nextjs-vite"
+import { Toaster } from "@workspace/ui/components/toast"
 import { TooltipProvider } from "@workspace/ui/components/tooltip"
+import { NextIntlClientProvider } from "next-intl"
+import messages from "../../web/src/messages/en.json"
 
 const preview: Preview = {
   parameters: {
@@ -27,6 +27,7 @@ const preview: Preview = {
       <NextIntlClientProvider locale="en" messages={messages}>
         <TooltipProvider>
           <Story />
+          <Toaster />
         </TooltipProvider>
       </NextIntlClientProvider>
     ),

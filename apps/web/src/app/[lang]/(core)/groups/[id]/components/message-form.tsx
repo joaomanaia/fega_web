@@ -1,13 +1,13 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@workspace/ui/components/button"
+import { Form, FormControl, FormField, FormItem } from "@workspace/ui/components/form"
+import { Input } from "@workspace/ui/components/input"
 import { cn } from "@workspace/ui/lib/utils"
 import { XIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Button } from "@workspace/ui/components/button"
-import { Form, FormControl, FormField, FormItem } from "@workspace/ui/components/form"
-import { Input } from "@workspace/ui/components/input"
 import SendMessageButton from "@/app/components/message/SendMessageButton"
 import { Hint } from "@/components/hint"
 import sendGroupMessage from "@/core/actions/group/sendGroupMessage"
@@ -104,16 +104,21 @@ const ReplyContent: React.FC<ReplyContentProps> = ({ replyTo, clearReplyTo }) =>
           <p className="truncate text-xs">{replyTo.message}</p>
         </div>
 
-        <Hint label="Clear reply" side="top" align="end">
-          <Button
-            className="text-foreground bg-transparent"
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={clearReplyTo}
-          >
-            <XIcon />
-          </Button>
+        <Hint
+          label="Clear reply"
+          side="top"
+          align="end"
+          render={
+            <Button
+              className="text-foreground bg-transparent"
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={clearReplyTo}
+            />
+          }
+        >
+          <XIcon />
         </Hint>
       </div>
     </>

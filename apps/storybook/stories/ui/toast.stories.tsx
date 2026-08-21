@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import { Button } from "@workspace/ui/components/button"
-import { Toaster } from "@workspace/ui/components/sonner"
-import { toast } from "sonner"
+import { toast, Toaster } from "@workspace/ui/components/toast"
 
 const toastTypes = [
   "default",
@@ -9,11 +8,9 @@ const toastTypes = [
   "info",
   "warning",
   "error",
-  "custom",
-  "message",
-  "promise",
-  "dismiss",
   "loading",
+  "action",
+  "promise",
 ] as const
 
 type Args = React.ComponentProps<typeof Toaster> & {
@@ -21,7 +18,7 @@ type Args = React.ComponentProps<typeof Toaster> & {
 }
 
 const meta = {
-  title: "Components/ui/Sonner",
+  title: "Components/ui/Toast",
   component: Toaster,
   parameters: {
     layout: "centered",
@@ -56,34 +53,39 @@ export const Default: Story = {
 function showToastForType(type: Args["toastType"]) {
   switch (type) {
     case "success":
-      return toast.success("Success Toast")
+      return toast.add({ type, title: "Success Toast" })
     case "info":
-      return toast.info("Info Toast")
+      return toast.add({ type, title: "Info Toast" })
     case "warning":
-      return toast.warning("Warning Toast")
+      return toast.add({ type, title: "Warning Toast" })
     case "error":
-      return toast.error("Error Toast")
-    case "custom":
-      return toast.custom(() => <div>Custom Toast</div>)
-    case "message":
-      return toast.message("Message Toast")
-    case "promise":
-      return toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
-        loading: "Loading...",
-        success: "Loaded!",
-        error: "Error loading",
-      })
-    case "dismiss":
-      return toast.dismiss()
-    case "loading":
-      return toast.loading("Loading...")
-    default:
-      return toast("Event has been created", {
-        description: "Sunday, December 03, 2023 at 9:00 AM",
-        action: {
-          label: "Undo",
-          onClick: () => console.log("Undo"),
+      return toast.add({ type, title: "Error Toast" })
+    case "action":
+      const id = toast.add({
+        title: "Event created",
+        actionProps: {
+          children: "Undo",
+          onClick() {
+            toast.close(id)
+          },
         },
+      })
+      return
+    case "promise":
+      return toast.promise(
+        new Promise<{ name: string }>((resolve) => {
+          window.setTimeout(() => resolve({ name: "Event" }), 2000)
+        }),
+        {
+          loading: "Creating event…",
+          success: (data) => `${data.name} created.`,
+          error: "Could not create event.",
+        },
+      )
+    default:
+      return toast.add({
+        title: "Event has been created",
+        description: "Sunday, December 03, 2023 at 9:00 AM",
       })
   }
 }

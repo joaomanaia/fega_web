@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic"
 import { notFound } from "next/navigation"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
+import { cn } from "@workspace/ui/lib/utils"
 import type { Metadata } from "next"
-import { Button } from "@workspace/ui/components/button"
 import { getCameraById } from "@/app/[lang]/(core)/cameras/_lib/queries"
 import { MainContainer } from "@/app/components/m3/main-container"
 import { Link } from "@/i18n/navigation"
 import { createClient } from "@/lib/supabase/client"
 
 export async function generateMetadata(
-  props: PageProps<"/[lang]/cameras/[id]">
+  props: PageProps<"/[lang]/cameras/[id]">,
 ): Promise<Metadata> {
   const params = await props.params
   const camera = await getCameraById(params.id)
@@ -48,9 +49,12 @@ export default async function CameraPage(props: PageProps<"/[lang]/cameras/[id]"
       </p>
 
       {camera.original_camera_url && (
-        <Button variant="outline" className="mb-4 w-fit" asChild>
-          <Link href={camera.original_camera_url}>Ver original</Link>
-        </Button>
+        <Link
+          href={camera.original_camera_url}
+          className={cn(buttonVariants({ variant: "outline" }), "mb-4 w-fit")}
+        >
+          Ver original
+        </Link>
       )}
 
       {camera.video ? (

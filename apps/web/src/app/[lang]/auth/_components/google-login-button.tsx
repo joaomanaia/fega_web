@@ -2,8 +2,8 @@
 
 import { sendGTMEvent } from "@next/third-parties/google"
 import { Button } from "@workspace/ui/components/button"
+import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 
 export default function GoogleLoginButton({ className }: { className?: string }) {
@@ -19,7 +19,7 @@ export default function GoogleLoginButton({ className }: { className?: string })
     })
 
     if (error) {
-      toast.error(error.message)
+      toast.add({ type: "error", description: error.message })
       return
     }
 

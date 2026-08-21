@@ -2,9 +2,6 @@
 
 import dynamic from "next/dynamic"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import * as z from "zod"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@workspace/ui/components/dialog"
 import {
   Form,
@@ -15,6 +12,9 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form"
 import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 import { createLocation } from "@/app/actions/locationActions"
 import { SubmitButton } from "@/components/submit-button"
 import { useModal } from "@/hooks/use-modal-store"
@@ -82,10 +82,10 @@ const CreateLocationForm: React.FC<CreateLocationFormProps> = ({ locationName, o
               const point = `POINT(${position.lng} ${position.lat})`
               await createLocation(locationName, address, point)
 
-              toast.success("Location created")
+              toast.add({ type: "success", description: "Location created" })
               onClose()
             } catch {
-              toast.error("Failed to create location")
+              toast.add({ type: "error", description: "Failed to create location" })
             }
           }}
           className="flex w-full flex-col gap-4 py-4"

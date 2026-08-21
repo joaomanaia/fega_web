@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { cn } from "@workspace/ui/lib/utils"
-import { PencilIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { cn } from "@workspace/ui/lib/utils"
+import { PencilIcon } from "lucide-react"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { CropImageDialog } from "@/components/crop-image-dialog"
 import { useConfirm } from "@/hooks/use-confirm"
@@ -70,27 +70,23 @@ export const UserEditableAvatar: React.FC<UserEditableAvatarProps> = ({
       />
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            aria-label="Edit avatar"
-            className={cn(
-              "group relative top-0 right-0 flex size-24 items-center justify-center rounded-full p-1 transition",
-              className
-            )}
-          >
-            <UserAvatar
-              src={avatar}
-              name={name}
-              className="size-full text-3xl transition group-hover:opacity-50"
-            />
-            <PencilIcon className="absolute size-7 opacity-0 transition group-hover:opacity-100" />
-          </button>
+        <DropdownMenuTrigger
+          aria-label="Edit avatar"
+          className={cn(
+            "group relative top-0 right-0 flex size-24 items-center justify-center rounded-full p-1 transition",
+            className,
+          )}
+        >
+          <UserAvatar
+            src={avatar}
+            name={name}
+            className="size-full text-3xl transition group-hover:opacity-50"
+          />
+          <PencilIcon className="absolute size-7 opacity-0 transition group-hover:opacity-100" />
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right">
-          <DropdownMenuItem asChild>
-            <label htmlFor="avatar-upload" className="cursor-pointer">
-              Edit avatar
-            </label>
+          <DropdownMenuItem render={<label htmlFor="avatar-upload" className="cursor-pointer" />}>
+            Edit avatar
           </DropdownMenuItem>
           <DropdownMenuItem disabled={!avatar} onClick={handleRemoveAvatar} variant="destructive">
             Remove avatar

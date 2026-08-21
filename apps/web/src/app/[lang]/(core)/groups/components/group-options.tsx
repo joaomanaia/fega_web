@@ -1,8 +1,6 @@
 "use client"
 
-import { MoreVerticalIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { Button } from "@workspace/ui/components/button"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -17,6 +15,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { cn } from "@workspace/ui/lib/utils"
+import { MoreVerticalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useModal } from "@/hooks/use-modal-store"
 import { Link } from "@/i18n/navigation"
 import type { GroupViewType } from "@/types/group/GroupType"
@@ -32,18 +33,20 @@ export const GroupOptionsDropdown: React.FC<BaseGroupOptions> = ({ group, isOwne
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="hover:bg-primary-foreground/5 bg-transparent text-inherit transition"
-        >
-          <MoreVerticalIcon />
-        </Button>
+      <DropdownMenuTrigger
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          "hover:bg-primary-foreground/5 bg-transparent text-inherit transition",
+        )}
+      >
+        <MoreVerticalIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-56">
-        <DropdownMenuItem className="cursor-pointer px-3 py-2" asChild>
-          <Link href={`/groups/${group.id}/info`}>{t("groupInfo")}</Link>
+        <DropdownMenuItem
+          className="cursor-pointer px-3 py-2"
+          render={<Link href={`/groups/${group.id}/info`} />}
+        >
+          {t("groupInfo")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {isOwner && (
@@ -97,11 +100,11 @@ export const GroupOptionsContextMenu: React.FC<GroupOptionsContextMenu> = ({
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
+      <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="min-w-56">
         {/* TODO: Enable when fix the routing*/}
-        <ContextMenuItem disabled asChild>
-          <Link href={`/groups/${group.id}/info`}>{t("groupInfo")}</Link>
+        <ContextMenuItem disabled render={<Link href={`/groups/${group.id}/info`} />}>
+          {t("groupInfo")}
         </ContextMenuItem>
         <ContextMenuSeparator />
         {isOwner && (

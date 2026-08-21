@@ -1,8 +1,5 @@
 "use client"
 
-import { MoreVerticalIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
 import {
   DropdownMenu,
@@ -12,6 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { toast } from "@workspace/ui/components/toast"
+import { MoreVerticalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { removeParticipant } from "@/app/actions/groupActions"
 import { useConfirm } from "@/hooks/use-confirm"
 import { Link } from "@/i18n/navigation"
@@ -46,9 +46,9 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     if (confirmed) {
       try {
         await removeParticipantWithUid()
-        toast.success(t("remove.onSuccess", { name: fullName ?? "Unknown" }))
+        toast.add({ title: t("remove.onSuccess", { name: fullName ?? "Unknown" }) })
       } catch {
-        toast.error(t("remove.onError", { name: fullName ?? "Unknown" }))
+        toast.add({ type: "error", title: t("remove.onError", { name: fullName ?? "Unknown" }) })
       }
     }
   }
@@ -63,15 +63,15 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
         />
       )}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-inherit">
-            <MoreVerticalIcon />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon" className="text-inherit" />}
+        >
+          <MoreVerticalIcon />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>{t("title")}</DropdownMenuLabel>
-          <DropdownMenuItem asChild>
-            <Link href={`/${username}`}>{t("viewProfile")}</Link>
+          <DropdownMenuItem render={<Link href={`/${username}`}></Link>}>
+            {t("viewProfile")}
           </DropdownMenuItem>
           {!isLocalUser && <DropdownMenuItem disabled>{t("message")}</DropdownMenuItem>}
           {isLocalAdmin && !isLocalUser && (

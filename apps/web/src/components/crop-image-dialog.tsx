@@ -10,9 +10,9 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog"
 import { Slider } from "@workspace/ui/components/slider"
+import { toast } from "@workspace/ui/components/toast"
 import { RotateCw, ZoomIn } from "lucide-react"
 import Cropper, { type Area } from "react-easy-crop"
-import { toast } from "sonner"
 import { MAX_IMAGE_SIZE_FOR_TYPE, type ImageType } from "@/features/post/constants"
 import { getCroppedImg } from "@/lib/crop-image"
 
@@ -54,7 +54,7 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
           imageUrl,
           croppedAreaPixels,
           MAX_IMAGE_SIZE_FOR_TYPE[type],
-          rotation
+          rotation,
         )
         onSave(croppedImage)
 
@@ -67,9 +67,9 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message)
+        toast.add({ type: "error", description: error.message })
       } else {
-        toast.error("An error occurred while cropping the image")
+        toast.add({ type: "error", description: "An error occurred while cropping the image" })
       }
     } finally {
       setCropping(false)
@@ -101,9 +101,13 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
         <div className="mt-4 flex items-center">
           <ZoomIn className="mr-2 h-4 w-4" />
           <Slider
-            value={[zoom]}
+            value={zoom}
             onValueChange={(value) => {
-              if (value[0] !== undefined) setZoom(value[0])
+              if (typeof value === "number") {
+                setZoom(value)
+              } else if (value[0] !== undefined) {
+                setZoom(value[0])
+              }
             }}
             disabled={cropping}
             min={1}
@@ -116,9 +120,13 @@ export const CropImageDialog: React.FC<ImageEditDialogProps> = ({
         <div className="mt-4 flex items-center">
           <RotateCw className="mr-2 h-4 w-4" />
           <Slider
-            value={[rotation]}
+            value={rotation}
             onValueChange={(value) => {
-              if (value[0] !== undefined) setRotation(value[0])
+              if (typeof value === "number") {
+                setRotation(value)
+              } else if (value[0] !== undefined) {
+                setRotation(value[0])
+              }
             }}
             disabled={cropping}
             min={0}

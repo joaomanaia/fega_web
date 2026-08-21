@@ -1,13 +1,13 @@
 "use client"
 
 import { sendGTMEvent } from "@next/third-parties/google"
-import { cn } from "@workspace/ui/lib/utils"
-import { CopyIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { toast } from "sonner"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
+import { toast } from "@workspace/ui/components/toast"
+import { cn } from "@workspace/ui/lib/utils"
+import { CopyIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Hint } from "@/components/hint"
 
 interface CopyToClipboardProps {
@@ -22,14 +22,14 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied
   const copyText = () => {
     try {
       navigator.clipboard.writeText(text)
-      toast.success(t("copiedToClipboard"))
+      toast.add({ type: "success", description: t("copiedToClipboard") })
       sendGTMEvent({
         event: "share",
         method: "copy",
       })
       onCopied?.()
     } catch {
-      toast.error(t("failedToCopyToClipboard"))
+      toast.add({ type: "error", description: t("failedToCopyToClipboard") })
     }
   }
 

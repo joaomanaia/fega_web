@@ -2,10 +2,7 @@
 
 import { useTransition } from "react"
 import { useParams } from "next/navigation"
-import { cn } from "@workspace/ui/lib/utils"
-import { ChevronsUpDown } from "lucide-react"
-import { useLocale, useTranslations, type Locale } from "next-intl"
-import { Button } from "@workspace/ui/components/button"
+import { buttonVariants } from "@workspace/ui/components/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
+import { cn } from "@workspace/ui/lib/utils"
+import { ChevronsUpDown } from "lucide-react"
+import { useLocale, useTranslations, type Locale } from "next-intl"
 import { usePathname, useRouter } from "@/i18n/navigation"
 import { routing } from "@/i18n/routing"
 
@@ -34,22 +34,19 @@ export function LocaleSwitcher({ className }: { className?: string }) {
         // are used in combination with a given `pathname`. Since the two will
         // always match for the current route, we can skip runtime checks.
         { pathname, params },
-        { locale: value as Locale }
+        { locale: value as Locale },
       )
     })
   }
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          disabled={isPending}
-          variant="outline"
-          className={cn("w-fit rounded-2xl", className)}
-        >
-          <ChevronsUpDown className="mr-auto" />
-          <span className="mr-auto">{t("locale", { locale: locale })}</span>
-        </Button>
+      <DropdownMenuTrigger
+        disabled={isPending}
+        className={cn(buttonVariants({ variant: "outline" }), "w-fit rounded-2xl", className)}
+      >
+        <ChevronsUpDown className="mr-auto" />
+        <span className="mr-auto">{t("locale", { locale: locale })}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>

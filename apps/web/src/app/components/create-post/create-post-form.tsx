@@ -2,14 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
+import { Button } from "@workspace/ui/components/button"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form"
+import { Input } from "@workspace/ui/components/input"
+import { toast } from "@workspace/ui/components/toast"
 import { cn } from "@workspace/ui/lib/utils"
 import { useTranslations } from "next-intl"
 import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { Button } from "@workspace/ui/components/button"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form"
-import { Input } from "@workspace/ui/components/input"
 import { createPost } from "@/core/actions/postActions"
 import { createPostSchema, type CreatePostSchemaValues } from "@/lib/schemas/post-schemas"
 
@@ -24,14 +24,21 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className }) => 
   const { execute, isPending } = useAction(createPost, {
     onExecute: () => {
       form.reset()
-      toast.loading(t("submitButton.loading"), { description: undefined, id: "create-post" })
+      toast.add({
+        type: "loading",
+        title: t("submitButton.loading"),
+        description: undefined,
+        id: "create-post",
+      })
     },
     onSuccess: () => {
-      toast.success(t("success"), { id: "create-post" })
+      toast.add({ title: t("success"), id: "create-post" })
       queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
     onError: ({ error }) => {
-      toast.error(t("error"), {
+      toast.add({
+        type: "error",
+        title: t("error"),
         description: error.serverError,
         id: "create-post",
       })

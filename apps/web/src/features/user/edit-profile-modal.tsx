@@ -23,9 +23,9 @@ import { Input } from "@workspace/ui/components/input"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@workspace/ui/components/input-group"
 import { Label } from "@workspace/ui/components/label"
 import { Textarea } from "@workspace/ui/components/textarea"
+import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import { ZSAError } from "zsa"
 import { removeUserAvatar } from "@/app/actions/userActions"
 import { UserEditableAvatar } from "@/app/components/user/user-editable-avatar"
@@ -86,16 +86,16 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
   const queryClient = useQueryClient()
 
   const handleRemoveAvatar = async () => {
-    toast.loading("Removing avatar...", { id: "remove-avatar" })
+    toast.add({ type: "loading", description: "Removing avatar...", id: "remove-avatar" })
     changeCanClose(false)
 
     const [_, error] = await removeUserAvatar()
     changeCanClose(true)
 
     if (error) {
-      toast.error("Failed to remove avatar", { id: "remove-avatar" })
+      toast.update("remove-avatar", { type: "error", description: "Failed to remove avatar" })
     } else {
-      toast.success("Avatar removed", { id: "remove-avatar" })
+      toast.update("remove-avatar", { type: "success", description: "Avatar removed" })
       queryClient.invalidateQueries({ queryKey: ["posts", user.id] })
     }
   }
@@ -107,14 +107,14 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
           className="mt-4 flex w-full flex-col gap-y-4"
           onSubmit={form.handleSubmit((values) => {
             if (form.formState.isDirty) {
-              toast.loading("Saving changes...", { id: "edit-profile" })
+              toast.add({ type: "loading", description: "Saving changes...", id: "edit-profile" })
               changeCanClose(false)
 
               mutate(
                 { values },
                 {
                   onSuccess: () => {
-                    toast.success(t("success"), { id: "edit-profile" })
+                    toast.update("edit-profile", { type: "success", description: t("success") })
                     queryClient.invalidateQueries({ queryKey: ["posts", user.id] })
                     changeCanClose(true)
                     onClose()
@@ -130,12 +130,10 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
                       }
                     }
 
-                    console.error(err)
-
-                    toast.error(err.message, { id: "edit-profile" })
+                    toast.update("edit-profile", { type: "error", description: err.message })
                     changeCanClose(true)
                   },
-                }
+                },
               )
             }
           })}

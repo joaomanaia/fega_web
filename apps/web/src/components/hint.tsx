@@ -1,19 +1,21 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  type TooltipContentProps,
+} from "@workspace/ui/components/tooltip"
 
-export interface HintProps {
+export interface HintProps extends TooltipContentProps {
   label: string
   children: React.ReactNode
-  side?: "top" | "bottom" | "left" | "right"
-  align?: "start" | "center" | "end"
-  sideOffset?: number
-  alignOffset?: number
+  render?: React.ReactElement
 }
 
-export const Hint = ({ label, children, side, align, sideOffset, alignOffset }: HintProps) => {
+export const Hint = ({ label, children, render, ...props }: HintProps) => {
   return (
-    <Tooltip delayDuration={100}>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
+    <Tooltip>
+      <TooltipTrigger render={render}>{children}</TooltipTrigger>
+      <TooltipContent {...props}>
         <p className="font-semibold capitalize">{label}</p>
       </TooltipContent>
     </Tooltip>

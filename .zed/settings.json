@@ -1,0 +1,22 @@
+{
+  "prettier": {
+    "allowed": true,
+  },
+  "format_on_save": "on",
+  "lsp": {
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "preferences": {
+            "importModuleSpecifier": "non-relative",
+          },
+        },
+      },
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "classFunctions": ["cva", "cx"],
+      },
+    },
+  },
+}

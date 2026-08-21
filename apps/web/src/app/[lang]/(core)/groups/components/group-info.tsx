@@ -1,6 +1,6 @@
+import { Skeleton } from "@workspace/ui/components/skeleton"
 import { useTranslations } from "next-intl"
 import { getLocale } from "next-intl/server"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { UserHoverCardWithLink } from "@/app/components/user/user-hover-card"
 import { GroupMembers } from "@/components/group/members/group-members"
@@ -55,7 +55,7 @@ const GroupInfoHeader: React.FC<GroupInfoHeaderProps> = ({
 }) => {
   return (
     <div className="flex w-full flex-col gap-4 py-4">
-      <UserAvatar size="large" src={iconUrl} name={groupName} className="self-center" />
+      <UserAvatar size="lg" src={iconUrl} name={groupName} className="self-center" />
       <CreatedBy
         authorUid={authorUid}
         authorName={authorName}

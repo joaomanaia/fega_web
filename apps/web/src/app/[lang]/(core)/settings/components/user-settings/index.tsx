@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import type { JwtPayload } from "@supabase/supabase-js"
+import { Skeleton } from "@workspace/ui/components/skeleton"
+import { toast } from "@workspace/ui/components/toast"
 import { UserRoundXIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
 import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
@@ -53,10 +53,10 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
       setDeletingAccount(false)
 
       if (error) {
-        toast.error(t("deleteAccount.error"))
+        toast.add({ type: "error", description: t("deleteAccount.error") })
       } else {
         await supabase.auth.signOut()
-        toast.success(t("deleteAccount.success"))
+        toast.add({ type: "success", description: t("deleteAccount.success") })
         router.refresh()
       }
     }

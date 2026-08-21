@@ -1,9 +1,9 @@
 "use client"
 
 import { useParams } from "next/navigation"
+import { Skeleton } from "@workspace/ui/components/skeleton"
 import { cn } from "@workspace/ui/lib/utils"
 import { useTranslations } from "next-intl"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import {
   GroupOptionsContextMenu,
   GroupOptionsDropdown,
@@ -29,7 +29,7 @@ export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, cl
         className={cn(
           "group next-link hover:bg-surface-variant/38 flex h-fit items-center gap-4 rounded-3xl px-4 py-4 transition-colors",
           selected && "bg-primary hover:bg-primary/90 text-primary-foreground",
-          className
+          className,
         )}
         href={`/groups/${group.id}`}
       >
@@ -37,6 +37,7 @@ export const GroupListItem: React.FC<GroupListItemType> = ({ group, localUid, cl
           src={group.icon_url ?? undefined}
           name={group.name}
           className={cn(selected && "bg-transparent")}
+          size="lg"
         />
         <div className="flex grow flex-col truncate">
           <p className="truncate text-xl font-semibold">{group.name}</p>

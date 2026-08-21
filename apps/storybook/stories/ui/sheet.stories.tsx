@@ -42,9 +42,7 @@ const meta = {
         </SheetHeader>
         <SheetFooter>
           <Button>Save changes</Button>
-          <SheetClose asChild>
-            <Button variant="outline">Close</Button>
-          </SheetClose>
+          <SheetClose render={<Button variant="outline" />}>Close</SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>

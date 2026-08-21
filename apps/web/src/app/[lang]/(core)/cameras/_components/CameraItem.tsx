@@ -1,9 +1,9 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
 import { Skeleton } from "@workspace/ui/components/skeleton"
 import { cn } from "@workspace/ui/lib/utils"
+import { UserAvatar } from "@/app/components/user/user-avatar"
 import { Link } from "@/i18n/navigation"
 import type { Tables } from "@/types/database.types"
 
@@ -22,14 +22,11 @@ export const CameraItem: React.FC<CameraItemProps> = ({ camera }) => {
       itemProp="url"
       className={cn(
         "next-link hover:bg-surface-variant/38 flex h-fit items-center rounded-3xl px-4 py-4 transition-colors",
-        selected && "bg-primary text-primary-foreground hover:bg-primary/90"
+        selected && "bg-primary text-primary-foreground hover:bg-primary/90",
       )}
       href={`/cameras/${camera.id}`}
     >
-      <Avatar>
-        <AvatarImage itemProp="image" src={camera.image_poster} />
-        <AvatarFallback>{camera.name}</AvatarFallback>
-      </Avatar>
+      <UserAvatar src={camera.image_poster} name={camera.name} size="lg" />
       <div className="ml-4">
         <h2 className="text-lg font-semibold md:text-xl" itemProp="name">
           {camera.name}

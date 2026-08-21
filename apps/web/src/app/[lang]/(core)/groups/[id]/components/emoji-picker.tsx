@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 import { cn } from "@workspace/ui/lib/utils"
 import { Theme } from "emoji-picker-react"
 import { SmileIcon } from "lucide-react"
 import { useTheme } from "next-themes"
-import { Button } from "@workspace/ui/components/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 
 interface EmojiPickerPopupProps {
   className?: string
@@ -22,17 +22,14 @@ export const EmojiPicker: React.FC<EmojiPickerPopupProps> = ({ className, onEmoj
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className={cn(
-            "text-secondary aria-expanded:bg-secondary aria-expanded:text-secondary-foreground aspect-square rounded-2xl",
-            className
-          )}
-        >
-          <SmileIcon className="h-6 w-6" aria-label="Open emoji picker" />
-        </Button>
+      <PopoverTrigger
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          "text-secondary aria-expanded:bg-secondary aria-expanded:text-secondary-foreground aspect-square rounded-2xl",
+          className,
+        )}
+      >
+        <SmileIcon aria-label="Open emoji picker" />
       </PopoverTrigger>
       <PopoverContent className="mb-2 ml-4 w-full border-none p-0">
         <Picker

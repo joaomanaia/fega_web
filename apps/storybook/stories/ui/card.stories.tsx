@@ -15,6 +15,12 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  argTypes: {
+    size: {
+      control: "select",
+      options: ["default", "sm"],
+    },
+  },
   render: (args) => (
     <Card className="min-w-96" {...args}>
       <CardHeader>
