@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --bun next dev",
-    "build": "bun --bun next build",
+    "dev": "next dev",
+    "build": "next build",
     "sitemap": "next-sitemap",
-    "start": "bun --bun next start",
+    "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "export": "next export",
