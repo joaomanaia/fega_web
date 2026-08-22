@@ -7,7 +7,7 @@ import { ActionError, authActionClient } from "@/lib/safe-action"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
 import type { Json } from "@/types/database.types"
 
-export const createEventFormSchema = z.object({
+const createEventFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
   coverImage: z.url(),
@@ -17,8 +17,6 @@ export const createEventFormSchema = z.object({
   locationId: z.string().nullable().optional(),
   otherData: z.array(z.custom<CalendarEventOtherDataItem>()),
 })
-
-export type CreateEventFormValues = z.infer<typeof createEventFormSchema>
 
 export const createEvent = authActionClient
   .metadata({ actionName: "createEvent" })

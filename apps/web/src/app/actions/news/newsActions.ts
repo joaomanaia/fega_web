@@ -5,14 +5,12 @@ import * as z from "zod"
 import { redirect } from "@/i18n/navigation"
 import { ActionError, authActionClient } from "@/lib/safe-action"
 
-export const createNewsFormSchema = z.object({
+const createNewsFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
   imageUrl: z.url(),
   content: z.string().min(1).max(10000),
 })
-
-export type CreateNewsFormValues = z.infer<typeof createNewsFormSchema>
 
 export const createNews = authActionClient
   .metadata({ actionName: "createNews" })

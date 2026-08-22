@@ -4,11 +4,11 @@ import { revalidatePath } from "next/cache"
 import * as z from "zod"
 import { ActionError, authActionClient } from "@/lib/safe-action"
 
-export const deleteMessageSchema = z.object({
+const deleteMessageSchema = z.object({
   messageId: z.string().min(1),
 })
 
-export const editMessageSchema = z.object({
+const editMessageSchema = z.object({
   messageId: z.string().min(1),
   groupId: z.string().min(1),
   message: z
