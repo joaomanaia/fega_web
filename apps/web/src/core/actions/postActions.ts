@@ -5,16 +5,15 @@ import { getTranslations } from "next-intl/server"
 import * as z from "zod"
 import { ActionError, authActionClient } from "@/lib/safe-action"
 import { createPostSchema } from "@/lib/schemas/post-schemas"
-import { createClient } from "@/lib/supabase/server"
 
 export const createPost = authActionClient
   .metadata({ actionName: "createPost" })
   .inputSchema(createPostSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const supabase = await createClient()
+    const { supabase, uid, user } = ctx
     const { data: userCanPost } = await supabase
       .rpc("user_can_post", {
-        user_id: ctx.uid,
+        user_id: uid,
       })
       .throwOnError()
 
@@ -27,17 +26,17 @@ export const createPost = authActionClient
 
     updateTag("posts")
     revalidatePath("/")
-    revalidatePath(`/${ctx.user.user_metadata?.username}`)
+    revalidatePath(`/${user.user_metadata?.username}`)
   })
 
 export const deletePost = authActionClient
   .metadata({ actionName: "deletePost" })
   .inputSchema(z.object({ id: z.string() }))
   .action(async ({ parsedInput, ctx }) => {
-    const supabase = await createClient()
+    const { supabase, user } = ctx
     await supabase.from("posts").delete().eq("id", parsedInput.id).throwOnError()
 
     updateTag("posts")
     revalidatePath("/")
-    revalidatePath(`/${ctx.user.user_metadata?.username}`)
+    revalidatePath(`/${user.user_metadata?.username}`)
   })

@@ -14,10 +14,11 @@ import {
 import { Input } from "@workspace/ui/components/input"
 import { toast } from "@workspace/ui/components/toast"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useAction } from "next-safe-action/hooks"
 import { editGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
 import { useModal } from "@/hooks/use-modal-store"
+import { editGroupSchema, type EditGroupSchemaValues } from "@/lib/schemas/group-schemas"
 
 export const EditGroupModal: React.FC = () => {
   const { isOpen, onClose, data } = useModal("edit-group")
@@ -44,19 +45,23 @@ interface EditGroupFormProps {
   iconUrl?: string | null
 }
 
-const formSchema = z.object({
-  groupName: z.string().min(1, "Group name is required").max(50, "Group name is too long"),
-  iconUrl: z.url(),
-})
-
 const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconUrl }) => {
-  const editGroupWithId = editGroup.bind(null, groupId)
-
   const { onClose } = useModal("edit-group")
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { execute, isPending } = useAction(editGroup, {
+    onSuccess: () => {
+      toast.add({ type: "success", description: "Group edited" })
+      onClose()
+    },
+    onError: ({ error }) => {
+      toast.add({ type: "error", description: error.serverError ?? "Failed to edit group" })
+    },
+  })
+
+  const form = useForm<EditGroupSchemaValues>({
+    resolver: zodResolver(editGroupSchema),
     defaultValues: {
+      groupId,
       groupName: groupName ?? "",
       iconUrl: iconUrl ?? "",
     },
@@ -66,22 +71,13 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
     <>
       <Form {...form}>
         <form
-          action={async (formData: FormData) => {
-            // Check if the fields are the same as the current group
-            if (form.getValues().groupName === groupName && form.getValues().iconUrl === iconUrl) {
+          onSubmit={form.handleSubmit((values) => {
+            if (values.groupName === groupName && (values.iconUrl ?? "") === (iconUrl ?? "")) {
               toast.add({ type: "warning", description: "No changes made" })
               return
             }
-
-            try {
-              await editGroupWithId(formData)
-              toast.add({ type: "success", description: "Group edited" })
-            } catch {
-              toast.add({ type: "error", description: "Failed to edit group" })
-            } finally {
-              onClose()
-            }
-          }}
+            execute(values)
+          })}
           className="flex w-full flex-col gap-4 py-4"
         >
           <FormField
@@ -118,7 +114,7 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
             />
           </div>
 
-          <SubmitButton>Submit</SubmitButton>
+          <SubmitButton disabled={isPending}>Submit</SubmitButton>
         </form>
       </Form>
     </>

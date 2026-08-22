@@ -19,8 +19,6 @@ type OptimisticVote = {
 type NewVoteType = PostVoteType | null
 
 export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCount, votedType }) => {
-  const handleVoteWithPostId = handleVote.bind(null, postId)
-
   const [optimisticVote, setOptimisticVote] = useState<OptimisticVote>({
     voteCount: voteCount ?? 0,
     votedType: votedType,
@@ -29,8 +27,11 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
   return (
     <form
       action={async (formData: FormData) => {
-        const newVoteRes = await handleVoteWithPostId(formData)
-        const newVoteType = newVoteRes?.vote_type
+        const buttonVoteType = formData.get("vote_button") as PostVoteType
+        if (!buttonVoteType) return
+
+        const result = await handleVote({ postId, voteType: buttonVoteType })
+        const newVoteType = result?.data?.vote_type ?? null
 
         setOptimisticVote((currentVote) => {
           let newVoteCount = currentVote.voteCount

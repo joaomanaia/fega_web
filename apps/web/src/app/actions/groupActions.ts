@@ -1,191 +1,188 @@
 "use server"
 
-// TODO: Change the this actions to the new folder
 import { revalidatePath } from "next/cache"
 import { getLocale } from "next-intl/server"
-import * as z from "zod"
 import { redirect } from "@/i18n/navigation"
-import { createClient } from "@/lib/supabase/server"
-
-const editGroupSchema = z.object({
-  groupName: z.string().min(1, "Group name is required").max(50, "Group name is too long"),
-  iconUrl: z.url(),
-})
-
-export async function editGroup(groupId: string, formData: FormData) {
-  if (!groupId) {
-    console.log("Group ID not found")
-    throw new Error("Group ID not found")
-  }
-
-  const parsed = editGroupSchema.parse({
-    groupName: formData.get("groupName"),
-    iconUrl: formData.get("iconUrl"),
-  })
-
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    console.log("User not found")
-    throw new Error("User not found")
-  }
-
-  const { error } = await supabase
-    .from("groups")
-    .update({
-      name: parsed.groupName,
-      icon_url: parsed.iconUrl,
-    })
-    .eq("id", groupId)
-
-  if (error) {
-    console.log(error)
-    throw new Error(error.message)
-  }
-
-  revalidatePath("/groups")
-}
-
-export async function exitGroup(groupId: string) {
-  if (!groupId) {
-    console.log("Group ID not found")
-    throw new Error("Group ID not found")
-  }
-
-  const supabase = await createClient()
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    console.log("Session not found")
-    throw new Error("Session not found")
-  }
-
-  const { error } = await supabase
-    .from("group_participants")
-    .delete()
-    .eq("uid", session.user.id)
-    .eq("group_id", groupId)
-
-  if (error) {
-    console.log(error)
-    throw new Error(error.message)
-  }
-
-  redirect({ href: "/", locale: await getLocale() })
-}
-
-export async function removeParticipant(uid: string, groupId: string) {
-  if (!groupId) {
-    console.log("Group ID not found")
-    throw new Error("Group ID not found")
-  }
-
-  const supabase = await createClient()
-
-  const { error } = await supabase
-    .from("group_participants")
-    .delete()
-    .eq("uid", uid)
-    .eq("group_id", groupId)
-
-  if (error) {
-    console.log(error)
-    throw new Error(error.message)
-  }
-
-  return revalidatePath(`/group/${groupId}/info`)
-}
+import { ActionError, authActionClient } from "@/lib/safe-action"
+import {
+  addParticipantSchema,
+  createGroupSchema,
+  deleteGroupSchema,
+  editGroupSchema,
+  exitGroupSchema,
+  removeParticipantSchema,
+  searchNoParticipantsSchema,
+} from "@/lib/schemas/group-schemas"
 
 const GROUP_PARTICIPANTS_LIMIT = 16
 
-export async function addParticipant(uid: string, groupId: string) {
-  if (!groupId) {
-    console.log("Group ID not found")
-    throw new Error("Group ID not found")
-  }
+export const createGroup = authActionClient
+  .metadata({ actionName: "createGroup" })
+  .inputSchema(createGroupSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, uid } = ctx
+    const { group_name, group_avatar } = parsedInput
 
-  const supabase = await createClient()
+    const { data, error } = await supabase
+      .from("groups")
+      .insert({
+        name: group_name,
+        icon_url: group_avatar || null,
+        created_by: uid,
+      })
+      .select("id")
+      .single()
 
-  // Check if the group has reached the limit of participants
-  const { count, error: groupParticipantsError } = await supabase
-    .from("group_participants")
-    .select("uid", { count: "exact", head: true })
-    .eq("group_id", groupId)
+    if (error || !data) {
+      throw new ActionError("Failed to create group", { cause: error })
+    }
 
-  if (groupParticipantsError) {
-    throw new Error(groupParticipantsError.message)
-  }
+    revalidatePath("/groups")
+    revalidatePath("/groups", "layout")
 
-  if (count === null) {
-    throw new Error("Failed to count group participants")
-  }
-
-  if (count >= GROUP_PARTICIPANTS_LIMIT) {
-    throw new Error("Group has reached the limit of participants")
-  }
-
-  const { error } = await supabase.from("group_participants").upsert({
-    uid: uid,
-    group_id: groupId,
+    return data.id
   })
 
-  if (error) {
-    console.log(error)
-    throw new Error(error.message)
-  }
+export const editGroup = authActionClient
+  .metadata({ actionName: "editGroup" })
+  .inputSchema(editGroupSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+    const { groupId, groupName, iconUrl } = parsedInput
 
-  return revalidatePath(`/group/${groupId}/info`)
-}
+    const { error } = await supabase
+      .from("groups")
+      .update({
+        name: groupName,
+        icon_url: iconUrl || null,
+      })
+      .eq("id", groupId)
 
-export async function searchNoParticipants(prevState: unknown, formData: FormData) {
-  const groupId = formData.get("group_id") as string
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
 
-  if (!groupId) {
-    console.log("Group ID not found")
-    throw new Error("Group ID not found")
-  }
+    revalidatePath("/groups")
+    revalidatePath(`/groups/${groupId}`)
+  })
 
-  const search = formData.get("search") as string
+export const exitGroup = authActionClient
+  .metadata({ actionName: "exitGroup" })
+  .inputSchema(exitGroupSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, uid } = ctx
+    const { groupId } = parsedInput
 
-  const supabase = await createClient()
+    const { error } = await supabase
+      .from("group_participants")
+      .delete()
+      .eq("uid", uid)
+      .eq("group_id", groupId)
 
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .filter("full_name", "ilike", `%${search}%`)
-    .limit(10)
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
 
-  if (error) {
-    console.log(error)
-    throw new Error(error.message)
-  }
+    revalidatePath("/groups")
+    redirect({ href: "/", locale: await getLocale() })
+  })
 
-  return {
-    searchUsers: data ?? [],
-  }
-}
+export const removeParticipant = authActionClient
+  .metadata({ actionName: "removeParticipant" })
+  .inputSchema(removeParticipantSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+    const { groupId, uid } = parsedInput
 
-export const deleteGroup = async (groupId: string) => {
-  if (!groupId) {
-    throw new Error("Group ID not found")
-  }
+    const { error } = await supabase
+      .from("group_participants")
+      .delete()
+      .eq("uid", uid)
+      .eq("group_id", groupId)
 
-  const supabase = await createClient()
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
 
-  const { error } = await supabase.from("groups").delete().eq("id", groupId)
+    revalidatePath(`/group/${groupId}/info`)
+    revalidatePath(`/groups/${groupId}/info`)
+  })
 
-  if (error) {
-    throw new Error(error.message)
-  }
+export const addParticipant = authActionClient
+  .metadata({ actionName: "addParticipant" })
+  .inputSchema(addParticipantSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+    const { groupId, uid } = parsedInput
 
-  revalidatePath("/groups")
-  revalidatePath("/groups", "layout")
-  redirect({ href: "/groups", locale: await getLocale() })
-}
+    // Check if the group has reached the limit of participants
+    const { count, error: groupParticipantsError } = await supabase
+      .from("group_participants")
+      .select("uid", { count: "exact", head: true })
+      .eq("group_id", groupId)
+
+    if (groupParticipantsError) {
+      throw new ActionError(groupParticipantsError.message, { cause: groupParticipantsError })
+    }
+
+    if (count === null) {
+      throw new ActionError("Failed to count group participants")
+    }
+
+    if (count >= GROUP_PARTICIPANTS_LIMIT) {
+      throw new ActionError("Group has reached the limit of participants")
+    }
+
+    const { error } = await supabase.from("group_participants").upsert({
+      uid: uid,
+      group_id: groupId,
+    })
+
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
+
+    revalidatePath(`/group/${groupId}/info`)
+    revalidatePath(`/groups/${groupId}/info`)
+  })
+
+export const searchNoParticipants = authActionClient
+  .metadata({ actionName: "searchNoParticipants" })
+  .inputSchema(searchNoParticipantsSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+    const { search } = parsedInput
+
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .filter("full_name", "ilike", `%${search}%`)
+      .limit(10)
+
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
+
+    return {
+      searchUsers: data ?? [],
+    }
+  })
+
+export const deleteGroup = authActionClient
+  .metadata({ actionName: "deleteGroup" })
+  .inputSchema(deleteGroupSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+    const { groupId } = parsedInput
+
+    const { error } = await supabase.from("groups").delete().eq("id", groupId)
+
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
+
+    revalidatePath("/groups")
+    revalidatePath("/groups", "layout")
+    redirect({ href: "/groups", locale: await getLocale() })
+  })
+

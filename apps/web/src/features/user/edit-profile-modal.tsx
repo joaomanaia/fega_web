@@ -26,7 +26,6 @@ import { Textarea } from "@workspace/ui/components/textarea"
 import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
-import { ZSAError } from "zsa"
 import { removeUserAvatar } from "@/app/actions/userActions"
 import { UserEditableAvatar } from "@/app/components/user/user-editable-avatar"
 import { useUpdateProfileMutation } from "@/features/user/useUpdateProfileMutation"
@@ -89,10 +88,10 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
     toast.add({ type: "loading", description: "Removing avatar...", id: "remove-avatar" })
     changeCanClose(false)
 
-    const [_, error] = await removeUserAvatar()
+    const result = await removeUserAvatar()
     changeCanClose(true)
 
-    if (error) {
+    if (result?.serverError) {
       toast.update("remove-avatar", { type: "error", description: "Failed to remove avatar" })
     } else {
       toast.update("remove-avatar", { type: "success", description: "Avatar removed" })
@@ -120,14 +119,11 @@ export const EditProfileForm: React.FC<EditProfileFormProps> = ({
                     onClose()
                   },
                   onError: (err) => {
-                    const zsaError = err as ZSAError | undefined
-                    if (zsaError !== undefined) {
-                      if (zsaError.code === "CONFLICT") {
-                        form.setError("username", {
-                          type: "manual",
-                          message: "Username is already taken",
-                        })
-                      }
+                    if (err?.message?.includes("Username is already taken") || err?.message?.includes("already exists")) {
+                      form.setError("username", {
+                        type: "manual",
+                        message: "Username is already taken",
+                      })
                     }
 
                     toast.update("edit-profile", { type: "error", description: err.message })

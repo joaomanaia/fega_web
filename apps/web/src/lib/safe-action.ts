@@ -4,6 +4,7 @@ import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-
 import * as z from "zod"
 import { getSession } from "@/lib/dal"
 import { logger } from "@/lib/logging"
+import { createClient } from "@/lib/supabase/server"
 
 export class ActionError extends Error {}
 
@@ -26,8 +27,18 @@ export const actionClient = createSafeActionClient({
       `Error in action: ${metadata.actionName}`
     )
 
-    if (error instanceof ActionError || error instanceof PostgrestError) {
+    if (error instanceof ActionError) {
       return error.message
+    }
+
+    if (error instanceof PostgrestError || (error && typeof error === "object" && "code" in error)) {
+      const code = (error as { code?: string }).code
+      if (code === "23505") {
+        return "A record with this information already exists."
+      }
+      if (error instanceof PostgrestError) {
+        return error.message
+      }
     }
 
     // Return generic message
@@ -41,20 +52,24 @@ export const authActionClient = actionClient
     const session = await getSession()
 
     if (!session) {
-      throw new Error("Session not found!")
+      throw new ActionError("Session not found!")
     }
+
+    const supabase = await createClient()
 
     return next({
       ctx: {
         user: session.user,
         uid: session.uid,
+        supabase,
       },
     })
   })
 
 export const isAdminActionClient = authActionClient.use(async ({ next, ctx }) => {
-  if (ctx.user.role !== "admin") {
-    throw new Error("User not authorized")
+  const role = (ctx.user as { user_role?: string; role?: string }).user_role ?? (ctx.user as { role?: string }).role
+  if (role !== "admin") {
+    throw new ActionError("User not authorized")
   }
 
   return next()

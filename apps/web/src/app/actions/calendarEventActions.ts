@@ -3,12 +3,11 @@
 import { getLocale } from "next-intl/server"
 import * as z from "zod"
 import { redirect } from "@/i18n/navigation"
-import { createClient } from "@/lib/supabase/server"
+import { ActionError, authActionClient } from "@/lib/safe-action"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
 import type { Json } from "@/types/database.types"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const createEventFormSchema = z.object({
+export const createEventFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(1000).optional(),
   coverImage: z.url(),
@@ -19,23 +18,29 @@ const createEventFormSchema = z.object({
   otherData: z.array(z.custom<CalendarEventOtherDataItem>()),
 })
 
-export async function createEvent(values: z.infer<typeof createEventFormSchema>) {
-  const supabase = await createClient()
+export type CreateEventFormValues = z.infer<typeof createEventFormSchema>
 
-  const { error } = await supabase.from("calendar_events").insert({
-    content: values.content,
-    cover_image: values.coverImage,
-    description: values.description,
-    start_date: values.fromDate.toISOString(),
-    end_date: values.toDate.toISOString(),
-    title: values.title,
-    other_data: values.otherData as unknown as Json,
-    location: values.locationId ? Number(values.locationId) : null,
+export const createEvent = authActionClient
+  .metadata({ actionName: "createEvent" })
+  .inputSchema(createEventFormSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx
+
+    const { error } = await supabase.from("calendar_events").insert({
+      content: parsedInput.content,
+      cover_image: parsedInput.coverImage,
+      description: parsedInput.description,
+      start_date: parsedInput.fromDate.toISOString(),
+      end_date: parsedInput.toDate.toISOString(),
+      title: parsedInput.title,
+      other_data: parsedInput.otherData as unknown as Json,
+      location: parsedInput.locationId ? Number(parsedInput.locationId) : null,
+    })
+
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
+    }
+
+    redirect({ href: "/events", locale: await getLocale() })
   })
 
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  redirect({ href: "/events", locale: await getLocale() })
-}

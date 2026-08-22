@@ -21,9 +21,9 @@ import {
 import { Input } from "@workspace/ui/components/input"
 import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
-import { useServerAction } from "zsa-react"
-import { createGroup } from "@/app/actions/group/groupActions"
+import { createGroup } from "@/app/actions/groupActions"
 import { UserAvatar } from "@/app/components/user/user-avatar"
 import { useModal } from "@/hooks/use-modal-store"
 import { useRouter } from "@/i18n/navigation"
@@ -35,9 +35,9 @@ export const CreateGroupModal: React.FC = () => {
 
   const t = useTranslations("GroupsPage.create")
 
-  const { isPending, execute } = useServerAction(createGroup, {
-    onError: ({ err }) => {
-      toast.add({ type: "error", title: err.message })
+  const { isPending, execute } = useAction(createGroup, {
+    onError: ({ error }) => {
+      toast.add({ type: "error", title: error.serverError ?? "Failed to create group" })
     },
     onSuccess: ({ data: id }) => {
       toast.add({ type: "success", title: t("success") })

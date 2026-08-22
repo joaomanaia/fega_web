@@ -99,7 +99,12 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await createEvent(values)
+      const result = await createEvent(values)
+
+      if (result?.serverError) {
+        toast.add({ type: "error", description: result.serverError })
+        return
+      }
 
       toast.add({ type: "success", description: "Event created successfully" })
     } catch (error) {

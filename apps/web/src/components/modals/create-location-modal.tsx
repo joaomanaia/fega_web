@@ -73,21 +73,26 @@ const CreateLocationForm: React.FC<CreateLocationFormProps> = ({ locationName, o
     <>
       <Form {...form}>
         <form
-          action={async () => {
+          onSubmit={form.handleSubmit(async (values) => {
             try {
-              // workaround to get the position from the map, because it was
-              // not getting from the fromData
-              const { locationName, address, position } = form.getValues()
+              const point = `POINT(${values.position.lng} ${values.position.lat})`
+              const result = await createLocation({
+                locationName: values.locationName,
+                address: values.address,
+                point,
+              })
 
-              const point = `POINT(${position.lng} ${position.lat})`
-              await createLocation(locationName, address, point)
+              if (result?.serverError) {
+                toast.add({ type: "error", description: result.serverError })
+                return
+              }
 
               toast.add({ type: "success", description: "Location created" })
               onClose()
             } catch {
               toast.add({ type: "error", description: "Failed to create location" })
             }
-          }}
+          })}
           className="flex w-full flex-col gap-4 py-4"
         >
           <FormField

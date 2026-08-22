@@ -1,47 +1,41 @@
 "use server"
 
-import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server"
-import { PostVoteType } from "@/types/PostType"
+import { ActionError, authActionClient } from "@/lib/safe-action"
+import { votePostSchema } from "@/lib/schemas/post-schemas"
+import type { PostVoteType } from "@/types/PostType"
 
-export const handleVote = async (postId: string, formData: FormData) => {
-  const buttonVoteType = formData.get("vote_button") as PostVoteType
+export const handleVote = authActionClient
+  .metadata({ actionName: "handleVote" })
+  .inputSchema(votePostSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, uid } = ctx
+    const { postId, voteType: buttonVoteType } = parsedInput
 
-  const supabase = await createClient()
+    const { data: currentPostVote } = await supabase
+      .from("post_votes")
+      .select("vote_type")
+      .eq("post_id", postId)
+      .eq("uid", uid)
+      .single()
 
-  // Check if user is authenticated
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    // If the user has already voted with this vote type, remove the vote (toggle off)
+    const newVoteType: PostVoteType | null =
+      currentPostVote?.vote_type === buttonVoteType ? null : buttonVoteType
 
-  if (!user) {
-    return redirect("/auth/login")
-  }
+    const { data: vote, error: voteError } = await supabase
+      .from("post_votes")
+      .upsert({
+        post_id: postId,
+        vote_type: newVoteType,
+        uid: uid,
+      })
+      .select()
+      .single()
 
-  const { data: currentPostVote } = await supabase
-    .from("post_votes")
-    .select("vote_type")
-    .eq("post_id", postId)
-    .eq("uid", user.id)
-    .single()
+    if (voteError) {
+      throw new ActionError(voteError.message, { cause: voteError })
+    }
 
-  // If the user has already voted, remove the vote
-  const voteType = currentPostVote?.vote_type === buttonVoteType ? null : buttonVoteType
+    return vote
+  })
 
-  const { data: vote, error: voteError } = await supabase
-    .from("post_votes")
-    .upsert({
-      post_id: postId,
-      vote_type: voteType,
-    })
-    .eq("post_id", postId)
-    .eq("uid", user.id)
-    .select()
-    .single()
-
-  if (voteError) {
-    throw new Error(voteError.message)
-  }
-
-  return vote
-}

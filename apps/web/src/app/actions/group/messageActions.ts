@@ -1,65 +1,57 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import * as z from "zod"
+import { ActionError, authActionClient } from "@/lib/safe-action"
 
-export async function deleteMessage(messageId: string) {
-  const supabase = await createClient()
+export const deleteMessageSchema = z.object({
+  messageId: z.string().min(1),
+})
 
-  const { error } = await supabase.from("group_messages").delete().eq("id", messageId)
-
-  if (error) {
-    return { errorMessage: error.message }
-  }
-}
-
-const editMessageFormSchema = z.object({
+export const editMessageSchema = z.object({
+  messageId: z.string().min(1),
+  groupId: z.string().min(1),
   message: z
     .string()
     .min(1, "Message must be at least 1 character long")
     .max(500, "Message cannot be longer than 500 characters"),
 })
 
-export async function editMessage(messageId: string, groupId: string, formData: FormData) {
-  try {
-    const parsed = editMessageFormSchema.parse({
-      message: formData.get("message"),
-    })
-
-    const supabase = await createClient()
+export const deleteMessage = authActionClient
+  .metadata({ actionName: "deleteMessage" })
+  .inputSchema(deleteMessageSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, uid } = ctx
+    const { messageId } = parsedInput
 
     const { error } = await supabase
       .from("group_messages")
-      .update({ message: parsed.message })
+      .delete()
       .eq("id", messageId)
+      .eq("uid", uid)
 
     if (error) {
-      throw new Error(error.message)
+      throw new ActionError(error.message, { cause: error })
+    }
+  })
+
+export const editMessage = authActionClient
+  .metadata({ actionName: "editMessage" })
+  .inputSchema(editMessageSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, uid } = ctx
+    const { messageId, groupId, message } = parsedInput
+
+    const { error } = await supabase
+      .from("group_messages")
+      .update({ message })
+      .eq("id", messageId)
+      .eq("uid", uid)
+
+    if (error) {
+      throw new ActionError(error.message, { cause: error })
     }
 
     revalidatePath("/groups/" + groupId)
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      if (err.isEmpty) {
-        return {
-          errorMessage: "Something went wrong",
-        }
-      }
+  })
 
-      const messageIssue = err.issues.find((issue) => issue.path[0] === "message")
-
-      return {
-        messageErrorMessage: messageIssue?.message ?? "Something went wrong",
-      }
-    } else if (err instanceof Error) {
-      return {
-        errorMessage: err.message,
-      }
-    } else {
-      return {
-        errorMessage: "Something went wrong",
-      }
-    }
-  }
-}

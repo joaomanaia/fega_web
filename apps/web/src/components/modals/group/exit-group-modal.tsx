@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog"
 import { toast } from "@workspace/ui/components/toast"
+import { useAction } from "next-safe-action/hooks"
 import { exitGroup } from "@/app/actions/groupActions"
 import { SubmitButton } from "@/components/submit-button"
 import { useModal } from "@/hooks/use-modal-store"
@@ -18,9 +19,18 @@ export const ExitGroupModal: React.FC = () => {
 
   const { group } = data
 
-  if (!group || !group.id) return null
+  const { execute, isPending } = useAction(exitGroup, {
+    onError: ({ error }) => {
+      toast.add({ type: "error", description: error.serverError ?? "Failed to exit group" })
+    },
+    onSuccess: () => {
+      onClose()
+      toast.add({ type: "success", description: "Left group successfully" })
+    },
+  })
 
-  const exitGroupWithId = exitGroup.bind(null, group.id)
+  if (!group || !group.id) return null
+  const groupId = group.id
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -34,18 +44,12 @@ export const ExitGroupModal: React.FC = () => {
         </DialogDescription>
         <DialogFooter>
           <form
-            action={async () => {
-              try {
-                await exitGroupWithId()
-              } catch {
-                toast.add({ type: "error", description: "Failed to delete group" })
-              } finally {
-                onClose()
-                toast.add({ type: "success", description: "Group deleted" })
-              }
+            onSubmit={(e) => {
+              e.preventDefault()
+              execute({ groupId })
             }}
           >
-            <SubmitButton variant="destructive">Exit</SubmitButton>
+            <SubmitButton disabled={isPending} variant="destructive">Exit</SubmitButton>
           </form>
         </DialogFooter>
       </DialogContent>

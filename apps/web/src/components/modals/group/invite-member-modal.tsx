@@ -112,8 +112,6 @@ interface InviteUserProps {
 }
 
 export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
-  const addParticipantWithUid = addParticipant.bind(null, user.id, groupId)
-
   const { onClose } = useModal("group-invite")
 
   return (
@@ -126,14 +124,14 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
       <SubmitButton
         onClick={async () => {
           try {
-            await addParticipantWithUid()
-            toast.add({ type: "success", description: `Invited ${user.full_name} to the group` })
-          } catch (error) {
-            if (error instanceof Error) {
-              toast.add({ type: "error", description: error.message })
+            const result = await addParticipant({ groupId, uid: user.id })
+            if (result?.serverError) {
+              toast.add({ type: "error", description: result.serverError })
             } else {
-              toast.add({ type: "error", description: "Failed to invite user" })
+              toast.add({ type: "success", description: `Invited ${user.full_name} to the group` })
             }
+          } catch {
+            toast.add({ type: "error", description: "Failed to invite user" })
           } finally {
             onClose()
           }

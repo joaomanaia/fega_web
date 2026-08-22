@@ -269,8 +269,6 @@ const editMessageFormSchema = z.object({
 })
 
 const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMessage }) => {
-  const editMessageWithId = editMessage.bind(null, messageId, groupId)
-
   const form = useForm<z.infer<typeof editMessageFormSchema>>({
     resolver: zodResolver(editMessageFormSchema),
     defaultValues: {
@@ -291,9 +289,8 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
 
           <Form {...form}>
             <form
-              action={async (formData: FormData) => {
-                // Check if the message is the same as the current message
-                if (formData.get("message") === currentMessage) {
+              onSubmit={form.handleSubmit(async (values) => {
+                if (values.message === currentMessage) {
                   toast.add({
                     type: "error",
                     description: "Message is the same as the current message",
@@ -301,14 +298,18 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
                   return
                 }
 
-                const result = await editMessageWithId(formData)
-                if (result?.errorMessage) {
-                  toast.add({ type: "error", description: result.errorMessage })
+                const result = await editMessage({
+                  messageId,
+                  groupId,
+                  message: values.message,
+                })
+                if (result?.serverError) {
+                  toast.add({ type: "error", description: result.serverError })
                   return
                 }
 
                 toast.add({ type: "success", description: "Message edited" })
-              }}
+              })}
             >
               <FormField
                 control={form.control}
@@ -346,8 +347,6 @@ interface DeleteMessageProps {
 }
 
 const DeleteMessage: React.FC<DeleteMessageProps> = ({ messageId }) => {
-  const deleteMessageWithId = deleteMessage.bind(null, messageId)
-
   return (
     <>
       <Dialog>
@@ -365,9 +364,9 @@ const DeleteMessage: React.FC<DeleteMessageProps> = ({ messageId }) => {
             <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
             <DialogClose
               onClick={async () => {
-                const result = await deleteMessageWithId()
-                if (result?.errorMessage) {
-                  return toast.add({ type: "error", description: result.errorMessage })
+                const result = await deleteMessage({ messageId })
+                if (result?.serverError) {
+                  return toast.add({ type: "error", description: result.serverError })
                 }
 
                 toast.add({ type: "success", description: "Message deleted" })

@@ -34,7 +34,6 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
   isLocalAdmin,
 }) => {
   const isLocalUser = uid === localUid
-  const removeParticipantWithUid = removeParticipant.bind(null, uid, groupId)
 
   const t = useTranslations("GroupsPage.members.optionsMenu")
 
@@ -44,11 +43,11 @@ export const MemberOptionsMenu: React.FC<MemberOptionsMenuProps> = ({
     const confirmed = await confirmRemove()
 
     if (confirmed) {
-      try {
-        await removeParticipantWithUid()
-        toast.add({ title: t("remove.onSuccess", { name: fullName ?? "Unknown" }) })
-      } catch {
+      const result = await removeParticipant({ groupId, uid })
+      if (result?.serverError) {
         toast.add({ type: "error", title: t("remove.onError", { name: fullName ?? "Unknown" }) })
+      } else {
+        toast.add({ title: t("remove.onSuccess", { name: fullName ?? "Unknown" }) })
       }
     }
   }

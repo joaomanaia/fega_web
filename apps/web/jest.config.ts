@@ -20,4 +20,13 @@ const config: Config = {
   setupFiles: ["jest-canvas-mock"],
 }
 
-export default createJestConfig(config)
+export default async function () {
+  const nextConfig = await createJestConfig(config)()
+  return {
+    ...nextConfig,
+    transformIgnorePatterns: [
+      "/node_modules/(?!(\\.bun/[^/]+/node_modules/)?(next-safe-action|@next-safe-action)/)",
+      "^.+\\.module\\.(css|sass|scss)$",
+    ],
+  }
+}

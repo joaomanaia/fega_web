@@ -22,8 +22,8 @@ import {
 import { Input } from "@workspace/ui/components/input"
 import { toast } from "@workspace/ui/components/toast"
 import { useTranslations } from "next-intl"
+import { useAction } from "next-safe-action/hooks"
 import { useForm } from "react-hook-form"
-import { useServerAction } from "zsa-react"
 import { updateUserEmail } from "@/app/actions/userActions"
 import { useInfoDialog } from "@/hooks/use-info-dialog"
 import { updateEmailSchema, UpdateEmailSchemaValues } from "@/lib/schemas/user-schemas"
@@ -37,9 +37,9 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
   const t = useTranslations("SettingsPage.user.updateEmail")
   const [InfoDialog, openInfoDialog] = useInfoDialog()
 
-  const { isPending, execute } = useServerAction(updateUserEmail, {
-    onError: ({ err }) => {
-      toast.add({ type: "error", description: err.message })
+  const { isPending, execute } = useAction(updateUserEmail, {
+    onError: ({ error }) => {
+      toast.add({ type: "error", description: error.serverError ?? "Failed to update email" })
     },
     onSuccess: () => {
       closeDialog()

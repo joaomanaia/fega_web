@@ -41,24 +41,27 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
     },
   })
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const result = await createNews(values)
+      if (result?.serverError) {
+        toast.add({ type: "error", description: result.serverError })
+        return
+      }
+      toast.add({ type: "success", description: "News created successfully" })
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.add({ type: "error", description: error.message })
+      } else {
+        toast.add({ type: "error", description: "Something went wrong" })
+      }
+    }
+  }
+
   return (
     <Form {...form}>
       <form
-        action={async (formData: FormData) => {
-          // ? This is a workaround because the imageUrl from formData is not being set
-          formData.set("imageUrl", form.getValues("imageUrl"))
-
-          try {
-            await createNews(formData)
-            toast.add({ type: "success", description: "News created successfully" })
-          } catch (error) {
-            if (error instanceof Error) {
-              toast.add({ type: "error", description: error.message })
-            } else {
-              toast.add({ type: "error", description: "Something went wrong" })
-            }
-          }
-        }}
+        onSubmit={form.handleSubmit(onSubmit)}
         className={cn("space-y-4", className)}
       >
         <FormField
