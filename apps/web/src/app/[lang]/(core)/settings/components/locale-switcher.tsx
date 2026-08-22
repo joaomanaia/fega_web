@@ -49,9 +49,8 @@ export function LocaleSwitcher({ className }: { className?: string }) {
         <span className="mr-auto">{t("locale", { locale: locale })}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={locale} onValueChange={onSelectChange}>
+          <DropdownMenuLabel>{t("label")}</DropdownMenuLabel>
           {routing.locales.map((lang) => (
             <DropdownMenuRadioItem key={lang} value={lang} disabled={isPending}>
               {t("locale", { locale: lang })}

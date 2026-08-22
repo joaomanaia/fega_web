@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import type { JwtPayload } from "@supabase/supabase-js"
+import { LargeButton, LargeButtonCollapsible } from "@workspace/ui/components/large-button"
 import { Skeleton } from "@workspace/ui/components/skeleton"
 import { toast } from "@workspace/ui/components/toast"
 import { UserRoundXIcon } from "lucide-react"
@@ -9,7 +10,6 @@ import { useTranslations } from "next-intl"
 import { BaseSettingsContainer } from "@/app/[lang]/(core)/settings/components/base-settings-container"
 import { DeletingAccountDialog } from "@/app/[lang]/(core)/settings/components/user-settings/deleting-account-dialog"
 import { UpdateEmailDialog } from "@/app/[lang]/(core)/settings/components/user-settings/update-email-dialog"
-import { LargeButton, LargeButtonCollapsible } from "@/components/large-button"
 import { useConfirm } from "@/hooks/use-confirm"
 import { useRouter } from "@/i18n/navigation"
 import { createClient } from "@/lib/supabase/client"
@@ -88,22 +88,23 @@ export const UserSettings: React.FC<UserSettingsProps> = ({ user }) => {
 
       <BaseSettingsContainer header={t("header")}>
         <div className="grid grid-cols-2 gap-2.5">
-          <UpdateEmailDialog currentEmail={user.email}>
-            <LargeButton
-              title={t("updateEmail.title")}
-              description={t("updateEmail.description")}
-              className="col-span-2"
-            />
-          </UpdateEmailDialog>
+          <UpdateEmailDialog
+            currentEmail={user.email}
+            trigger={
+              <LargeButton
+                title={t("updateEmail.title")}
+                description={t("updateEmail.description")}
+                className="col-span-2"
+              />
+            }
+          />
 
-          <LargeButtonCollapsible
+          <LargeButton
             disabled
             title={t("changePassword.title")}
             description={t("changePassword.description")}
             className="col-span-2"
-          >
-            <></>
-          </LargeButtonCollapsible>
+          />
 
           <LargeButton
             variant="destructive"

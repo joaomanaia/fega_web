@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-import { LargeButton } from "@/components/large-button"
+import { LargeButton } from "@workspace/ui/components/large-button"
 
 const meta = {
-  title: "Components/LargeButton",
+  title: "Components/ui/LargeButton",
   component: LargeButton,
   tags: ["autodocs"],
   parameters: {

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-import { LargeButtonCollapsible } from "@/components/large-button"
+import { LargeButtonCollapsible } from "@workspace/ui/components/large-button"
 
 const meta = {
-  title: "Components/LargeButton/Colapsible",
+  title: "Components/ui/LargeButton/Colapsible",
   render: (args) => (
     <LargeButtonCollapsible className="min-w-96" {...args}>
       {args.children}

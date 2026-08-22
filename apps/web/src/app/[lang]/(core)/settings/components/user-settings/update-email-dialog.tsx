@@ -30,10 +30,10 @@ import { updateEmailSchema, UpdateEmailSchemaValues } from "@/lib/schemas/user-s
 
 interface UpdateEmailDialogProps {
   currentEmail?: string
-  children: React.ReactNode
+  trigger: React.ReactElement
 }
 
-export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEmail, children }) => {
+export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEmail, trigger }) => {
   const t = useTranslations("SettingsPage.user.updateEmail")
   const [InfoDialog, openInfoDialog] = useInfoDialog()
 
@@ -59,7 +59,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
     <>
       <InfoDialog title={t("infoDialogTitle")} message={t("infoDialogDescription")} />
       <Dialog>
-        <DialogTrigger>{children}</DialogTrigger>
+        <DialogTrigger render={trigger} />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("dialogTitle")}</DialogTitle>
