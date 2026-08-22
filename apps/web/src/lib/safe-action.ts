@@ -36,9 +36,6 @@ export const actionClient = createSafeActionClient({
       if (code === "23505") {
         return "A record with this information already exists."
       }
-      if (error instanceof PostgrestError) {
-        return error.message
-      }
     }
 
     // Return generic message

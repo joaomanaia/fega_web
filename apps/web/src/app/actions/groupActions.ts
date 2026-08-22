@@ -104,7 +104,6 @@ export const removeParticipant = authActionClient
       throw new ActionError(error.message, { cause: error })
     }
 
-    revalidatePath(`/group/${groupId}/info`)
     revalidatePath(`/groups/${groupId}/info`)
   })
 
@@ -142,7 +141,6 @@ export const addParticipant = authActionClient
       throw new ActionError(error.message, { cause: error })
     }
 
-    revalidatePath(`/group/${groupId}/info`)
     revalidatePath(`/groups/${groupId}/info`)
   })
 
