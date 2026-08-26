@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { ButtonGroup, ButtonGroupSeparator } from "@workspace/ui/components/button-group"
 import { handleVote } from "@/app/actions/post/voteActions"
 import { PostVoteType } from "@/types/PostType"
 import { VotePostActionButton } from "./VotePostActionButton"
@@ -54,7 +55,7 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
         })
       }}
     >
-      <div className="flex">
+      <ButtonGroup className="flex">
         <VotePostActionButton
           itemScope
           itemProp="interactionStatistic"
@@ -63,8 +64,9 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
           votedType={optimisticVote.votedType}
           voteCount={optimisticVote.voteCount}
         />
+        <ButtonGroupSeparator className="bg-surface-variant/30 dark:bg-surface-variant/[0.28]" />
         <VotePostActionButton voteType="down" votedType={optimisticVote.votedType} />
-      </div>
+      </ButtonGroup>
     </form>
   )
 }

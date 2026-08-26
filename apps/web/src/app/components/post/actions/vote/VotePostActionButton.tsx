@@ -1,9 +1,8 @@
 "use client"
 
-import { cn } from "@workspace/ui/lib/utils"
+import { Button, ButtonProps } from "@workspace/ui/components/button"
 import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useFormStatus } from "react-dom"
-import { Button, ButtonProps } from "@workspace/ui/components/button"
 import { PostVoteType } from "@/types/PostType"
 
 interface VotePostActionButtonProps extends ButtonProps {
@@ -28,10 +27,7 @@ export function VotePostActionButton({
       value={voteType}
       disabled={pending}
       variant={votedType === voteType ? "default" : "surfaceVariant"}
-      className={cn(
-        "flex items-center rounded-none first:rounded-l-full last:rounded-r-full last:pr-4",
-        className
-      )}
+      className={className}
       {...props}
     >
       {voteType === "up" && (
