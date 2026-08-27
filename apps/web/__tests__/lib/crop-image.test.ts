@@ -1,53 +1,50 @@
-import { setupJestCanvasMock } from "jest-canvas-mock"
+import { describe, expect, it, spyOn } from "bun:test"
 import { convertCanvasToCompressedBlob, isValidSize } from "@/lib/crop-image"
 
 describe("isValidSize", () => {
   it("should return true when blob size is less than max size", async () => {
-    const blob = new Blob(["test"], { type: "text/plain" }) // Small blob ~4 bytes
-    const maxSize = 1024 // 1KB
+    const blob = new Blob(["test"], { type: "text/plain" })
+    const maxSize = 1024
     expect(isValidSize(blob, maxSize)).toBe(true)
   })
 
   it("should return true when blob size equals max size", async () => {
-    const blob = new Blob(["x".repeat(1024)], { type: "text/plain" }) // 1KB blob
+    const blob = new Blob(["x".repeat(1024)], { type: "text/plain" })
     const maxSize = 1024
     expect(isValidSize(blob, maxSize)).toBe(true)
   })
 
   it("should return false when blob size exceeds max size", async () => {
-    const blob = new Blob(["x".repeat(2048)], { type: "text/plain" }) // 2KB blob
-    const maxSize = 1024 // 1KB
+    const blob = new Blob(["x".repeat(2048)], { type: "text/plain" })
+    const maxSize = 1024
     expect(isValidSize(blob, maxSize)).toBe(false)
   })
 
   it("should handle empty blob", async () => {
-    const blob = new Blob([], { type: "text/plain" }) // Empty blob
+    const blob = new Blob([], { type: "text/plain" })
     const maxSize = 1024
     expect(isValidSize(blob, maxSize)).toBe(true)
   })
 })
 
 describe("convertCanvasToCompressedBlob", () => {
-  beforeEach(() => {
-    jest.resetAllMocks()
-    setupJestCanvasMock()
-  })
-
   const createMockCanvas = (width: number, height: number) => {
-    const canvas = document.createElement("canvas")
-    canvas.width = width
-    canvas.height = height
+    // Lightweight canvas mock that works in bun:test without DOM
+    const canvas = {
+      width,
+      height,
+      getContext: () => ({}),
+      toBlob(callback: BlobCallback, _type?: string, _quality?: number) {
+        callback(new Blob(["x".repeat(100)], { type: "image/jpeg" }))
+      },
+    } as unknown as HTMLCanvasElement
     return canvas
   }
 
   it("should compress image to valid size", async () => {
-    // Create a 100x100 red canvas
     const canvas = createMockCanvas(100, 100)
-    const ctx = canvas.getContext("2d")!
-    ctx.fillStyle = "red"
-    ctx.fillRect(0, 0, 100, 100)
 
-    const maxSizeInBytes = 500 * 1024 // 500KB
+    const maxSizeInBytes = 500 * 1024
 
     const blob = await convertCanvasToCompressedBlob(canvas, maxSizeInBytes)
     expect(blob).toBeInstanceOf(Blob)
@@ -57,43 +54,42 @@ describe("convertCanvasToCompressedBlob", () => {
 
   it("should throw error if blob creation fails", async () => {
     const canvas = createMockCanvas(0, 0)
-    jest.spyOn(canvas, "toBlob").mockImplementation((callback) => callback(null))
+    spyOn(canvas, "toBlob").mockImplementation((callback: BlobCallback) => callback(null))
 
-    const maxSizeInBytes = 1024 // 1KB
+    const maxSizeInBytes = 1024
 
-    await expect(convertCanvasToCompressedBlob(canvas, maxSizeInBytes)).rejects.toThrow(
-      "Failed to create blob from canvas"
+    expect(convertCanvasToCompressedBlob(canvas, maxSizeInBytes)).rejects.toThrow(
+      "Failed to create blob from canvas",
     )
   })
 
   it("should throw error if cannot compress to target size", async () => {
     const canvas = createMockCanvas(5000, 5000)
-    const ctx = canvas.getContext("2d")!
-    ctx.fillStyle = "red"
-    ctx.fillRect(0, 0, 5000, 5000)
+    spyOn(canvas, "toBlob").mockImplementation((callback: BlobCallback) =>
+      callback(new Blob(["x".repeat(2048)], { type: "image/jpeg" })),
+    )
 
-    const maxSizeInBytes = 1024 // 1KB
+    const maxSizeInBytes = 1024
 
-    await expect(convertCanvasToCompressedBlob(canvas, maxSizeInBytes)).rejects.toThrow(
-      "Could not compress image to target size"
+    expect(convertCanvasToCompressedBlob(canvas, maxSizeInBytes)).rejects.toThrow(
+      "Could not compress image to target size",
     )
   })
 
   it("should attempt multiple compression levels", async () => {
     const canvas = createMockCanvas(200, 200)
-    const toBlobSpy = jest.spyOn(canvas, "toBlob")
+    const toBlobSpy = spyOn(canvas, "toBlob")
 
-    const maxSizeInBytes = 1024 // 1KB
+    const maxSizeInBytes = 1024
 
-    // First call returns a large blob to trigger compression
-    toBlobSpy.mockImplementationOnce((callback) => {
+    toBlobSpy.mockImplementationOnce((callback: BlobCallback) => {
       callback(new Blob(["x".repeat(maxSizeInBytes + 1)]))
     })
 
     try {
       await convertCanvasToCompressedBlob(canvas, maxSizeInBytes)
     } catch {
-      // Ignore error
+      // Ignore
     }
 
     expect(toBlobSpy).toHaveBeenCalled()

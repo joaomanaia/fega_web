@@ -15,5 +15,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
   ],
-  "exclude": ["node_modules", ".next", ".nyc_output", "coverage", "jest-coverage"],
+  "exclude": ["node_modules", ".next", ".nyc_output", "coverage"],
 }

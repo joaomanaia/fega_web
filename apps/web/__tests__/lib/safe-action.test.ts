@@ -1,35 +1,34 @@
-import { actionClient, ActionError, authActionClient, isAdminActionClient } from "@/lib/safe-action"
-import { getSession } from "@/lib/dal"
-import { createClient } from "@/lib/supabase/server"
+import { beforeEach, describe, expect, it, mock, type Mock } from "bun:test"
 import * as z from "zod"
+import { actionClient, ActionError, authActionClient, isAdminActionClient } from "@/lib/safe-action"
+import { createClient } from "@/lib/supabase/server"
 
-jest.mock("@/lib/dal", () => ({
-  getSession: jest.fn(),
+mock.module("@/lib/supabase/server", () => ({
+  createClient: mock(),
 }))
 
-jest.mock("@/lib/supabase/server", () => ({
-  createClient: jest.fn(),
-}))
-
-jest.mock("@/lib/logging", () => ({
+mock.module("@/lib/logging", () => ({
   logger: {
-    error: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
+    error: mock(),
+    info: mock(),
+    warn: mock(),
   },
 }))
 
-const mockedGetSession = getSession as jest.Mock
-const mockedCreateClient = createClient as jest.Mock
+const mockedCreateClient = createClient as Mock<typeof createClient>
 
 describe("Safe Action Pipeline", () => {
   const fakeSupabase = {
-    from: jest.fn(),
+    from: mock(),
+    auth: {
+      getClaims: mock(),
+    },
   }
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    mockedCreateClient.mockResolvedValue(fakeSupabase)
+    mockedCreateClient.mockClear()
+    fakeSupabase.auth.getClaims.mockReset()
+    mockedCreateClient.mockResolvedValue(fakeSupabase as any)
   })
 
   describe("actionClient (public tier)", () => {
@@ -88,10 +87,15 @@ describe("Safe Action Pipeline", () => {
 
   describe("authActionClient (authenticated tier)", () => {
     it("injects session user, uid, and supabase client into context when authenticated", async () => {
-      const fakeUser = { id: "user-123", email: "user@example.com", user_metadata: { username: "johndoe" } }
-      mockedGetSession.mockResolvedValue({
-        user: fakeUser,
-        uid: "user-123",
+      const fakeUser = {
+        sub: "user-123",
+        id: "user-123",
+        email: "user@example.com",
+        user_metadata: { username: "johndoe" },
+      }
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: fakeUser },
+        error: null,
       })
 
       const authAction = authActionClient
@@ -117,7 +121,10 @@ describe("Safe Action Pipeline", () => {
     })
 
     it("returns error when session is not found", async () => {
-      mockedGetSession.mockResolvedValue(null)
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: null },
+        error: null,
+      })
 
       const authAction = authActionClient
         .metadata({ actionName: "testAuthAction" })
@@ -133,10 +140,10 @@ describe("Safe Action Pipeline", () => {
 
   describe("isAdminActionClient (admin tier)", () => {
     it("allows execution when user has admin role in user_role", async () => {
-      const adminUser = { id: "admin-1", user_role: "admin" }
-      mockedGetSession.mockResolvedValue({
-        user: adminUser,
-        uid: "admin-1",
+      const adminUser = { sub: "admin-1", id: "admin-1", user_role: "admin" }
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: adminUser },
+        error: null,
       })
 
       const adminAction = isAdminActionClient
@@ -152,10 +159,10 @@ describe("Safe Action Pipeline", () => {
     })
 
     it("rejects execution when user is not admin", async () => {
-      const regularUser = { id: "user-1", user_role: "user" }
-      mockedGetSession.mockResolvedValue({
-        user: regularUser,
-        uid: "user-1",
+      const regularUser = { sub: "user-1", id: "user-1", user_role: "user" }
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: regularUser },
+        error: null,
       })
 
       const adminAction = isAdminActionClient

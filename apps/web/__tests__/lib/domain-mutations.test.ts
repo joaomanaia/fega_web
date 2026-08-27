@@ -1,49 +1,45 @@
-import { updateProfileAction, removeUserAvatar, updateUserEmail } from "@/app/actions/userActions"
-import { createGroup, editGroup, deleteGroup, exitGroup, addParticipant, removeParticipant } from "@/app/actions/groupActions"
+import { beforeEach, describe, expect, it, mock, type Mock } from "bun:test"
 import { createEvent } from "@/app/actions/calendarEventActions"
+import { createGroup, editGroup, exitGroup } from "@/app/actions/groupActions"
 import { handleVote } from "@/app/actions/post/voteActions"
-import { getSession } from "@/lib/dal"
+import { removeUserAvatar, updateProfileAction, updateUserEmail } from "@/app/actions/userActions"
 import { createClient } from "@/lib/supabase/server"
 
-jest.mock("@/lib/dal", () => ({
-  getSession: jest.fn(),
+mock.module("@/lib/supabase/server", () => ({
+  createClient: mock(),
 }))
 
-jest.mock("@/lib/supabase/server", () => ({
-  createClient: jest.fn(),
-}))
-
-jest.mock("@/lib/logging", () => ({
+mock.module("@/lib/logging", () => ({
   logger: {
-    error: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
+    error: mock(),
+    info: mock(),
+    warn: mock(),
   },
 }))
 
-jest.mock("next/cache", () => ({
-  revalidatePath: jest.fn(),
-  updateTag: jest.fn(),
+mock.module("next/cache", () => ({
+  revalidatePath: mock(),
+  updateTag: mock(),
 }))
 
-jest.mock("next-intl/server", () => ({
-  getLocale: jest.fn().mockResolvedValue("en"),
-  getTranslations: jest.fn().mockResolvedValue((key: string) => key),
+mock.module("next-intl/server", () => ({
+  getLocale: mock().mockResolvedValue("en"),
+  getTranslations: mock().mockResolvedValue((key: string) => key),
 }))
 
-jest.mock("@/i18n/navigation", () => ({
-  redirect: jest.fn(),
+mock.module("@/i18n/navigation", () => ({
+  redirect: mock(),
 }))
 
-jest.mock("@/app/api/uploadthing/core", () => ({
-  deleteAvatarIfFromUploadthing: jest.fn().mockResolvedValue(true),
+mock.module("@/app/api/uploadthing/core", () => ({
+  deleteAvatarIfFromUploadthing: mock().mockResolvedValue(true),
 }))
 
-const mockedGetSession = getSession as jest.Mock
-const mockedCreateClient = createClient as jest.Mock
+const mockedCreateClient = createClient as Mock<typeof createClient>
 
 describe("Domain Mutation Modules", () => {
   const fakeUser = {
+    sub: "user-123",
     id: "user-123",
     email: "user@example.com",
     user_metadata: { username: "alice", avatar_url: "https://utfs.io/f/test.png" },
@@ -52,17 +48,14 @@ describe("Domain Mutation Modules", () => {
   let mockSupabase: any
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    mockedGetSession.mockResolvedValue({
-      user: fakeUser,
-      uid: "user-123",
-    })
+    mockedCreateClient.mockClear()
 
     mockSupabase = {
-      from: jest.fn(),
+      from: mock(),
       auth: {
-        updateUser: jest.fn().mockResolvedValue({ data: { user: fakeUser }, error: null }),
-        refreshSession: jest.fn().mockResolvedValue({}),
+        getClaims: mock().mockResolvedValue({ data: { claims: fakeUser }, error: null }),
+        updateUser: mock().mockResolvedValue({ data: { user: fakeUser }, error: null }),
+        refreshSession: mock().mockResolvedValue({}),
       },
     }
 
@@ -71,8 +64,8 @@ describe("Domain Mutation Modules", () => {
 
   describe("User mutations", () => {
     it("updateProfileAction updates user in database and auth metadata", async () => {
-      const updateMock = jest.fn().mockReturnValue({
-        eq: jest.fn().mockResolvedValue({ error: null }),
+      const updateMock = mock().mockReturnValue({
+        eq: mock().mockResolvedValue({ error: null }),
       })
       mockSupabase.from.mockReturnValue({ update: updateMock })
 
@@ -96,8 +89,8 @@ describe("Domain Mutation Modules", () => {
 
     it("updateProfileAction returns friendly error on unique constraint conflict (23505)", async () => {
       mockSupabase.from.mockReturnValue({
-        update: jest.fn().mockReturnValue({
-          eq: jest.fn().mockResolvedValue({
+        update: mock().mockReturnValue({
+          eq: mock().mockResolvedValue({
             error: { code: "23505", message: "duplicate key value violates unique constraint" },
           }),
         }),
@@ -115,8 +108,8 @@ describe("Domain Mutation Modules", () => {
 
     it("removeUserAvatar clears avatar_url and cleans up uploadthing", async () => {
       mockSupabase.from.mockReturnValue({
-        update: jest.fn().mockReturnValue({
-          eq: jest.fn().mockResolvedValue({ error: null }),
+        update: mock().mockReturnValue({
+          eq: mock().mockResolvedValue({ error: null }),
         }),
       })
 
@@ -140,9 +133,9 @@ describe("Domain Mutation Modules", () => {
   describe("Group mutations", () => {
     it("createGroup inserts group with created_by uid and returns group ID", async () => {
       mockSupabase.from.mockReturnValue({
-        insert: jest.fn().mockReturnValue({
-          select: jest.fn().mockReturnValue({
-            single: jest.fn().mockResolvedValue({ data: { id: "group-999" }, error: null }),
+        insert: mock().mockReturnValue({
+          select: mock().mockReturnValue({
+            single: mock().mockResolvedValue({ data: { id: "group-999" }, error: null }),
           }),
         }),
       })
@@ -158,8 +151,8 @@ describe("Domain Mutation Modules", () => {
 
     it("editGroup updates group name and icon_url", async () => {
       mockSupabase.from.mockReturnValue({
-        update: jest.fn().mockReturnValue({
-          eq: jest.fn().mockResolvedValue({ error: null }),
+        update: mock().mockReturnValue({
+          eq: mock().mockResolvedValue({ error: null }),
         }),
       })
 
@@ -173,10 +166,10 @@ describe("Domain Mutation Modules", () => {
     })
 
     it("exitGroup removes current participant from group", async () => {
-      const eqMock2 = jest.fn().mockResolvedValue({ error: null })
-      const eqMock1 = jest.fn().mockReturnValue({ eq: eqMock2 })
+      const eqMock2 = mock().mockResolvedValue({ error: null })
+      const eqMock1 = mock().mockReturnValue({ eq: eqMock2 })
       mockSupabase.from.mockReturnValue({
-        delete: jest.fn().mockReturnValue({ eq: eqMock1 }),
+        delete: mock().mockReturnValue({ eq: eqMock1 }),
       })
 
       const result = await exitGroup({ groupId: "group-999" })
@@ -189,7 +182,7 @@ describe("Domain Mutation Modules", () => {
   describe("Event mutations", () => {
     it("createEvent inserts calendar event with parsed payload", async () => {
       mockSupabase.from.mockReturnValue({
-        insert: jest.fn().mockResolvedValue({ error: null }),
+        insert: mock().mockResolvedValue({ error: null }),
       })
 
       const fromDate = new Date("2026-09-01T10:00:00Z")
@@ -214,16 +207,16 @@ describe("Domain Mutation Modules", () => {
   describe("Post vote mutations", () => {
     it("handleVote registers upvote when user has not voted yet", async () => {
       mockSupabase.from.mockReturnValue({
-        select: jest.fn().mockReturnValue({
-          eq: jest.fn().mockReturnValue({
-            eq: jest.fn().mockReturnValue({
-              single: jest.fn().mockResolvedValue({ data: null, error: null }),
+        select: mock().mockReturnValue({
+          eq: mock().mockReturnValue({
+            eq: mock().mockReturnValue({
+              single: mock().mockResolvedValue({ data: null, error: null }),
             }),
           }),
         }),
-        upsert: jest.fn().mockReturnValue({
-          select: jest.fn().mockReturnValue({
-            single: jest.fn().mockResolvedValue({
+        upsert: mock().mockReturnValue({
+          select: mock().mockReturnValue({
+            single: mock().mockResolvedValue({
               data: { post_id: "post-1", vote_type: "up", uid: "user-123" },
               error: null,
             }),
@@ -247,18 +240,18 @@ describe("Domain Mutation Modules", () => {
     it("handleVote toggles vote off (sets null) when voting same type again", async () => {
       let upsertPayload: any = null
       mockSupabase.from.mockReturnValue({
-        select: jest.fn().mockReturnValue({
-          eq: jest.fn().mockReturnValue({
-            eq: jest.fn().mockReturnValue({
-              single: jest.fn().mockResolvedValue({ data: { vote_type: "up" }, error: null }),
+        select: mock().mockReturnValue({
+          eq: mock().mockReturnValue({
+            eq: mock().mockReturnValue({
+              single: mock().mockResolvedValue({ data: { vote_type: "up" }, error: null }),
             }),
           }),
         }),
-        upsert: jest.fn().mockImplementation((payload) => {
+        upsert: mock().mockImplementation((payload) => {
           upsertPayload = payload
           return {
-            select: jest.fn().mockReturnValue({
-              single: jest.fn().mockResolvedValue({
+            select: mock().mockReturnValue({
+              single: mock().mockResolvedValue({
                 data: { post_id: "post-1", vote_type: null, uid: "user-123" },
                 error: null,
               }),

@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@types/bun": "^1.4.0",
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
     "turbo": "catalog:"
