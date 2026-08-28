@@ -1,3 +1,4 @@
+import { ButtonGroup } from "@workspace/ui/components/button-group"
 import { Skeleton } from "@workspace/ui/components/skeleton"
 import { cn } from "@workspace/ui/lib/utils"
 import { useFormatter, useNow } from "next-intl"
@@ -53,10 +54,12 @@ const Post: React.FC<PostProps> = ({ localUid, post, hideContainer, className, s
         </h3>
       </Linkify>
       {post.images && post.images.length > 0 && <PostImages images={post.images} />}
-      <div className="flex flex-wrap items-center gap-4">
+      <ButtonGroup>
         <VotePostAction postId={post.id!} voteCount={post.votes!} votedType={post.user_vote_type} />
-        <SharePostButton postId={post.id!} />
-      </div>
+        <ButtonGroup>
+          <SharePostButton postId={post.id!} />
+        </ButtonGroup>
+      </ButtonGroup>
     </article>
   )
 }

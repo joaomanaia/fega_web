@@ -55,7 +55,7 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({ postId, voteCoun
         })
       }}
     >
-      <ButtonGroup className="flex">
+      <ButtonGroup>
         <VotePostActionButton
           itemScope
           itemProp="interactionStatistic"
