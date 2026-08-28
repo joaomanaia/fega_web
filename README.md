@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FEGA Web
 
-## Getting Started
+Born in **Ega, Condeixa** — built to scale to any community in Portugal and beyond.
 
-First, run the development server:
+FEGA is a local-first community platform: a shared feed, groups with realtime chat, and event discovery on a map. One place to post, coordinate, and find out what's happening nearby.
 
-```bash
-bun run dev
-# or
-npm run dev
-# or
-yarn dev
+## Features
+
+| Area                | What it does                                                                                       |
+| ------------------- | -------------------------------------------------------------------------------------------------- |
+| **Feed / Posts**    | Create posts with images, vote, share, paginated feed, post detail pages                           |
+| **Groups**          | Create and join groups, member management, search users                                            |
+| **Realtime Chat**   | Group messages via Supabase Realtime, emoji picker, presence                                       |
+| **Events**          | Create, list, and view events; detail pages with directions and metadata                           |
+| **Event Map**       | Leaflet + MapTiler map with date-range filtering                                                   |
+| **Profiles & Auth** | Supabase Auth (email/password + Google OAuth), profiles by username, editable avatar with cropping |
+| **Secondary**       | News aggregation, live cameras, `en`/`pt` i18n, light/dark themes                                  |
+
+## Stack
+
+- **Runtime:** Bun 1.4, Next.js 16, React 19, TypeScript 5.9
+- **Monorepo:** Turborepo 2.10 (workspaces: `apps/*`, `packages/*`, `catalog:`)
+- **Backend:** Supabase (Postgres, Auth, Realtime, Storage), UploadThing
+- **UI:** Tailwind CSS 4, shadcn-based `packages/ui`, Material color utilities
+- **State & Data:** TanStack Query, Zustand, React Hook Form + Zod + next-safe-action
+- **Maps & Media:** Leaflet + MapTiler, react-easy-crop, react-markdown/MDX, open-graph-scraper
+- **i18n:** next-intl (`en`, `pt`), next-themes
+
+## Project Structure
+
+```
+.
+├── apps/
+│   ├── web/          # Next.js app — routes, features, i18n, Supabase
+│   └── storybook/    # UI documentation (packages/ui + custom components)
+├── packages/
+│   ├── ui/                 # Shared shadcn UI primitives
+│   ├── eslint-config/      # Shared ESLint config
+│   └── typescript-config/  # Shared tsconfig
+├── supabase/         # Migrations, seed, config
+└── CONTEXT.md        # Domain glossary
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **Bun 1.4.0** (`bun --version`)
+- **Supabase CLI** (for local backend) or a hosted Supabase project
+- Optional: MapTiler key for maps, UploadThing token for uploads
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Quick Start
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+# 1. Install
+bun install
 
-## Learn More
+# 2. Environment — copy and fill
+cp apps/web/.env.test apps/web/.env.local
+# Required: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+#           SUPABASE_SERVICE_ROLE_KEY, NEXT_PUBLIC_APP_URL
+# Optional: NEXT_PUBLIC_GTM_ID, NEXT_PUBLIC_UMAMI_*, MapTiler/UploadThing keys
 
-To learn more about Next.js, take a look at the following resources:
+# 3a. With local Supabase (recommended)
+supabase start
+# 3b. Or point .env.local to a hosted Supabase project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 4. Run
+bun run dev        # all workspaces via Turbo
+# or
+bun run dev:web    # web only
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# App: http://localhost:3000
+# Storybook: http://localhost:6006 (bun run storybook)
+```
 
-## Deploy on Vercel
+Environment is validated at build/dev time by `apps/web/src/env.ts:1` (`@t3-oss/env-nextjs` + Zod). Missing or malformed vars fail fast with a clear error.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+| Command                   | Description                      |
+| ------------------------- | -------------------------------- |
+| `bun run dev`             | Turbo dev for all workspaces     |
+| `bun run dev:web`         | Web dev only                     |
+| `bun run build`           | Build all workspaces             |
+| `bun run build:web`       | Build web only                   |
+| `bun run typecheck`       | `tsc --noEmit` across workspaces |
+| `bun run lint`            | ESLint across workspaces         |
+| `bun run test`            | Tests via `bun test`             |
+| `bun run storybook`       | Start Storybook                  |
+| `bun run build-storybook` | Build Storybook static           |
+
+Web-specific: `apps/web` also exposes `check-i18n`, `sitemap`, and `generate-types` (Supabase type generation). See `apps/web/package.json:1`.
+
+## Supabase
+
+```bash
+supabase start          # local Postgres + Auth + Realtime
+supabase db reset       # re-apply migrations + seed (supabase/seed.sql)
+bun run --cwd apps/web generate-types  # regenerates database.types.ts
+```
+
+Migrations are in `supabase/migrations/`. Realtime is enabled for group messages.
+
+## Deployment
+
+Vercel is the reference target. Set the same env vars as `.env.local` in the Vercel dashboard and ensure `NEXT_PUBLIC_APP_URL` matches the deployed URL. `apps/web/src/app/sitemap.ts:1` and `manifest.ts:1` derive from it.
