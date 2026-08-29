@@ -32,6 +32,7 @@ import { Input } from "@workspace/ui/components/input"
 import { toast } from "@workspace/ui/components/toast"
 import { cn } from "@workspace/ui/lib/utils"
 import { MoreVerticalIcon, ReplyIcon } from "lucide-react"
+import { useFormatter } from "next-intl"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
@@ -75,6 +76,8 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
   replyToLocalUser,
   onReplyClick,
 }) => {
+  const formatter = useFormatter()
+
   const messageCorners = (): string => {
     if (hasMessageAbove && hasMessageBelow) {
       return byLocalUser ? "rounded-r-[8px]" : "rounded-l-[8px]"
@@ -137,23 +140,24 @@ export const GroupMessage: React.FC<GroupMessageProps> = ({
             groupId={groupId}
             message={message}
             byLocalUser={byLocalUser}
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(moreOptionsOpen ? "inline-flex" : "hidden group-hover:inline-flex")}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setMoreOptionsOpen(!moreOptionsOpen)
+                }}
+              />
+            }
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(moreOptionsOpen ? "inline-flex" : "hidden group-hover:inline-flex")}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setMoreOptionsOpen(!moreOptionsOpen)
-              }}
-            >
-              <MoreVerticalIcon className="text-foreground h-5 w-5" />
-            </Button>
+            <MoreVerticalIcon />
           </MessageOptionsDropdown>
         </>
 
-        <Hint label={createdAt.toLocaleString()}>
+        <Hint label={formatter.dateTime(createdAt, { dateStyle: "short", timeStyle: "short" })}>
           <div
             className={cn(
               "w-fit rounded-2xl p-3",
@@ -186,6 +190,7 @@ interface MessageOptionsDropdownProps {
   message: string
   byLocalUser: boolean
   children: React.ReactNode
+  render?: React.ReactElement
 }
 
 const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
@@ -196,6 +201,7 @@ const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
   message,
   byLocalUser,
   children,
+  render,
 }) => {
   const copyMessage = () => {
     navigator.clipboard.writeText(message)
@@ -205,7 +211,7 @@ const MessageOptionsDropdown: React.FC<MessageOptionsDropdownProps> = ({
 
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <DropdownMenuTrigger render={render}>{children}</DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={copyMessage}>Copy</DropdownMenuItem>
         {byLocalUser && (

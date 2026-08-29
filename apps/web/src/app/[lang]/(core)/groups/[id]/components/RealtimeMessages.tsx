@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { isSameDay } from "date-fns"
+import { useFormatter } from "next-intl"
 import { createClient } from "@/lib/supabase/client"
 import type GroupMessageType from "@/types/group/GroupMessageType"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
@@ -28,6 +30,8 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   serverMessages,
   onReplyClick,
 }) => {
+  const formatter = useFormatter()
+
   const supabase = useMemo(() => createClient(), [])
 
   const [messages, setMessages] = useState<GroupMessageWithUserType[]>(serverMessages)
@@ -38,7 +42,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
       username: message.user_username,
       full_name: message.user_full_name,
       avatar_url: message.user_avatar_url,
-    }))
+    })),
   )
 
   const fetchProfile = useCallback(
@@ -66,7 +70,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
       return profile
     },
-    [cachedProfiles, supabase]
+    [cachedProfiles, supabase],
   )
 
   const getReplyMessageById = useCallback(
@@ -86,7 +90,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
         reply_to_uid: message.uid,
       }
     },
-    [supabase]
+    [supabase],
   )
 
   const handleInsert = useCallback(
@@ -126,7 +130,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
         setMessages((messages) => [...messages, newMessageWithUser])
       }
     },
-    [fetchProfile, getReplyMessageById, messages]
+    [fetchProfile, getReplyMessageById, messages],
   )
 
   const handleDelete = useCallback(async (deletedMessage: GroupMessageType) => {
@@ -181,7 +185,7 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
               await handleUpdate(payload.new as GroupMessageType)
               break
           }
-        }
+        },
       )
       .subscribe()
 
@@ -195,14 +199,13 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
       <ul className="w-full grow py-4">
         {messages.map((message, index) => (
           <React.Fragment key={message.id}>
-            {index < messages.length && (
-              <MessageTopTime
-                currentTime={new Date(message.created_at!)}
-                // If the message is the first one, there is no message above
-                // so we pass null to the aboveTime prop to make the component render the date
-                aboveTime={index > 0 ? new Date(messages.at(index - 1)!.created_at!) : null}
-              />
-            )}
+            {index > 0 &&
+              !isSameDay(
+                new Date(message.created_at!),
+                new Date(messages[index - 1].created_at!),
+              ) && (
+                <MessageTopTime dateFormatted={formatter.dateTime(new Date(message.created_at!))} />
+              )}
             <GroupMessage
               messageId={message.id!}
               message={message.message!}
@@ -229,39 +232,14 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
 
 export default RealtimeMessages
 
-/* interface ReplyMessageProps {
-  message: string
-  toLocalUser: boolean
-}
-
-const ReplyMessage: React.FC<ReplyMessageProps> = ({ message, toLocalUser }) => {
-  return (
-    <p
-      className={cn(
-        "p-3 mt-2 w-fit rounded-t-2xl rounded-b-[4px] opacity-60",
-        toLocalUser ? "bg-primary text-primary-foreground" : "border border-border"
-      )}
-    >
-      {message}
-    </p>
-  )
-} */
-
 interface MessageTopTime {
-  currentTime: Date
-  aboveTime: Date | null
+  dateFormatted: string
 }
 
-export const MessageTopTime: React.FC<MessageTopTime> = ({ currentTime, aboveTime }) => {
-  const currentDay = currentTime.getDate()
-
-  if (aboveTime?.getDate() === currentDay) {
-    return null
-  }
-
+export function MessageTopTime({ dateFormatted }: MessageTopTime) {
   return (
     <li className="my-1 flex items-center justify-center">
-      <p className="text-foreground/50 mx-2 text-xs">{currentTime.toLocaleDateString()}</p>
+      <p className="text-foreground/50 mx-2 text-xs">{dateFormatted}</p>
     </li>
   )
 }
