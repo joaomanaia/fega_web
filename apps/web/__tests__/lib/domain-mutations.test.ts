@@ -217,7 +217,7 @@ describe("Domain Mutation Modules", () => {
         upsert: mock().mockReturnValue({
           select: mock().mockReturnValue({
             single: mock().mockResolvedValue({
-              data: { post_id: "post-1", vote_type: "up", uid: "user-123" },
+              data: { post_id: "post-1", vote_type: "up", uid: "user-123", created_at: new Date().toISOString() },
               error: null,
             }),
           }),
@@ -230,6 +230,7 @@ describe("Domain Mutation Modules", () => {
       })
 
       expect(result?.data).toEqual({
+        created_at: expect.any(String),
         post_id: "post-1",
         vote_type: "up",
         uid: "user-123",

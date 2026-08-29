@@ -85,6 +85,60 @@
       "skillPath": "skills/engineering/resolving-merge-conflicts/SKILL.md",
       "computedHash": "63b2dcadbe9124caeb3448f1378286fe18dcefb2494f60e136831b8b4986ca27"
     },
+    "safe-action-advanced": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-advanced/SKILL.md",
+      "computedHash": "1f06e451524dcb8f3e239ba6921ce57fcee03949620a07d28d74751ddaabfa88"
+    },
+    "safe-action-better-auth": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-better-auth/SKILL.md",
+      "computedHash": "b6bf6eb0633bab2214890915e0c513509105a8e1a1b5656fe99321a8f09d25fa"
+    },
+    "safe-action-client": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-client/SKILL.md",
+      "computedHash": "261de908cb23dfd8c81bee7d5e1fcbf3acbc1cf47ddec7b63f0c352051abd510"
+    },
+    "safe-action-forms": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-forms/SKILL.md",
+      "computedHash": "5fc284fff83c74ecef99dd33c7cb5e8c242e093205f95f27c734e2555654f97d"
+    },
+    "safe-action-hooks": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-hooks/SKILL.md",
+      "computedHash": "eeb4f746b4ba32429e90639d57717f6b8f483a9bbcfcecf78533ef6fd0a2ee9a"
+    },
+    "safe-action-middleware": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-middleware/SKILL.md",
+      "computedHash": "41aeb838f3887efb9ee231598516c6380abffd112b7e513bca23ed2ef66d6c2c"
+    },
+    "safe-action-tanstack-query": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-tanstack-query/SKILL.md",
+      "computedHash": "e2e9518205cf70b4ae64d1c55daa3c8e236b11443bd2f88f0bff56d48708d9eb"
+    },
+    "safe-action-testing": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-testing/SKILL.md",
+      "computedHash": "428e089294974a6f7ca4c1c783f05a26d7524e247b5fa6e508e5b3f55d5aa1c8"
+    },
+    "safe-action-validation-errors": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-validation-errors/SKILL.md",
+      "computedHash": "051c07243cef1761f1ebaa77944d936e7cb7f61d1747fec5e7e955c0e9f54168"
+    },
     "setup-matt-pocock-skills": {
       "source": "mattpocock/skills",
       "sourceType": "github",

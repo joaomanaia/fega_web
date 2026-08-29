@@ -9,15 +9,16 @@ import { cn } from "@workspace/ui/lib/utils"
 import { CopyIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Hint } from "@/components/hint"
+import { useShare } from "@/hooks/use-share"
 
 interface CopyToClipboardProps {
   text: string
-  onCopied?: () => void
   className?: string
 }
 
-export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied, className }) => {
+export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, className }) => {
   const t = useTranslations("Share")
+  const { onCancel } = useShare()
 
   const copyText = () => {
     try {
@@ -27,7 +28,7 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied
         event: "share",
         method: "copy",
       })
-      onCopied?.()
+      onCancel()
     } catch {
       toast.add({ type: "error", description: t("failedToCopyToClipboard") })
     }
@@ -41,11 +42,9 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text, onCopied
         </Label>
         <Input id="link" className="border-none" defaultValue={text} readOnly />
       </div>
-      <Hint label={t("copy")}>
-        <Button type="submit" size="sm" className="rounded-sm px-3" onClick={copyText}>
-          <span className="sr-only">{t("copy")}</span>
-          <CopyIcon className="size-4" />
-        </Button>
+      <Hint label={t("copy")} render={<Button type="submit" size="icon" onClick={copyText} />}>
+        <span className="sr-only">{t("copy")}</span>
+        <CopyIcon />
       </Hint>
     </div>
   )

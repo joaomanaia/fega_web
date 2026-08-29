@@ -201,8 +201,8 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
           <React.Fragment key={message.id}>
             {index > 0 &&
               !isSameDay(
-                new Date(message.created_at!),
-                new Date(messages[index - 1].created_at!),
+                new Date(message.created_at),
+                new Date(messages.at(index - 1)!.created_at),
               ) && (
                 <MessageTopTime dateFormatted={formatter.dateTime(new Date(message.created_at!))} />
               )}

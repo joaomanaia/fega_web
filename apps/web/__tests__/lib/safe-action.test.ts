@@ -3,6 +3,8 @@ import * as z from "zod"
 import { actionClient, ActionError, authActionClient, isAdminActionClient } from "@/lib/safe-action"
 import { createClient } from "@/lib/supabase/server"
 
+mock.module("server-only", () => ({}))
+
 mock.module("@/lib/supabase/server", () => ({
   createClient: mock(),
 }))
@@ -113,7 +115,7 @@ describe("Safe Action Pipeline", () => {
       const result = await authAction({ value: 21 })
       expect(result?.data).toEqual({
         uid: "user-123",
-        user: fakeUser,
+        user: fakeUser as any,
         hasSupabase: true,
         doubled: 42,
       })
@@ -134,7 +136,7 @@ describe("Safe Action Pipeline", () => {
         })
 
       const result = await authAction({})
-      expect(result?.serverError).toBe("Session not found!")
+      expect(result?.serverError).toBe("Unauthorized")
     })
   })
 
@@ -173,7 +175,7 @@ describe("Safe Action Pipeline", () => {
         })
 
       const result = await adminAction({})
-      expect(result?.serverError).toBe("User not authorized")
+      expect(result?.serverError).toBe("Forbidden")
     })
   })
 })
