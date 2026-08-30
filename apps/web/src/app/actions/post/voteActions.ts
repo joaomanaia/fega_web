@@ -1,6 +1,6 @@
 "use server"
 
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 import { votePostSchema } from "@/lib/schemas/post-schemas"
 import type { PostVoteType } from "@/types/PostType"
 
@@ -33,9 +33,8 @@ export const handleVote = authActionClient
       .single()
 
     if (voteError) {
-      throw new ActionError(voteError.message, { cause: voteError })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to process vote" })
     }
 
     return vote
   })
-

@@ -37,7 +37,7 @@ export const CreateGroupModal: React.FC = () => {
 
   const { isPending, execute } = useAction(createGroup, {
     onError: ({ error }) => {
-      toast.add({ type: "error", title: error.serverError ?? "Failed to create group" })
+      toast.add({ type: "error", title: error.serverError?.message ?? "Failed to create group" })
     },
     onSuccess: ({ data: id }) => {
       toast.add({ type: "success", title: t("success") })

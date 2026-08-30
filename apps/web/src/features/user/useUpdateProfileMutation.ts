@@ -22,8 +22,11 @@ export function useUpdateProfileMutation(uid: string) {
       }
 
       const result = await updateProfileAction(finalValues)
+      if (result?.validationErrors?.username?._errors?.[0]) {
+        throw new Error(result.validationErrors.username._errors[0])
+      }
       if (result?.serverError) {
-        throw new Error(result.serverError)
+        throw new Error(result.serverError.message)
       }
 
       return result?.data

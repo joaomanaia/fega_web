@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import * as z from "zod"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 
 const deleteMessageSchema = z.object({
   messageId: z.string().min(1),
@@ -31,7 +31,7 @@ export const deleteMessage = authActionClient
       .eq("uid", uid)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to delete message" })
     }
   })
 
@@ -49,9 +49,8 @@ export const editMessage = authActionClient
       .eq("uid", uid)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to edit message" })
     }
 
     revalidatePath("/groups/" + groupId)
   })
-

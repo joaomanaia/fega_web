@@ -32,15 +32,14 @@ export const CreatePostForm: React.FC<CreatePostFormProps> = ({ className }) => 
       })
     },
     onSuccess: () => {
-      toast.add({ title: t("success"), id: "create-post" })
+      toast.update("create-post", { type: "success", title: t("success") })
       queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
     onError: ({ error }) => {
-      toast.add({
+      toast.update("create-post", {
         type: "error",
         title: t("error"),
-        description: error.serverError,
-        id: "create-post",
+        description: error.serverError?.message,
       })
     },
   })

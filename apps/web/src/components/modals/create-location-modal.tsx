@@ -83,7 +83,7 @@ const CreateLocationForm: React.FC<CreateLocationFormProps> = ({ locationName, o
               })
 
               if (result?.serverError) {
-                toast.add({ type: "error", description: result.serverError })
+                toast.add({ type: "error", description: result.serverError.message })
                 return
               }
 

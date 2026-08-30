@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { getLocale } from "next-intl/server"
 import { redirect } from "@/i18n/navigation"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 import {
   addParticipantSchema,
   createGroupSchema,
@@ -34,7 +34,7 @@ export const createGroup = authActionClient
       .single()
 
     if (error || !data) {
-      throw new ActionError("Failed to create group", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to create group" })
     }
 
     revalidatePath("/groups")
@@ -59,7 +59,7 @@ export const editGroup = authActionClient
       .eq("id", groupId)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to update group" })
     }
 
     revalidatePath("/groups")
@@ -80,7 +80,7 @@ export const exitGroup = authActionClient
       .eq("group_id", groupId)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to exit group" })
     }
 
     revalidatePath("/groups")
@@ -101,7 +101,7 @@ export const removeParticipant = authActionClient
       .eq("group_id", groupId)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to remove participant" })
     }
 
     revalidatePath(`/groups/${groupId}/info`)
@@ -121,15 +121,15 @@ export const addParticipant = authActionClient
       .eq("group_id", groupId)
 
     if (groupParticipantsError) {
-      throw new ActionError(groupParticipantsError.message, { cause: groupParticipantsError })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to add participant" })
     }
 
     if (count === null) {
-      throw new ActionError("Failed to count group participants")
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to add participant" })
     }
 
     if (count >= GROUP_PARTICIPANTS_LIMIT) {
-      throw new ActionError("Group has reached the limit of participants")
+      returnAppError({ code: "LIMIT_REACHED", message: "Group has reached the limit of participants" })
     }
 
     const { error } = await supabase.from("group_participants").upsert({
@@ -138,7 +138,7 @@ export const addParticipant = authActionClient
     })
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to add participant" })
     }
 
     revalidatePath(`/groups/${groupId}/info`)
@@ -158,7 +158,7 @@ export const searchNoParticipants = authActionClient
       .limit(10)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to search users" })
     }
 
     return {
@@ -176,11 +176,10 @@ export const deleteGroup = authActionClient
     const { error } = await supabase.from("groups").delete().eq("id", groupId)
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to delete group" })
     }
 
     revalidatePath("/groups")
     revalidatePath("/groups", "layout")
     redirect({ href: "/groups", locale: await getLocale() })
   })
-

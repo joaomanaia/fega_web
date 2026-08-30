@@ -310,7 +310,7 @@ const EditMessage: React.FC<EditMessageProps> = ({ messageId, groupId, currentMe
                   message: values.message,
                 })
                 if (result?.serverError) {
-                  toast.add({ type: "error", description: result.serverError })
+                  toast.add({ type: "error", description: result.serverError.message })
                   return
                 }
 
@@ -372,7 +372,7 @@ const DeleteMessage: React.FC<DeleteMessageProps> = ({ messageId }) => {
               onClick={async () => {
                 const result = await deleteMessage({ messageId })
                 if (result?.serverError) {
-                  return toast.add({ type: "error", description: result.serverError })
+                  return toast.add({ type: "error", description: result.serverError.message })
                 }
 
                 toast.add({ type: "success", description: "Message deleted" })

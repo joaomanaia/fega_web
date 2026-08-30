@@ -3,7 +3,7 @@
 import { getLocale } from "next-intl/server"
 import * as z from "zod"
 import { redirect } from "@/i18n/navigation"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 import type { CalendarEventOtherDataItem } from "@/types/CalendarEvent"
 import type { Json } from "@/types/database.types"
 
@@ -36,9 +36,8 @@ export const createEvent = authActionClient
     })
 
     if (error) {
-      throw new ActionError(error.message, { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to create event" })
     }
 
     redirect({ href: "/events", locale: await getLocale() })
   })
-

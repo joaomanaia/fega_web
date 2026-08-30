@@ -1,16 +1,40 @@
 import "server-only"
-import { PostgrestError } from "@supabase/supabase-js"
-import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action"
+import {
+  createSafeActionClient,
+  DEFAULT_SERVER_ERROR_MESSAGE,
+  returnServerError,
+} from "next-safe-action"
 import * as z from "zod"
 import { getSession } from "@/lib/dal"
 import { logger } from "@/lib/logging"
 import { createClient } from "@/lib/supabase/server"
 
-export class ActionError extends Error {}
+export type ErrorCode =
+  | "INTERNAL"
+  | "OPERATION_FAILED"
+  | "UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "DUPLICATE"
+  | "RATE_LIMITED"
+  | "LIMIT_REACHED"
 
-const isUniqueViolation = (err: unknown): err is { message: string; code: string } =>
-  err instanceof PostgrestError ||
-  (err instanceof Error && "code" in err && (err as { code: unknown }).code === "23505")
+/**
+ * Typed error payload returned to the client as `result.serverError`.
+ * Discriminate on `code` to handle each case.
+ */
+export type AppServerError = {
+  code: ErrorCode
+  message: string
+}
+
+/**
+ * Typed alias for `returnServerError` that enforces `AppServerError` at the call site.
+ * Bypasses `handleServerError` — the payload is set as `result.serverError` directly.
+ *
+ * Use for anticipated domain/operational errors. Never returns (throws internally).
+ */
+export const returnAppError: (e: AppServerError) => never = returnServerError
 
 export const actionClient = createSafeActionClient({
   defineMetadataSchema: () =>
@@ -18,32 +42,21 @@ export const actionClient = createSafeActionClient({
       actionName: z.string().trim().nonempty(),
     }),
 
-  handleServerError(error, { metadata }) {
-    if (error instanceof ActionError) {
-      logger.warn({ message: error.message }, `Expected error in action: ${metadata.actionName}`)
-      return error.message
-    }
-
-    if (isUniqueViolation(error)) {
-      logger.warn(
-        { message: error.message, code: error.code },
-        `Unique constraint violation in action: ${metadata.actionName}`,
-      )
-      return "A record with this information already exists."
-    }
-
+  handleServerError(error, { metadata }): AppServerError {
     logger.error(
       { err: error, cause: error.cause },
       `Unexpected error in action: ${metadata.actionName}`,
     )
 
-    return DEFAULT_SERVER_ERROR_MESSAGE
+    return { code: "INTERNAL", message: DEFAULT_SERVER_ERROR_MESSAGE }
   },
 })
 
 export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await getSession()
-  if (!session) throw new ActionError("Unauthorized")
+  if (!session) {
+    returnAppError({ code: "UNAUTHORIZED", message: "Unauthorized" })
+  }
 
   const supabase = await createClient()
 
@@ -58,7 +71,7 @@ export const authActionClient = actionClient.use(async ({ next }) => {
 
 export const isAdminActionClient = authActionClient.use(async ({ next, ctx }) => {
   if (ctx.user?.user_role !== "admin") {
-    throw new ActionError("Forbidden")
+    returnAppError({ code: "FORBIDDEN", message: "Forbidden" })
   }
 
   return next({ ctx })

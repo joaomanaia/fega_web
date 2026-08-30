@@ -30,7 +30,7 @@ export default function ForgotPasswordForm() {
     onError: ({ error }) => {
       toast.add({
         type: "error",
-        description: error.serverError ?? "An error occurred while processing your request.",
+        description: error.serverError?.message ?? "An error occurred while processing your request.",
       })
     },
   })

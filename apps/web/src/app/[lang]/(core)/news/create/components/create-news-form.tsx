@@ -45,7 +45,7 @@ export const CreateNewsForm: React.FC<CreateNewsFormProps> = ({ className }) => 
     try {
       const result = await createNews(values)
       if (result?.serverError) {
-        toast.add({ type: "error", description: result.serverError })
+        toast.add({ type: "error", description: result.serverError.message })
         return
       }
       toast.add({ type: "success", description: "News created successfully" })

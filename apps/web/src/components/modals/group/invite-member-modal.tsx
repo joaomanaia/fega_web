@@ -126,7 +126,7 @@ export const InviteUser: React.FC<InviteUserProps> = ({ groupId, user }) => {
           try {
             const result = await addParticipant({ groupId, uid: user.id })
             if (result?.serverError) {
-              toast.add({ type: "error", description: result.serverError })
+              toast.add({ type: "error", description: result.serverError.message })
             } else {
               toast.add({ type: "success", description: `Invited ${user.full_name} to the group` })
             }

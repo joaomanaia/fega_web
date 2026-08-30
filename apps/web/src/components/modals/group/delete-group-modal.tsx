@@ -21,7 +21,7 @@ export const DeleteGroupModal: React.FC = () => {
 
   const { execute, isPending } = useAction(deleteGroup, {
     onError: ({ error }) => {
-      toast.add({ type: "error", description: error.serverError ?? "Failed to delete group" })
+      toast.add({ type: "error", description: error.serverError?.message ?? "Failed to delete group" })
     },
     onSuccess: () => {
       onClose()

@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, mock, type Mock } from "bun:test"
+import { DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action"
 import * as z from "zod"
-import { actionClient, ActionError, authActionClient, isAdminActionClient } from "@/lib/safe-action"
+import { actionClient, authActionClient, isAdminActionClient, returnAppError } from "@/lib/safe-action"
+import type { AppServerError } from "@/lib/safe-action"
 import { createClient } from "@/lib/supabase/server"
 
 mock.module("server-only", () => ({}))
@@ -47,19 +49,20 @@ describe("Safe Action Pipeline", () => {
       expect(result?.serverError).toBeUndefined()
     })
 
-    it("handles ActionError and passes through the message", async () => {
-      const failingAction = actionClient
-        .metadata({ actionName: "testFailingAction" })
-        .inputSchema(z.object({}))
-        .action(async () => {
-          throw new ActionError("Custom domain error")
+    it("returns validation errors for invalid input", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testValidation" })
+        .inputSchema(z.object({ email: z.string().email() }))
+        .action(async ({ parsedInput }) => {
+          return { email: parsedInput.email }
         })
 
-      const result = await failingAction({})
-      expect(result?.serverError).toBe("Custom domain error")
+      const result = await action({ email: "not-an-email" })
+      expect(result?.data).toBeUndefined()
+      expect(result?.validationErrors).toBeDefined()
     })
 
-    it("masks unexpected errors with generic message", async () => {
+    it("returns typed INTERNAL AppServerError for unexpected errors", async () => {
       const errorAction = actionClient
         .metadata({ actionName: "testErrorAction" })
         .inputSchema(z.object({}))
@@ -68,22 +71,94 @@ describe("Safe Action Pipeline", () => {
         })
 
       const result = await errorAction({})
-      expect(result?.serverError).toBe("Something went wrong while executing the operation.")
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("INTERNAL")
+      expect(serverError.message).toBe(DEFAULT_SERVER_ERROR_MESSAGE)
     })
 
-    it("maps 23505 unique constraint error code in PostgrestError", async () => {
-      const conflictAction = actionClient
-        .metadata({ actionName: "testConflictAction" })
+    it("never leaks raw error messages to the client", async () => {
+      const errorAction = actionClient
+        .metadata({ actionName: "testLeakAction" })
         .inputSchema(z.object({}))
         .action(async () => {
-          const pgError: any = new Error("duplicate key value violates unique constraint")
-          pgError.code = "23505"
-          pgError.details = "Key (username)=(john) already exists."
-          throw pgError
+          throw new Error("password=secret123 host=db.internal")
         })
 
-      const result = await conflictAction({})
-      expect(result?.serverError).toBe("A record with this information already exists.")
+      const result = await errorAction({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.message).not.toContain("secret123")
+      expect(serverError.message).not.toContain("db.internal")
+      expect(serverError.message).toBe(DEFAULT_SERVER_ERROR_MESSAGE)
+    })
+
+    it("surfaces typed AppServerError from returnAppError", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testReturnAppError" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          returnAppError({ code: "DUPLICATE", message: "Username is already taken" })
+        })
+
+      const result = await action({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("DUPLICATE")
+      expect(serverError.message).toBe("Username is already taken")
+    })
+
+    it("surfaces OPERATION_FAILED from returnAppError", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testOperationFailed" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          returnAppError({ code: "OPERATION_FAILED", message: "Failed to create group" })
+        })
+
+      const result = await action({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("OPERATION_FAILED")
+      expect(serverError.message).toBe("Failed to create group")
+    })
+
+    it("surfaces RATE_LIMITED from returnAppError", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testRateLimited" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          returnAppError({ code: "RATE_LIMITED", message: "Please wait before posting again" })
+        })
+
+      const result = await action({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("RATE_LIMITED")
+      expect(serverError.message).toBe("Please wait before posting again")
+    })
+
+    it("surfaces LIMIT_REACHED from returnAppError", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testLimitReached" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          returnAppError({ code: "LIMIT_REACHED", message: "Group has reached the limit of participants" })
+        })
+
+      const result = await action({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("LIMIT_REACHED")
+      expect(serverError.message).toBe("Group has reached the limit of participants")
+    })
+
+    it("surfaces NOT_FOUND from returnAppError", async () => {
+      const action = actionClient
+        .metadata({ actionName: "testNotFound" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          returnAppError({ code: "NOT_FOUND", message: "Resource not found" })
+        })
+
+      const result = await action({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("NOT_FOUND")
+      expect(serverError.message).toBe("Resource not found")
     })
   })
 
@@ -122,7 +197,7 @@ describe("Safe Action Pipeline", () => {
       expect(result?.serverError).toBeUndefined()
     })
 
-    it("returns error when session is not found", async () => {
+    it("returns UNAUTHORIZED AppServerError when session is not found", async () => {
       fakeSupabase.auth.getClaims.mockResolvedValue({
         data: { claims: null },
         error: null,
@@ -136,12 +211,14 @@ describe("Safe Action Pipeline", () => {
         })
 
       const result = await authAction({})
-      expect(result?.serverError).toBe("Unauthorized")
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("UNAUTHORIZED")
+      expect(serverError.message).toBe("Unauthorized")
     })
   })
 
   describe("isAdminActionClient (admin tier)", () => {
-    it("allows execution when user has admin role in user_role", async () => {
+    it("allows execution when user has admin role", async () => {
       const adminUser = { sub: "admin-1", id: "admin-1", user_role: "admin" }
       fakeSupabase.auth.getClaims.mockResolvedValue({
         data: { claims: adminUser },
@@ -160,7 +237,7 @@ describe("Safe Action Pipeline", () => {
       expect(result?.serverError).toBeUndefined()
     })
 
-    it("rejects execution when user is not admin", async () => {
+    it("returns FORBIDDEN AppServerError when user is not admin", async () => {
       const regularUser = { sub: "user-1", id: "user-1", user_role: "user" }
       fakeSupabase.auth.getClaims.mockResolvedValue({
         data: { claims: regularUser },
@@ -175,7 +252,46 @@ describe("Safe Action Pipeline", () => {
         })
 
       const result = await adminAction({})
-      expect(result?.serverError).toBe("Forbidden")
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("FORBIDDEN")
+      expect(serverError.message).toBe("Forbidden")
+    })
+
+    it("returns UNAUTHORIZED when unauthenticated user attempts admin action", async () => {
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: null },
+        error: null,
+      })
+
+      const adminAction = isAdminActionClient
+        .metadata({ actionName: "testAdminAction" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          return { success: true }
+        })
+
+      const result = await adminAction({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("UNAUTHORIZED")
+    })
+
+    it("returns FORBIDDEN when user has no user_role field", async () => {
+      const noRoleUser = { sub: "user-2", id: "user-2" }
+      fakeSupabase.auth.getClaims.mockResolvedValue({
+        data: { claims: noRoleUser },
+        error: null,
+      })
+
+      const adminAction = isAdminActionClient
+        .metadata({ actionName: "testAdminAction" })
+        .inputSchema(z.object({}))
+        .action(async () => {
+          return { success: true }
+        })
+
+      const result = await adminAction({})
+      const serverError = result?.serverError as AppServerError
+      expect(serverError.code).toBe("FORBIDDEN")
     })
   })
 })

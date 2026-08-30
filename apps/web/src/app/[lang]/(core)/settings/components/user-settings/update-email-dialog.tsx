@@ -39,7 +39,7 @@ export const UpdateEmailDialog: React.FC<UpdateEmailDialogProps> = ({ currentEma
 
   const { isPending, execute } = useAction(updateUserEmail, {
     onError: ({ error }) => {
-      toast.add({ type: "error", description: error.serverError ?? "Failed to update email" })
+      toast.add({ type: "error", description: error.serverError?.message ?? "Failed to update email" })
     },
     onSuccess: () => {
       closeDialog()

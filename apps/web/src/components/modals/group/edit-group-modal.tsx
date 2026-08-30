@@ -54,7 +54,7 @@ const EditGroupForm: React.FC<EditGroupFormProps> = ({ groupId, groupName, iconU
       onClose()
     },
     onError: ({ error }) => {
-      toast.add({ type: "error", description: error.serverError ?? "Failed to edit group" })
+      toast.add({ type: "error", description: error.serverError?.message ?? "Failed to edit group" })
     },
   })
 

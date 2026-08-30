@@ -21,7 +21,7 @@ export const ExitGroupModal: React.FC = () => {
 
   const { execute, isPending } = useAction(exitGroup, {
     onError: ({ error }) => {
-      toast.add({ type: "error", description: error.serverError ?? "Failed to exit group" })
+      toast.add({ type: "error", description: error.serverError?.message ?? "Failed to exit group" })
     },
     onSuccess: () => {
       onClose()

@@ -3,7 +3,7 @@
 import { getLocale } from "next-intl/server"
 import * as z from "zod"
 import { redirect } from "@/i18n/navigation"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 
 const createNewsFormSchema = z.object({
   title: z.string().min(1).max(100),
@@ -30,9 +30,8 @@ export const createNews = authActionClient
       .single()
 
     if (error || !data) {
-      throw new ActionError(error?.message ?? "Failed to create news", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to create news" })
     }
 
     redirect({ href: `/news/${data.id}`, locale: await getLocale() })
   })
-

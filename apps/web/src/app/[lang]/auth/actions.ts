@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { returnValidationErrors } from "next-safe-action"
 import { BASE_URL } from "@/core/common"
-import { actionClient, ActionError } from "@/lib/safe-action"
+import { actionClient, returnAppError } from "@/lib/safe-action"
 import { forgotPasswordSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth-schemas"
 import { resetPasswordSchema } from "@/lib/schemas/user-schemas"
 import { createClient } from "@/lib/supabase/server"
@@ -20,7 +20,7 @@ export const signInAction = actionClient
     })
 
     if (error) {
-      throw new ActionError(error.message)
+      returnAppError({ code: "OPERATION_FAILED", message: "Invalid email or password" })
     }
 
     redirect("/")
@@ -59,7 +59,7 @@ export const signUpAction = actionClient
     })
 
     if (error) {
-      throw new ActionError(error.message)
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to create account" })
     }
 
     redirect("/")
@@ -76,7 +76,7 @@ export const forgotPasswordAction = actionClient
     })
 
     if (error) {
-      throw new ActionError(error.message)
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to send password reset email" })
     }
   })
 
@@ -91,7 +91,7 @@ export const resetPasswordAction = actionClient
     })
 
     if (error) {
-      throw new ActionError(error.message)
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to reset password" })
     }
 
     redirect("/")

@@ -1,7 +1,7 @@
 "use server"
 
 import * as z from "zod"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 
 const createLocationSchema = z.object({
   locationName: z.string().min(1, "Location name is required").max(50, "Location name is too long"),
@@ -22,7 +22,6 @@ export const createLocation = authActionClient
     })
 
     if (error) {
-      throw new ActionError("Failed to create location", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to create location" })
     }
   })
-

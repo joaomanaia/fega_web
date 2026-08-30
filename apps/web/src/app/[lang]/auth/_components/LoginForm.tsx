@@ -33,7 +33,7 @@ export function LoginForm() {
         sendGTMEvent({ event: "login", method: "email" })
       },
       onError: ({ error }) => {
-        toast.add({ type: "error", description: error.serverError ?? "Login failed" })
+        toast.add({ type: "error", description: error.serverError?.message ?? "Login failed" })
       },
     },
     formProps: {

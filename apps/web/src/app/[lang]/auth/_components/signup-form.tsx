@@ -40,7 +40,7 @@ export function SignUpForm() {
       onError: ({ error }) => {
         toast.update("signup", {
           type: "error",
-          description: error.serverError ?? "An error occurred while processing your request.",
+          description: error.serverError?.message ?? "An error occurred while processing your request.",
         })
       },
     },

@@ -1,8 +1,9 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { returnValidationErrors } from "next-safe-action"
 import { deleteAvatarIfFromUploadthing } from "@/app/api/uploadthing/core"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 import { updateEmailSchema, updateProfileSchema } from "@/lib/schemas/user-schemas"
 
 export const updateProfileAction = authActionClient
@@ -24,10 +25,12 @@ export const updateProfileAction = authActionClient
 
     if (error) {
       if (error?.code === "23505") {
-        throw new ActionError("Username is already taken")
+        returnValidationErrors(updateProfileSchema, {
+          username: { _errors: ["Username is already taken"] },
+        })
       }
 
-      throw new ActionError("Failed to update profile", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to update profile" })
     }
 
     const { error: authError } = await supabase.auth.updateUser({
@@ -40,7 +43,7 @@ export const updateProfileAction = authActionClient
     })
 
     if (authError) {
-      throw new ActionError("Failed to update profile", { cause: authError })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to update profile" })
     }
 
     await supabase.auth.refreshSession()
@@ -61,7 +64,7 @@ export const removeUserAvatar = authActionClient
       .eq("id", uid)
 
     if (error) {
-      throw new ActionError("Failed to remove avatar", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to remove avatar" })
     }
 
     const avatarUrl = user?.user_metadata?.avatar_url
@@ -73,7 +76,7 @@ export const removeUserAvatar = authActionClient
       })
 
       if (authError) {
-        throw new ActionError("Failed to remove avatar", { cause: authError })
+        returnAppError({ code: "OPERATION_FAILED", message: "Failed to remove avatar" })
       }
 
       await deleteAvatarIfFromUploadthing(avatarUrl)
@@ -92,7 +95,9 @@ export const updateUserEmail = authActionClient
     const { email } = parsedInput
 
     if (user?.email === email) {
-      throw new ActionError("Email is the same as the current email")
+      returnValidationErrors(updateEmailSchema, {
+        email: { _errors: ["Email is the same as the current email"] },
+      })
     }
 
     const {
@@ -106,11 +111,11 @@ export const updateUserEmail = authActionClient
     )
 
     if (error) {
-      throw new ActionError("Failed to update email", { cause: error })
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to update email" })
     }
 
     if (!newUser) {
-      throw new ActionError("Failed to update email")
+      returnAppError({ code: "OPERATION_FAILED", message: "Failed to update email" })
     }
 
     return newUser

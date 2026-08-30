@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache"
 import { getTranslations } from "next-intl/server"
 import * as z from "zod"
-import { ActionError, authActionClient } from "@/lib/safe-action"
+import { authActionClient, returnAppError } from "@/lib/safe-action"
 import { createPostSchema } from "@/lib/schemas/post-schemas"
 
 export const createPost = authActionClient
@@ -19,7 +19,7 @@ export const createPost = authActionClient
 
     if (Boolean(userCanPost) === false) {
       const t = await getTranslations("Post.create")
-      throw new ActionError(t("waitTime", { timeSeconds: 60 }))
+      returnAppError({ code: "RATE_LIMITED", message: t("waitTime", { timeSeconds: 60 }) })
     }
 
     await supabase.from("posts").insert({ description: parsedInput.description }).throwOnError()

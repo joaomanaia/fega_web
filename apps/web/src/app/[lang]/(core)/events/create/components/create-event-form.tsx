@@ -102,7 +102,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ className }) =
       const result = await createEvent(values)
 
       if (result?.serverError) {
-        toast.add({ type: "error", description: result.serverError })
+        toast.add({ type: "error", description: result.serverError.message })
         return
       }
 
