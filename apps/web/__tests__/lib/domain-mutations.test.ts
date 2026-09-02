@@ -13,7 +13,6 @@ import {
 } from "@/app/actions/groupActions"
 import { createLocation } from "@/app/actions/locationActions"
 import { createNews } from "@/app/actions/news/newsActions"
-import { handleVote } from "@/app/actions/post/voteActions"
 import { removeUserAvatar, updateProfileAction, updateUserEmail } from "@/app/actions/userActions"
 import { createPost, deletePost } from "@/core/actions/postActions"
 import type { AppServerError } from "@/lib/safe-action"
@@ -582,70 +581,4 @@ describe("Domain Mutation Modules", () => {
     })
   })
 
-  describe("Post vote mutations", () => {
-    it("handleVote registers upvote when user has not voted yet", async () => {
-      mockSupabase.from.mockReturnValue({
-        select: mock().mockReturnValue({
-          eq: mock().mockReturnValue({
-            eq: mock().mockReturnValue({
-              single: mock().mockResolvedValue({ data: null, error: null }),
-            }),
-          }),
-        }),
-        upsert: mock().mockReturnValue({
-          select: mock().mockReturnValue({
-            single: mock().mockResolvedValue({
-              data: { post_id: "post-1", vote_type: "up", uid: "user-123", created_at: new Date().toISOString() },
-              error: null,
-            }),
-          }),
-        }),
-      })
-
-      const result = await handleVote({
-        postId: "post-1",
-        voteType: "up",
-      })
-
-      expect(result?.data).toEqual({
-        created_at: expect.any(String),
-        post_id: "post-1",
-        vote_type: "up",
-        uid: "user-123",
-      })
-      expect(result?.serverError).toBeUndefined()
-    })
-
-    it("handleVote toggles vote off (sets null) when voting same type again", async () => {
-      let upsertPayload: any = null
-      mockSupabase.from.mockReturnValue({
-        select: mock().mockReturnValue({
-          eq: mock().mockReturnValue({
-            eq: mock().mockReturnValue({
-              single: mock().mockResolvedValue({ data: { vote_type: "up" }, error: null }),
-            }),
-          }),
-        }),
-        upsert: mock().mockImplementation((payload) => {
-          upsertPayload = payload
-          return {
-            select: mock().mockReturnValue({
-              single: mock().mockResolvedValue({
-                data: { post_id: "post-1", vote_type: null, uid: "user-123" },
-                error: null,
-              }),
-            }),
-          }
-        }),
-      })
-
-      const result = await handleVote({
-        postId: "post-1",
-        voteType: "up",
-      })
-
-      expect(upsertPayload.vote_type).toBeNull()
-      expect(result?.data?.vote_type).toBeNull()
-    })
-  })
 })

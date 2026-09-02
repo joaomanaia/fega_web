@@ -24,7 +24,7 @@
       "dependsOn": ["^lint"]
     },
     "test": {
-      "outputs": []
+      "dependsOn": ["^test"]
     },
     "dev": {
       "persistent": true,

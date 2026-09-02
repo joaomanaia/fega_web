@@ -106,7 +106,6 @@
     "prettier-plugin-tailwindcss": "catalog:",
     "schema-dts": "^2.0.0",
     "shadcn": "catalog:",
-    "supabase": "^2.111.0",
     "tailwind-scrollbar-hide": "^4.0.0",
     "tailwindcss": "catalog:",
     "ts-node": "^10.9.2",

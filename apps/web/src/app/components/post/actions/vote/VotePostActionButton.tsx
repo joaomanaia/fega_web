@@ -2,7 +2,6 @@
 
 import { Button, ButtonProps } from "@workspace/ui/components/button"
 import { LucideIcon, ThumbsDown, ThumbsUp } from "lucide-react"
-import { useFormStatus } from "react-dom"
 import { PostVoteType } from "@/types/PostType"
 
 interface VotePostActionButtonProps extends ButtonProps {
@@ -18,14 +17,11 @@ export function VotePostActionButton({
   className,
   ...props
 }: VotePostActionButtonProps) {
-  const { pending } = useFormStatus()
-
   return (
     <Button
       type="submit"
       name="vote_button"
       value={voteType}
-      disabled={pending}
       variant={votedType === voteType ? "default" : "surfaceVariant"}
       className={className}
       {...props}
