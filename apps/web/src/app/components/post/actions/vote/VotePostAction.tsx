@@ -21,7 +21,8 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({
 }) => {
   const queryClient = useQueryClient()
 
-  const { execute, optimisticState, isExecuting } = useOptimisticAction(handleVote, {
+  const bindHandleVote = handleVote.bind(null, postId)
+  const { execute, optimisticState, isExecuting } = useOptimisticAction(bindHandleVote, {
     currentState: { voteCount, votedType },
     updateFn: (current, input) => computeNextVote(current, input.voteType),
     onSuccess: ({ input }) => updatePostVoteInCache(queryClient, postId, input.voteType),
@@ -37,14 +38,14 @@ export const VotePostAction: React.FC<VotePostActionProps> = ({
         votedType={optimisticState.votedType}
         voteCount={optimisticState.voteCount}
         disabled={isExecuting}
-        onClick={() => execute({ postId, voteType: "up" })}
+        onClick={() => execute({ voteType: "up" })}
       />
       <ButtonGroupSeparator className="bg-surface-variant/30 dark:bg-surface-variant/[0.28]" />
       <VotePostActionButton
         voteType="down"
         votedType={optimisticState.votedType}
         disabled={isExecuting}
-        onClick={() => execute({ postId, voteType: "down" })}
+        onClick={() => execute({ voteType: "down" })}
       />
     </ButtonGroup>
   )

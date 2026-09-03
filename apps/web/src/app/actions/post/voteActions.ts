@@ -1,5 +1,6 @@
 "use server"
 
+import * as z from "zod"
 import { logger } from "@/lib/logging"
 import { authActionClient, returnAppError } from "@/lib/safe-action"
 import { votePostSchema } from "@/lib/schemas/post-schemas"
@@ -7,8 +8,9 @@ import { votePostSchema } from "@/lib/schemas/post-schemas"
 export const handleVote = authActionClient
   .metadata({ actionName: "handleVote" })
   .inputSchema(votePostSchema)
-  .action(async ({ parsedInput, ctx }) => {
-    const { postId, voteType } = parsedInput
+  .bindArgsSchemas<[postId: z.ZodUUID]>([z.uuid()])
+  .action(async ({ parsedInput, bindArgsParsedInputs: [postId], ctx }) => {
+    const { voteType } = parsedInput
 
     const { data, error } = await ctx.supabase.rpc("toggle_post_vote", {
       p_post_id: postId,
