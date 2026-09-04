@@ -6,6 +6,7 @@ import { Form, FormControl, FormField, FormItem } from "@workspace/ui/components
 import { Input } from "@workspace/ui/components/input"
 import { cn } from "@workspace/ui/lib/utils"
 import { XIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import SendMessageButton from "@/app/components/message/SendMessageButton"
@@ -31,6 +32,8 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({
   replyTo,
   clearReplyTo,
 }) => {
+  const t = useTranslations("GroupsPage.messageForm")
+
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       message: "",
@@ -64,13 +67,20 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({
                     onEmojiClick={(emoji) => field.onChange(`${field.value} ${emoji}`)}
                   />
                   <div className="flex grow flex-col">
-                    {replyTo && <ReplyContent replyTo={replyTo} clearReplyTo={clearReplyTo} />}
+                    {replyTo && (
+                      <div className="animate-in slide-in-from-bottom-2 fade-in duration-200">
+                        <ReplyContent replyTo={replyTo} clearReplyTo={clearReplyTo} />
+                      </div>
+                    )}
                     <Input
                       disabled={form.formState.isSubmitting}
-                      placeholder={`Message to ${groupName}`}
+                      placeholder={t("placeholder", { groupName })}
                       required
                       maxLength={512}
-                      className={cn("h-11", replyTo && "rounded-t-none")}
+                      className={cn(
+                        "h-11 rounded-md transition-[border-radius] duration-200 ease-out",
+                        replyTo && "rounded-t-none",
+                      )}
                       {...field}
                     />
                   </div>
@@ -93,34 +103,29 @@ interface ReplyContentProps {
   clearReplyTo: () => void
 }
 
-const ReplyContent: React.FC<ReplyContentProps> = ({ replyTo, clearReplyTo }) => {
-  return (
-    <>
-      <div className="bg-surface-variant dark:bg-surface-variant/20 flex items-center space-x-2 rounded-t-md py-2 pr-1 pl-3">
-        <div className="flex grow flex-col justify-center space-y-1">
-          <p className="text-sm">
-            Replying to <span className="font-bold">{replyTo.replyToName}</span>
-          </p>
-          <p className="truncate text-xs">{replyTo.message}</p>
-        </div>
+function ReplyContent({ replyTo, clearReplyTo }: ReplyContentProps) {
+  const t = useTranslations("GroupsPage.messageForm")
 
-        <Hint
-          label="Clear reply"
-          side="top"
-          align="end"
-          render={
-            <Button
-              className="text-foreground bg-transparent"
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={clearReplyTo}
-            />
-          }
-        >
-          <XIcon />
-        </Hint>
+  return (
+    <div className="bg-surface flex items-center space-x-2 rounded-t-md border border-b-0 py-2 pr-1 pl-3">
+      <div className="flex grow flex-col justify-center space-y-1">
+        <p className="text-sm">
+          {t.rich("replyingTo", {
+            name: replyTo.replyToName,
+            b: (chunks) => <span className="font-bold">{chunks}</span>,
+          })}
+        </p>
+        <p className="truncate text-xs">{replyTo.message}</p>
       </div>
-    </>
+
+      <Hint
+        label={t("clearReply")}
+        side="top"
+        align="end"
+        render={<Button type="button" variant="ghost" size="icon" onClick={clearReplyTo} />}
+      >
+        <XIcon />
+      </Hint>
+    </div>
   )
 }

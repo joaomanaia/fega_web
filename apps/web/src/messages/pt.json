@@ -253,6 +253,11 @@
         "loading": "A criar grupo..."
       },
       "success": "Grupo criado com sucesso"
+    },
+    "messageForm": {
+      "placeholder": "Mensagem para {groupName}",
+      "replyingTo": "A responder a <b>{name}</b>",
+      "clearReply": "Limpar resposta"
     }
   }
 }

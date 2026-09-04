@@ -256,6 +256,11 @@ declare const messages: {
         "loading": "Creating group..."
       },
       "success": "Group created successfully"
+    },
+    "messageForm": {
+      "placeholder": "Message to {groupName}",
+      "replyingTo": "Replying to <b>{name}</b>",
+      "clearReply": "Clear reply"
     }
   }
 };
