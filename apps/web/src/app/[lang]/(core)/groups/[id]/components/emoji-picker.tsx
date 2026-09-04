@@ -31,12 +31,13 @@ export const EmojiPicker: React.FC<EmojiPickerPopupProps> = ({ className, onEmoj
       >
         <SmileIcon aria-label="Open emoji picker" />
       </PopoverTrigger>
-      <PopoverContent className="mb-2 ml-4 w-full border-none p-0">
+      <PopoverContent className="w-full p-0 pt-1" sideOffset={8}>
         <Picker
           onEmojiClick={(emoji) => {
             onEmojiClick(emoji.emoji)
           }}
           theme={emojiTheme}
+          className="rounded-3xl! border-none! bg-transparent!"
         />
       </PopoverContent>
     </Popover>
