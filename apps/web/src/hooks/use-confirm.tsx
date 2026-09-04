@@ -1,10 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { cn } from "@workspace/ui/lib/utils"
-import clsx from "clsx"
-import { type LucideIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
@@ -16,6 +12,9 @@ import {
 } from "@workspace/ui/components/dialog"
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
+import { cn } from "@workspace/ui/lib/utils"
+import { type LucideIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 type DialogVariants = "default" | "error"
 
@@ -73,7 +72,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
         <DialogContent
           className={cn(
             variant === "error" && "bg-error text-error-foreground border-none",
-            className
+            className,
           )}
         >
           <DialogHeader>
@@ -99,10 +98,10 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
                 placeholder="Type here"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className={clsx(
+                className={cn(
                   "border-transparent",
                   variant === "error" &&
-                    "bg-error-container/30 text-surface placeholder-error-container-foreground!"
+                    "bg-error-container/30 text-surface placeholder-error-container-foreground!",
                 )}
               />
             </>
