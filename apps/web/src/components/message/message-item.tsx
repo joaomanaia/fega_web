@@ -46,7 +46,7 @@ export function MessageItem({
   return (
     <div className="group flex w-full flex-col gap-1">
       {showAuthor && !byLocalUser && (
-        <div className="flex items-center gap-2">
+        <div className="mt-2 flex items-center gap-2">
           <Link href={`/${username}`}>
             <UserAvatar src={userAvatarUrl} name={userFullName} alt={userFullName} size="sm" />
           </Link>

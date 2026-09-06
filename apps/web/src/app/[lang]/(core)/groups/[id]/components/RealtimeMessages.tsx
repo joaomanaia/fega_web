@@ -1,7 +1,11 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { toast } from "@workspace/ui/components/toast"
+import { deleteMessage } from "@/app/actions/group/messageActions"
+import { MessageActionDialogs } from "@/components/message/message-dialogs"
 import { MessageList } from "@/components/message/message-list"
+import { useConfirm } from "@/hooks/use-confirm"
 import { createClient } from "@/lib/supabase/client"
 import type GroupMessageType from "@/types/group/GroupMessageType"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
@@ -190,17 +194,38 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
     }
   }, [groupId, supabase, handleDelete, handleInsert, handleUpdate])
 
+  const [DeleteMessageDialog, confirmDeleteMessage] = useConfirm()
+  const handleDeleteMessage = async (messageId: string) => {
+    const confirmed = await confirmDeleteMessage()
+    if (confirmed) {
+      toast.promise(deleteMessage({ messageId }), {
+        loading: "Deleting...",
+        success: "Message deleted",
+        error: "Failed to delete message",
+      })
+    }
+  }
+
   return (
-    <ScrollContainer className="w-full grow">
-      <ul className="w-full grow py-4">
-        <MessageList
-          localUserId={localUserUid}
-          groupId={groupId}
-          messages={messages}
-          onReplyClick={onReplyClick}
-        />
-      </ul>
-    </ScrollContainer>
+    <>
+      <ScrollContainer className="w-full grow">
+        <ul className="w-full grow py-4">
+          <MessageList
+            localUserId={localUserUid}
+            messages={messages}
+            onReplyClick={onReplyClick}
+            onDeleteClick={handleDeleteMessage}
+          />
+        </ul>
+      </ScrollContainer>
+
+      <DeleteMessageDialog
+        title="Delete Message"
+        message="Are you sure you want to delete this message?"
+      />
+
+      <MessageActionDialogs />
+    </>
   )
 }
 

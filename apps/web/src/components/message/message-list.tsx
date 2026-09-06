@@ -1,23 +1,24 @@
 import React from "react"
 import { BubbleGroup } from "@workspace/ui/components/bubble"
-import { toast } from "@workspace/ui/components/toast"
 import { isSameDay } from "date-fns"
 import { useFormatter } from "next-intl"
-import { deleteMessage } from "@/app/actions/group/messageActions"
-import { MessageActionDialogs } from "@/components/message/message-dialogs"
 import { MessageItem, type MessageGroupPosition } from "@/components/message/message-item"
-import { useConfirm } from "@/hooks/use-confirm"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import type ReplyToType from "@/types/ReplyToType"
 
 type MessageListProps = {
   localUserId: string
-  groupId: string
   messages: GroupMessageWithUserType[]
-  onReplyClick?: (data: ReplyToType) => void
+  onReplyClick: (data: ReplyToType) => void
+  onDeleteClick: (messageId: string) => void
 }
 
-export function MessageList({ localUserId, groupId, messages, onReplyClick }: MessageListProps) {
+export function MessageList({
+  localUserId,
+  messages,
+  onReplyClick,
+  onDeleteClick,
+}: MessageListProps) {
   const formatter = useFormatter()
   const messageGroups = groupMessagesBySender(messages)
 
@@ -29,19 +30,6 @@ export function MessageList({ localUserId, groupId, messages, onReplyClick }: Me
     }
     return map
   }, [messages])
-
-  const [DeleteMessageDialog, confirmDeleteMessage] = useConfirm()
-
-  const handleDeleteMessage = async (messageId: string) => {
-    const confirmed = await confirmDeleteMessage()
-    if (confirmed) {
-      toast.promise(deleteMessage({ messageId }), {
-        loading: "Deleting...",
-        success: "Message deleted",
-        error: "Failed to delete message",
-      })
-    }
-  }
 
   return (
     <>
@@ -79,20 +67,13 @@ export function MessageList({ localUserId, groupId, messages, onReplyClick }: Me
                   replyToName={
                     message.reply_to_uid ? (uidToName.get(message.reply_to_uid) ?? null) : null
                   }
-                  onDelete={() => handleDeleteMessage(message.id)}
+                  onDelete={() => onDeleteClick(message.id)}
                 />
               ))}
             </BubbleGroup>
           </React.Fragment>
         )
       })}
-
-      <DeleteMessageDialog
-        title="Delete Message"
-        message="Are you sure you want to delete this message?"
-      />
-
-      <MessageActionDialogs />
     </>
   )
 }
