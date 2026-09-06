@@ -1,20 +1,10 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
 import * as z from "zod"
 import { authActionClient, returnAppError } from "@/lib/safe-action"
 
 const deleteMessageSchema = z.object({
-  messageId: z.string().min(1),
-})
-
-const editMessageSchema = z.object({
-  messageId: z.string().min(1),
-  groupId: z.string().min(1),
-  message: z
-    .string()
-    .min(1, "Message must be at least 1 character long")
-    .max(500, "Message cannot be longer than 500 characters"),
+  messageId: z.uuid(),
 })
 
 export const deleteMessage = authActionClient
@@ -35,12 +25,17 @@ export const deleteMessage = authActionClient
     }
   })
 
+const editMessageSchema = z.object({
+  message: z.string().trim().min(1).max(500),
+})
+
 export const editMessage = authActionClient
   .metadata({ actionName: "editMessage" })
   .inputSchema(editMessageSchema)
-  .action(async ({ parsedInput, ctx }) => {
+  .bindArgsSchemas<[messageId: z.ZodUUID]>([z.uuid()])
+  .action(async ({ parsedInput, ctx, bindArgsParsedInputs: [messageId] }) => {
     const { supabase, uid } = ctx
-    const { messageId, groupId, message } = parsedInput
+    const { message } = parsedInput
 
     const { error } = await supabase
       .from("group_messages")
@@ -51,6 +46,4 @@ export const editMessage = authActionClient
     if (error) {
       returnAppError({ code: "OPERATION_FAILED", message: "Failed to edit message" })
     }
-
-    revalidatePath("/groups/" + groupId)
   })

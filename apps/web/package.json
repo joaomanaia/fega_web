@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@daypicker/react": "catalog:",
-    "@hookform/resolvers": "^5.7.1",
+    "@hookform/resolvers": "^5.9.1",
     "@icons-pack/react-simple-icons": "catalog:",
     "@maptiler/leaflet-maptilersdk": "^4.1.1",
     "@material/material-color-utilities": "^0.4.0",
@@ -50,7 +50,7 @@
     "next": "catalog:",
     "next-intl": "catalog:",
     "next-mdx-remote-client": "^2.1.7",
-    "next-safe-action": "^8.6.1",
+    "next-safe-action": "^8.7.1",
     "next-themes": "catalog:",
     "open-graph-scraper": "^6.11.0",
     "pino": "^10.3.0",

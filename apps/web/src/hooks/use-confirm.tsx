@@ -78,7 +78,9 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
           <DialogHeader>
             {Icon && <Icon className="mb-2 size-10 self-center" />}
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{message}</DialogDescription>
+            <DialogDescription className={cn(variant === "error" && "text-error-foreground")}>
+              {message}
+            </DialogDescription>
           </DialogHeader>
           {inputTextToConfirm && (
             <>
@@ -101,7 +103,7 @@ export const useConfirm = (): [React.FC<ConfirmationDialogProps>, () => Promise<
                 className={cn(
                   "border-transparent",
                   variant === "error" &&
-                    "bg-error-container/30 text-surface placeholder-error-container-foreground!",
+                    "bg-error-foreground/10 text-surface placeholder:text-error-foreground",
                 )}
               />
             </>

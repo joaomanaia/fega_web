@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, mock, type Mock } from "bun:test"
-import { forgotPasswordAction, resetPasswordAction, signInAction, signUpAction } from "@/app/[lang]/auth/actions"
+import {
+  forgotPasswordAction,
+  resetPasswordAction,
+  signInAction,
+  signUpAction,
+} from "@/app/[lang]/auth/actions"
 import { createEvent } from "@/app/actions/calendarEventActions"
 import { deleteMessage, editMessage } from "@/app/actions/group/messageActions"
 import {
@@ -183,7 +188,9 @@ describe("Domain Mutation Modules", () => {
       })
 
       expect(result?.serverError).toBeUndefined()
-      expect(result?.validationErrors?.email?._errors).toContain("Email is the same as the current email")
+      expect(result?.validationErrors?.email?._errors).toContain(
+        "Email is the same as the current email",
+      )
     })
 
     it("updateUserEmail successfully initiates email change", async () => {
@@ -346,33 +353,34 @@ describe("Domain Mutation Modules", () => {
 
   describe("Group Message mutations", () => {
     it("deleteMessage removes message authored by user", async () => {
+      const messageId = "123e4567-e89b-12d3-a456-426614174000"
       const eqMock2 = mock().mockResolvedValue({ error: null })
       const eqMock1 = mock().mockReturnValue({ eq: eqMock2 })
       mockSupabase.from.mockReturnValue({
         delete: mock().mockReturnValue({ eq: eqMock1 }),
       })
 
-      const result = await deleteMessage({ messageId: "msg-1" })
+      const result = await deleteMessage({ messageId })
       expect(result?.serverError).toBeUndefined()
-      expect(eqMock1).toHaveBeenCalledWith("id", "msg-1")
+      expect(eqMock1).toHaveBeenCalledWith("id", messageId)
       expect(eqMock2).toHaveBeenCalledWith("uid", "user-123")
     })
 
     it("editMessage updates message authored by user", async () => {
+      const messageId = "123e4567-e89b-12d3-a456-426614174000"
       const eqMock2 = mock().mockResolvedValue({ error: null })
       const eqMock1 = mock().mockReturnValue({ eq: eqMock2 })
       mockSupabase.from.mockReturnValue({
         update: mock().mockReturnValue({ eq: eqMock1 }),
       })
 
-      const result = await editMessage({
-        messageId: "msg-1",
-        groupId: "group-1",
+      const boundEditMessage = editMessage.bind(null, messageId)
+      const result = await boundEditMessage({
         message: "Updated content",
       })
 
       expect(result?.serverError).toBeUndefined()
-      expect(eqMock1).toHaveBeenCalledWith("id", "msg-1")
+      expect(eqMock1).toHaveBeenCalledWith("id", messageId)
       expect(eqMock2).toHaveBeenCalledWith("uid", "user-123")
     })
   })
@@ -580,5 +588,4 @@ describe("Domain Mutation Modules", () => {
       expect(result?.serverError).toBeUndefined()
     })
   })
-
 })

@@ -1,14 +1,12 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { isSameDay } from "date-fns"
-import { useFormatter } from "next-intl"
+import { MessageList } from "@/components/message/message-list"
 import { createClient } from "@/lib/supabase/client"
 import type GroupMessageType from "@/types/group/GroupMessageType"
 import type { GroupMessageWithUserType } from "@/types/group/GroupMessageType"
 import type ReplyToType from "@/types/ReplyToType"
 import ScrollContainer from "../../../../../components/ScrollContainer"
-import { GroupMessage } from "./GroupMessage"
 
 interface RealtimeMessagesProps {
   localUserUid: string
@@ -30,8 +28,6 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   serverMessages,
   onReplyClick,
 }) => {
-  const formatter = useFormatter()
-
   const supabase = useMemo(() => createClient(), [])
 
   const [messages, setMessages] = useState<GroupMessageWithUserType[]>(serverMessages)
@@ -197,34 +193,12 @@ const RealtimeMessages: React.FC<RealtimeMessagesProps> = ({
   return (
     <ScrollContainer className="w-full grow">
       <ul className="w-full grow py-4">
-        {messages.map((message, index) => (
-          <React.Fragment key={message.id}>
-            {index > 0 &&
-              !isSameDay(
-                new Date(message.created_at),
-                new Date(messages.at(index - 1)!.created_at),
-              ) && (
-                <MessageTopTime dateFormatted={formatter.dateTime(new Date(message.created_at!))} />
-              )}
-            <GroupMessage
-              messageId={message.id!}
-              message={message.message!}
-              createdAt={new Date(message.created_at!)}
-              groupId={message.group_id!}
-              uid={message.uid!}
-              username={message.user_username}
-              userFullname={message.user_full_name}
-              userAvatarUrl={message.user_avatar_url}
-              byLocalUser={message.uid === localUserUid}
-              hasMessageAbove={messages.at(index - 1)?.uid === message.uid}
-              hasMessageBelow={messages.at(index + 1)?.uid === message.uid}
-              replyMessage={message.reply_message ?? null}
-              replyToMessageId={message.reply_to ?? null}
-              replyToLocalUser={message.reply_to_uid === localUserUid}
-              onReplyClick={onReplyClick}
-            />
-          </React.Fragment>
-        ))}
+        <MessageList
+          localUserId={localUserUid}
+          groupId={groupId}
+          messages={messages}
+          onReplyClick={onReplyClick}
+        />
       </ul>
     </ScrollContainer>
   )
